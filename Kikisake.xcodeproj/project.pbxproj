@@ -46,6 +46,7 @@
 		D9044246307E863A00EF4807 /* InventoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044245307E863A00EF4807 /* InventoryViewModel.swift */; };
 		D9044248307E864800EF4807 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044247307E864800EF4807 /* SettingsView.swift */; };
 		D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044249307E865300EF4807 /* SettingsViewModel.swift */; };
+		D904424C307F3C8D00EF4807 /* PreviewSampleLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904424B307F3C8C00EF4807 /* PreviewSampleLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +90,7 @@
 		D9044245307E863A00EF4807 /* InventoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewModel.swift; sourceTree = "<group>"; };
 		D9044247307E864800EF4807 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D9044249307E865300EF4807 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		D904424B307F3C8C00EF4807 /* PreviewSampleLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSampleLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 			children = (
 				D90441E4307E817B00EF4807 /* KikisakeApp.swift */,
 				D90441F2307E83F600EF4807 /* AppState.swift */,
+				D904424B307F3C8C00EF4807 /* PreviewSampleLoader.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				D9044239307E85E600EF4807 /* AddFlowViewModel.swift in Sources */,
 				D9044213307E84EB00EF4807 /* ModelContainerManager.swift in Sources */,
 				D904420D307E84CD00EF4807 /* Formatters.swift in Sources */,
+				D904424C307F3C8D00EF4807 /* PreviewSampleLoader.swift in Sources */,
 				D904423E307E861400EF4807 /* BasicInfoStepView.swift in Sources */,
 				D9044215307E84F600EF4807 /* BeverageItem.swift in Sources */,
 				D904420F307E84D800EF4807 /* Logger.swift in Sources */,

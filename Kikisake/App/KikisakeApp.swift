@@ -14,6 +14,11 @@ struct KikisakeApp: App {
     private let modelContainerManager = ModelContainerManager.shared
     @Bindable private var appState = AppState.shared
 
+    init() {
+        // デバッグビルド（シミュレータ等）の起動時にサンプルデータを自動挿入
+        PreviewSampleLoader.insertSamplesIfNeeded(into: modelContainerManager.container.mainContext)
+    }
+
     public var body: some Scene {
         WindowGroup {
             MainTabView()
