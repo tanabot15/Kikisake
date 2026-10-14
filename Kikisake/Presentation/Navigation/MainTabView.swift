@@ -15,31 +15,56 @@ public struct MainTabView: View {
         TabView(selection: $appState.selectedTab) {
             LogListView()
                 .tabItem {
-                    Label("ログ", systemImage: "long.text.page.and.pencil")
+                    Label {
+                        Text("ログ")
+                    } icon: {
+                        Image(systemName: "waveform.path.ecg.text.clipboard")
+                            .environment(\.symbolVariants, appState.selectedTab == 0 ? .fill : .none)
+                    }
                 }
                 .tag(0)
 
             AnalyticsView()
                 .tabItem {
-                    Label("分析", systemImage: "chart.pie.fill")
+                    Label {
+                        Text("分析")
+                    } icon: {
+                        Image(systemName: "chart.pie")
+                            .environment(\.symbolVariants, appState.selectedTab == 1 ? .fill : .none)
+                    }
                 }
                 .tag(1)
 
             AddFlowView()
                 .tabItem {
-                    Label("追加", systemImage: "plus.circle.fill")
+                    Label {
+                        Text("追加")
+                    } icon: {
+                        Image(systemName: "plus.circle")
+                            .environment(\.symbolVariants, appState.selectedTab == 2 ? .fill : .none)
+                    }
                 }
                 .tag(2)
 
             InventoryView()
                 .tabItem {
-                    Label("セラー", systemImage: "refrigerator.fill")
+                    Label {
+                        Text("在庫")
+                    } icon: {
+                        Image(systemName: "refrigerator")
+                            .environment(\.symbolVariants, appState.selectedTab == 3 ? .fill : .none)
+                    }
                 }
                 .tag(3)
 
             SettingsView()
                 .tabItem {
-                    Label("設定", systemImage: "gearshape.fill")
+                    Label {
+                        Text("設定")
+                    } icon: {
+                        Image(systemName: "gearshape")
+                            .environment(\.symbolVariants, appState.selectedTab == 4 ? .fill : .none)
+                    }
                 }
                 .tag(4)
         }

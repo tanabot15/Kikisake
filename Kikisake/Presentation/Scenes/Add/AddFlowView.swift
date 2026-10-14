@@ -82,7 +82,7 @@ public struct AddFlowView: View {
                 }
                 .padding()
             }
-            .navigationTitle("テイスティング＆登録")
+            .navigationTitle("追加")
             .navigationBarTitleDisplayMode(.inline)
             .alert("確認", isPresented: $showAlert) {
                 Button("OK", role: .cancel) {}
