@@ -53,6 +53,7 @@ public struct LogListView: View {
                 }
             }
             .navigationTitle("テイスティングログ")
+            .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $viewModel.searchText, prompt: "銘柄名、生産者、メモで検索")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -85,6 +86,85 @@ public struct LogListView: View {
 }
 
 #Preview {
-    LogListView()
-        .modelContainer(for: [BeverageItem.self, TastingLog.self], inMemory: true)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
+    
+    // サンプルデータ 1: ワイン
+    let wineItem = BeverageItem(
+        name: "Château Margaux 2015",
+        producer: "Château Margaux",
+        category: .wine,
+        region: "ボルドー, フランス",
+        vintage: "2015",
+        stockQuantity: 1
+    )
+    let wineLog = TastingLog(
+        date: Date(),
+        rating: 4.8,
+        appearanceNotes: "深みのあるルビーレッド",
+        aromaTags: ["カシス", "ヴァニラ", "杉"],
+        sweetness: 2.0,
+        acidity: 4.0,
+        bitternessOrTannin: 4.5,
+        body: 4.5,
+        finishLength: 4.8,
+        memo: "圧倒的な気品と複雑味。",
+        item: wineItem
+    )
+    
+    // サンプルデータ 2: 日本酒
+    let sakeItem = BeverageItem(
+        name: "久保田 萬壽",
+        producer: "朝日酒造",
+        category: .sake,
+        region: "新潟県",
+        vintage: "2026/05",
+        stockQuantity: 2
+    )
+    let sakeLog = TastingLog(
+        date: Date().addingTimeInterval(-86400 * 2),
+        rating: 4.5,
+        appearanceNotes: "無色透明で美しい輝き",
+        aromaTags: ["吟醸香", "青りんご", "バナナ"],
+        sweetness: 3.0,
+        acidity: 2.5,
+        bitternessOrTannin: 1.5,
+        body: 3.0,
+        finishLength: 4.0,
+        memo: "香りが華やかでなめらかな口当たり。",
+        item: sakeItem
+    )
+
+    // サンプルデータ 3: ビール
+    let beerItem = BeverageItem(
+        name: "Inedit Damm",
+        producer: "Damm",
+        category: .beer,
+        region: "バルセロナ, スペイン",
+        vintage: "2026",
+        stockQuantity: 0
+    )
+    let beerLog = TastingLog(
+        date: Date().addingTimeInterval(-86400 * 5),
+        rating: 4.2,
+        appearanceNotes: "ペールゴールド・白濁",
+        aromaTags: ["シトラス", "ホップ", "スパイス"],
+        sweetness: 2.5,
+        acidity: 3.0,
+        bitternessOrTannin: 2.5,
+        body: 3.5,
+        finishLength: 3.5,
+        memo: "シャンパンのような華やかな香りとリッチな味わい。",
+        item: beerItem
+    )
+
+    container.mainContext.insert(wineItem)
+    container.mainContext.insert(wineLog)
+    container.mainContext.insert(sakeItem)
+    container.mainContext.insert(sakeLog)
+    container.mainContext.insert(beerItem)
+    container.mainContext.insert(beerLog)
+
+    return LogListView()
+        .modelContainer(container)
 }

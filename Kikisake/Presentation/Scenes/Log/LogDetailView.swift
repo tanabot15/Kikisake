@@ -6,10 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// テイスティングログの詳細画面
 public struct LogDetailView: View {
     let log: TastingLog
+
+    public init(log: TastingLog) {
+        self.log = log
+    }
 
     public var body: some View {
         Form {
@@ -87,4 +92,40 @@ public struct LogDetailView: View {
         .navigationTitle("ログ詳細")
         .navigationBarTitleDisplayMode(.inline)
     }
+}
+
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
+    
+    let sampleItem = BeverageItem(
+        name: "Château Margaux 2015",
+        producer: "Château Margaux",
+        category: .wine,
+        region: "ボルドー, フランス",
+        vintage: "2015",
+        stockQuantity: 1
+    )
+    
+    let sampleLog = TastingLog(
+        date: Date(),
+        rating: 4.8,
+        appearanceNotes: "深みのあるルビーレッド",
+        aromaTags: ["カシス", "ヴァニラ", "杉", "トースト"],
+        sweetness: 2.0,
+        acidity: 4.0,
+        bitternessOrTannin: 4.5,
+        body: 4.5,
+        finishLength: 4.8,
+        memo: "圧倒的な気品と複雑味。ローストビーフとの相性が抜群でした。",
+        item: sampleItem
+    )
+    
+    container.mainContext.insert(sampleItem)
+    container.mainContext.insert(sampleLog)
+
+    return NavigationStack {
+        LogDetailView(log: sampleLog)
+    }
+    .modelContainer(container)
 }

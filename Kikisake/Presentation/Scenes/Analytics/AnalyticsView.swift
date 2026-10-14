@@ -88,6 +88,7 @@ public struct AnalyticsView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("分析")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 

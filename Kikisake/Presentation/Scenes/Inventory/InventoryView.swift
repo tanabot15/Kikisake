@@ -98,7 +98,8 @@ public struct InventoryView: View {
                     }
                 }
             }
-            .navigationTitle("セラー・在庫管理")
+            .navigationTitle("在庫管理")
+            .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $viewModel.searchText, prompt: "銘柄名や生産者で検索")
         }
     }
