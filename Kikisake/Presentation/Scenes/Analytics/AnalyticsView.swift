@@ -110,6 +110,73 @@ public struct AnalyticsView: View {
 }
 
 #Preview {
-    AnalyticsView()
-        .modelContainer(for: [BeverageItem.self, TastingLog.self], inMemory: true)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
+    
+    // サンプル 1: ワイン
+    let wineItem = BeverageItem(
+        name: "Barolo DOCG",
+        producer: "Prunotto",
+        category: .wine,
+        region: "イタリア"
+    )
+    let wineLog = TastingLog(
+        rating: 4.8,
+        appearanceNotes: "ガーネット",
+        aromaTags: ["スミレ", "樽香"],
+        sweetness: 2.0,
+        acidity: 4.2,
+        bitternessOrTannin: 4.5,
+        body: 4.5,
+        finishLength: 4.8,
+        item: wineItem
+    )
+    
+    // サンプル 2: 日本酒
+    let sakeItem = BeverageItem(
+        name: "久保田 萬壽",
+        producer: "朝日酒造",
+        category: .sake,
+        region: "新潟県"
+    )
+    let sakeLog = TastingLog(
+        rating: 4.5,
+        appearanceNotes: "無色透明",
+        aromaTags: ["吟醸香", "青りんご"],
+        sweetness: 3.0,
+        acidity: 2.5,
+        bitternessOrTannin: 1.5,
+        body: 3.0,
+        finishLength: 4.0,
+        item: sakeItem
+    )
+
+    // サンプル 3: ビール
+    let beerItem = BeverageItem(
+        name: "IPA",
+        producer: "BrewDog",
+        category: .beer,
+        region: "スコットランド"
+    )
+    let beerLog = TastingLog(
+        rating: 4.0,
+        appearanceNotes: "アンバー",
+        aromaTags: ["シトラス", "ホップ"],
+        sweetness: 2.2,
+        acidity: 3.0,
+        bitternessOrTannin: 4.0,
+        body: 3.5,
+        finishLength: 3.2,
+        item: beerItem
+    )
+
+    container.mainContext.insert(wineItem)
+    container.mainContext.insert(wineLog)
+    container.mainContext.insert(sakeItem)
+    container.mainContext.insert(sakeLog)
+    container.mainContext.insert(beerItem)
+    container.mainContext.insert(beerLog)
+
+    return AnalyticsView()
+        .modelContainer(container)
 }

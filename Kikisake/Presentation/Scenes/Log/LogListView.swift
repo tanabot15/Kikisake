@@ -40,7 +40,8 @@ public struct LogListView: View {
                                         region: item.region,
                                         vintage: item.vintage,
                                         stockQuantity: nil,
-                                        rating: log.rating
+                                        rating: log.rating,
+                                        imageData: item.imageDatas?.first
                                     )
                                     .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                                     .listRowSeparator(.hidden)

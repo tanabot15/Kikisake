@@ -16,70 +16,111 @@ public struct BeverageCardView: View {
     let vintage: String?
     let stockQuantity: Int?
     let rating: Double?
+    let imageData: Data?
+
+    public init(
+        name: String,
+        producer: String,
+        category: BeverageCategory,
+        region: String,
+        vintage: String?,
+        stockQuantity: Int?,
+        rating: Double?,
+        imageData: Data? = nil
+    ) {
+        self.name = name
+        self.producer = producer
+        self.category = category
+        self.region = region
+        self.vintage = vintage
+        self.stockQuantity = stockQuantity
+        self.rating = rating
+        self.imageData = imageData
+    }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(spacing: 6) {
-                        Text(category.displayName)
-                            .font(.caption2)
-                            .fontWeight(.bold)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Color.accentColor.opacity(0.15))
-                            .foregroundStyle(Color.accentColor)
-                            .cornerRadius(4)
-                        
-                        if let vintage, !vintage.isEmpty {
-                            Text(vintage)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
+        HStack(spacing: 12) {
+            // サムネイル画像（存在する場合のみ表示）
+            if let imageData, let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 60, height: 60)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            } else {
+                // プレースホルダー（画像がない場合）
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color(.systemGray5))
+                    .frame(width: 60, height: 60)
+                    .overlay {
+                        Image(systemName: "wineglass")
+                            .foregroundStyle(.secondary)
                     }
-
-                    Text(name)
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.primary)
-                        .lineLimit(1)
-
-                    Text(producer)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                }
-
-                Spacer()
-
-                if let rating {
-                    HStack(spacing: 4) {
-                        Image(systemName: "star.fill")
-                            .font(.caption)
-                            .foregroundStyle(.yellow)
-                        Text(String(format: "%.1f", rating))
-                            .font(.subheadline)
-                            .fontWeight(.bold)
-                    }
-                } else if let stockQuantity {
-                    Text("残り \(stockQuantity)本")
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color(.systemGray5))
-                        .cornerRadius(6)
-                }
             }
 
-            if !region.isEmpty {
-                HStack(spacing: 4) {
-                    Image(systemName: "mappin.and.ellipse")
-                        .font(.caption2)
-                    Text(region)
-                        .font(.caption)
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 6) {
+                            Text(category.displayName)
+                                .font(.caption2)
+                                .fontWeight(.bold)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.accentColor.opacity(0.15))
+                                .foregroundStyle(Color.accentColor)
+                                .cornerRadius(4)
+                            
+                            if let vintage, !vintage.isEmpty {
+                                Text(vintage)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+
+                        Text(name)
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.primary)
+                            .lineLimit(1)
+
+                        Text(producer)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
+
+                    Spacer()
+
+                    if let rating {
+                        HStack(spacing: 4) {
+                            Image(systemName: "star.fill")
+                                .font(.caption)
+                                .foregroundStyle(.yellow)
+                            Text(String(format: "%.1f", rating))
+                                .font(.subheadline)
+                                .fontWeight(.bold)
+                        }
+                    } else if let stockQuantity {
+                        Text("残り \(stockQuantity)本")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color(.systemGray5))
+                            .cornerRadius(6)
+                    }
                 }
-                .foregroundStyle(.secondary)
+
+                if !region.isEmpty {
+                    HStack(spacing: 4) {
+                        Image(systemName: "mappin.and.ellipse")
+                            .font(.caption2)
+                        Text(region)
+                            .font(.caption)
+                    }
+                    .foregroundStyle(.secondary)
+                }
             }
         }
         .padding()
@@ -98,17 +139,8 @@ public struct BeverageCardView: View {
             region: "ボルドー, フランス",
             vintage: "2015",
             stockQuantity: nil,
-            rating: 4.8
-        )
-        
-        BeverageCardView(
-            name: "久保田 萬壽",
-            producer: "朝日酒造",
-            category: .sake,
-            region: "新潟県",
-            vintage: "2026/05",
-            stockQuantity: 2,
-            rating: nil
+            rating: 4.8,
+            imageData: nil
         )
     }
     .padding()

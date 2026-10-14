@@ -59,7 +59,8 @@ public struct InventoryView: View {
                                         region: item.region,
                                         vintage: item.vintage,
                                         stockQuantity: item.stockQuantity,
-                                        rating: nil
+                                        rating: nil,
+                                        imageData: item.imageDatas?.first
                                     )
 
                                     // アクションボタン
@@ -78,7 +79,7 @@ public struct InventoryView: View {
                                                 print("Error consuming bottle: \(error)")
                                             }
                                         } label: {
-                                            Label("このボトルを開ける", systemImage: "bolt.fill")
+                                            Text("このボトルを開ける")
                                                 .font(.caption)
                                                 .fontWeight(.semibold)
                                         }
@@ -115,6 +116,49 @@ public struct InventoryView: View {
 }
 
 #Preview {
-    InventoryView()
-        .modelContainer(for: [BeverageItem.self, TastingLog.self], inMemory: true)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
+    
+    // サンプル在庫 1: ワイン（ワインセラー）
+    let wineItem = BeverageItem(
+        name: "Barolo DOCG 2018",
+        producer: "Prunotto",
+        category: .wine,
+        region: "ピエモンテ, イタリア",
+        vintage: "2018",
+        price: 8500,
+        stockQuantity: 2,
+        storageLocation: "ワインセラー"
+    )
+    
+    // サンプル在庫 2: 日本酒（冷蔵庫）
+    let sakeItem = BeverageItem(
+        name: "新政 No.6 R-type 生原酒",
+        producer: "新政酒造",
+        category: .sake,
+        region: "秋田県",
+        vintage: "2026/04",
+        price: 2400,
+        stockQuantity: 1,
+        storageLocation: "冷蔵庫"
+    )
+
+    // サンプル在庫 3: ビール（常温）
+    let beerItem = BeverageItem(
+        name: "IPA Special Edition",
+        producer: "BrewDog",
+        category: .beer,
+        region: "スコットランド",
+        vintage: "2026",
+        price: 600,
+        stockQuantity: 4,
+        storageLocation: "常温"
+    )
+
+    container.mainContext.insert(wineItem)
+    container.mainContext.insert(sakeItem)
+    container.mainContext.insert(beerItem)
+
+    return InventoryView()
+        .modelContainer(container)
 }
