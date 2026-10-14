@@ -33,7 +33,7 @@ public struct SelectCategoryStepView: View {
             Section("セラー・冷蔵庫の在庫から選んで開ける") {
                 let availableItems = inventoryItems.filter { $0.stockQuantity > 0 }
                 if availableItems.isEmpty {
-                    Text("在庫中のアイテムはありません（新規作成になります）")
+                    Text("在庫中のアイテムはありません")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 } else {

@@ -14,6 +14,8 @@ public struct LogListView: View {
     @Query(sort: \TastingLog.date, order: .reverse) private var logs: [TastingLog]
     @State private var viewModel = LogListViewModel()
 
+    private let filterCategories: [BeverageCategory?] = [nil] + BeverageCategory.allCases.map { Optional($0) }
+
     /// フィルタリング済みのログリスト
     private var filteredLogs: [TastingLog] {
         viewModel.filteredLogs(logs)
@@ -21,58 +23,64 @@ public struct LogListView: View {
 
     public var body: some View {
         NavigationStack {
-            Group {
-                if filteredLogs.isEmpty {
-                    ContentUnavailableView(
-                        "テイスティングログがありません",
-                        systemImage: "wineglass",
-                        description: Text("「追加」タブから新しい記録を作成しましょう。")
-                    )
-                } else {
-                    List {
-                        ForEach(filteredLogs) { log in
-                            NavigationLink(destination: LogDetailView(log: log)) {
-                                if let item = log.item {
-                                    BeverageCardView(
-                                        name: item.name,
-                                        producer: item.producer,
-                                        category: item.category,
-                                        region: item.region,
-                                        vintage: item.vintage,
-                                        stockQuantity: nil,
-                                        rating: log.rating,
-                                        imageData: item.imageDatas?.first
-                                    )
-                                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                    .listRowSeparator(.hidden)
-                                }
+            VStack(spacing: 0) {
+                // 酒種セグメントタブ（InventoryViewとデザインを統一）
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(filterCategories, id: \.self) { category in
+                            Button {
+                                viewModel.selectedCategoryFilter = category
+                            } label: {
+                                Text(category?.displayName ?? "すべて")
+                                    .font(.subheadline)
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 8)
+                                    .background(viewModel.selectedCategoryFilter == category ? Color.accentColor : Color(.systemGray6))
+                                    .foregroundStyle(viewModel.selectedCategoryFilter == category ? Color.white : Color.primary)
+                                    .cornerRadius(16)
                             }
                         }
-                        .onDelete(perform: deleteLogs)
                     }
-                    .listStyle(.plain)
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                }
+
+                Group {
+                    if filteredLogs.isEmpty {
+                        ContentUnavailableView(
+                            "テイスティングログがありません",
+                            systemImage: "wineglass",
+                            description: Text("「追加」タブから新しい記録を作成しましょう。")
+                        )
+                    } else {
+                        List {
+                            ForEach(filteredLogs) { log in
+                                NavigationLink(destination: LogDetailView(log: log)) {
+                                    if let item = log.item {
+                                        BeverageCardView(
+                                            name: item.name,
+                                            producer: item.producer,
+                                            category: item.category,
+                                            region: item.region,
+                                            vintage: item.vintage,
+                                            stockQuantity: nil,
+                                            rating: log.rating,
+                                            imageData: item.imageDatas?.first
+                                        )
+                                        .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                                        .listRowSeparator(.hidden)
+                                    }
+                                }
+                            }
+                            .onDelete(perform: deleteLogs)
+                        }
+                        .listStyle(.plain)
+                    }
                 }
             }
             .navigationTitle("テイスティングログ")
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $viewModel.searchText, prompt: "銘柄名、生産者、メモで検索")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Button("すべて表示") {
-                            viewModel.selectedCategoryFilter = nil
-                        }
-                        Divider()
-                        ForEach(BeverageCategory.allCases, id: \.self) { category in
-                            Button(category.displayName) {
-                                viewModel.selectedCategoryFilter = category
-                            }
-                        }
-                    } label: {
-                        Label("フィルター", systemImage: "line.3.horizontal.decrease.circle")
-                    }
-                }
-            }
         }
     }
 

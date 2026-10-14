@@ -45,7 +45,7 @@ public struct InventoryView: View {
                     if displayItems.isEmpty {
                         ContentUnavailableView(
                             "在庫がありません",
-                            systemImage: "cabinet",
+                            systemImage: "refrigerator",
                             description: Text("「追加」タブからボトルを登録してください。")
                         )
                     } else {
