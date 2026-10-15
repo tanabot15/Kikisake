@@ -18,7 +18,7 @@ public struct AddFlowView: View {
     public var body: some View {
         NavigationStack {
             VStack {
-                // ステップインジケータ
+                // ステップインジケータ（Step 2で在庫保存して終わる場合はStep 2まで表示、またはシンプルに表示）
                 HStack(spacing: 8) {
                     ForEach(1...4, id: \.self) { step in
                         Circle()
@@ -34,7 +34,10 @@ public struct AddFlowView: View {
                     case 1:
                         SelectCategoryStepView(viewModel: viewModel)
                     case 2:
-                        BasicInfoStepView(viewModel: viewModel)
+                        BasicInfoStepView(viewModel: viewModel) { message in
+                            alertMessage = message
+                            showAlert = true
+                        }
                     case 3:
                         StructuredTastingStepView(viewModel: viewModel)
                     case 4:
@@ -44,7 +47,7 @@ public struct AddFlowView: View {
                     }
                 }
 
-                // ボトムナビゲーションボタン
+                // ボトムナビゲーションボタン（Step 2のときは「次へ」でテイスティング入力へ進む）
                 HStack {
                     if viewModel.currentStep > 1 {
                         Button("戻る") {
@@ -66,10 +69,10 @@ public struct AddFlowView: View {
                         }
                         .buttonStyle(.borderedProminent)
                     } else {
-                        Button("保存する") {
+                        Button("保存する（飲んだ記録を完了）") {
                             do {
                                 try viewModel.save(modelContext: modelContext)
-                                viewModel.currentStep = 1
+                                // 保存成功後はログタブ（index 0）に移動
                                 AppState.shared.selectedTab = 0
                             } catch {
                                 alertMessage = "保存に失敗しました: \(error.localizedDescription)"

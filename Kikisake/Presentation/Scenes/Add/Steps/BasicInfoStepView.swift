@@ -6,13 +6,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// [Step 2] 基本情報入力ビュー
 public struct BasicInfoStepView: View {
     @Bindable var viewModel: AddFlowViewModel
+    @Environment(\.modelContext) private var modelContext
+    var showAlert: (String) -> Void
 
-    public init(viewModel: AddFlowViewModel) {
+    public init(viewModel: AddFlowViewModel, showAlert: @escaping (String) -> Void) {
         self.viewModel = viewModel
+        self.showAlert = showAlert
     }
 
     public var body: some View {
@@ -33,11 +37,36 @@ public struct BasicInfoStepView: View {
                     }
                 }
             }
+
+            // すぐに飲まずにセラー・冷蔵庫に保管する場合の完了ボタン
+            Section {
+                Button {
+                    if viewModel.name.trimmingCharacters(in: .whitespaces).isEmpty {
+                        showAlert("銘柄名を入力してください。")
+                        return
+                    }
+                    do {
+                        try viewModel.saveAsInventoryOnly(modelContext: modelContext)
+                        // 保存成功後は在庫管理タブ（index 3）に移動
+                        AppState.shared.selectedTab = 3
+                    } catch {
+                        showAlert("在庫の保存に失敗しました: \(error.localizedDescription)")
+                    }
+                } label: {
+                    HStack {
+                        Spacer()
+                        Label("あとで飲む", systemImage: "refrigerator")
+                            .fontWeight(.semibold)
+                        Spacer()
+                    }
+                }
+                .tint(.accentColor)
+            }
         }
     }
 }
 
 #Preview {
     @Previewable @State var vm = AddFlowViewModel()
-    return BasicInfoStepView(viewModel: vm)
+    return BasicInfoStepView(viewModel: vm) { _ in }
 }
