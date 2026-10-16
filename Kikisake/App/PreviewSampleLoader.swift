@@ -32,7 +32,8 @@ public enum PreviewSampleLoader {
         let wineLog = TastingLog(
             date: Date().addingTimeInterval(-86400 * 3),
             rating: 4.9,
-            appearanceNotes: "深みのあるルビーレッド、エッジにわずかな熟成香",
+            appearanceNotes: "深みのあるルビーレッド",
+            appearanceColorHex: "#991A33", // ルビーレッドのHEX
             aromaTags: ["カシス", "ヴァニラ", "杉", "トースト"],
             sweetness: 2.0,
             saltiness: 0.0,
@@ -62,6 +63,7 @@ public enum PreviewSampleLoader {
             date: Date().addingTimeInterval(-86400 * 1),
             rating: 4.7,
             appearanceNotes: "微発泡が感じられる透明な輝き",
+            appearanceColorHex: "#F7FAFA", // クリスタル・クリアのHEX
             aromaTags: ["吟醸香", "青りんご", "洋梨", "フレッシュ"],
             sweetness: 3.2,
             saltiness: 0.0,
@@ -90,7 +92,8 @@ public enum PreviewSampleLoader {
         let beerLog = TastingLog(
             date: Date().addingTimeInterval(-86400 * 6),
             rating: 4.3,
-            appearanceNotes: "白濁したペールゴールド、きめ細やかな泡立ち",
+            appearanceNotes: "白濁したペールゴールド",
+            appearanceColorHex: "#EBC733", // ゴールデンのHEX
             aromaTags: ["シトラス", "コリアンダー", "スパイス", "ホップ"],
             sweetness: 2.5,
             saltiness: 0.0,

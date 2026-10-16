@@ -18,7 +18,7 @@ public struct AnalyticsView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    // 酒種バランスカード
+                    // 1. 酒種バランスカード
                     VStack(alignment: .leading, spacing: 12) {
                         Text("酒種別 飲酒比率")
                             .font(.headline)
@@ -49,7 +49,7 @@ public struct AnalyticsView: View {
                             HStack(spacing: 16) {
                                 ForEach(BeverageCategory.allCases, id: \.self) { category in
                                     let count = ratio[category] ?? 0
-                                    VStack(alignment: .leading) {
+                                    VStack(alignment: .leading, spacing: 2) {
                                         Text(category.displayName)
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
@@ -64,27 +64,56 @@ public struct AnalyticsView: View {
                     .padding()
                     .background(Color(.secondarySystemGroupedBackground))
                     .cornerRadius(12)
+                    .shadow(color: Color.black.opacity(0.04), radius: 6, x: 0, y: 2)
 
-                    // 平均味わいプロファイルカード
-                    VStack(alignment: .leading, spacing: 12) {
+                    // 2. 平均テイストバランスカード（基本五味 ＋ タンニン・ボディ・余韻）
+                    VStack(alignment: .leading, spacing: 16) {
                         Text("平均テイストバランス")
                             .font(.headline)
 
                         let profile = viewModel.averageTasteProfile(from: logs)
 
-                        VStack(spacing: 8) {
-                            tasteBar(title: "甘味", value: profile.sweetness)
-                            tasteBar(title: "塩味", value: profile.saltiness)
-                            tasteBar(title: "酸味", value: profile.acidity)
-                            tasteBar(title: "苦味", value: profile.bitterness)
-                            tasteBar(title: "旨味", value: profile.umami)
-                            tasteBar(title: "ボディ", value: profile.body)
-                            tasteBar(title: "余韻", value: profile.finishLength)
+                        if logs.isEmpty {
+                            Text("データがありません")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding()
+                        } else {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text("基本五味")
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.secondary)
+
+                                VStack(spacing: 8) {
+                                    tasteBar(title: "甘味", value: profile.sweetness)
+                                    tasteBar(title: "塩味", value: profile.saltiness)
+                                    tasteBar(title: "酸味", value: profile.acidity)
+                                    tasteBar(title: "苦味", value: profile.bitterness)
+                                    tasteBar(title: "旨味", value: profile.umami)
+                                }
+
+                                Divider()
+                                    .padding(.vertical, 4)
+
+                                Text("構造・特徴")
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.secondary)
+
+                                VStack(spacing: 8) {
+                                    tasteBar(title: "タンニン (渋味)", value: profile.tannin)
+                                    tasteBar(title: "ボディ", value: profile.body)
+                                    tasteBar(title: "余韻の長さ", value: profile.finishLength)
+                                }
+                            }
                         }
                     }
                     .padding()
                     .background(Color(.secondarySystemGroupedBackground))
                     .cornerRadius(12)
+                    .shadow(color: Color.black.opacity(0.04), radius: 6, x: 0, y: 2)
                 }
                 .padding()
             }
@@ -98,7 +127,7 @@ public struct AnalyticsView: View {
         HStack {
             Text(title)
                 .font(.subheadline)
-                .frame(width: 100, alignment: .leading)
+                .frame(width: 120, alignment: .leading)
             
             ProgressView(value: value, total: 5.0)
                 .tint(.accentColor)
@@ -125,6 +154,7 @@ public struct AnalyticsView: View {
     let wineLog = TastingLog(
         rating: 4.8,
         appearanceNotes: "ガーネット",
+        appearanceColorHex: "#802633",
         aromaTags: ["スミレ", "樽香"],
         sweetness: 2.0,
         saltiness: 0.0,
@@ -148,6 +178,7 @@ public struct AnalyticsView: View {
     let sakeLog = TastingLog(
         rating: 4.5,
         appearanceNotes: "無色透明",
+        appearanceColorHex: "#F7FAFA",
         aromaTags: ["吟醸香", "青りんご"],
         sweetness: 3.0,
         saltiness: 0.0,
@@ -171,6 +202,7 @@ public struct AnalyticsView: View {
     let beerLog = TastingLog(
         rating: 4.0,
         appearanceNotes: "アンバー",
+        appearanceColorHex: "#CC852E",
         aromaTags: ["シトラス", "ホップ"],
         sweetness: 2.2,
         saltiness: 0.0,

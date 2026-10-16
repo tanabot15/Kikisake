@@ -27,9 +27,6 @@
 		D904421F307E853700EF4807 /* CalculateAnalyticsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904421E307E853700EF4807 /* CalculateAnalyticsUseCase.swift */; };
 		D9044221307E854100EF4807 /* ConsumeBeverageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044220307E854100EF4807 /* ConsumeBeverageUseCase.swift */; };
 		D9044223307E856F00EF4807 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044222307E856F00EF4807 /* CustomSlider.swift */; };
-		D9044225307E857800EF4807 /* ColorAppearancePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044224307E857800EF4807 /* ColorAppearancePicker.swift */; };
-		D9044227307E858000EF4807 /* AromaTagChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044226307E858000EF4807 /* AromaTagChip.swift */; };
-		D9044229307E858900EF4807 /* TasteProfileSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044228307E858900EF4807 /* TasteProfileSelector.swift */; };
 		D904422B307E859300EF4807 /* BeverageCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904422A307E859300EF4807 /* BeverageCardView.swift */; };
 		D904422D307E85A000EF4807 /* LogListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904422C307E85A000EF4807 /* LogListView.swift */; };
 		D904422F307E85AB00EF4807 /* LogListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904422E307E85AB00EF4807 /* LogListViewModel.swift */; };
@@ -73,9 +70,6 @@
 		D904421E307E853700EF4807 /* CalculateAnalyticsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateAnalyticsUseCase.swift; sourceTree = "<group>"; };
 		D9044220307E854100EF4807 /* ConsumeBeverageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumeBeverageUseCase.swift; sourceTree = "<group>"; };
 		D9044222307E856F00EF4807 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
-		D9044224307E857800EF4807 /* ColorAppearancePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorAppearancePicker.swift; sourceTree = "<group>"; };
-		D9044226307E858000EF4807 /* AromaTagChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AromaTagChip.swift; sourceTree = "<group>"; };
-		D9044228307E858900EF4807 /* TasteProfileSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasteProfileSelector.swift; sourceTree = "<group>"; };
 		D904422A307E859300EF4807 /* BeverageCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeverageCardView.swift; sourceTree = "<group>"; };
 		D904422C307E85A000EF4807 /* LogListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogListView.swift; sourceTree = "<group>"; };
 		D904422E307E85AB00EF4807 /* LogListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogListViewModel.swift; sourceTree = "<group>"; };
@@ -292,9 +286,6 @@
 			isa = PBXGroup;
 			children = (
 				D9044222307E856F00EF4807 /* CustomSlider.swift */,
-				D9044224307E857800EF4807 /* ColorAppearancePicker.swift */,
-				D9044226307E858000EF4807 /* AromaTagChip.swift */,
-				D9044228307E858900EF4807 /* TasteProfileSelector.swift */,
 				D904422A307E859300EF4807 /* BeverageCardView.swift */,
 			);
 			path = Components;
@@ -443,14 +434,11 @@
 				D904424E3081A41E00EF4807 /* GeneralInfoStepView.swift in Sources */,
 				D9044207307E84AC00EF4807 /* Date+Extension.swift in Sources */,
 				D90442503081A43B00EF4807 /* AppearanceStepView.swift in Sources */,
-				D9044227307E858000EF4807 /* AromaTagChip.swift in Sources */,
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
-				D9044225307E857800EF4807 /* ColorAppearancePicker.swift in Sources */,
 				D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */,
 				D9044233307E85C300EF4807 /* AnalyticsView.swift in Sources */,
 				D9044209307E84B900EF4807 /* View+Extension.swift in Sources */,
-				D9044229307E858900EF4807 /* TasteProfileSelector.swift in Sources */,
 				D90441E7307E817B00EF4807 /* MainTabView.swift in Sources */,
 				D9044242307E862600EF4807 /* FinalizeStepView.swift in Sources */,
 				D9044219307E851200EF4807 /* BeverageRepository.swift in Sources */,

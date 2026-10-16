@@ -17,7 +17,7 @@ public struct BeverageCardView: View {
     let stockQuantity: Int?
     let rating: Double?
     let imageData: Data?
-    let appearanceColorHex: String? // 外観のHEXカラー
+    let appearanceColorHex: String?
 
     public init(
         name: String,
@@ -57,7 +57,6 @@ public struct BeverageCardView: View {
 
     public var body: some View {
         HStack(spacing: 12) {
-            // 将来的なラベル写真用プレースホルダー（ワイングラス固定）
             if let imageData, let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -93,7 +92,6 @@ public struct BeverageCardView: View {
                                     .foregroundStyle(.secondary)
                             }
                             
-                            // 外観色を示すカラーサークル（◯）
                             if let color = appearanceColor {
                                 Circle()
                                     .fill(color)
@@ -102,7 +100,6 @@ public struct BeverageCardView: View {
                                         Circle()
                                             .stroke(Color.primary.opacity(0.15), lineWidth: 1)
                                     )
-                                    .accessibilityLabel("外観の色")
                             }
                         }
 

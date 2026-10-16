@@ -33,29 +33,46 @@ public struct CalculateAnalyticsUseCase {
 
     /// 平均味わいプロファイルの平均値を計算する
     /// - Parameter logs: 対象のテイスティングログ
-    /// - Returns: 各パラメータの平均値タプル
-    public func calculateAverageTasteProfile(from logs: [TastingLog]) -> (sweetness: Double, saltiness: Double, acidity: Double, bitterness: Double, umami: Double, body: Double, finishLength: Double) {
-        guard !logs.isEmpty else { return (0, 0, 0, 0, 0, 0, 0) }
+    /// - Returns: 各パラメータの平均値タプル（甘味、塩味、酸味、苦味、旨味、タンニン、ボディ、余韻）
+    public func calculateAverageTasteProfile(from logs: [TastingLog]) -> (sweetness: Double, saltiness: Double, acidity: Double, bitterness: Double, umami: Double, tannin: Double, body: Double, finishLength: Double) {
+        guard !logs.isEmpty else { return (0, 0, 0, 0, 0, 0, 0, 0) }
         
-        let total = logs.reduce(into: (sweetness: 0.0, saltiness: 0.0, acidity: 0.0, bitterness: 0.0, umami: 0.0, body: 0.0, finishLength: 0.0)) { acc, log in
-            acc.sweetness += log.sweetness
-            acc.saltiness += log.saltiness
-            acc.acidity += log.acidity
-            acc.bitterness += log.bitterness
-            acc.umami += log.umami
-            acc.body += log.body
-            acc.finishLength += log.finishLength
+        var totalSweetness = 0.0
+        var totalSaltiness = 0.0
+        var totalAcidity = 0.0
+        var totalBitterness = 0.0
+        var totalUmami = 0.0
+        var totalTannin = 0.0
+        var tanninCount = 0.0
+        var totalBody = 0.0
+        var totalFinishLength = 0.0
+        
+        for log in logs {
+            totalSweetness += log.sweetness
+            totalSaltiness += log.saltiness
+            totalAcidity += log.acidity
+            totalBitterness += log.bitterness
+            totalUmami += log.umami
+            if let tannin = log.tannin {
+                totalTannin += tannin
+                tanninCount += 1.0
+            }
+            totalBody += log.body
+            totalFinishLength += log.finishLength
         }
         
         let count = Double(logs.count)
+        let averageTannin = tanninCount > 0 ? (totalTannin / tanninCount) : 0.0
+        
         return (
-            sweetness: total.sweetness / count,
-            saltiness: total.saltiness / count,
-            acidity: total.acidity / count,
-            bitterness: total.bitterness / count,
-            umami: total.umami / count,
-            body: total.body / count,
-            finishLength: total.finishLength / count
+            sweetness: totalSweetness / count,
+            saltiness: totalSaltiness / count,
+            acidity: totalAcidity / count,
+            bitterness: totalBitterness / count,
+            umami: totalUmami / count,
+            tannin: averageTannin,
+            body: totalBody / count,
+            finishLength: totalFinishLength / count
         )
     }
 }
