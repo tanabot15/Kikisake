@@ -38,15 +38,16 @@
 		D9044235307E85CF00EF4807 /* AnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044234307E85CF00EF4807 /* AnalyticsViewModel.swift */; };
 		D9044237307E85DB00EF4807 /* AddFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044236307E85DB00EF4807 /* AddFlowView.swift */; };
 		D9044239307E85E600EF4807 /* AddFlowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044238307E85E600EF4807 /* AddFlowViewModel.swift */; };
-		D904423C307E860C00EF4807 /* SelectCategoryStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904423B307E860C00EF4807 /* SelectCategoryStepView.swift */; };
-		D904423E307E861400EF4807 /* BasicInfoStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904423D307E861400EF4807 /* BasicInfoStepView.swift */; };
-		D9044240307E861D00EF4807 /* StructuredTastingStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904423F307E861D00EF4807 /* StructuredTastingStepView.swift */; };
 		D9044242307E862600EF4807 /* FinalizeStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044241307E862600EF4807 /* FinalizeStepView.swift */; };
 		D9044244307E863000EF4807 /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044243307E863000EF4807 /* InventoryView.swift */; };
 		D9044246307E863A00EF4807 /* InventoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044245307E863A00EF4807 /* InventoryViewModel.swift */; };
 		D9044248307E864800EF4807 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044247307E864800EF4807 /* SettingsView.swift */; };
 		D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044249307E865300EF4807 /* SettingsViewModel.swift */; };
 		D904424C307F3C8D00EF4807 /* PreviewSampleLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904424B307F3C8C00EF4807 /* PreviewSampleLoader.swift */; };
+		D904424E3081A41E00EF4807 /* GeneralInfoStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904424D3081A41E00EF4807 /* GeneralInfoStepView.swift */; };
+		D90442503081A43B00EF4807 /* AppearanceStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904424F3081A43B00EF4807 /* AppearanceStepView.swift */; };
+		D90442523081A45200EF4807 /* AromaStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442513081A45200EF4807 /* AromaStepView.swift */; };
+		D90442543081A46800EF4807 /* TasteStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442533081A46800EF4807 /* TasteStepView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,15 +83,16 @@
 		D9044234307E85CF00EF4807 /* AnalyticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewModel.swift; sourceTree = "<group>"; };
 		D9044236307E85DB00EF4807 /* AddFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFlowView.swift; sourceTree = "<group>"; };
 		D9044238307E85E600EF4807 /* AddFlowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFlowViewModel.swift; sourceTree = "<group>"; };
-		D904423B307E860C00EF4807 /* SelectCategoryStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCategoryStepView.swift; sourceTree = "<group>"; };
-		D904423D307E861400EF4807 /* BasicInfoStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicInfoStepView.swift; sourceTree = "<group>"; };
-		D904423F307E861D00EF4807 /* StructuredTastingStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructuredTastingStepView.swift; sourceTree = "<group>"; };
 		D9044241307E862600EF4807 /* FinalizeStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalizeStepView.swift; sourceTree = "<group>"; };
 		D9044243307E863000EF4807 /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
 		D9044245307E863A00EF4807 /* InventoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewModel.swift; sourceTree = "<group>"; };
 		D9044247307E864800EF4807 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D9044249307E865300EF4807 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		D904424B307F3C8C00EF4807 /* PreviewSampleLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSampleLoader.swift; sourceTree = "<group>"; };
+		D904424D3081A41E00EF4807 /* GeneralInfoStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralInfoStepView.swift; sourceTree = "<group>"; };
+		D904424F3081A43B00EF4807 /* AppearanceStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceStepView.swift; sourceTree = "<group>"; };
+		D90442513081A45200EF4807 /* AromaStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AromaStepView.swift; sourceTree = "<group>"; };
+		D90442533081A46800EF4807 /* TasteStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasteStepView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -343,9 +345,10 @@
 		D904423A307E85ED00EF4807 /* Steps */ = {
 			isa = PBXGroup;
 			children = (
-				D904423B307E860C00EF4807 /* SelectCategoryStepView.swift */,
-				D904423D307E861400EF4807 /* BasicInfoStepView.swift */,
-				D904423F307E861D00EF4807 /* StructuredTastingStepView.swift */,
+				D904424D3081A41E00EF4807 /* GeneralInfoStepView.swift */,
+				D904424F3081A43B00EF4807 /* AppearanceStepView.swift */,
+				D90442513081A45200EF4807 /* AromaStepView.swift */,
+				D90442533081A46800EF4807 /* TasteStepView.swift */,
 				D9044241307E862600EF4807 /* FinalizeStepView.swift */,
 			);
 			path = Steps;
@@ -424,15 +427,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9044240307E861D00EF4807 /* StructuredTastingStepView.swift in Sources */,
 				D90441F3307E83F600EF4807 /* AppState.swift in Sources */,
+				D90442523081A45200EF4807 /* AromaStepView.swift in Sources */,
 				D9044223307E856F00EF4807 /* CustomSlider.swift in Sources */,
 				D9044211307E84E100EF4807 /* AppConstants.swift in Sources */,
 				D904422F307E85AB00EF4807 /* LogListViewModel.swift in Sources */,
 				D9044231307E85B600EF4807 /* LogDetailView.swift in Sources */,
 				D9044235307E85CF00EF4807 /* AnalyticsViewModel.swift in Sources */,
 				D904420B307E84C300EF4807 /* Color+Extension.swift in Sources */,
+				D904424E3081A41E00EF4807 /* GeneralInfoStepView.swift in Sources */,
 				D9044207307E84AC00EF4807 /* Date+Extension.swift in Sources */,
+				D90442503081A43B00EF4807 /* AppearanceStepView.swift in Sources */,
 				D9044227307E858000EF4807 /* AromaTagChip.swift in Sources */,
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
@@ -442,9 +447,9 @@
 				D9044209307E84B900EF4807 /* View+Extension.swift in Sources */,
 				D9044229307E858900EF4807 /* TasteProfileSelector.swift in Sources */,
 				D90441E7307E817B00EF4807 /* MainTabView.swift in Sources */,
-				D904423C307E860C00EF4807 /* SelectCategoryStepView.swift in Sources */,
 				D9044242307E862600EF4807 /* FinalizeStepView.swift in Sources */,
 				D9044219307E851200EF4807 /* BeverageRepository.swift in Sources */,
+				D90442543081A46800EF4807 /* TasteStepView.swift in Sources */,
 				D9044246307E863A00EF4807 /* InventoryViewModel.swift in Sources */,
 				D9044248307E864800EF4807 /* SettingsView.swift in Sources */,
 				D904421F307E853700EF4807 /* CalculateAnalyticsUseCase.swift in Sources */,
@@ -454,7 +459,6 @@
 				D9044213307E84EB00EF4807 /* ModelContainerManager.swift in Sources */,
 				D904420D307E84CD00EF4807 /* Formatters.swift in Sources */,
 				D904424C307F3C8D00EF4807 /* PreviewSampleLoader.swift in Sources */,
-				D904423E307E861400EF4807 /* BasicInfoStepView.swift in Sources */,
 				D9044215307E84F600EF4807 /* BeverageItem.swift in Sources */,
 				D904420F307E84D800EF4807 /* Logger.swift in Sources */,
 				D9044237307E85DB00EF4807 /* AddFlowView.swift in Sources */,

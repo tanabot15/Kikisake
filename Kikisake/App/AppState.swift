@@ -33,6 +33,17 @@ public final class AppState {
     public var selectedTab: Int = 0
     /// プロバージョンフラグ
     public var isProVersion: Bool = false
+    
+    /// 在庫から開けるために一時保持するアイテム（セットされると自動的に追加タブへ移動）
+    public var openingItem: BeverageItem? {
+        didSet {
+            if openingItem != nil {
+                // 追加タブのインデックス（※Tab 0:ログ, 1:分析, 2:追加, 3:在庫 の場合は 2）
+                selectedTab = 2
+            }
+        }
+    }
+
     /// 外観モード設定（UserDefaultsと連動、デフォルトはシステム）
     public var appearanceMode: AppearanceMode {
         didSet {

@@ -71,13 +71,10 @@ public struct InventoryView: View {
                                         
                                         Spacer()
 
+                                        // InventoryView.swift の該当ボタン部分
+
                                         Button {
-                                            do {
-                                                try viewModel.consumeBottle(item: item)
-                                                try modelContext.save()
-                                            } catch {
-                                                print("Error consuming bottle: \(error)")
-                                            }
+                                            AppState.shared.openingItem = item
                                         } label: {
                                             Text("このボトルを開ける")
                                                 .font(.caption)

@@ -2,17 +2,32 @@
 //  AppearanceStepView.swift
 //  Kikisake
 //
-//  Created by Kenichiro Suzuki on 2026/10/16.
+//  Created by Kenichiro Suzuki on 2026/10/15.
 //
 
 import SwiftUI
 
-struct AppearanceStepView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+/// [Step 2] 色・外観入力ビュー
+public struct AppearanceStepView: View {
+    @Bindable var viewModel: AddFlowViewModel
+
+    public init(viewModel: AddFlowViewModel) {
+        self.viewModel = viewModel
+    }
+
+    public var body: some View {
+        Form {
+            Section("色・外観") {
+                ColorAppearancePicker(
+                    category: viewModel.selectedCategory,
+                    selectedAppearance: $viewModel.appearanceNotes
+                )
+            }
+        }
     }
 }
 
 #Preview {
-    AppearanceStepView()
+    @Previewable @State var vm = AddFlowViewModel()
+    return AppearanceStepView(viewModel: vm)
 }

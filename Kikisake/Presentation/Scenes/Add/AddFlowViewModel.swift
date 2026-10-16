@@ -8,16 +8,14 @@
 import Foundation
 import SwiftData
 
-/// 新規登録および在庫消費からのログ作成フローを管理するViewModel
+/// 新規登録およびテイスティングフローを管理するViewModel
 @Observable
 public final class AddFlowViewModel {
     public var currentStep: Int = 1
 
-    // Step 1: 酒種選択 ＆ 在庫からの読み込み
+    // Step 1: 一般的な情報
     public var selectedCategory: BeverageCategory = .wine
     public var sourceItem: BeverageItem? = nil
-
-    // Step 2: 基本情報
     public var name: String = ""
     public var producer: String = ""
     public var region: String = ""
@@ -25,23 +23,34 @@ public final class AddFlowViewModel {
     public var priceString: String = ""
     public var storageLocation: String = AppConstants.Storage.defaultLocation
 
-    // Step 3: 構造化テイスティング
+    // Step 2: 色・外観
     public var appearanceNotes: String = "ルビーレッド"
+
+    // Step 3: 香り
     public var selectedAromaTags: [String] = []
+
+    // Step 4: 味わい
     public var sweetness: Double = 2.5
     public var acidity: Double = 2.5
     public var bitternessOrTannin: Double = 2.5
     public var body: Double = 2.5
     public var finishLength: Double = 2.5
 
-    // Step 4: 総合評価・メモ
+    // Step 5: 最終ステップ（総合評価・メモ）
     public var rating: Double = 4.0
     public var memo: String = ""
     public var tastingDate: Date = Date()
 
     private let consumeUseCase = ConsumeBeverageUseCase()
 
-    public init() {}
+    public init() {
+        // ✨ 在庫セラーから「このボトルを開ける」で遷移してきた場合
+        if let item = AppState.shared.openingItem {
+            configureWithItem(item)
+            self.currentStep = 2 // 一般情報ステップ(1)をスキップし、いきなり色・外観(Step 2)から開始
+            AppState.shared.openingItem = nil // 読み込み後にクリア
+        }
+    }
 
     /// 入力されたフォームの情報をすべて初期状態にリセットする
     public func reset() {
@@ -91,24 +100,24 @@ public final class AddFlowViewModel {
             region: region,
             vintage: vintage.isEmpty ? nil : vintage,
             price: price,
-            stockQuantity: 1, // 新規在庫として1本登録
+            stockQuantity: 1,
             storageLocation: storageLocation
         )
 
         modelContext.insert(newItem)
         try modelContext.save()
 
-        // フォームをリセット
         reset()
     }
 
-    /// データを保存する（新規アイテム作成、または在庫からの消費＋ログ作成）
+    /// データを保存する（新規アイテム作成、または在庫からの消費 ＋ ログ作成）
     public func save(modelContext: ModelContext) throws {
         let price = Int(priceString)
 
         let targetItem: BeverageItem
         if let existingItem = sourceItem {
             targetItem = existingItem
+            // `ConsumeBeverageUseCase` を用いて在庫数を1減らす処理
             try consumeUseCase.executeConsumption(for: existingItem)
         } else {
             targetItem = BeverageItem(
@@ -118,7 +127,7 @@ public final class AddFlowViewModel {
                 region: region,
                 vintage: vintage.isEmpty ? nil : vintage,
                 price: price,
-                stockQuantity: 0, // すぐ飲む場合は在庫0（または新規作成してログ紐付け）
+                stockQuantity: 0,
                 storageLocation: storageLocation
             )
             modelContext.insert(targetItem)
@@ -141,7 +150,6 @@ public final class AddFlowViewModel {
         modelContext.insert(newLog)
         try modelContext.save()
 
-        // 保存成功後にフォームの状態を完全にリセット
         reset()
     }
 }
