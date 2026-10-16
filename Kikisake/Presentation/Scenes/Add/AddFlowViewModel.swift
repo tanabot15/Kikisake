@@ -24,7 +24,6 @@ public final class AddFlowViewModel {
     public var priceString: String = ""
     public var storageLocation: String = AppConstants.Storage.defaultLocation
 
-    // ✨ 酒種ごとの固有入力パラメータ
     // - ワイン用
     public var wineType: String = "赤"
     public var grapeVarieties: String = ""
@@ -44,11 +43,17 @@ public final class AddFlowViewModel {
     public var selectedAromaTags: [String] = []
 
     // Step 4: 味わい
-    public var sweetness: Double = 2.5
-    public var acidity: Double = 2.5
-    public var bitternessOrTannin: Double = 2.5
-    public var body: Double = 2.5
-    public var finishLength: Double = 2.5
+    public var sweetness: Double = 2.5  // 甘味
+    public var saltiness: Double = 0.0  // 塩味
+    public var acidity: Double = 2.5    // 酸味
+    public var bitterness: Double = 2.5 // 苦味
+    public var umami: Double = 2.5      // 旨味
+
+    // 選択項目
+    public var tannin: Double = 2.5     // タンニン（渋味）
+    public var body: Double = 2.5       // ボディ
+    public var selectedBalanceTags: [String] = [] // バランス評価タグ
+    public var finishLength: Double = 2.5// 余韻の長さ
 
     // Step 5: 最終ステップ（総合評価・メモ）
     public var rating: Double = 4.0
@@ -91,9 +96,13 @@ public final class AddFlowViewModel {
         self.appearanceNotes = "ルビーレッド"
         self.selectedAromaTags = []
         self.sweetness = 2.5
+        self.saltiness = 0.0
         self.acidity = 2.5
-        self.bitternessOrTannin = 2.5
+        self.bitterness = 2.5
+        self.umami = 2.5
+        self.tannin = 2.5
         self.body = 2.5
+        self.selectedBalanceTags = []
         self.finishLength = 2.5
         self.rating = 4.0
         self.memo = ""
@@ -163,6 +172,11 @@ public final class AddFlowViewModel {
     /// データを保存する（新規アイテム作成、または在庫からの消費 ＋ ログ作成）
     public func save(modelContext: ModelContext) throws {
         let price = Int(priceString)
+        let isTanninApplicable: Bool = {
+            guard selectedCategory == .wine else { return false }
+            return wineType == "赤" || wineType == "ロゼ" || wineType == "オレンジ"
+        }()
+        
         let metadataJSON = buildMetadataJSON()
 
         let targetItem: BeverageItem
@@ -190,9 +204,13 @@ public final class AddFlowViewModel {
             appearanceNotes: appearanceNotes,
             aromaTags: selectedAromaTags,
             sweetness: sweetness,
+            saltiness: saltiness,
             acidity: acidity,
-            bitternessOrTannin: bitternessOrTannin,
+            bitterness: bitterness,
+            umami: umami,
+            tannin: isTanninApplicable ? tannin : nil,
             body: body,
+            balanceTags: selectedBalanceTags,
             finishLength: finishLength,
             memo: memo,
             item: targetItem

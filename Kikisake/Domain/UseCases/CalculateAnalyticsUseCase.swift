@@ -31,16 +31,18 @@ public struct CalculateAnalyticsUseCase {
         return ratio
     }
 
-    /// レーダーチャート等で使用する味わいパラメータの平均値を計算する
+    /// 平均味わいプロファイルの平均値を計算する
     /// - Parameter logs: 対象のテイスティングログ
     /// - Returns: 各パラメータの平均値タプル
-    public func calculateAverageTasteProfile(from logs: [TastingLog]) -> (sweetness: Double, acidity: Double, bitternessOrTannin: Double, body: Double, finishLength: Double) {
-        guard !logs.isEmpty else { return (0, 0, 0, 0, 0) }
+    public func calculateAverageTasteProfile(from logs: [TastingLog]) -> (sweetness: Double, saltiness: Double, acidity: Double, bitterness: Double, umami: Double, body: Double, finishLength: Double) {
+        guard !logs.isEmpty else { return (0, 0, 0, 0, 0, 0, 0) }
         
-        let total = logs.reduce(into: (sweetness: 0.0, acidity: 0.0, bitternessOrTannin: 0.0, body: 0.0, finishLength: 0.0)) { acc, log in
+        let total = logs.reduce(into: (sweetness: 0.0, saltiness: 0.0, acidity: 0.0, bitterness: 0.0, umami: 0.0, body: 0.0, finishLength: 0.0)) { acc, log in
             acc.sweetness += log.sweetness
+            acc.saltiness += log.saltiness
             acc.acidity += log.acidity
-            acc.bitternessOrTannin += log.bitternessOrTannin
+            acc.bitterness += log.bitterness
+            acc.umami += log.umami
             acc.body += log.body
             acc.finishLength += log.finishLength
         }
@@ -48,8 +50,10 @@ public struct CalculateAnalyticsUseCase {
         let count = Double(logs.count)
         return (
             sweetness: total.sweetness / count,
+            saltiness: total.saltiness / count,
             acidity: total.acidity / count,
-            bitternessOrTannin: total.bitternessOrTannin / count,
+            bitterness: total.bitterness / count,
+            umami: total.umami / count,
             body: total.body / count,
             finishLength: total.finishLength / count
         )

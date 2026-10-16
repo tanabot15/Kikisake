@@ -21,7 +21,7 @@ public final class AnalyticsViewModel {
     }
 
     /// 平均テイストプロファイルを取得する
-    public func averageTasteProfile(from logs: [TastingLog]) -> (sweetness: Double, acidity: Double, bitternessOrTannin: Double, body: Double, finishLength: Double) {
+    public func averageTasteProfile(from logs: [TastingLog]) -> (sweetness: Double, saltiness: Double, acidity: Double, bitterness: Double, umami: Double, body: Double, finishLength: Double) {
         return calculateUseCase.calculateAverageTasteProfile(from: logs)
     }
 }

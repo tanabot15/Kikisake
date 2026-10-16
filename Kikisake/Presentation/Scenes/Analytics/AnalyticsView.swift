@@ -74,8 +74,10 @@ public struct AnalyticsView: View {
 
                         VStack(spacing: 8) {
                             tasteBar(title: "甘味", value: profile.sweetness)
+                            tasteBar(title: "塩味", value: profile.saltiness)
                             tasteBar(title: "酸味", value: profile.acidity)
-                            tasteBar(title: "タンニン/苦味", value: profile.bitternessOrTannin)
+                            tasteBar(title: "苦味", value: profile.bitterness)
+                            tasteBar(title: "旨味", value: profile.umami)
                             tasteBar(title: "ボディ", value: profile.body)
                             tasteBar(title: "余韻", value: profile.finishLength)
                         }
@@ -125,9 +127,13 @@ public struct AnalyticsView: View {
         appearanceNotes: "ガーネット",
         aromaTags: ["スミレ", "樽香"],
         sweetness: 2.0,
+        saltiness: 0.0,
         acidity: 4.2,
-        bitternessOrTannin: 4.5,
+        bitterness: 2.0,
+        umami: 2.5,
+        tannin: 4.5,
         body: 4.5,
+        balanceTags: ["豊潤な"],
         finishLength: 4.8,
         item: wineItem
     )
@@ -144,9 +150,13 @@ public struct AnalyticsView: View {
         appearanceNotes: "無色透明",
         aromaTags: ["吟醸香", "青りんご"],
         sweetness: 3.0,
+        saltiness: 0.0,
         acidity: 2.5,
-        bitternessOrTannin: 1.5,
+        bitterness: 1.5,
+        umami: 3.5,
+        tannin: nil,
         body: 3.0,
+        balanceTags: ["まろやかな"],
         finishLength: 4.0,
         item: sakeItem
     )
@@ -163,9 +173,13 @@ public struct AnalyticsView: View {
         appearanceNotes: "アンバー",
         aromaTags: ["シトラス", "ホップ"],
         sweetness: 2.2,
+        saltiness: 0.0,
         acidity: 3.0,
-        bitternessOrTannin: 4.0,
+        bitterness: 4.0,
+        umami: 2.5,
+        tannin: nil,
         body: 3.5,
+        balanceTags: ["ドライな"],
         finishLength: 3.2,
         item: beerItem
     )

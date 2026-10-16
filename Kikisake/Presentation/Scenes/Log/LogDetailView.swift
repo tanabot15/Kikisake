@@ -38,7 +38,7 @@ public struct LogDetailView: View {
                     Text("総合スコア")
                     Spacer()
                     HStack(spacing: 2) {
-                        ForEach(0..<5) { i in
+                        ForEach(0..<5, id: \.self) { i in
                             Image(systemName: Double(i) < log.rating ? "star.fill" : "star")
                                 .foregroundStyle(.yellow)
                         }
@@ -77,9 +77,38 @@ public struct LogDetailView: View {
 
             Section("味わい構造") {
                 LabeledContent("甘味", value: String(format: "%.1f", log.sweetness))
+                LabeledContent("塩味", value: String(format: "%.1f", log.saltiness))
                 LabeledContent("酸味", value: String(format: "%.1f", log.acidity))
-                LabeledContent("タンニン/苦味", value: String(format: "%.1f", log.bitternessOrTannin))
+                LabeledContent("苦味", value: String(format: "%.1f", log.bitterness))
+                LabeledContent("旨味", value: String(format: "%.1f", log.umami))
+                
+                if let tannin = log.tannin {
+                    LabeledContent("タンニン (渋味)", value: String(format: "%.1f", tannin))
+                }
+                
                 LabeledContent("ボディ", value: String(format: "%.1f", log.body))
+                
+                if !log.balanceTags.isEmpty {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("バランス表現")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(log.balanceTags, id: \.self) { tag in
+                                    Text(tag)
+                                        .font(.caption)
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 4)
+                                        .background(Color.secondary.opacity(0.15))
+                                        .foregroundStyle(.primary)
+                                        .cornerRadius(6)
+                                }
+                            }
+                        }
+                    }
+                }
+                
                 LabeledContent("余韻の長さ", value: String(format: "%.1f", log.finishLength))
             }
 
@@ -113,9 +142,13 @@ public struct LogDetailView: View {
         appearanceNotes: "深みのあるルビーレッド",
         aromaTags: ["カシス", "ヴァニラ", "杉", "トースト"],
         sweetness: 2.0,
+        saltiness: 0.0,
         acidity: 4.0,
-        bitternessOrTannin: 4.5,
+        bitterness: 2.0,
+        umami: 2.5,
+        tannin: 4.5,
         body: 4.5,
+        balanceTags: ["豊潤な", "厚みのある"],
         finishLength: 4.8,
         memo: "圧倒的な気品と複雑味。ローストビーフとの相性が抜群でした。",
         item: sampleItem

@@ -17,16 +17,19 @@ public final class TastingLog {
 
     // --- 構造化テイスティングデータ ---
     public var appearanceNotes: String       // 外観（清澄度、色調、輝き等）
+    public var aromaTags: [String]           // 香りタグの配列
 
-    // 香りタグの配列
-    public var aromaTags: [String]           // 例: ["カシス", "ヴァニラ", "杉"] / ["吟醸香", "青りんご"]
-
-    // 味わい構造パラメータ（0.0 〜 5.0 のスライダー評価）
-    public var sweetness: Double             // 甘味
-    public var acidity: Double               // 酸味
-    public var bitternessOrTannin: Double    // タンニン（ワイン）/ 苦味（ビール・日本酒）
-    public var body: Double                  // フルボディ/重み
-    public var finishLength: Double          // 余韻の長さ
+    // --- 味わい構造パラメータ（基本五味 + タンニン + ボディ + 余韻） ---
+    public var sweetness: Double             // 甘味 (0.0〜5.0)
+    public var saltiness: Double             // 塩味 (0.0〜5.0)
+    public var acidity: Double               // 酸味 (0.0〜5.0)
+    public var bitterness: Double            // 苦味 (0.0〜5.0)
+    public var umami: Double                 // 旨味 (0.0〜5.0)
+    
+    public var tannin: Double?               // タンニン / 渋味（赤・ロゼ・オレンジワイン用）
+    public var body: Double                  // ボディ / 重み (0.0〜5.0)
+    public var balanceTags: [String]         // バランス評価表現（複数選択）
+    public var finishLength: Double          // 余韻の長さ (0.0〜5.0)
 
     // 専門パラメータ（オプショナル）
     public var alcoholByVolume: Double?      // アルコール度数
@@ -44,9 +47,13 @@ public final class TastingLog {
         appearanceNotes: String = "",
         aromaTags: [String] = [],
         sweetness: Double = 2.5,
+        saltiness: Double = 0.0,
         acidity: Double = 2.5,
-        bitternessOrTannin: Double = 2.5,
+        bitterness: Double = 2.5,
+        umami: Double = 2.5,
+        tannin: Double? = nil,
         body: Double = 2.5,
+        balanceTags: [String] = [],
         finishLength: Double = 2.5,
         alcoholByVolume: Double? = nil,
         specificDataJSON: String? = nil,
@@ -59,9 +66,13 @@ public final class TastingLog {
         self.appearanceNotes = appearanceNotes
         self.aromaTags = aromaTags
         self.sweetness = sweetness
+        self.saltiness = saltiness
         self.acidity = acidity
-        self.bitternessOrTannin = bitternessOrTannin
+        self.bitterness = bitterness
+        self.umami = umami
+        self.tannin = tannin
         self.body = body
+        self.balanceTags = balanceTags
         self.finishLength = finishLength
         self.alcoholByVolume = alcoholByVolume
         self.specificDataJSON = specificDataJSON
