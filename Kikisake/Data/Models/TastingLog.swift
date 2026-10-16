@@ -17,6 +17,7 @@ public final class TastingLog {
 
     // --- 構造化テイスティングデータ ---
     public var appearanceNotes: String       // 外観（清澄度、色調、輝き等）
+    public var appearanceColorHex: String    // 色のHEXコード（例: "#991A33"）
     public var aromaTags: [String]           // 香りタグの配列
 
     // --- 味わい構造パラメータ（基本五味 + タンニン + ボディ + 余韻） ---
@@ -45,6 +46,7 @@ public final class TastingLog {
         date: Date = Date(),
         rating: Double = 4.0,
         appearanceNotes: String = "",
+        appearanceColorHex: String = "#991A33",
         aromaTags: [String] = [],
         sweetness: Double = 2.5,
         saltiness: Double = 0.0,
@@ -64,6 +66,7 @@ public final class TastingLog {
         self.date = date
         self.rating = rating
         self.appearanceNotes = appearanceNotes
+        self.appearanceColorHex = appearanceColorHex
         self.aromaTags = aromaTags
         self.sweetness = sweetness
         self.saltiness = saltiness

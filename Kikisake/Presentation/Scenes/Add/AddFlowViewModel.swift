@@ -38,13 +38,14 @@ public final class AddFlowViewModel {
 
     // Step 2: 色・外観
     public var appearanceNotes: String = "ルビーレッド"
+    public var appearanceColorHex: String = "#991A33"
 
     // Step 3: 香り
     public var selectedAromaTags: [String] = []
 
     // Step 4: 味わい
     public var sweetness: Double = 2.5  // 甘味
-    public var saltiness: Double = 0.0  // 塩味
+    public var saltiness: Double = 2.5  // 塩味
     public var acidity: Double = 2.5    // 酸味
     public var bitterness: Double = 2.5 // 苦味
     public var umami: Double = 2.5      // 旨味
@@ -94,6 +95,7 @@ public final class AddFlowViewModel {
         self.ibu = ""
 
         self.appearanceNotes = "ルビーレッド"
+        self.appearanceColorHex = "#991A33"
         self.selectedAromaTags = []
         self.sweetness = 2.5
         self.saltiness = 0.0
@@ -202,6 +204,7 @@ public final class AddFlowViewModel {
             date: tastingDate,
             rating: rating,
             appearanceNotes: appearanceNotes,
+            appearanceColorHex: appearanceColorHex,
             aromaTags: selectedAromaTags,
             sweetness: sweetness,
             saltiness: saltiness,
