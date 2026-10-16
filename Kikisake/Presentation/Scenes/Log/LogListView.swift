@@ -65,7 +65,8 @@ public struct LogListView: View {
                                             vintage: item.vintage,
                                             stockQuantity: nil,
                                             rating: log.rating,
-                                            imageData: item.imageDatas?.first
+                                            imageData: item.imageDatas?.first,
+                                            appearanceColorHex: log.appearanceColorHex // ✨ 追加
                                         )
                                         .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                                         .listRowSeparator(.hidden)
@@ -98,7 +99,7 @@ public struct LogListView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
     
-    // サンプルデータ 1: ワイン
+    // サンプルデータ 1: ワイン（ルビーレッド）
     let wineItem = BeverageItem(
         name: "Château Margaux 2015",
         producer: "Château Margaux",
@@ -110,7 +111,8 @@ public struct LogListView: View {
     let wineLog = TastingLog(
         date: Date(),
         rating: 4.8,
-        appearanceNotes: "深みのあるルビーレッド",
+        appearanceNotes: "ルビーレッド",
+        appearanceColorHex: "#991A33", // ✨ ワインの赤色
         aromaTags: ["カシス", "ヴァニラ", "杉"],
         sweetness: 2.0,
         saltiness: 0.0,
@@ -125,7 +127,7 @@ public struct LogListView: View {
         item: wineItem
     )
     
-    // サンプルデータ 2: 日本酒
+    // サンプルデータ 2: 日本酒（淡金色）
     let sakeItem = BeverageItem(
         name: "久保田 萬壽",
         producer: "朝日酒造",
@@ -137,7 +139,8 @@ public struct LogListView: View {
     let sakeLog = TastingLog(
         date: Date().addingTimeInterval(-86400 * 2),
         rating: 4.5,
-        appearanceNotes: "無色透明で美しい輝き",
+        appearanceNotes: "淡金色",
+        appearanceColorHex: "#F3E6B3", // ✨ 日本酒の黄金・淡黄色
         aromaTags: ["吟醸香", "青りんご", "バナナ"],
         sweetness: 3.0,
         saltiness: 0.0,
@@ -152,7 +155,7 @@ public struct LogListView: View {
         item: sakeItem
     )
 
-    // サンプルデータ 3: ビール
+    // サンプルデータ 3: ビール（ペール・ストロー）
     let beerItem = BeverageItem(
         name: "Inedit Damm",
         producer: "Damm",
@@ -164,7 +167,8 @@ public struct LogListView: View {
     let beerLog = TastingLog(
         date: Date().addingTimeInterval(-86400 * 5),
         rating: 4.2,
-        appearanceNotes: "ペールゴールド・白濁",
+        appearanceNotes: "ペール・ストロー",
+        appearanceColorHex: "#FAF080", // ✨ ビールの麦わら・ストロー色
         aromaTags: ["シトラス", "ホップ", "スパイス"],
         sweetness: 2.5,
         saltiness: 0.0,

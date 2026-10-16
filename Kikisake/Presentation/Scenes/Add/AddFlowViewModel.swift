@@ -23,6 +23,7 @@ public final class AddFlowViewModel {
     public var abvString: String = ""
     public var priceString: String = ""
     public var storageLocation: String = AppConstants.Storage.defaultLocation
+    public var selectedImageData: Data? = nil
 
     // - ワイン用
     public var wineType: String = "赤"
@@ -162,6 +163,7 @@ public final class AddFlowViewModel {
             price: price,
             stockQuantity: 1,
             storageLocation: storageLocation,
+            imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
             specificMetadataJSON: metadataJSON
         )
 
@@ -195,6 +197,7 @@ public final class AddFlowViewModel {
                 price: price,
                 stockQuantity: 0,
                 storageLocation: storageLocation,
+                imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
                 specificMetadataJSON: metadataJSON
             )
             modelContext.insert(targetItem)

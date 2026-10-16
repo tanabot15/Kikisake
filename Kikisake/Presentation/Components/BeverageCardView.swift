@@ -17,6 +17,7 @@ public struct BeverageCardView: View {
     let stockQuantity: Int?
     let rating: Double?
     let imageData: Data?
+    let appearanceColorHex: String? // 外観のHEXカラー
 
     public init(
         name: String,
@@ -26,7 +27,8 @@ public struct BeverageCardView: View {
         vintage: String?,
         stockQuantity: Int?,
         rating: Double?,
-        imageData: Data? = nil
+        imageData: Data? = nil,
+        appearanceColorHex: String? = nil
     ) {
         self.name = name
         self.producer = producer
@@ -36,11 +38,26 @@ public struct BeverageCardView: View {
         self.stockQuantity = stockQuantity
         self.rating = rating
         self.imageData = imageData
+        self.appearanceColorHex = appearanceColorHex
+    }
+
+    /// HEX文字列からSwiftUIのColorを生成するヘルパー
+    private var appearanceColor: Color? {
+        guard let hex = appearanceColorHex, !hex.isEmpty else { return nil }
+        let scanner = Scanner(string: hex.replacingOccurrences(of: "#", with: ""))
+        var rgbValue: UInt64 = 0
+        if scanner.scanHexInt64(&rgbValue) {
+            let red = Double((rgbValue & 0xFF0000) >> 16) / 255.0
+            let green = Double((rgbValue & 0x00FF00) >> 8) / 255.0
+            let blue = Double(rgbValue & 0x0000FF) / 255.0
+            return Color(red: red, green: green, blue: blue)
+        }
+        return nil
     }
 
     public var body: some View {
         HStack(spacing: 12) {
-            // サムネイル画像（存在する場合のみ表示）
+            // 将来的なラベル写真用プレースホルダー（ワイングラス固定）
             if let imageData, let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -48,7 +65,6 @@ public struct BeverageCardView: View {
                     .frame(width: 60, height: 60)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             } else {
-                // プレースホルダー（画像がない場合）
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color(.systemGray5))
                     .frame(width: 60, height: 60)
@@ -75,6 +91,18 @@ public struct BeverageCardView: View {
                                 Text(vintage)
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
+                            }
+                            
+                            // 外観色を示すカラーサークル（◯）
+                            if let color = appearanceColor {
+                                Circle()
+                                    .fill(color)
+                                    .frame(width: 12, height: 12)
+                                    .overlay(
+                                        Circle()
+                                            .stroke(Color.primary.opacity(0.15), lineWidth: 1)
+                                    )
+                                    .accessibilityLabel("外観の色")
                             }
                         }
 
@@ -132,6 +160,7 @@ public struct BeverageCardView: View {
 
 #Preview {
     VStack(spacing: 12) {
+        // パターン1: ワイン（ルビーレッドのカラーサークル表示）
         BeverageCardView(
             name: "Château Margaux 2015",
             producer: "Château Margaux",
@@ -140,7 +169,34 @@ public struct BeverageCardView: View {
             vintage: "2015",
             stockQuantity: nil,
             rating: 4.8,
-            imageData: nil
+            imageData: nil,
+            appearanceColorHex: "#991A33" // ルビーレッド
+        )
+
+        // パターン2: 日本酒（淡金色のカラーサークル表示）
+        BeverageCardView(
+            name: "久保田 萬壽",
+            producer: "朝日酒造",
+            category: .sake,
+            region: "新潟県",
+            vintage: "2026",
+            stockQuantity: nil,
+            rating: 4.5,
+            imageData: nil,
+            appearanceColorHex: "#F3E6B3" // 淡金色
+        )
+
+        // パターン3: ビール（ゴールデンのカラーサークル表示）
+        BeverageCardView(
+            name: "Inedit Damm",
+            producer: "Damm",
+            category: .beer,
+            region: "バルセロナ, スペイン",
+            vintage: "2026",
+            stockQuantity: nil,
+            rating: 4.2,
+            imageData: nil,
+            appearanceColorHex: "#EBC733" // ゴールデン
         )
     }
     .padding()

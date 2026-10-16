@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 public enum GeneralInfoField {
     case name
@@ -22,6 +23,7 @@ public struct GeneralInfoStepView: View {
     @Bindable var viewModel: AddFlowViewModel
     @FocusState.Binding var focusedField: GeneralInfoField?
     var showAlert: (String) -> Void
+    @State private var selectedPhotoItem: PhotosPickerItem? = nil
 
     public init(
         viewModel: AddFlowViewModel,
@@ -35,6 +37,65 @@ public struct GeneralInfoStepView: View {
 
     public var body: some View {
         Form {
+            Section("ラベル写真") {
+                HStack(spacing: 16) {
+                    // 写真のプレビュー
+                    if let imageData = viewModel.selectedImageData,
+                       let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 80, height: 80)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(.systemGray4), lineWidth: 1))
+                    } else {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color(.systemGray6))
+                            .frame(width: 80, height: 80)
+                            .overlay {
+                                Image(systemName: "camera.fill")
+                                    .font(.title2)
+                                    .foregroundStyle(.secondary)
+                            }
+                    }
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("ボトルのラベル写真を登録すると、リストで簡単に判別できます。")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+
+                        PhotosPicker(
+                            selection: $selectedPhotoItem,
+                            matching: .images,
+                            preferredItemEncoding: .automatic
+                        ) {
+                            Label(viewModel.selectedImageData == nil ? "写真を追加する" : "写真を変更する", systemImage: "photo.badge.plus")
+                                .font(.subheadline)
+                                .foregroundStyle(.white)
+                                .fontWeight(.semibold)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.accentColor)
+                        
+                        if viewModel.selectedImageData != nil {
+                            Button("写真を削除", role: .destructive) {
+                                viewModel.selectedImageData = nil
+                                selectedPhotoItem = nil
+                            }
+                            .font(.caption)
+                        }
+                    }
+                }
+                .padding(.vertical, 4)
+            }
+            .onChange(of: selectedPhotoItem) { oldValue, newValue in
+                Task {
+                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                        viewModel.selectedImageData = data
+                    }
+                }
+            }
+            
             Section("酒種") {
                 Picker("酒種", selection: $viewModel.selectedCategory) {
                     ForEach(BeverageCategory.allCases, id: \.self) { category in

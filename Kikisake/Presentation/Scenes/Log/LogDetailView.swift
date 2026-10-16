@@ -15,6 +15,19 @@ public struct LogDetailView: View {
     public init(log: TastingLog) {
         self.log = log
     }
+    
+    /// HEX文字列からSwiftUIのColorを生成するヘルパー
+    private func colorFromHex(_ hex: String) -> Color {
+        let scanner = Scanner(string: hex.replacingOccurrences(of: "#", with: ""))
+        var rgbValue: UInt64 = 0
+        if scanner.scanHexInt64(&rgbValue) {
+            let red = Double((rgbValue & 0xFF0000) >> 16) / 255.0
+            let green = Double((rgbValue & 0x00FF00) >> 8) / 255.0
+            let blue = Double(rgbValue & 0x0000FF) / 255.0
+            return Color(red: red, green: green, blue: blue)
+        }
+        return .gray
+    }
 
     public var body: some View {
         Form {
@@ -51,7 +64,18 @@ public struct LogDetailView: View {
 
             Section("外観・香り") {
                 if !log.appearanceNotes.isEmpty {
-                    LabeledContent("外観", value: log.appearanceNotes)
+                    HStack {
+                        Text("外観")
+                        Spacer()
+                        HStack(spacing: 8) {
+                            Circle()
+                                .fill(colorFromHex(log.appearanceColorHex))
+                                .frame(width: 16, height: 16)
+                                .overlay(Circle().stroke(Color.primary.opacity(0.2), lineWidth: 1))
+                            Text(log.appearanceNotes)
+                                .fontWeight(.medium)
+                        }
+                    }
                 }
                 if !log.aromaTags.isEmpty {
                     VStack(alignment: .leading, spacing: 6) {

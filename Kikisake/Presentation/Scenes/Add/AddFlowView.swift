@@ -15,14 +15,14 @@ public struct AddFlowView: View {
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     
-    // ✨ フォーカス状態の管理
+    // フォーカス状態の管理
     @FocusState private var focusedField: GeneralInfoField?
 
     /// ステップ1で銘柄名が未入力かどうかを判定するプロパティ
     private var isNameEmpty: Bool {
         viewModel.currentStep == 1 && viewModel.name.trimmingCharacters(in: .whitespaces).isEmpty
     }
-
+    
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
