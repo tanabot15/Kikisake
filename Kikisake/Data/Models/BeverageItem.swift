@@ -15,17 +15,20 @@ public final class BeverageItem {
     public var name: String                  // 銘柄名
     public var producer: String              // 生産者 / 蔵元 / ブルワリー
     public var categoryRawValue: String      // 酒種（BeverageCategory）
-    public var region: String                // 生産地（例: ボルドー, 新潟県, ベルギー）
+    public var region: String                // 生産地
     public var vintage: String?              // ヴィンテージ / 製造年月
     public var price: Int?                   // 価格
 
     // インベントリ（在庫）管理
-    public var stockQuantity: Int            // 在庫数（0の場合は消費済み）
-    public var storageLocation: String       // 保管場所（ワインセラー / 冷蔵庫 等）
-    public var purchaseDate: Date?           // 購入日
+    public var stockQuantity: Int
+    public var storageLocation: String
+    public var purchaseDate: Date?
 
     // 写真データ
     @Attribute(.externalStorage) public var imageDatas: [Data]?
+
+    // 酒種ごとの固有メタデータをJSON形式で保持
+    public var specificMetadataJSON: String?
 
     // リレーションシップ：1つのアイテムに対して複数のテイスティングログ
     @Relationship(deleteRule: .cascade, inverse: \TastingLog.item)
@@ -33,7 +36,6 @@ public final class BeverageItem {
 
     public var createdAt: Date
 
-    /// 保存されている文字列から酒種列挙型を取得・設定するコンピューテッドプロパティ
     public var category: BeverageCategory {
         get { BeverageCategory(rawValue: categoryRawValue) ?? .wine }
         set { categoryRawValue = newValue.rawValue }
@@ -51,6 +53,7 @@ public final class BeverageItem {
         storageLocation: String = "ワインセラー",
         purchaseDate: Date? = nil,
         imageDatas: [Data]? = nil,
+        specificMetadataJSON: String? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -64,6 +67,7 @@ public final class BeverageItem {
         self.storageLocation = storageLocation
         self.purchaseDate = purchaseDate
         self.imageDatas = imageDatas
+        self.specificMetadataJSON = specificMetadataJSON
         self.tastingLogs = []
         self.createdAt = createdAt
     }

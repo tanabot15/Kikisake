@@ -14,6 +14,14 @@ public struct AddFlowView: View {
     @State private var viewModel = AddFlowViewModel()
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    
+    // ✨ フォーカス状態の管理
+    @FocusState private var focusedField: GeneralInfoField?
+
+    /// ステップ1で銘柄名が未入力かどうかを判定するプロパティ
+    private var isNameEmpty: Bool {
+        viewModel.currentStep == 1 && viewModel.name.trimmingCharacters(in: .whitespaces).isEmpty
+    }
 
     public var body: some View {
         NavigationStack {
@@ -32,7 +40,10 @@ public struct AddFlowView: View {
                 Group {
                     switch viewModel.currentStep {
                     case 1:
-                        GeneralInfoStepView(viewModel: viewModel) { message in
+                        GeneralInfoStepView(
+                            viewModel: viewModel,
+                            focusedField: $focusedField
+                        ) { message in
                             alertMessage = message
                             showAlert = true
                         }
@@ -45,7 +56,10 @@ public struct AddFlowView: View {
                     case 5:
                         FinalizeStepView(viewModel: viewModel)
                     default:
-                        GeneralInfoStepView(viewModel: viewModel) { message in
+                        GeneralInfoStepView(
+                            viewModel: viewModel,
+                            focusedField: $focusedField
+                        ) { message in
                             alertMessage = message
                             showAlert = true
                         }
@@ -55,9 +69,27 @@ public struct AddFlowView: View {
             .navigationTitle("追加 (ステップ \(viewModel.currentStep)/5)")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // 左上：戻るボタン
+                // 左上：ステップ1のときは「在庫へ保存」、ステップ2以降のときは「戻る」
                 ToolbarItem(placement: .topBarLeading) {
-                    if viewModel.currentStep > 1 {
+                    if viewModel.currentStep == 1 {
+                        Button {
+                            if isNameEmpty {
+                                alertMessage = "銘柄名は必須項目です。"
+                                showAlert = true
+                                return
+                            }
+                            do {
+                                try viewModel.saveAsInventoryOnly(modelContext: modelContext)
+                                AppState.shared.selectedTab = 3 // 在庫タブへ移動
+                            } catch {
+                                alertMessage = "在庫の保存に失敗しました: \(error.localizedDescription)"
+                                showAlert = true
+                            }
+                        } label: {
+                            Text("在庫へ保存")
+                                .foregroundColor(isNameEmpty ? .gray : .accentColor)
+                        }
+                    } else {
                         Button {
                             viewModel.currentStep -= 1
                         } label: {
@@ -73,14 +105,15 @@ public struct AddFlowView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     if viewModel.currentStep < 5 {
                         Button("次へ") {
-                            if viewModel.currentStep == 1 && viewModel.name.trimmingCharacters(in: .whitespaces).isEmpty {
-                                alertMessage = "銘柄名を入力してください。"
+                            if isNameEmpty {
+                                alertMessage = "銘柄名は必須項目です。"
                                 showAlert = true
                                 return
                             }
                             viewModel.currentStep += 1
                         }
                         .fontWeight(.semibold)
+                        .foregroundColor(isNameEmpty ? .gray : .accentColor)
                     } else {
                         Button("保存") {
                             do {
@@ -92,12 +125,16 @@ public struct AddFlowView: View {
                             }
                         }
                         .fontWeight(.bold)
-                        .tint(.green)
                     }
                 }
             }
             .alert("確認", isPresented: $showAlert) {
-                Button("OK", role: .cancel) {}
+                Button("OK", role: .cancel) {
+                    // ✨ アラートの「OK」を押した時に銘柄名テキストフィールドにフォーカスをあてる
+                    if isNameEmpty {
+                        focusedField = .name
+                    }
+                }
             } message: {
                 Text(alertMessage)
             }

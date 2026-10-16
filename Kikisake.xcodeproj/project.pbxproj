@@ -48,6 +48,7 @@
 		D90442503081A43B00EF4807 /* AppearanceStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904424F3081A43B00EF4807 /* AppearanceStepView.swift */; };
 		D90442523081A45200EF4807 /* AromaStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442513081A45200EF4807 /* AromaStepView.swift */; };
 		D90442543081A46800EF4807 /* TasteStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442533081A46800EF4807 /* TasteStepView.swift */; };
+		D90442563081E26F00EF4807 /* BeverageSpecificMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +94,7 @@
 		D904424F3081A43B00EF4807 /* AppearanceStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceStepView.swift; sourceTree = "<group>"; };
 		D90442513081A45200EF4807 /* AromaStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AromaStepView.swift; sourceTree = "<group>"; };
 		D90442533081A46800EF4807 /* TasteStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasteStepView.swift; sourceTree = "<group>"; };
+		D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeverageSpecificMetadata.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +236,7 @@
 			children = (
 				D9044214307E84F600EF4807 /* BeverageItem.swift */,
 				D9044216307E850500EF4807 /* TastingLog.swift */,
+				D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				D904420D307E84CD00EF4807 /* Formatters.swift in Sources */,
 				D904424C307F3C8D00EF4807 /* PreviewSampleLoader.swift in Sources */,
 				D9044215307E84F600EF4807 /* BeverageItem.swift in Sources */,
+				D90442563081E26F00EF4807 /* BeverageSpecificMetadata.swift in Sources */,
 				D904420F307E84D800EF4807 /* Logger.swift in Sources */,
 				D9044237307E85DB00EF4807 /* AddFlowView.swift in Sources */,
 				D9044221307E854100EF4807 /* ConsumeBeverageUseCase.swift in Sources */,

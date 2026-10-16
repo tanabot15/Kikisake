@@ -23,6 +23,19 @@ public final class AddFlowViewModel {
     public var priceString: String = ""
     public var storageLocation: String = AppConstants.Storage.defaultLocation
 
+    // ✨ 酒種ごとの固有入力パラメータ
+    // - ワイン用
+    public var wineType: String = "赤"
+    public var grapeVarieties: String = ""
+    // - 日本酒用
+    public var sakeSpecificName: String = "純米大吟醸"
+    public var riceVariety: String = ""
+    public var polishingRate: String = ""
+    public var sakeMeterValue: String = ""
+    // - ビール用
+    public var beerStyle: String = ""
+    public var ibu: String = ""
+
     // Step 2: 色・外観
     public var appearanceNotes: String = "ルビーレッド"
 
@@ -44,11 +57,10 @@ public final class AddFlowViewModel {
     private let consumeUseCase = ConsumeBeverageUseCase()
 
     public init() {
-        // ✨ 在庫セラーから「このボトルを開ける」で遷移してきた場合
         if let item = AppState.shared.openingItem {
             configureWithItem(item)
-            self.currentStep = 2 // 一般情報ステップ(1)をスキップし、いきなり色・外観(Step 2)から開始
-            AppState.shared.openingItem = nil // 読み込み後にクリア
+            self.currentStep = 2
+            AppState.shared.openingItem = nil
         }
     }
 
@@ -63,6 +75,17 @@ public final class AddFlowViewModel {
         self.vintage = ""
         self.priceString = ""
         self.storageLocation = AppConstants.Storage.defaultLocation
+        
+        // 固有パラメータのリセット
+        self.wineType = "赤"
+        self.grapeVarieties = ""
+        self.sakeSpecificName = "純米大吟醸"
+        self.riceVariety = ""
+        self.polishingRate = ""
+        self.sakeMeterValue = ""
+        self.beerStyle = ""
+        self.ibu = ""
+
         self.appearanceNotes = "ルビーレッド"
         self.selectedAromaTags = []
         self.sweetness = 2.5
@@ -87,11 +110,30 @@ public final class AddFlowViewModel {
             self.priceString = "\(price)"
         }
         self.storageLocation = item.storageLocation
+        
+        // 既存のJSONメタデータがあれば復元（必要に応じてデコード処理を記述可能）
     }
 
-    /// テイスティングを行わず、セラー・冷蔵庫の「在庫（stockQuantity: 1）」として新規登録する
+    /// 選択中の酒種に応じたメタデータのJSON文字列を生成する
+    private func buildMetadataJSON() -> String? {
+        let encoder = JSONEncoder()
+        switch selectedCategory {
+        case .wine:
+            let meta = WineSpecificMetadata(wineType: wineType, grapeVarieties: grapeVarieties)
+            return try? String(data: encoder.encode(meta), encoding: .utf8)
+        case .sake:
+            let meta = SakeSpecificMetadata(specificName: sakeSpecificName, riceVariety: riceVariety, polishingRate: polishingRate, sakeMeterValue: sakeMeterValue)
+            return try? String(data: encoder.encode(meta), encoding: .utf8)
+        case .beer:
+            let meta = BeerSpecificMetadata(beerStyle: beerStyle, ibu: ibu)
+            return try? String(data: encoder.encode(meta), encoding: .utf8)
+        }
+    }
+
+    /// テイスティングを行わず、セラー・冷蔵庫の在庫として新規登録する
     public func saveAsInventoryOnly(modelContext: ModelContext) throws {
         let price = Int(priceString)
+        let metadataJSON = buildMetadataJSON()
 
         let newItem = BeverageItem(
             name: name,
@@ -101,7 +143,8 @@ public final class AddFlowViewModel {
             vintage: vintage.isEmpty ? nil : vintage,
             price: price,
             stockQuantity: 1,
-            storageLocation: storageLocation
+            storageLocation: storageLocation,
+            specificMetadataJSON: metadataJSON
         )
 
         modelContext.insert(newItem)
@@ -113,11 +156,11 @@ public final class AddFlowViewModel {
     /// データを保存する（新規アイテム作成、または在庫からの消費 ＋ ログ作成）
     public func save(modelContext: ModelContext) throws {
         let price = Int(priceString)
+        let metadataJSON = buildMetadataJSON()
 
         let targetItem: BeverageItem
         if let existingItem = sourceItem {
             targetItem = existingItem
-            // `ConsumeBeverageUseCase` を用いて在庫数を1減らす処理
             try consumeUseCase.executeConsumption(for: existingItem)
         } else {
             targetItem = BeverageItem(
@@ -128,7 +171,8 @@ public final class AddFlowViewModel {
                 vintage: vintage.isEmpty ? nil : vintage,
                 price: price,
                 stockQuantity: 0,
-                storageLocation: storageLocation
+                storageLocation: storageLocation,
+                specificMetadataJSON: metadataJSON
             )
             modelContext.insert(targetItem)
         }
