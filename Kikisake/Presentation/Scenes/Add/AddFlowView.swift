@@ -23,6 +23,8 @@ public struct AddFlowView: View {
         viewModel.currentStep == 1 && viewModel.name.trimmingCharacters(in: .whitespaces).isEmpty
     }
     
+    public var selectedImageData: Data? = nil
+
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
