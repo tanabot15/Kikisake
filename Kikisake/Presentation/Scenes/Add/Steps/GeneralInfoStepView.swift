@@ -12,8 +12,9 @@ public enum GeneralInfoField {
     case producer
     case region
     case vintage
+    case abv
     case price
-    case extra // 固有項目用
+    case extra
 }
 
 /// [Step 1] 一般的な情報（酒種・基本情報・保管場所）入力ビュー
@@ -98,6 +99,10 @@ public struct GeneralInfoStepView: View {
                 
                 TextField("ヴィンテージ / 製造年月 (例: 2020)", text: $viewModel.vintage)
                     .focused($focusedField, equals: .vintage)
+                
+                TextField("アルコール度数 (例: 14.5 または 5)", text: $viewModel.abvString)
+                        .keyboardType(.decimalPad)
+                        .focused($focusedField, equals: .abv)
                 
                 TextField("価格 (円)", text: $viewModel.priceString)
                     .keyboardType(.numberPad)

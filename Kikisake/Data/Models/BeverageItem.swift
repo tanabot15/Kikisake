@@ -17,6 +17,7 @@ public final class BeverageItem {
     public var categoryRawValue: String      // 酒種（BeverageCategory）
     public var region: String                // 生産地
     public var vintage: String?              // ヴィンテージ / 製造年月
+    public var alcoholByVolume: Double?      // アルコール度数 (例: 14.5)
     public var price: Int?                   // 価格
 
     // インベントリ（在庫）管理
@@ -48,6 +49,7 @@ public final class BeverageItem {
         category: BeverageCategory,
         region: String = "",
         vintage: String? = nil,
+        alcoholByVolume: Double? = nil,
         price: Int? = nil,
         stockQuantity: Int = 1,
         storageLocation: String = "ワインセラー",
@@ -62,6 +64,7 @@ public final class BeverageItem {
         self.categoryRawValue = category.rawValue
         self.region = region
         self.vintage = vintage
+        self.alcoholByVolume = alcoholByVolume
         self.price = price
         self.stockQuantity = stockQuantity
         self.storageLocation = storageLocation

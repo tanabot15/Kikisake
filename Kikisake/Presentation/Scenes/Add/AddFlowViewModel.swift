@@ -20,6 +20,7 @@ public final class AddFlowViewModel {
     public var producer: String = ""
     public var region: String = ""
     public var vintage: String = ""
+    public var abvString: String = ""
     public var priceString: String = ""
     public var storageLocation: String = AppConstants.Storage.defaultLocation
 
@@ -73,6 +74,7 @@ public final class AddFlowViewModel {
         self.producer = ""
         self.region = ""
         self.vintage = ""
+        self.abvString = ""
         self.priceString = ""
         self.storageLocation = AppConstants.Storage.defaultLocation
         
@@ -106,6 +108,9 @@ public final class AddFlowViewModel {
         self.producer = item.producer
         self.region = item.region
         self.vintage = item.vintage ?? ""
+        if let abv = item.alcoholByVolume {
+            self.abvString = "\(abv)"
+        }
         if let price = item.price {
             self.priceString = "\(price)"
         }
@@ -132,6 +137,7 @@ public final class AddFlowViewModel {
 
     /// テイスティングを行わず、セラー・冷蔵庫の在庫として新規登録する
     public func saveAsInventoryOnly(modelContext: ModelContext) throws {
+        let abv = Double(abvString)
         let price = Int(priceString)
         let metadataJSON = buildMetadataJSON()
 
@@ -141,6 +147,7 @@ public final class AddFlowViewModel {
             category: selectedCategory,
             region: region,
             vintage: vintage.isEmpty ? nil : vintage,
+            alcoholByVolume: abv,
             price: price,
             stockQuantity: 1,
             storageLocation: storageLocation,
