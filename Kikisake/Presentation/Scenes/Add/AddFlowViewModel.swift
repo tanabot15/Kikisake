@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 /// 新規登録およびテイスティングフローを管理するViewModel
 @Observable
@@ -27,12 +28,15 @@ public final class AddFlowViewModel {
 
     // - ワイン用
     public var wineType: String = "赤"
-    public var grapeVarieties: String = ""
+    public var grapeVarieties: String = "" // （互換用）
+    public var blendComponents: [BlendComponent] = [BlendComponent(variety: "", percentage: nil)] // アッサンブラージュ品種リスト
+    public var appellation: String = "" // 追加: 原産地呼称
     // - 日本酒用
     public var sakeSpecificName: String = "純米大吟醸"
     public var riceVariety: String = ""
     public var polishingRate: String = ""
     public var sakeMeterValue: String = ""
+    
     // - ビール用
     public var beerStyle: String = ""
     public var ibu: String = ""
@@ -72,6 +76,16 @@ public final class AddFlowViewModel {
         }
     }
 
+    /// ワインのブレンド品種行を追加する
+    public func addBlendComponent() {
+        blendComponents.append(BlendComponent(variety: "", percentage: nil))
+    }
+
+    /// 指定したインデックスのブレンド品種行を削除する
+    public func removeBlendComponent(at offsets: IndexSet) {
+        blendComponents.remove(atOffsets: offsets)
+    }
+
     /// 入力されたフォームの情報をすべて初期状態にリセットする
     public func reset() {
         self.currentStep = 1
@@ -88,6 +102,8 @@ public final class AddFlowViewModel {
         // 固有パラメータのリセット
         self.wineType = "赤"
         self.grapeVarieties = ""
+        self.blendComponents = [BlendComponent(variety: "", percentage: nil)]
+        self.appellation = ""
         self.sakeSpecificName = "純米大吟醸"
         self.riceVariety = ""
         self.polishingRate = ""
@@ -128,7 +144,7 @@ public final class AddFlowViewModel {
         }
         self.storageLocation = item.storageLocation
         
-        // 既存のJSONメタデータがあれば復元（必要に応じてデコード処理を記述可能）
+        // 既存のJSONメタデータがあれば必要に応じてデコードして復元可能
     }
 
     /// 選択中の酒種に応じたメタデータのJSON文字列を生成する
@@ -136,11 +152,19 @@ public final class AddFlowViewModel {
         let encoder = JSONEncoder()
         switch selectedCategory {
         case .wine:
-            let meta = WineSpecificMetadata(wineType: wineType, grapeVarieties: grapeVarieties)
+            let mainVariety = blendComponents.first?.variety ?? ""
+            let meta = WineSpecificMetadata(
+                wineType: wineType,
+                grapeVarieties: mainVariety,
+                blendComponents: blendComponents.filter { !$0.variety.isEmpty },
+                appellation: appellation.isEmpty ? nil : appellation
+            )
             return try? String(data: encoder.encode(meta), encoding: .utf8)
+            
         case .sake:
             let meta = SakeSpecificMetadata(specificName: sakeSpecificName, riceVariety: riceVariety, polishingRate: polishingRate, sakeMeterValue: sakeMeterValue)
             return try? String(data: encoder.encode(meta), encoding: .utf8)
+            
         case .beer:
             let meta = BeerSpecificMetadata(beerStyle: beerStyle, ibu: ibu)
             return try? String(data: encoder.encode(meta), encoding: .utf8)

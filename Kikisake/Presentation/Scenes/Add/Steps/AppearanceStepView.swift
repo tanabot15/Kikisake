@@ -34,10 +34,14 @@ public struct AppearanceStepView: View {
     }
 
     private func buildCurrentWineJSON() -> String? {
-        let meta = WineSpecificMetadata(wineType: viewModel.wineType, grapeVarieties: viewModel.grapeVarieties)
-        guard let data = try? JSONEncoder().encode(meta) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
+            let meta = WineSpecificMetadata(
+                wineType: viewModel.wineType,
+                grapeVarieties: viewModel.grapeVarieties,
+                blendComponents: viewModel.blendComponents.filter { !$0.variety.isEmpty }
+            )
+            guard let data = try? JSONEncoder().encode(meta) else { return nil }
+            return String(data: data, encoding: .utf8)
+        }
 
     /// 各ColorOptionに適切なHEXコードを設定したカラーパレット定義
     private var colorOptions: [ColorOption] {

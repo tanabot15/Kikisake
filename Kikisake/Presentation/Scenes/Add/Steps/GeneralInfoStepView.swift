@@ -122,11 +122,36 @@ public struct GeneralInfoStepView: View {
                         Text("ロゼ").tag("ロゼ")
                         Text("オレンジ").tag("オレンジ")
                         Text("スパークリング").tag("スパークリング")
-
                     }
                     .padding(.vertical, 4)
                     
-                    TextField("主要品種 (例: カベルネ・ソーヴィニヨン)", text: $viewModel.grapeVarieties)
+                    Section("ブドウ品種") {
+                        ForEach($viewModel.blendComponents) { $component in
+                            HStack(spacing: 12) {
+                                TextField("品種 (例: カベルネ・ソーヴィニヨン)", text: $component.variety)
+                                    .focused($focusedField, equals: .extra)
+                                
+                                TextField("割合", value: $component.percentage, format: .number)
+                                    .keyboardType(.numberPad)
+                                    .frame(width: 60)
+                                    .multilineTextAlignment(.trailing)
+                                
+                                Text("%")
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .onDelete(perform: viewModel.removeBlendComponent)
+
+                        Button {
+                            viewModel.addBlendComponent()
+                        } label: {
+                            Label("品種を追加", systemImage: "plus.circle.fill")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                        }
+                    }
+                    
+                    TextField("原産地呼称 (例: AOC ボルドー / DOCG バローロ)", text: $viewModel.appellation)
                         .focused($focusedField, equals: .extra)
                     
                 case .sake:

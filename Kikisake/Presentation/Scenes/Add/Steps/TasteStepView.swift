@@ -27,7 +27,11 @@ public struct TasteStepView: View {
     }
 
     private func buildCurrentWineJSON() -> String? {
-        let meta = WineSpecificMetadata(wineType: viewModel.wineType, grapeVarieties: viewModel.grapeVarieties)
+        let meta = WineSpecificMetadata(
+            wineType: viewModel.wineType,
+            grapeVarieties: viewModel.grapeVarieties,
+            blendComponents: viewModel.blendComponents.filter { !$0.variety.isEmpty }
+        )
         guard let data = try? JSONEncoder().encode(meta) else { return nil }
         return String(data: data, encoding: .utf8)
     }
