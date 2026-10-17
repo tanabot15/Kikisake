@@ -25,7 +25,7 @@ public final class InventoryViewModel {
             .reduce(0) { $0 + $1.stockQuantity }
     }
 
-    /// 保管場所ごとの酒種別内訳文字列を生成する
+    /// 保管場所ごとの酒種別内訳文字列を生成する（互換用）
     public func categorySummary(for locationName: String, in items: [BeverageItem]) -> String {
         let locationItems = items.filter { $0.storageLocation == locationName && $0.stockQuantity > 0 }
         guard !locationItems.isEmpty else { return "在庫なし" }
@@ -41,6 +41,22 @@ public final class InventoryViewModel {
         }
 
         return summaryParts.joined(separator: " / ")
+    }
+
+    /// 保管場所ごとの「酒種ごとの内訳（名称と本数）」を縦並び用にタプルの配列として返す
+    public func categorySummaryList(for locationName: String, in items: [BeverageItem]) -> [(categoryName: String, count: Int)] {
+        let locationItems = items.filter { $0.storageLocation == locationName && $0.stockQuantity > 0 }
+        guard !locationItems.isEmpty else { return [] }
+
+        var counts: [BeverageCategory: Int] = [:]
+        for item in locationItems {
+            counts[item.category, default: 0] += item.stockQuantity
+        }
+
+        return BeverageCategory.allCases.compactMap { category in
+            guard let count = counts[category], count > 0 else { return nil }
+            return (categoryName: category.displayName, count: count)
+        }
     }
 
     /// 特定の保管場所におけるフィルタリング済みアイテム一覧
