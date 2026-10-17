@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import PhotosUI
 
 public enum GeneralInfoField {
@@ -196,10 +197,37 @@ public struct GeneralInfoStepView: View {
             }
 
             Section("保管場所") {
-                Picker("保管場所", selection: $viewModel.storageLocation) {
-                    ForEach(AppConstants.Storage.availableLocations, id: \.self) { location in
-                        Text(location).tag(location)
-                    }
+                StoragePickerView(viewModel: viewModel)
+            }
+        }
+    }
+}
+
+/// データベースから動的に保管場所を選ぶPickerビュー
+public struct StoragePickerView: View {
+    @Bindable var viewModel: AddFlowViewModel
+    @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
+
+    public init(viewModel: AddFlowViewModel) {
+        self.viewModel = viewModel
+    }
+
+    public var body: some View {
+        Picker("保管場所", selection: $viewModel.storageLocation) {
+            if locations.isEmpty {
+                Text("未設定 (自動作成)").tag("未設定")
+            } else {
+                ForEach(locations, id: \.name) { loc in
+                    Text(loc.name).tag(loc.name)
+                }
+            }
+        }
+        .onAppear {
+            if locations.isEmpty {
+                viewModel.storageLocation = "未設定"
+            } else if viewModel.storageLocation.isEmpty || !locations.contains(where: { $0.name == viewModel.storageLocation }) {
+                if let first = locations.first {
+                    viewModel.storageLocation = first.name
                 }
             }
         }
@@ -207,6 +235,13 @@ public struct GeneralInfoStepView: View {
 }
 
 #Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: StorageLocation.self, BeverageItem.self, TastingLog.self, configurations: config)
+    
+    // プレビュー用にデフォルトの保管場所をいくつか挿入
+    container.mainContext.insert(StorageLocation(name: "ワインセラー", type: .cellar))
+    container.mainContext.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator))
+
     struct PreviewWrapper: View {
         @State private var vm = AddFlowViewModel()
         @FocusState private var field: GeneralInfoField?
@@ -224,4 +259,5 @@ public struct GeneralInfoStepView: View {
     }
 
     return PreviewWrapper()
+        .modelContainer(container)
 }

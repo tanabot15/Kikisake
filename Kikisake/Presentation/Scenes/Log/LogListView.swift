@@ -24,7 +24,6 @@ public struct LogListView: View {
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                // 酒種セグメントタブ（InventoryViewとデザインを統一）
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(filterCategories, id: \.self) { category in

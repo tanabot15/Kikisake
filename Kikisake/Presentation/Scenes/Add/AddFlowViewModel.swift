@@ -2,8 +2,6 @@
 //  AddFlowViewModel.swift
 //  Kikisake
 //
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import Foundation
 import SwiftData
@@ -23,14 +21,15 @@ public final class AddFlowViewModel {
     public var vintage: String = ""
     public var abvString: String = ""
     public var priceString: String = ""
-    public var storageLocation: String = AppConstants.Storage.defaultLocation
+    public var storageLocation: String = "未設定"
     public var selectedImageData: Data? = nil
 
     // - ワイン用
     public var wineType: String = "赤"
-    public var grapeVarieties: String = "" // （互換用）
-    public var blendComponents: [BlendComponent] = [BlendComponent(variety: "", percentage: nil)] // アッサンブラージュ品種リスト
-    public var appellation: String = "" // 追加: 原産地呼称
+    public var grapeVarieties: String = ""
+    public var blendComponents: [BlendComponent] = [BlendComponent(variety: "", percentage: nil)]
+    public var appellation: String = ""
+    
     // - 日本酒用
     public var sakeSpecificName: String = "純米大吟醸"
     public var riceVariety: String = ""
@@ -49,19 +48,18 @@ public final class AddFlowViewModel {
     public var selectedAromaTags: [String] = []
 
     // Step 4: 味わい
-    public var sweetness: Double = 2.5  // 甘味
-    public var saltiness: Double = 2.5  // 塩味
-    public var acidity: Double = 2.5    // 酸味
-    public var bitterness: Double = 2.5 // 苦味
-    public var umami: Double = 2.5      // 旨味
+    public var sweetness: Double = 2.5
+    public var saltiness: Double = 2.5
+    public var acidity: Double = 2.5
+    public var bitterness: Double = 2.5
+    public var umami: Double = 2.5
 
-    // 選択項目
-    public var tannin: Double = 2.5     // タンニン（渋味）
-    public var body: Double = 2.5       // ボディ
-    public var selectedBalanceTags: [String] = [] // バランス評価タグ
-    public var finishLength: Double = 2.5// 余韻の長さ
+    public var tannin: Double = 2.5
+    public var body: Double = 2.5
+    public var selectedBalanceTags: [String] = []
+    public var finishLength: Double = 2.5
 
-    // Step 5: 最終ステップ（総合評価・メモ）
+    // Step 5: 総合評価・メモ
     public var rating: Double = 4.0
     public var memo: String = ""
     public var tastingDate: Date = Date()
@@ -76,17 +74,14 @@ public final class AddFlowViewModel {
         }
     }
 
-    /// ワインのブレンド品種行を追加する
     public func addBlendComponent() {
         blendComponents.append(BlendComponent(variety: "", percentage: nil))
     }
 
-    /// 指定したインデックスのブレンド品種行を削除する
     public func removeBlendComponent(at offsets: IndexSet) {
         blendComponents.remove(atOffsets: offsets)
     }
 
-    /// 入力されたフォームの情報をすべて初期状態にリセットする
     public func reset() {
         self.currentStep = 1
         self.selectedCategory = .wine
@@ -97,9 +92,8 @@ public final class AddFlowViewModel {
         self.vintage = ""
         self.abvString = ""
         self.priceString = ""
-        self.storageLocation = AppConstants.Storage.defaultLocation
+        self.storageLocation = "未設定"
         
-        // 固有パラメータのリセット
         self.wineType = "赤"
         self.grapeVarieties = ""
         self.blendComponents = [BlendComponent(variety: "", percentage: nil)]
@@ -128,7 +122,6 @@ public final class AddFlowViewModel {
         self.tastingDate = Date()
     }
 
-    /// 在庫アイテムを選択した際に入力値を初期化する
     public func configureWithItem(_ item: BeverageItem) {
         self.sourceItem = item
         self.selectedCategory = item.category
@@ -143,11 +136,8 @@ public final class AddFlowViewModel {
             self.priceString = "\(price)"
         }
         self.storageLocation = item.storageLocation
-        
-        // 既存のJSONメタデータがあれば必要に応じてデコードして復元可能
     }
 
-    /// 選択中の酒種に応じたメタデータのJSON文字列を生成する
     private func buildMetadataJSON() -> String? {
         let encoder = JSONEncoder()
         switch selectedCategory {
@@ -171,8 +161,26 @@ public final class AddFlowViewModel {
         }
     }
 
-    /// テイスティングを行わず、セラー・冷蔵庫の在庫として新規登録する
+    private func ensureStorageLocationExists(modelContext: ModelContext) throws {
+        let descriptor = FetchDescriptor<StorageLocation>()
+        let existingLocations = (try? modelContext.fetch(descriptor)) ?? []
+
+        if existingLocations.isEmpty {
+            let defaultLocation = StorageLocation(name: "未設定", type: .other, memo: "自動生成されたデフォルトの保管場所")
+            modelContext.insert(defaultLocation)
+            self.storageLocation = "未設定"
+        } else if storageLocation.isEmpty || !existingLocations.contains(where: { $0.name == storageLocation }) {
+            // 指定された保管場所が登録リストに存在しない場合、最初の保管場所を割り当てる
+            if let firstLoc = existingLocations.first {
+                self.storageLocation = firstLoc.name
+            }
+        }
+    }
+
+    /// 在庫のみ保存
     public func saveAsInventoryOnly(modelContext: ModelContext) throws {
+        try ensureStorageLocationExists(modelContext: modelContext)
+
         let abv = Double(abvString)
         let price = Int(priceString)
         let metadataJSON = buildMetadataJSON()
@@ -197,8 +205,10 @@ public final class AddFlowViewModel {
         reset()
     }
 
-    /// データを保存する（新規アイテム作成、または在庫からの消費 ＋ ログ作成）
+    /// テイスティングログ＋在庫管理の保存
     public func save(modelContext: ModelContext) throws {
+        try ensureStorageLocationExists(modelContext: modelContext)
+
         let price = Int(priceString)
         let isTanninApplicable: Bool = {
             guard selectedCategory == .wine else { return false }

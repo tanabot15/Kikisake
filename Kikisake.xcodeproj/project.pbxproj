@@ -46,6 +46,8 @@
 		D90442523081A45200EF4807 /* AromaStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442513081A45200EF4807 /* AromaStepView.swift */; };
 		D90442543081A46800EF4807 /* TasteStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442533081A46800EF4807 /* TasteStepView.swift */; };
 		D90442563081E26F00EF4807 /* BeverageSpecificMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */; };
+		D9044259308366C300EF4807 /* StorageLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044258308366C300EF4807 /* StorageLocation.swift */; };
+		D904425B308368BF00EF4807 /* AddLocationSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904425A308368BF00EF4807 /* AddLocationSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +92,8 @@
 		D90442533081A46800EF4807 /* TasteStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasteStepView.swift; sourceTree = "<group>"; };
 		D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeverageSpecificMetadata.swift; sourceTree = "<group>"; };
 		D9044257308254EA00EF4807 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D9044258308366C300EF4807 /* StorageLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageLocation.swift; sourceTree = "<group>"; };
+		D904425A308368BF00EF4807 /* AddLocationSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,6 +237,7 @@
 				D9044214307E84F600EF4807 /* BeverageItem.swift */,
 				D9044216307E850500EF4807 /* TastingLog.swift */,
 				D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */,
+				D9044258308366C300EF4807 /* StorageLocation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -305,6 +310,7 @@
 			children = (
 				D9044243307E863000EF4807 /* InventoryView.swift */,
 				D9044245307E863A00EF4807 /* InventoryViewModel.swift */,
+				D904425A308368BF00EF4807 /* AddLocationSheetView.swift */,
 			);
 			path = Inventory;
 			sourceTree = "<group>";
@@ -426,6 +432,7 @@
 				D90441F3307E83F600EF4807 /* AppState.swift in Sources */,
 				D90442523081A45200EF4807 /* AromaStepView.swift in Sources */,
 				D9044223307E856F00EF4807 /* CustomSlider.swift in Sources */,
+				D904425B308368BF00EF4807 /* AddLocationSheetView.swift in Sources */,
 				D9044211307E84E100EF4807 /* AppConstants.swift in Sources */,
 				D904422F307E85AB00EF4807 /* LogListViewModel.swift in Sources */,
 				D9044231307E85B600EF4807 /* LogDetailView.swift in Sources */,
@@ -455,6 +462,7 @@
 				D9044215307E84F600EF4807 /* BeverageItem.swift in Sources */,
 				D90442563081E26F00EF4807 /* BeverageSpecificMetadata.swift in Sources */,
 				D904420F307E84D800EF4807 /* Logger.swift in Sources */,
+				D9044259308366C300EF4807 /* StorageLocation.swift in Sources */,
 				D9044237307E85DB00EF4807 /* AddFlowView.swift in Sources */,
 				D9044221307E854100EF4807 /* ConsumeBeverageUseCase.swift in Sources */,
 				D9044244307E863000EF4807 /* InventoryView.swift in Sources */,
