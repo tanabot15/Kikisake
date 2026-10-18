@@ -11,7 +11,6 @@
 		D90441E7307E817B00EF4807 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90441E2307E817B00EF4807 /* MainTabView.swift */; };
 		D90441E9307E817B00EF4807 /* KikisakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90441E4307E817B00EF4807 /* KikisakeApp.swift */; };
 		D90441F3307E83F600EF4807 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90441F2307E83F600EF4807 /* AppState.swift */; };
-		D9044205307E849B00EF4807 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D9044204307E849B00EF4807 /* Localizable.xcstrings */; };
 		D9044207307E84AC00EF4807 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044206307E84AC00EF4807 /* Date+Extension.swift */; };
 		D9044209307E84B900EF4807 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044208307E84B900EF4807 /* View+Extension.swift */; };
 		D904420B307E84C300EF4807 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904420A307E84C300EF4807 /* Color+Extension.swift */; };
@@ -56,7 +55,6 @@
 		D90441E2307E817B00EF4807 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		D90441E4307E817B00EF4807 /* KikisakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KikisakeApp.swift; sourceTree = "<group>"; };
 		D90441F2307E83F600EF4807 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		D9044204307E849B00EF4807 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		D9044206307E84AC00EF4807 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		D9044208307E84B900EF4807 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		D904420A307E84C300EF4807 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
@@ -190,7 +188,6 @@
 			isa = PBXGroup;
 			children = (
 				D90441E1307E817B00EF4807 /* Assets.xcassets */,
-				D9044204307E849B00EF4807 /* Localizable.xcstrings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -417,7 +414,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9044205307E849B00EF4807 /* Localizable.xcstrings in Resources */,
 				D90441E6307E817B00EF4807 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
