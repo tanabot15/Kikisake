@@ -47,6 +47,7 @@
 		D90442563081E26F00EF4807 /* BeverageSpecificMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */; };
 		D9044259308366C300EF4807 /* StorageLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044258308366C300EF4807 /* StorageLocation.swift */; };
 		D904425B308368BF00EF4807 /* AddLocationSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904425A308368BF00EF4807 /* AddLocationSheetView.swift */; };
+		D904425D3085D33000EF4807 /* TastingCardShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904425C3085D32F00EF4807 /* TastingCardShareView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +93,7 @@
 		D9044257308254EA00EF4807 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D9044258308366C300EF4807 /* StorageLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageLocation.swift; sourceTree = "<group>"; };
 		D904425A308368BF00EF4807 /* AddLocationSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationSheetView.swift; sourceTree = "<group>"; };
+		D904425C3085D32F00EF4807 /* TastingCardShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCardShareView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -337,6 +339,7 @@
 				D904422C307E85A000EF4807 /* LogListView.swift */,
 				D904422E307E85AB00EF4807 /* LogListViewModel.swift */,
 				D9044230307E85B600EF4807 /* LogDetailView.swift */,
+				D904425C3085D32F00EF4807 /* TastingCardShareView.swift */,
 			);
 			path = Log;
 			sourceTree = "<group>";
@@ -440,6 +443,7 @@
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
 				D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */,
+				D904425D3085D33000EF4807 /* TastingCardShareView.swift in Sources */,
 				D9044233307E85C300EF4807 /* AnalyticsView.swift in Sources */,
 				D9044209307E84B900EF4807 /* View+Extension.swift in Sources */,
 				D90441E7307E817B00EF4807 /* MainTabView.swift in Sources */,

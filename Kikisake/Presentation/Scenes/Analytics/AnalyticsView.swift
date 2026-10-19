@@ -155,15 +155,10 @@ public struct AnalyticsView: View {
     // --- ヒートマップカード（グリッドサイズを拡大して画面右側まで自然に配置） ---
     private var heatmapCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "calendar.badge.clock")
-                    .foregroundStyle(Color.accentColor)
-                Text("お酒を飲んだ日（直近4ヶ月）")
-                    .font(.headline)
-            }
+            Text("お酒を飲んだ日（直近4ヶ月）")
+                .font(.headline)
 
             let days = viewModel.drinkingHeatmapData(from: logs)
-            // グリッドサイズを14ptに変更し、空白や途切れを防ぐ
             let rows = Array(repeating: GridItem(.fixed(14), spacing: 4), count: 7)
             let weekdays = ["日", "月", "火", "水", "木", "金", "土"]
 
@@ -233,43 +228,53 @@ public struct AnalyticsView: View {
     // --- 酒種別比率カード ---
     private var categoryRatioCard: some View {
         VStack(alignment: .leading, spacing: 14) {
-            HStack {
-                Image(systemName: "chart.pie.fill")
-                    .foregroundStyle(Color.accentColor)
-                Text("酒種別 飲酒比率")
-                    .font(.headline)
-            }
+            Text("酒種別 飲酒比率")
+                .font(.headline)
 
             let ratio = viewModel.categoryRatio(from: logs)
 
             Chart {
                 ForEach(BeverageCategory.allCases, id: \.self) { category in
                     let count = ratio[category] ?? 0
-                    SectorMark(
-                        angle: .value("件数", count),
-                        innerRadius: .ratio(0.62),
-                        angularInset: 2.0
-                    )
-                    .cornerRadius(4)
-                    .foregroundStyle(by: .value("酒種", category.displayName))
-                }
-            }
-            .frame(height: 180)
-
-            HStack(spacing: 12) {
-                Spacer()
-                ForEach(BeverageCategory.allCases, id: \.self) { category in
-                    let count = ratio[category] ?? 0
-                    HStack(spacing: 6) {
-                        Circle()
-                            .fill(categoryColor(category))
-                            .frame(width: 8, height: 8)
-                        Text("\(category.displayName): \(count)件")
-                            .font(.caption)
-                            .fontWeight(.medium)
+                    if count > 0 {
+                        SectorMark(
+                            angle: .value("件数", count),
+                            innerRadius: .ratio(0.62),
+                            angularInset: 2.0
+                        )
+                        .cornerRadius(4)
+                        .foregroundStyle(by: .value("酒種", category.displayName))
                     }
                 }
-                Spacer()
+            }
+            // グラフの色を categoryColor(_:) と完全に一致させる
+            .chartForegroundStyleScale([
+                BeverageCategory.wine.displayName: categoryColor(.wine),
+                BeverageCategory.sake.displayName: categoryColor(.sake),
+                BeverageCategory.beer.displayName: categoryColor(.beer)
+            ])
+            .frame(height: 180)
+            .chartLegend(.hidden)
+
+            // 件数が存在する（count > 0）酒種のみを抽出して凡例を表示する
+            let activeCategories = BeverageCategory.allCases.filter { (ratio[$0] ?? 0) > 0 }
+
+            if !activeCategories.isEmpty {
+                HStack(spacing: 16) {
+                    Spacer()
+                    ForEach(activeCategories, id: \.self) { category in
+                        let count = ratio[category] ?? 0
+                        HStack(spacing: 6) {
+                            Circle()
+                                .fill(categoryColor(category))
+                                .frame(width: 8, height: 8)
+                            Text("\(category.displayName): \(count)件")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                        }
+                    }
+                    Spacer()
+                }
             }
         }
         .padding()
