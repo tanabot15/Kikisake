@@ -88,7 +88,7 @@ public struct LogDetailView: View {
                     ShareLink(
                         item: shareImage,
                         preview: SharePreview(
-                            "\(log.item?.name ?? "テイスティング記録") の記録",
+                            "\(log.item?.name ?? "テイスティング") の記録",
                             image: shareImage
                         )
                     ) {
@@ -135,29 +135,15 @@ public struct LogDetailView: View {
                         endPoint: .bottomTrailing
                     )
 
-                    VStack(spacing: 8) {
-                        Image(systemName: "wineglass.fill")
-                            .font(.system(size: 48))
-                            .foregroundStyle(.white.opacity(0.8))
-                        Text(log.item?.name ?? "テイスティングログ")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-                    }
+                    Image(systemName: "wineglass.fill")
+                        .font(.system(size: 48))
+                        .foregroundStyle(.white.opacity(0.8))
                 }
                 .frame(height: 180)
             }
 
             if let item = log.item {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(item.category.displayName)
-                        .font(.caption2)
-                        .fontWeight(.bold)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 3)
-                        .background(Color.accentColor)
-                        .foregroundStyle(.white)
-                        .cornerRadius(6)
-
                     Text(item.name)
                         .font(.title2)
                         .fontWeight(.bold)
@@ -167,7 +153,7 @@ public struct LogDetailView: View {
                     if !item.producer.isEmpty {
                         Text(item.producer)
                             .font(.subheadline)
-                            .foregroundStyle(item.imageDatas?.first != nil ? .white.opacity(0.8) : .secondary)
+                            .foregroundStyle(item.imageDatas?.first != nil ? .white.opacity(0.8) : .primary)
                     }
                 }
                 .padding(16)
@@ -229,25 +215,30 @@ public struct LogDetailView: View {
                                 rowContent(label: "原産地呼称", value: appellation)
                             }
                             if !meta.blendComponents.isEmpty {
-                                VStack(alignment: .leading, spacing: 6) {
-                                    Text("ブドウ品種 (アッサンブラージュ)")
+                                HStack {
+                                    Text("ブドウ品種")
                                         .font(.subheadline)
                                         .foregroundStyle(.secondary)
-
-                                    ForEach(meta.blendComponents) { comp in
-                                        HStack {
-                                            Text(comp.variety)
-                                                .font(.subheadline)
-                                                .fontWeight(.medium)
-                                            Spacer()
-                                            if let pct = comp.percentage {
-                                                Text("\(pct) %")
+                                    
+                                    Spacer()
+                                    
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        ForEach(meta.blendComponents) { comp in
+                                            HStack {
+                                                Text(comp.variety)
                                                     .font(.subheadline)
-                                                    .foregroundStyle(.secondary)
+                                                    .fontWeight(.medium)
+                                                
+                                                if let pct = comp.percentage {
+                                                    Text("(\(pct) %)")
+                                                        .font(.subheadline)
+                                                        .foregroundStyle(.primary)
+                                                }
                                             }
                                         }
                                     }
                                 }
+
                             } else if !meta.grapeVarieties.isEmpty {
                                 rowContent(label: "主要品種", value: meta.grapeVarieties)
                             }
@@ -393,7 +384,7 @@ public struct LogDetailView: View {
 
     private var memoCard: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("総合コメント・ペアリング")
+            Text("総合コメント")
                 .font(.headline)
 
             Text(log.memo)

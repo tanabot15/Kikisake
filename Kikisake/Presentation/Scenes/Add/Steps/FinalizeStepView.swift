@@ -29,7 +29,7 @@ public struct FinalizeStepView: View {
                 .padding(.vertical, 4)
             }
 
-            Section("総合コメント・ペアリング") {
+            Section("総合コメント") {
                 TextEditor(text: $viewModel.memo)
                     .frame(height: 120)
             }
