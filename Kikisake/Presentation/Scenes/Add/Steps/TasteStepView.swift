@@ -63,7 +63,7 @@ public struct TasteStepView: View {
 
             // 2. タンニン (渋味) - 赤・ロゼ・オレンジワインのみ
             if isTanninApplicable {
-                Section("渋味 (タンニン)") {
+                Section("渋味") {
                     CustomSlider(title: "タンニン (Tannin)", value: $viewModel.tannin)
                 }
             }
