@@ -24,6 +24,17 @@ struct KikisakeApp: App {
             MainTabView()
                 .modelContainer(modelContainerManager.container)
                 .preferredColorScheme(appState.appearanceMode.colorScheme)
+                // 初回起動時のみボードビュー（オンボーディング）をシート表示
+                .sheet(isPresented: Binding(
+                    get: { !appState.hasCompletedOnboarding },
+                    set: { appState.hasCompletedOnboarding = !$0 }
+                )) {
+                    BoardingView(isPresented: Binding(
+                        get: { !appState.hasCompletedOnboarding },
+                        set: { appState.hasCompletedOnboarding = !$0 }
+                    ))
+                    .interactiveDismissDisabled(true) // 途中でスワイプして閉じられないように固定
+                }
         }
     }
 }

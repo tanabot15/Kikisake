@@ -44,10 +44,10 @@ public struct LogDetailView: View {
                     ratingCard
                     appearanceAndAromaCard
                     
-                    // 独立した味わい構造カード
+                    // 味わい構造カード
                     TasteRadarCardView(log: log, isCompactMode: false)
 
-                    // 独立したマトリクス分析カード
+                    // マトリクス分析カード
                     MatrixAnalysisCardView(log: log, isCompactMode: false)
 
                     if !log.memo.isEmpty {

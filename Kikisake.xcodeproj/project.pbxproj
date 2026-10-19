@@ -50,6 +50,7 @@
 		D904425D3085D33000EF4807 /* TastingCardShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904425C3085D32F00EF4807 /* TastingCardShareView.swift */; };
 		D904425F308602FD00EF4807 /* TasteRadarCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904425E308602FD00EF4807 /* TasteRadarCardView.swift */; };
 		D90442613086031D00EF4807 /* MatrixAnalysisCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442603086031D00EF4807 /* MatrixAnalysisCardView.swift */; };
+		D9044264308638D500EF4807 /* BoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044263308638D500EF4807 /* BoardingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +99,7 @@
 		D904425C3085D32F00EF4807 /* TastingCardShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCardShareView.swift; sourceTree = "<group>"; };
 		D904425E308602FD00EF4807 /* TasteRadarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasteRadarCardView.swift; sourceTree = "<group>"; };
 		D90442603086031D00EF4807 /* MatrixAnalysisCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixAnalysisCardView.swift; sourceTree = "<group>"; };
+		D9044263308638D500EF4807 /* BoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 				D90441FE307E846400EF4807 /* Components */,
 				D90441FD307E845E00EF4807 /* Navigation */,
 				D90441FC307E845500EF4807 /* Scenes */,
+				D90442623086388800EF4807 /* Boarding */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -362,6 +365,14 @@
 			path = Steps;
 			sourceTree = "<group>";
 		};
+		D90442623086388800EF4807 /* Boarding */ = {
+			isa = PBXGroup;
+			children = (
+				D9044263308638D500EF4807 /* BoardingView.swift */,
+			);
+			path = Boarding;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -465,6 +476,7 @@
 				D904422D307E85A000EF4807 /* LogListView.swift in Sources */,
 				D9044239307E85E600EF4807 /* AddFlowViewModel.swift in Sources */,
 				D9044213307E84EB00EF4807 /* ModelContainerManager.swift in Sources */,
+				D9044264308638D500EF4807 /* BoardingView.swift in Sources */,
 				D904420D307E84CD00EF4807 /* Formatters.swift in Sources */,
 				D904424C307F3C8D00EF4807 /* PreviewSampleLoader.swift in Sources */,
 				D9044215307E84F600EF4807 /* BeverageItem.swift in Sources */,

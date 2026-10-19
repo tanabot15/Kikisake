@@ -34,6 +34,13 @@ public final class AppState {
     /// プロバージョンフラグ
     public var isProVersion: Bool = false
     
+    /// オンボーディングを完了したかどうか（初回のみ表示するためのフラグ）
+    public var hasCompletedOnboarding: Bool {
+        didSet {
+            UserDefaults.standard.set(hasCompletedOnboarding, forKey: "saved_has_completed_onboarding")
+        }
+    }
+    
     /// 在庫から開けるために一時保持するアイテム（セットされると自動的に追加タブへ移動）
     public var openingItem: BeverageItem? {
         didSet {
@@ -52,6 +59,10 @@ public final class AppState {
     }
 
     private init() {
+        // オンボーディング状態の復元
+        self.hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "saved_has_completed_onboarding")
+
+        // 外観モード設定の復元
         if let savedValue = UserDefaults.standard.string(forKey: "saved_appearance_mode"),
            let mode = AppearanceMode(rawValue: savedValue) {
             self.appearanceMode = mode
