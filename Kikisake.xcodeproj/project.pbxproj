@@ -48,6 +48,8 @@
 		D9044259308366C300EF4807 /* StorageLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044258308366C300EF4807 /* StorageLocation.swift */; };
 		D904425B308368BF00EF4807 /* AddLocationSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904425A308368BF00EF4807 /* AddLocationSheetView.swift */; };
 		D904425D3085D33000EF4807 /* TastingCardShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904425C3085D32F00EF4807 /* TastingCardShareView.swift */; };
+		D904425F308602FD00EF4807 /* TasteRadarCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904425E308602FD00EF4807 /* TasteRadarCardView.swift */; };
+		D90442613086031D00EF4807 /* MatrixAnalysisCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442603086031D00EF4807 /* MatrixAnalysisCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +96,8 @@
 		D9044258308366C300EF4807 /* StorageLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageLocation.swift; sourceTree = "<group>"; };
 		D904425A308368BF00EF4807 /* AddLocationSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationSheetView.swift; sourceTree = "<group>"; };
 		D904425C3085D32F00EF4807 /* TastingCardShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCardShareView.swift; sourceTree = "<group>"; };
+		D904425E308602FD00EF4807 /* TasteRadarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasteRadarCardView.swift; sourceTree = "<group>"; };
+		D90442603086031D00EF4807 /* MatrixAnalysisCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixAnalysisCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,6 +295,8 @@
 			children = (
 				D9044222307E856F00EF4807 /* CustomSlider.swift */,
 				D904422A307E859300EF4807 /* BeverageCardView.swift */,
+				D904425E308602FD00EF4807 /* TasteRadarCardView.swift */,
+				D90442603086031D00EF4807 /* MatrixAnalysisCardView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -445,8 +451,10 @@
 				D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */,
 				D904425D3085D33000EF4807 /* TastingCardShareView.swift in Sources */,
 				D9044233307E85C300EF4807 /* AnalyticsView.swift in Sources */,
+				D90442613086031D00EF4807 /* MatrixAnalysisCardView.swift in Sources */,
 				D9044209307E84B900EF4807 /* View+Extension.swift in Sources */,
 				D90441E7307E817B00EF4807 /* MainTabView.swift in Sources */,
+				D904425F308602FD00EF4807 /* TasteRadarCardView.swift in Sources */,
 				D9044242307E862600EF4807 /* FinalizeStepView.swift in Sources */,
 				D9044219307E851200EF4807 /* BeverageRepository.swift in Sources */,
 				D90442543081A46800EF4807 /* TasteStepView.swift in Sources */,

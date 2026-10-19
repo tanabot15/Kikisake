@@ -18,7 +18,6 @@ public struct LogDetailView: View {
         self.log = log
     }
 
-    /// HEX文字列からSwiftUIのColorを生成するヘルパー
     private func colorFromHex(_ hex: String) -> Color {
         let scanner = Scanner(string: hex.replacingOccurrences(of: "#", with: ""))
         var rgbValue: UInt64 = 0
@@ -34,10 +33,8 @@ public struct LogDetailView: View {
     public var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                // MARK: - 1. ヒーローラベル写真ヘッダー
                 heroHeaderView
 
-                // MARK: - 2. 詳細情報フォームカード群
                 VStack(spacing: 16) {
                     if let item = log.item {
                         basicInfoCard(for: item)
@@ -46,7 +43,12 @@ public struct LogDetailView: View {
 
                     ratingCard
                     appearanceAndAromaCard
-                    tasteStructureCard
+                    
+                    // 独立した味わい構造カード
+                    TasteRadarCardView(log: log, isCompactMode: false)
+
+                    // 独立したマトリクス分析カード
+                    MatrixAnalysisCardView(log: log, isCompactMode: false)
 
                     if !log.memo.isEmpty {
                         memoCard
@@ -97,7 +99,6 @@ public struct LogDetailView: View {
         }
     }
 
-    // MARK: - ヒーローヘッダー
     private var heroHeaderView: some View {
         ZStack(alignment: .bottomLeading) {
             if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
@@ -111,14 +112,12 @@ public struct LogDetailView: View {
                             .frame(height: 240)
                             .clipped()
 
-                        // シャドウグラデーション
                         LinearGradient(
                             colors: [.clear, .black.opacity(0.6)],
                             startPoint: .center,
                             endPoint: .bottom
                         )
 
-                        // 拡大用アイコンバッジ
                         Image(systemName: "arrow.up.left.and.arrow.down.right")
                             .font(.caption)
                             .padding(8)
@@ -129,7 +128,6 @@ public struct LogDetailView: View {
                 }
                 .buttonStyle(.plain)
             } else {
-                // 写真がない場合のプレースホルダー（テイスティング色ベース）
                 ZStack {
                     LinearGradient(
                         colors: [colorFromHex(log.appearanceColorHex).opacity(0.4), colorFromHex(log.appearanceColorHex)],
@@ -149,7 +147,6 @@ public struct LogDetailView: View {
                 .frame(height: 180)
             }
 
-            // カテゴリ＆銘柄名オーバレイ
             if let item = log.item {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(item.category.displayName)
@@ -178,7 +175,6 @@ public struct LogDetailView: View {
         }
     }
     
-    // MARK: - ヘルパー関数：画面を1枚のImageに変換
     @MainActor
     private func renderShareImage() -> Image {
         let cardView = TastingCardShareView(log: log)
@@ -191,7 +187,6 @@ public struct LogDetailView: View {
         return Image(systemName: "wineglass")
     }
 
-    // MARK: - 基本情報カード
     private func basicInfoCard(for item: BeverageItem) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("基本情報")
@@ -217,7 +212,6 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
-    // MARK: - 酒種固有メタデータカード
     @ViewBuilder
     private func specificMetadataCard(for item: BeverageItem) -> some View {
         if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
@@ -308,7 +302,6 @@ public struct LogDetailView: View {
         }
     }
 
-    // MARK: - 評価・スコアカード
     private var ratingCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("評価・スコア")
@@ -348,7 +341,6 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
-    // MARK: - 外観・香りカード
     private var appearanceAndAromaCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("外観・香り")
@@ -398,56 +390,6 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
-    // MARK: - 味わい構造カード
-    private var tasteStructureCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("味わい構造")
-                .font(.headline)
-
-            VStack(spacing: 8) {
-                tasteRow(title: "甘味", value: log.sweetness)
-                tasteRow(title: "酸味", value: log.acidity)
-                tasteRow(title: "苦味", value: log.bitterness)
-                tasteRow(title: "旨味", value: log.umami)
-
-                if let tannin = log.tannin {
-                    tasteRow(title: "タンニン (渋味)", value: tannin)
-                }
-
-                tasteRow(title: "ボディ", value: log.body)
-                tasteRow(title: "余韻の長さ", value: log.finishLength)
-            }
-
-            if !log.balanceTags.isEmpty {
-                Divider()
-                    .padding(.vertical, 4)
-
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("バランス表現")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-
-                    FlowLayout(spacing: 6) {
-                        ForEach(log.balanceTags, id: \.self) { tag in
-                            Text(tag)
-                                .font(.caption)
-                                .fontWeight(.medium)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 5)
-                                .background(Color(.systemGray5))
-                                .foregroundStyle(.primary)
-                                .cornerRadius(12)
-                        }
-                    }
-                }
-            }
-        }
-        .padding()
-        .background(Color(.secondarySystemGroupedBackground))
-        .cornerRadius(16)
-    }
-
-    // MARK: - メモカード
     private var memoCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("総合コメント・ペアリング")
@@ -463,7 +405,6 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
-    // MARK: - ヘルパー関数
     private func rowContent(label: String, value: String) -> some View {
         HStack {
             Text(label)
@@ -475,70 +416,38 @@ public struct LogDetailView: View {
                 .fontWeight(.medium)
         }
     }
-
-    private func tasteRow(title: String, value: Double) -> some View {
-        HStack {
-            Text(title)
-                .font(.subheadline)
-                .frame(width: 100, alignment: .leading)
-
-            ProgressView(value: value, total: 5.0)
-                .tint(.accentColor)
-
-            Text(String(format: "%.1f", value))
-                .font(.caption)
-                .fontWeight(.bold)
-                .foregroundStyle(.secondary)
-                .frame(width: 32, alignment: .trailing)
-        }
-    }
 }
 
 #Preview {
+    let schema = Schema([BeverageItem.self, TastingLog.self])
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-
-    let wineMeta = WineSpecificMetadata(
-        wineType: "赤",
-        grapeVarieties: "カベルネ・ソーヴィニヨン",
-        blendComponents: [
-            BlendComponent(variety: "カベルネ・ソーヴィニヨン", percentage: 60),
-            BlendComponent(variety: "メルロ", percentage: 30),
-            BlendComponent(variety: "プティ・ヴェルド", percentage: 10)
-        ],
-        appellation: "AOC マルゴー (Margaux)"
-    )
-    let encoder = JSONEncoder()
-    let metaJSON = try? String(data: encoder.encode(wineMeta), encoding: .utf8)
+    let container = try! ModelContainer(for: schema, configurations: [config])
 
     let sampleItem = BeverageItem(
-        name: "Château Margaux 2015",
-        producer: "Château Margaux",
+        name: "Barolo DOCG 2018",
+        producer: "Prunotto",
         category: .wine,
-        region: "ボルドー, フランス",
-        vintage: "2015",
-        alcoholByVolume: 13.5,
-        price: 85000,
-        stockQuantity: 1,
-        specificMetadataJSON: metaJSON
+        region: "ピエモンテ, イタリア",
+        vintage: "2018",
+        alcoholByVolume: 14.0
     )
 
     let sampleLog = TastingLog(
         date: Date(),
         rating: 4.8,
-        appearanceNotes: "深みのあるルビーレッド",
-        appearanceColorHex: "#991A33",
-        aromaTags: ["カシス", "ヴァニラ", "杉", "トースト"],
+        appearanceNotes: "ガーネット",
+        appearanceColorHex: "#802633",
+        aromaTags: ["スミレ", "樽香", "チェリー", "タバコ", "スパイス"],
         sweetness: 2.0,
         saltiness: 0.0,
-        acidity: 4.0,
+        acidity: 4.2,
         bitterness: 2.0,
         umami: 2.5,
         tannin: 4.5,
         body: 4.5,
-        balanceTags: ["豊潤な", "厚みのある"],
+        balanceTags: ["豊潤な"],
         finishLength: 4.8,
-        memo: "圧倒的な気品と複雑味。ローストビーフとの相性が抜群でした。",
+        memo: "圧倒的な気品と複雑味。長期熟成のポテンシャルを感じさせる素晴らしいバランス。",
         item: sampleItem
     )
 

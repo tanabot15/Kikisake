@@ -12,6 +12,10 @@ import SwiftData
 public struct TastingCardShareView: View {
     let log: TastingLog
 
+    public init(log: TastingLog) {
+        self.log = log
+    }
+
     private func colorFromHex(_ hex: String) -> Color {
         let scanner = Scanner(string: hex.replacingOccurrences(of: "#", with: ""))
         var rgbValue: UInt64 = 0
@@ -25,14 +29,14 @@ public struct TastingCardShareView: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 12) {
             // MARK: - 1. ヘッダー（写真 ＋ 基本情報オーバーレイ）
             ZStack(alignment: .bottomLeading) {
                 if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFill()
-                        .frame(height: 200)
+                        .frame(height: 180)
                         .clipped()
 
                     LinearGradient(
@@ -43,14 +47,14 @@ public struct TastingCardShareView: View {
                 } else {
                     Rectangle()
                         .fill(Color.accentColor.gradient)
-                        .frame(height: 140)
+                        .frame(height: 120)
                 }
 
                 if let item = log.item {
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
                             Text(item.category.displayName)
-                                .font(.system(size: 10, weight: .bold))
+                                .font(.system(size: 9, weight: .bold))
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 3)
                                 .background(Color.white.opacity(0.25))
@@ -65,7 +69,7 @@ public struct TastingCardShareView: View {
                                     .font(.caption2)
                                     .foregroundStyle(.yellow)
                                 Text(String(format: "%.1f", log.rating))
-                                    .font(.subheadline)
+                                    .font(.caption)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
                             }
@@ -83,7 +87,7 @@ public struct TastingCardShareView: View {
 
                         if !item.producer.isEmpty {
                             Text(item.producer)
-                                .font(.caption)
+                                .font(.caption2)
                                 .foregroundStyle(.white.opacity(0.85))
                                 .lineLimit(1)
                         }
@@ -92,10 +96,10 @@ public struct TastingCardShareView: View {
                 }
             }
 
-            // MARK: - 2. スペック・詳細情報グリッド
+            // MARK: - 2. スペック・品種・詳細情報グリッド
             if let item = log.item {
-                VStack(spacing: 6) {
-                    HStack(spacing: 12) {
+                VStack(spacing: 4) {
+                    HStack(spacing: 8) {
                         if !item.region.isEmpty {
                             specBadge(title: "生産地", value: item.region)
                         }
@@ -107,13 +111,13 @@ public struct TastingCardShareView: View {
                         }
                     }
 
-                    // 酒種ごとの固有詳細（メタデータ）の表示
+                    // ブドウ品種 / 使用米 / スタイルをカードに記載
                     if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
                         switch item.category {
                         case .wine:
                             if let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data) {
                                 let varietiesText = !meta.blendComponents.isEmpty
-                                    ? meta.blendComponents.map { "\($0.variety)(\($0.percentage.map { "\($0)%" } ?? ""))" }.joined(separator: ", ") // ✨ by から separator に修正
+                                    ? meta.blendComponents.map { "\($0.variety)(\($0.percentage.map { "\($0)%" } ?? ""))" }.joined(separator: ", ")
                                     : meta.grapeVarieties
                                 if !varietiesText.isEmpty {
                                     specBadge(title: "品種", value: varietiesText)
@@ -121,7 +125,8 @@ public struct TastingCardShareView: View {
                             }
                         case .sake:
                             if let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data) {
-                                specBadge(title: "特定名称", value: "\(meta.specificName) / 精米:\(meta.polishingRate)")
+                                let sakeInfo = [meta.specificName, meta.riceVariety.isEmpty ? nil : "米:\(meta.riceVariety)", meta.polishingRate.isEmpty ? nil : "精米:\(meta.polishingRate)"].compactMap { $0 }.joined(separator: " / ")
+                                specBadge(title: "日本酒詳細", value: sakeInfo)
                             }
                         case .beer:
                             if let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data) {
@@ -130,137 +135,66 @@ public struct TastingCardShareView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 12)
+                .padding(.horizontal, 10)
             }
 
-            // MARK: - 3. 外観・香り・五味構造
-            VStack(alignment: .leading, spacing: 8) {
-                // 外観と香りタグ
-                HStack(spacing: 8) {
-                    if !log.appearanceNotes.isEmpty {
-                        HStack(spacing: 4) {
-                            Circle()
-                                .fill(colorFromHex(log.appearanceColorHex))
-                                .frame(width: 10, height: 10)
-                                .overlay(Circle().stroke(Color.primary.opacity(0.2), lineWidth: 0.5))
-                            Text(log.appearanceNotes)
-                                .font(.system(size: 10))
-                                .fontWeight(.medium)
-                        }
-                    }
+            // MARK: - 3. レーダーチャート ＆ マトリクス分析の横並びエリア
+            HStack(spacing: 8) {
+                // 左側：多角形レーダーチャート (コンパクト版)
+                TasteRadarCardView(log: log, isCompactMode: true)
+                    .frame(maxWidth: .infinity)
 
-                    Spacer()
-
-                    Text(log.date.toFormattedString())
-                        .font(.system(size: 10))
-                        .foregroundStyle(.secondary)
-                }
-
-                if !log.aromaTags.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 4) {
-                            ForEach(log.aromaTags, id: \.self) { tag in
-                                Text("#\(tag)")
-                                    .font(.system(size: 9, weight: .medium))
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 2)
-                                    .background(Color.accentColor.opacity(0.12))
-                                    .foregroundStyle(Color.accentColor)
-                                    .cornerRadius(4)
-                            }
-                        }
-                    }
-                }
-
-                // 五味プロファイル簡易バー
-                VStack(spacing: 4) {
-                    miniTasteRow(title: "甘味", value: log.sweetness)
-                    miniTasteRow(title: "酸味", value: log.acidity)
-                    miniTasteRow(title: "苦味", value: log.bitterness)
-                    miniTasteRow(title: "旨味", value: log.umami)
-                    if let tannin = log.tannin {
-                        miniTasteRow(title: "渋味", value: tannin)
-                    }
-                    miniTasteRow(title: "ボディ", value: log.body)
-                    miniTasteRow(title: "余韻", value: log.finishLength)
-                }
-                .padding(8)
-                .background(Color(.systemGray6).opacity(0.6))
-                .cornerRadius(8)
-
-                // 総合コメント
-                if !log.memo.isEmpty {
-                    Text(log.memo)
-                        .font(.system(size: 11))
-                        .foregroundStyle(.primary)
-                        .lineLimit(2)
-                }
+                // 右側：マトリクス分析 (コンパクト版)
+                MatrixAnalysisCardView(log: log, isCompactMode: true)
+                    .frame(maxWidth: .infinity)
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 10)
 
-            // MARK: - 4. フッター（ブランディング）
+            // MARK: - 4. コメント・フッター
+            if !log.memo.isEmpty {
+                Text(log.memo)
+                    .font(.system(size: 10))
+                    .foregroundStyle(.primary)
+                    .lineLimit(2)
+                    .padding(.horizontal, 10)
+            }
+
             HStack {
                 Text("Kikisake - Professional Tasting Log")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(.system(size: 8, weight: .bold))
                     .foregroundStyle(.secondary)
                 Spacer()
-                Text(Date().toFormattedString())
-                    .font(.system(size: 9))
+                Text(log.date.toFormattedString())
+                    .font(.system(size: 8))
                     .foregroundStyle(.secondary)
             }
-            .padding(.horizontal, 12)
-            .padding(.bottom, 10)
+            .padding(.horizontal, 10)
+            .padding(.bottom, 8)
         }
-        .frame(width: 380)
+        .frame(width: 400)
         .background(Color(.systemBackground))
         .cornerRadius(16)
-        .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
+        .shadow(color: Color.black.opacity(0.12), radius: 8, x: 0, y: 4)
     }
 
     private func specBadge(title: String, value: String) -> some View {
         HStack(spacing: 4) {
             Text(title)
-                .font(.system(size: 9, weight: .bold))
+                .font(.system(size: 8, weight: .bold))
                 .foregroundStyle(.secondary)
             Text(value)
-                .font(.system(size: 10, weight: .semibold))
+                .font(.system(size: 9, weight: .semibold))
                 .foregroundStyle(.primary)
                 .lineLimit(1)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-
-    private func miniTasteRow(title: String, value: Double) -> some View {
-        HStack(spacing: 6) {
-            Text(title)
-                .font(.system(size: 9, weight: .medium))
-                .frame(width: 32, alignment: .leading)
-                .foregroundStyle(.secondary)
-
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    Capsule()
-                        .fill(Color(.systemGray4))
-                        .frame(height: 4)
-
-                    Capsule()
-                        .fill(Color.accentColor)
-                        .frame(width: max(0, min(CGFloat(value / 5.0) * geo.size.width, geo.size.width)), height: 4)
-                }
-            }
-            .frame(height: 4)
-
-            Text(String(format: "%.1f", value))
-                .font(.system(size: 9, weight: .bold))
-                .foregroundStyle(.secondary)
-                .frame(width: 22, alignment: .trailing)
-        }
-    }
 }
 
 #Preview {
+    let schema = Schema([BeverageItem.self, TastingLog.self])
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
+    let container = try! ModelContainer(for: schema, configurations: [config])
 
     let sampleItem = BeverageItem(
         name: "Barolo DOCG 2018",
