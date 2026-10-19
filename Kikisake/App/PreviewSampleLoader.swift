@@ -18,16 +18,32 @@ public enum PreviewSampleLoader {
             return
         }
 
-        // 1. ワインのサンプル
+        let encoder = JSONEncoder()
+
+        // 1. ワインのサンプルメタデータ
+        let wineMeta = WineSpecificMetadata(
+            wineType: "赤",
+            grapeVarieties: "カベルネ・ソーヴィニヨン, メルロ",
+            blendComponents: [
+                BlendComponent(variety: "カベルネ・ソーヴィニヨン", percentage: 87),
+                BlendComponent(variety: "メルロ", percentage: 10),
+                BlendComponent(variety: "プティ・ヴェルド", percentage: 3)
+            ],
+            appellation: "Margaux AOC"
+        )
+        let wineMetaJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
+
         let wineItem = BeverageItem(
             name: "Château Margaux 2015",
             producer: "Château Margaux",
             category: .wine,
             region: "ボルドー, フランス",
             vintage: "2015",
+            alcoholByVolume: 13.5,
             price: 85000,
             stockQuantity: 1,
-            storageLocation: "ワインセラー"
+            storageLocation: "ワインセラー",
+            specificMetadataJSON: wineMetaJSON
         )
         let wineLog = TastingLog(
             date: Date().addingTimeInterval(-86400 * 3),
@@ -48,16 +64,26 @@ public enum PreviewSampleLoader {
             item: wineItem
         )
 
-        // 2. 日本酒のサンプル
+        // 2. 日本酒のサンプルメタデータ
+        let sakeMeta = SakeSpecificMetadata(
+            specificName: "特別純米 生原酒",
+            riceVariety: "秋田県産酒造好適米",
+            polishingRate: "65%",
+            sakeMeterValue: "+1.0"
+        )
+        let sakeMetaJSON = String(data: try! encoder.encode(sakeMeta), encoding: .utf8)
+
         let sakeItem = BeverageItem(
             name: "新政 No.6 R-type 生原酒",
             producer: "新政酒造",
             category: .sake,
             region: "秋田県",
             vintage: "2026/04",
+            alcoholByVolume: 13.0,
             price: 2400,
             stockQuantity: 2,
-            storageLocation: "冷蔵庫"
+            storageLocation: "冷蔵庫",
+            specificMetadataJSON: sakeMetaJSON
         )
         let sakeLog = TastingLog(
             date: Date().addingTimeInterval(-86400 * 1),
@@ -78,16 +104,24 @@ public enum PreviewSampleLoader {
             item: sakeItem
         )
 
-        // 3. ビールのサンプル
+        // 3. ビールのサンプルメタデータ
+        let beerMeta = BeerSpecificMetadata(
+            beerStyle: "プレミアム・ホワイトビア",
+            ibu: "11"
+        )
+        let beerMetaJSON = String(data: try! encoder.encode(beerMeta), encoding: .utf8)
+
         let beerItem = BeverageItem(
             name: "Inedit Damm",
             producer: "Damm",
             category: .beer,
             region: "バルセロナ, スペイン",
             vintage: "2026",
+            alcoholByVolume: 4.8,
             price: 850,
             stockQuantity: 3,
-            storageLocation: "常温"
+            storageLocation: "常温",
+            specificMetadataJSON: beerMetaJSON
         )
         let beerLog = TastingLog(
             date: Date().addingTimeInterval(-86400 * 6),
