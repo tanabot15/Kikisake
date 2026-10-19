@@ -27,35 +27,74 @@ public struct MatrixAnalysisCardView: View {
         if isCompactMode {
             return AnyView(
                 VStack(spacing: 2) {
-                    Text("マトリクス位置")
-                        .font(.system(size: 9, weight: .bold))
-                        .foregroundStyle(.secondary)
+                    // コンパクト版のヘッダー（軸名を小さく表示）
+                    HStack(spacing: 2) {
+                        Text("マトリクス")
+                            .font(.system(size: 8, weight: .bold))
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Text("\(axes.xTitle) / \(axes.yTitle)")
+                            .font(.system(size: 7, weight: .medium))
+                            .foregroundStyle(.secondary.opacity(0.8))
+                            .lineLimit(1)
+                    }
 
                     ZStack {
-                        RoundedRectangle(cornerRadius: 8)
+                        RoundedRectangle(cornerRadius: 6)
                             .fill(Color(.systemBackground))
-                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(.systemGray4), lineWidth: 0.8))
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(.systemGray4), lineWidth: 0.8))
 
+                        // 十字の点線軸
                         Path { path in
-                            path.move(to: CGPoint(x: 0, y: 65))
-                            path.addLine(to: CGPoint(x: 170, y: 65))
+                            path.move(to: CGPoint(x: 0, y: 52))
+                            path.addLine(to: CGPoint(x: 170, y: 52))
                             path.move(to: CGPoint(x: 85, y: 0))
-                            path.addLine(to: CGPoint(x: 85, y: 130))
+                            path.addLine(to: CGPoint(x: 85, y: 104))
                         }
                         .stroke(Color(.systemGray4), style: StrokeStyle(lineWidth: 0.8, dash: [2]))
 
+                        // 四隅のミニラベル（軸の端の傾向）
+                        VStack {
+                            HStack {
+                                Text(axes.xLow)
+                                    .font(.system(size: 6, weight: .bold))
+                                    .foregroundStyle(.secondary.opacity(0.7))
+                                Spacer()
+                                Text(axes.xHigh)
+                                    .font(.system(size: 6, weight: .bold))
+                                    .foregroundStyle(.secondary.opacity(0.7))
+                            }
+                            Spacer()
+                            HStack {
+                                Text(axes.yHigh)
+                                    .font(.system(size: 6, weight: .bold))
+                                    .foregroundStyle(.secondary.opacity(0.7))
+                                Spacer()
+                                Text(axes.yLow)
+                                    .font(.system(size: 6, weight: .bold))
+                                    .foregroundStyle(.secondary.opacity(0.7))
+                            }
+                        }
+                        .padding(4)
+
+                        // プロットされた現在地を示すドット
                         GeometryReader { geo in
                             let px = CGFloat(xValue) * (geo.size.width - 16) + 8
                             let py = CGFloat(1.0 - yValue) * (geo.size.height - 16) + 8
 
-                            Circle()
-                                .fill(Color.accentColor)
-                                .frame(width: 10, height: 10)
-                                .overlay(Circle().stroke(Color.white, lineWidth: 1.5))
-                                .position(x: px, y: py)
+                            ZStack {
+                                Circle()
+                                    .fill(Color.accentColor.opacity(0.3))
+                                    .frame(width: 14, height: 14)
+                                Circle()
+                                    .fill(Color.accentColor)
+                                    .frame(width: 8, height: 8)
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 1))
+                            }
+                            .position(x: px, y: py)
                         }
                     }
-                    .frame(height: 130)
+                    .frame(height: 104)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(6)

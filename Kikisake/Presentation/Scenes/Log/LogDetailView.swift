@@ -205,6 +205,7 @@ public struct LogDetailView: View {
                 if let price = item.price {
                     rowContent(label: "価格", value: "\(price) 円")
                 }
+                rowContent(label: "飲んだ日", value: log.date.toFormattedString())
             }
         }
         .padding()
@@ -423,13 +424,24 @@ public struct LogDetailView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: schema, configurations: [config])
 
+    let wineMeta = WineSpecificMetadata(
+        wineType: "赤",
+        grapeVarieties: "ネッビオーロ",
+        blendComponents: [BlendComponent(variety: "ネッビオーロ", percentage: 100)],
+        appellation: "Barolo DOCG"
+    )
+    let encoder = JSONEncoder()
+    let metaJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
+
     let sampleItem = BeverageItem(
         name: "Barolo DOCG 2018",
         producer: "Prunotto",
         category: .wine,
         region: "ピエモンテ, イタリア",
         vintage: "2018",
-        alcoholByVolume: 14.0
+        alcoholByVolume: 14.0,
+        price: 12000,
+        specificMetadataJSON: metaJSON
     )
 
     let sampleLog = TastingLog(

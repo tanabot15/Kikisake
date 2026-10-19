@@ -111,7 +111,7 @@ public struct TastingCardShareView: View {
                         }
                     }
 
-                    // ブドウ品種 / 使用米 / スタイルをカードに記載
+                    // 酒種ごとの指定メタデータをシェアカードに反映
                     if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
                         switch item.category {
                         case .wine:
@@ -119,18 +119,39 @@ public struct TastingCardShareView: View {
                                 let varietiesText = !meta.blendComponents.isEmpty
                                     ? meta.blendComponents.map { "\($0.variety)(\($0.percentage.map { "\($0)%" } ?? ""))" }.joined(separator: ", ")
                                     : meta.grapeVarieties
-                                if !varietiesText.isEmpty {
-                                    specBadge(title: "品種", value: varietiesText)
+                                HStack(spacing: 8) {
+                                    if !varietiesText.isEmpty {
+                                        specBadge(title: "品種", value: varietiesText)
+                                    }
+                                    if let appellation = meta.appellation, !appellation.isEmpty {
+                                        specBadge(title: "原産地呼称", value: appellation)
+                                    }
                                 }
                             }
                         case .sake:
                             if let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data) {
-                                let sakeInfo = [meta.specificName, meta.riceVariety.isEmpty ? nil : "米:\(meta.riceVariety)", meta.polishingRate.isEmpty ? nil : "精米:\(meta.polishingRate)"].compactMap { $0 }.joined(separator: " / ")
-                                specBadge(title: "日本酒詳細", value: sakeInfo)
+                                HStack(spacing: 8) {
+                                    if !meta.specificName.isEmpty {
+                                        specBadge(title: "特定名称", value: meta.specificName)
+                                    }
+                                    if !meta.riceVariety.isEmpty {
+                                        specBadge(title: "使用米", value: meta.riceVariety)
+                                    }
+                                    if !meta.polishingRate.isEmpty {
+                                        specBadge(title: "精米歩合", value: meta.polishingRate)
+                                    }
+                                }
                             }
                         case .beer:
                             if let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data) {
-                                specBadge(title: "スタイル", value: meta.beerStyle)
+                                HStack(spacing: 8) {
+                                    if !meta.beerStyle.isEmpty {
+                                        specBadge(title: "スタイル", value: meta.beerStyle)
+                                    }
+                                    if !meta.ibu.isEmpty {
+                                        specBadge(title: "IBU", value: meta.ibu)
+                                    }
+                                }
                             }
                         }
                     }
@@ -196,13 +217,23 @@ public struct TastingCardShareView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: schema, configurations: [config])
 
+    let wineMeta = WineSpecificMetadata(
+        wineType: "赤",
+        grapeVarieties: "ネッビオーロ",
+        blendComponents: [BlendComponent(variety: "ネッビオーロ", percentage: 100)],
+        appellation: "Barolo DOCG"
+    )
+    let encoder = JSONEncoder()
+    let metaJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
+
     let sampleItem = BeverageItem(
         name: "Barolo DOCG 2018",
         producer: "Prunotto",
         category: .wine,
         region: "ピエモンテ, イタリア",
         vintage: "2018",
-        alcoholByVolume: 14.0
+        alcoholByVolume: 14.0,
+        specificMetadataJSON: metaJSON
     )
 
     let sampleLog = TastingLog(

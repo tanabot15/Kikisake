@@ -38,7 +38,7 @@ public struct TasteRadarCardView: View {
     public var body: some View {
         let items = Self.tasteItems(for: log)
         let levels = isCompactMode ? 3 : 4
-        let frameHeight: CGFloat = isCompactMode ? 130 : 240
+        let frameHeight: CGFloat = isCompactMode ? 104 : 240
         let radiusOffset: CGFloat = isCompactMode ? 16 : 28
         let fontTitleSize: CGFloat = isCompactMode ? 8 : 10
         let fontValueSize: CGFloat = isCompactMode ? 8 : 9
@@ -47,9 +47,13 @@ public struct TasteRadarCardView: View {
         Group {
             if isCompactMode {
                 VStack(spacing: 2) {
-                    Text("味わいプロファイル")
-                        .font(.system(size: 9, weight: .bold))
-                        .foregroundStyle(.secondary)
+                    // マトリクス側と高さを合わせるためのヘッダー行
+                    HStack(spacing: 2) {
+                        Text("味わいプロファイル")
+                            .font(.system(size: 8, weight: .bold))
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                    }
 
                     radarChartContent(items: items, levels: levels, frameHeight: frameHeight, radiusOffset: radiusOffset, fontTitleSize: fontTitleSize, fontValueSize: fontValueSize)
                 }
