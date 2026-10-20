@@ -18,10 +18,24 @@
       }
     },
     "「追加」タブから新しい記録を作成しましょう。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's create a new record from the \"Add\" tab."
+          }
+        }
+      }
     },
     "「追加」タブから飲んだ酒を記録すると、ここに分析が表示されます。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Once you record the drinks you've had from the \"Add\" tab, analytics will appear here."
+          }
+        }
+      }
     },
     "%" : {
       "localizations" : {
@@ -76,7 +90,14 @@
       }
     },
     "%@ の記録" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Record of %@"
+          }
+        }
+      }
     },
     "%@: %lld件" : {
       "localizations" : {
@@ -95,7 +116,14 @@
       }
     },
     "%@の色調を選択してください" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select the color tone for %@"
+          }
+        }
+      }
     },
     "%lld" : {
       "localizations" : {
@@ -150,7 +178,14 @@
       }
     },
     "IBU (国際苦味単位)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IBU (International Bitterness Units)"
+          }
+        }
+      }
     },
     "Kikisake - Professional Tasting Log" : {
       "localizations" : {
@@ -203,10 +238,24 @@
       }
     },
     "アルコール度数 (例: 14.5 または 5)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ABV (e.g., 14.5 or 5)"
+          }
+        }
+      }
     },
     "ヴィンテージ / 製造年月 (例: 2020)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vintage / Production Date (e.g., 2020)"
+          }
+        }
+      }
     },
     "オレンジ" : {
       "localizations" : {
@@ -219,10 +268,24 @@
       }
     },
     "お酒の感動を記録し、あなたの「好み」を\n深く知るためのテイスティング手帳" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tasting Notebook to record your beverage experiences and deeply understand your \"preferences\"."
+          }
+        }
+      }
     },
     "お酒を飲んだ日（直近4ヶ月）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Days Consumed (Last 4 Months)"
+          }
+        }
+      }
     },
     "キャンセル" : {
       "localizations" : {
@@ -245,7 +308,14 @@
       }
     },
     "この保管場所に在庫はありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There is no stock in this storage location."
+          }
+        }
+      }
     },
     "さっそくはじめる" : {
       "localizations" : {
@@ -258,25 +328,74 @@
       }
     },
     "サンプルデータを読み込み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Load Sample Data"
+          }
+        }
+      }
     },
     "スパークリング" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sparkling"
+          }
+        }
+      }
     },
     "その他" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Others"
+          }
+        }
+      }
     },
     "データ管理" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data Management"
+          }
+        }
+      }
     },
     "テイスティングデータがありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tasting data available"
+          }
+        }
+      }
     },
     "テイスティングログ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tasting Log"
+          }
+        }
+      }
     },
     "テイスティングログがありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tasting logs available"
+          }
+        }
+      }
     },
     "バージョン" : {
       "localizations" : {
@@ -289,10 +408,24 @@
       }
     },
     "バランス表現 (複数選択可)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Balance Expressions (Multiple selection allowed)"
+          }
+        }
+      }
     },
     "ビール詳細" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beer Details"
+          }
+        }
+      }
     },
     "ビアスタイル (例: IPA, Stout)" : {
 
@@ -301,7 +434,14 @@
 
     },
     "プライバシーポリシー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
     },
     "プロフェッショナル・マトリクス分析" : {
 
@@ -368,7 +508,14 @@
       }
     },
     "ワイン詳細" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine Details"
+          }
+        }
+      }
     },
     "件数" : {
 
@@ -396,7 +543,14 @@
 
     },
     "価格 (円)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Price"
+          }
+        }
+      }
     },
     "保存" : {
       "localizations" : {
@@ -636,9 +790,6 @@
     "総合評価・日付" : {
 
     },
-    "編集" : {
-
-    },
     "補足メモ (任意)" : {
 
     },
@@ -678,7 +829,14 @@
       }
     },
     "追加 (ステップ %lld/5)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add (Step %lld/5)"
+          }
+        }
+      }
     },
     "酒種" : {
 
