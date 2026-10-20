@@ -64,6 +64,10 @@ public final class AddFlowViewModel {
     public var memo: String = ""
     public var tastingDate: Date = Date()
 
+    // 編集モード用の保持プロパティ
+    public var editingLog: TastingLog? = nil
+    public var editingItem: BeverageItem? = nil
+
     private let consumeUseCase = ConsumeBeverageUseCase()
 
     public init() {
@@ -120,6 +124,8 @@ public final class AddFlowViewModel {
         self.rating = 4.0
         self.memo = ""
         self.tastingDate = Date()
+        self.editingLog = nil
+        self.editingItem = nil
     }
 
     public func configureWithItem(_ item: BeverageItem) {
@@ -136,6 +142,68 @@ public final class AddFlowViewModel {
             self.priceString = "\(price)"
         }
         self.storageLocation = item.storageLocation
+    }
+
+    /// 既存の TastingLog からデータを初期ロードして編集モードにする
+    public func configureWithLog(_ log: TastingLog) {
+        self.editingLog = log
+        self.editingItem = log.item
+
+        if let item = log.item {
+            self.selectedCategory = item.category
+            self.name = item.name
+            self.producer = item.producer
+            self.region = item.region
+            self.vintage = item.vintage ?? ""
+            if let abv = item.alcoholByVolume {
+                self.abvString = "\(abv)"
+            }
+            if let price = item.price {
+                self.priceString = "\(price)"
+            }
+            self.storageLocation = item.storageLocation
+            self.selectedImageData = item.imageDatas?.first
+
+            if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
+                switch item.category {
+                case .wine:
+                    if let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data) {
+                        self.wineType = meta.wineType
+                        self.appellation = meta.appellation ?? ""
+                        self.grapeVarieties = meta.grapeVarieties
+                        self.blendComponents = meta.blendComponents.isEmpty ? [BlendComponent(variety: "", percentage: nil)] : meta.blendComponents
+                    }
+                case .sake:
+                    if let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data) {
+                        self.sakeSpecificName = meta.specificName
+                        self.riceVariety = meta.riceVariety
+                        self.polishingRate = meta.polishingRate
+                        self.sakeMeterValue = meta.sakeMeterValue
+                    }
+                case .beer:
+                    if let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data) {
+                        self.beerStyle = meta.beerStyle
+                        self.ibu = meta.ibu
+                    }
+                }
+            }
+        }
+
+        self.tastingDate = log.date
+        self.rating = log.rating
+        self.appearanceNotes = log.appearanceNotes
+        self.appearanceColorHex = log.appearanceColorHex
+        self.selectedAromaTags = log.aromaTags
+        self.sweetness = log.sweetness
+        self.saltiness = log.saltiness
+        self.acidity = log.acidity
+        self.bitterness = log.bitterness
+        self.umami = log.umami
+        self.tannin = log.tannin ?? 2.5
+        self.body = log.body
+        self.selectedBalanceTags = log.balanceTags
+        self.finishLength = log.finishLength
+        self.memo = log.memo
     }
 
     private func buildMetadataJSON() -> String? {
@@ -170,7 +238,6 @@ public final class AddFlowViewModel {
             modelContext.insert(defaultLocation)
             self.storageLocation = "未設定"
         } else if storageLocation.isEmpty || !existingLocations.contains(where: { $0.name == storageLocation }) {
-            // 指定された保管場所が登録リストに存在しない場合、最初の保管場所を割り当てる
             if let firstLoc = existingLocations.first {
                 self.storageLocation = firstLoc.name
             }
@@ -259,6 +326,56 @@ public final class AddFlowViewModel {
         modelContext.insert(newLog)
         try modelContext.save()
 
+        reset()
+    }
+
+    /// 既存ログおよびアイテムの上書き更新保存
+    public func update(modelContext: ModelContext) throws {
+        guard let targetLog = editingLog else {
+            try save(modelContext: modelContext)
+            return
+        }
+
+        try ensureStorageLocationExists(modelContext: modelContext)
+
+        let price = Int(priceString)
+        let abv = Double(abvString)
+        let isTanninApplicable: Bool = {
+            guard selectedCategory == .wine else { return false }
+            return wineType == "赤" || wineType == "ロゼ" || wineType == "オレンジ"
+        }()
+        let metadataJSON = buildMetadataJSON()
+
+        if let targetItem = editingItem {
+            targetItem.name = name
+            targetItem.producer = producer
+            targetItem.category = selectedCategory
+            targetItem.region = region
+            targetItem.vintage = vintage.isEmpty ? nil : vintage
+            targetItem.alcoholByVolume = abv
+            targetItem.price = price
+            targetItem.storageLocation = storageLocation
+            targetItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
+            targetItem.specificMetadataJSON = metadataJSON
+        }
+
+        targetLog.date = tastingDate
+        targetLog.rating = rating
+        targetLog.appearanceNotes = appearanceNotes
+        targetLog.appearanceColorHex = appearanceColorHex
+        targetLog.aromaTags = selectedAromaTags
+        targetLog.sweetness = sweetness
+        targetLog.saltiness = saltiness
+        targetLog.acidity = acidity
+        targetLog.bitterness = bitterness
+        targetLog.umami = umami
+        targetLog.tannin = isTanninApplicable ? tannin : nil
+        targetLog.body = body
+        targetLog.balanceTags = selectedBalanceTags
+        targetLog.finishLength = finishLength
+        targetLog.memo = memo
+
+        try modelContext.save()
         reset()
     }
 }

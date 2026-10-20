@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import PhotosUI
+import UIKit
 
 public enum GeneralInfoField {
     case name
@@ -24,7 +25,11 @@ public struct GeneralInfoStepView: View {
     @Bindable var viewModel: AddFlowViewModel
     @FocusState.Binding var focusedField: GeneralInfoField?
     var showAlert: (String) -> Void
+    
     @State private var selectedPhotoItem: PhotosPickerItem? = nil
+    @State private var isShowingCamera: Bool = false
+    @State private var isShowingPhotoSourceOptions: Bool = false
+    @State private var isShowingPhotosPicker: Bool = false // ライブラリピッカーを明示的に開くフラグ
 
     public init(
         viewModel: AddFlowViewModel,
@@ -65,12 +70,11 @@ public struct GeneralInfoStepView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
 
-                        PhotosPicker(
-                            selection: $selectedPhotoItem,
-                            matching: .images,
-                            preferredItemEncoding: .automatic
-                        ) {
-                            Label(viewModel.selectedImageData == nil ? "写真を追加する" : "写真を変更する", systemImage: "photo.badge.plus")
+                        // 撮影またはライブラリ選択を促すボタン
+                        Button {
+                            isShowingPhotoSourceOptions = true
+                        } label: {
+                            Label(viewModel.selectedImageData == nil ? "写真を追加する" : "写真を変更する", systemImage: "camera.badge.plus")
                                 .font(.subheadline)
                                 .foregroundStyle(.white)
                                 .fontWeight(.semibold)
@@ -88,13 +92,6 @@ public struct GeneralInfoStepView: View {
                     }
                 }
                 .padding(.vertical, 4)
-            }
-            .onChange(of: selectedPhotoItem) { oldValue, newValue in
-                Task {
-                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                        viewModel.selectedImageData = data
-                    }
-                }
             }
             
             Section("酒種") {
@@ -114,7 +111,6 @@ public struct GeneralInfoStepView: View {
                 TextField("生産者 / 蔵元 / ブルワリー", text: $viewModel.producer)
                     .focused($focusedField, equals: .producer)
 
-                // 酒種ごとの固有入力フィールドの動的切り替え
                 switch viewModel.selectedCategory {
                 case .wine:
                     Picker("ワインタイプ", selection: $viewModel.wineType) {
@@ -160,12 +156,9 @@ public struct GeneralInfoStepView: View {
                         Text("純米大吟醸").tag("純米大吟醸")
                         Text("純米吟醸").tag("純米吟醸")
                         Text("大吟醸").tag("大吟醸")
-                        Text("大吟醸").tag("吟醸")
                         Text("特別純米").tag("特別純米")
                         Text("純米酒").tag("純米")
-                        Text("本醸造").tag("特別本醸造")
                         Text("本醸造").tag("本醸造")
-                        Text("その他").tag("普通酒")
                         Text("その他").tag("その他")
                     }
                     
@@ -199,6 +192,80 @@ public struct GeneralInfoStepView: View {
             Section("保管場所") {
                 StoragePickerView(viewModel: viewModel)
             }
+        }
+        // 重複を解消し、ここに1つだけ confirmationDialog を配置
+        .confirmationDialog("写真の追加方法を選択", isPresented: $isShowingPhotoSourceOptions, titleVisibility: .visible) {
+            Button("写真を撮る") {
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    isShowingCamera = true
+                } else {
+                    showAlert("このデバイスではカメラを利用できません。")
+                }
+            }
+            Button("ライブラリから選ぶ") {
+                isShowingPhotosPicker = true
+            }
+            Button("キャンセル", role: .cancel) {}
+        }
+        // カメラ撮影画面（Sheet）
+        .sheet(isPresented: $isShowingCamera) {
+            ImagePickerView(sourceType: .camera) { image in
+                if let data = image.jpegData(compressionQuality: 0.8) {
+                    viewModel.selectedImageData = data
+                }
+            }
+        }
+        // 写真ライブラリピッカー
+        .photosPicker(
+            isPresented: $isShowingPhotosPicker,
+            selection: $selectedPhotoItem,
+            matching: .images
+        )
+        .onChange(of: selectedPhotoItem) { oldValue, newValue in
+            Task {
+                if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                    viewModel.selectedImageData = data
+                }
+            }
+        }
+    }
+}
+
+/// UIKitのカメラ（UIImagePickerController）をSwiftUIで使うためのラッパー
+public struct ImagePickerView: UIViewControllerRepresentable {
+    public var sourceType: UIImagePickerController.SourceType
+    public var onImagePicked: (UIImage) -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    public func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = sourceType
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    public func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    public final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        let parent: ImagePickerView
+
+        init(_ parent: ImagePickerView) {
+            self.parent = parent
+        }
+
+        public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let image = info[.originalImage] as? UIImage {
+                parent.onImagePicked(image)
+            }
+            parent.dismiss()
+        }
+
+        public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            parent.dismiss()
         }
     }
 }

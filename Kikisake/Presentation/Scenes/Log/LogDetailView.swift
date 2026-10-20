@@ -13,6 +13,7 @@ public struct LogDetailView: View {
     let log: TastingLog
 
     @State private var isShowingImageModal: Bool = false
+    @State private var isShowingEditSheet: Bool = false
 
     public init(log: TastingLog) {
         self.log = log
@@ -83,19 +84,31 @@ public struct LogDetailView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                if #available(iOS 16.0, *) {
-                    let shareImage = renderShareImage()
-                    ShareLink(
-                        item: shareImage,
-                        preview: SharePreview(
-                            "\(log.item?.name ?? "テイスティング") の記録",
-                            image: shareImage
-                        )
-                    ) {
-                        Image(systemName: "square.and.arrow.up")
+                HStack(spacing: 16) {
+                    Button {
+                        isShowingEditSheet = true
+                    } label: {
+                        Text("編集")
+                            .fontWeight(.medium)
+                    }
+
+                    if #available(iOS 16.0, *) {
+                        let shareImage = renderShareImage()
+                        ShareLink(
+                            item: shareImage,
+                            preview: SharePreview(
+                                "\(log.item?.name ?? "テイスティング") の記録",
+                                image: shareImage
+                            )
+                        ) {
+                            Image(systemName: "square.and.arrow.up")
+                        }
                     }
                 }
             }
+        }
+        .sheet(isPresented: $isShowingEditSheet) {
+            EditLogFlowView(log: log)
         }
     }
 

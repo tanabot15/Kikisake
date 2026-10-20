@@ -22,13 +22,29 @@ public struct SettingsView: View {
         NavigationStack {
             Form {
                 // MARK: - 1. アプリ設定
-                Section("外観・表示") {
+                Section("アプリ設定") {
                     Picker("外観モード", selection: $appState.appearanceMode) {
                         ForEach(AppearanceMode.allCases) { mode in
                             Text(mode.rawValue).tag(mode)
                         }
                     }
                     .pickerStyle(.menu)
+                    
+                    // 言語設定（デバイスの設定アプリへ誘導）
+                    Button {
+                        viewModel.openDeviceSettings()
+                    } label: {
+                        HStack {
+                            Text("言語 / Language")
+                            Spacer()
+                            Text(viewModel.currentLanguageDisplayName)
+                                .foregroundStyle(.secondary)
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
                 }
 
                 // MARK: - 2. データ・管理

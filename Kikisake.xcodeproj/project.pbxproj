@@ -51,6 +51,8 @@
 		D904425F308602FD00EF4807 /* TasteRadarCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904425E308602FD00EF4807 /* TasteRadarCardView.swift */; };
 		D90442613086031D00EF4807 /* MatrixAnalysisCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90442603086031D00EF4807 /* MatrixAnalysisCardView.swift */; };
 		D9044264308638D500EF4807 /* BoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044263308638D500EF4807 /* BoardingView.swift */; };
+		D90442663086F04700EF4807 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D90442653086F04700EF4807 /* Localizable.xcstrings */; };
+		D9044268308721A200EF4807 /* EditLogFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044267308721A200EF4807 /* EditLogFlowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,13 +95,15 @@
 		D90442513081A45200EF4807 /* AromaStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AromaStepView.swift; sourceTree = "<group>"; };
 		D90442533081A46800EF4807 /* TasteStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasteStepView.swift; sourceTree = "<group>"; };
 		D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeverageSpecificMetadata.swift; sourceTree = "<group>"; };
-		D9044257308254EA00EF4807 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D9044257308254EA00EF4807 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9044258308366C300EF4807 /* StorageLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageLocation.swift; sourceTree = "<group>"; };
 		D904425A308368BF00EF4807 /* AddLocationSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationSheetView.swift; sourceTree = "<group>"; };
 		D904425C3085D32F00EF4807 /* TastingCardShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCardShareView.swift; sourceTree = "<group>"; };
 		D904425E308602FD00EF4807 /* TasteRadarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasteRadarCardView.swift; sourceTree = "<group>"; };
 		D90442603086031D00EF4807 /* MatrixAnalysisCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixAnalysisCardView.swift; sourceTree = "<group>"; };
 		D9044263308638D500EF4807 /* BoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardingView.swift; sourceTree = "<group>"; };
+		D90442653086F04700EF4807 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		D9044267308721A200EF4807 /* EditLogFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogFlowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,7 +136,6 @@
 		D90441E5307E817B00EF4807 /* Kikisake */ = {
 			isa = PBXGroup;
 			children = (
-				D9044257308254EA00EF4807 /* Info.plist */,
 				D90441EA307E832E00EF4807 /* App */,
 				D90441EB307E833C00EF4807 /* Core */,
 				D90441EC307E836900EF4807 /* Data */,
@@ -197,6 +200,8 @@
 			isa = PBXGroup;
 			children = (
 				D90441E1307E817B00EF4807 /* Assets.xcassets */,
+				D9044257308254EA00EF4807 /* Info.plist */,
+				D90442653086F04700EF4807 /* Localizable.xcstrings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -349,6 +354,7 @@
 				D904422E307E85AB00EF4807 /* LogListViewModel.swift */,
 				D9044230307E85B600EF4807 /* LogDetailView.swift */,
 				D904425C3085D32F00EF4807 /* TastingCardShareView.swift */,
+				D9044267308721A200EF4807 /* EditLogFlowView.swift */,
 			);
 			path = Log;
 			sourceTree = "<group>";
@@ -411,11 +417,12 @@
 				};
 			};
 			buildConfigurationList = D90441CC307E815800EF4807 /* Build configuration list for PBXProject "Kikisake" */;
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = D90441C8307E815800EF4807;
 			minimizedProjectReferenceProxies = 1;
@@ -434,6 +441,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D90442663086F04700EF4807 /* Localizable.xcstrings in Resources */,
 				D90441E6307E817B00EF4807 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -452,6 +460,7 @@
 				D9044211307E84E100EF4807 /* AppConstants.swift in Sources */,
 				D904422F307E85AB00EF4807 /* LogListViewModel.swift in Sources */,
 				D9044231307E85B600EF4807 /* LogDetailView.swift in Sources */,
+				D9044268308721A200EF4807 /* EditLogFlowView.swift in Sources */,
 				D9044235307E85CF00EF4807 /* AnalyticsViewModel.swift in Sources */,
 				D904420B307E84C300EF4807 /* Color+Extension.swift in Sources */,
 				D904424E3081A41E00EF4807 /* GeneralInfoStepView.swift in Sources */,
@@ -630,8 +639,8 @@
 				INFOPLIST_FILE = Kikisake/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Kikisake;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
-				INFOPLIST_KEY_NSCameraUsageDescription = "ボトルのラベルを撮影して記録するためにカメラを使用します。";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "保存されているラベルの写真を選択してインポートするためにフォトライブラリを使用します。";
+				INFOPLIST_KEY_NSCameraUsageDescription = "ボトルのラベル写真を撮影するためにカメラを使用します。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "ボトルのラベル写真をライブラリから選択するために使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -672,8 +681,8 @@
 				INFOPLIST_FILE = Kikisake/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Kikisake;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
-				INFOPLIST_KEY_NSCameraUsageDescription = "ボトルのラベルを撮影して記録するためにカメラを使用します。";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "保存されているラベルの写真を選択してインポートするためにフォトライブラリを使用します。";
+				INFOPLIST_KEY_NSCameraUsageDescription = "ボトルのラベル写真を撮影するためにカメラを使用します。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "ボトルのラベル写真をライブラリから選択するために使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
