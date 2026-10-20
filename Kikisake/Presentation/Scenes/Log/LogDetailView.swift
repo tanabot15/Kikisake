@@ -88,8 +88,7 @@ public struct LogDetailView: View {
                     Button {
                         isShowingEditSheet = true
                     } label: {
-                        Text("編集")
-                            .fontWeight(.medium)
+                        Image(systemName: "slider.horizontal.2.arrow.trianglehead.counterclockwise")
                     }
 
                     if #available(iOS 16.0, *) {

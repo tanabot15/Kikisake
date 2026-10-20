@@ -3,6 +3,12 @@
   "strings" : {
     "(%lld %%)" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld %%)"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18,13 +24,33 @@
 
     },
     "%" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%"
+          }
+        }
+      }
     },
     "%@\n▶" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@\n▶"
+          }
+        }
+      }
     },
     "%@ / %@" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -35,6 +61,12 @@
     },
     "%@ %lld本" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$lld"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -48,6 +80,12 @@
     },
     "%@: %lld件" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@: %2$lld"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -60,10 +98,23 @@
 
     },
     "%lld" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
     },
     "▲ %@: %@" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "▲ %1$@: %2$@"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -74,6 +125,12 @@
     },
     "▼ %@: %@" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "▼ %1$@: %2$@"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -83,25 +140,67 @@
       }
     },
     "◀\n%@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "◀\n%@"
+          }
+        }
+      }
     },
     "IBU (国際苦味単位)" : {
 
     },
     "Kikisake - Professional Tasting Log" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kikisake - Professional Tasting Log"
+          }
+        }
+      }
     },
     "Kikisakeへようこそ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome to Kikisake"
+          }
+        }
+      }
     },
     "OK" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
     },
     "アプリ情報" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Info"
+          }
+        }
+      }
     },
     "アプリ設定" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Settings"
+          }
+        }
+      }
     },
     "アルコール度数 (例: 14.5 または 5)" : {
 
@@ -110,7 +209,14 @@
 
     },
     "オレンジ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orange"
+          }
+        }
+      }
     },
     "お酒の感動を記録し、あなたの「好み」を\n深く知るためのテイスティング手帳" : {
 
@@ -119,16 +225,37 @@
 
     },
     "キャンセル" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
     },
     "このボトルを開ける" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open This Bottle"
+          }
+        }
+      }
     },
     "この保管場所に在庫はありません" : {
 
     },
     "さっそくはじめる" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Started"
+          }
+        }
+      }
     },
     "サンプルデータを読み込み" : {
 
@@ -152,7 +279,14 @@
 
     },
     "バージョン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        }
+      }
     },
     "バランス表現 (複数選択可)" : {
 
@@ -191,16 +325,47 @@
 
     },
     "ログ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log"
+          }
+        }
+      }
+    },
+    "ログの修正 (%lld/5)" : {
 
     },
     "ログ詳細" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log Details"
+          }
+        }
+      }
     },
     "ロゼ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rose"
+          }
+        }
+      }
     },
     "ワインタイプ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine Type"
+          }
+        }
+      }
     },
     "ワイン詳細" : {
 
@@ -212,7 +377,14 @@
 
     },
     "使い方ガイドを見る" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View User Guide"
+          }
+        }
+      }
     },
     "使用米 (例: 山田錦)" : {
 
@@ -227,7 +399,14 @@
 
     },
     "保存" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
     },
     "保管場所" : {
 
@@ -253,20 +432,34 @@
     "写真を変更する" : {
 
     },
-    "写真を撮る（カメラ）" : {
+    "写真を撮る" : {
 
     },
     "写真を追加する" : {
 
     },
     "分析" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analytics"
+          }
+        }
+      }
     },
     "分析カテゴリ" : {
 
     },
     "割合" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rate"
+          }
+        }
+      }
     },
     "原産地呼称 (例: AOC ボルドー / DOCG バローロ)" : {
 
@@ -287,7 +480,14 @@
 
     },
     "在庫" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inventory"
+          }
+        }
+      }
     },
     "在庫なし" : {
 
@@ -296,7 +496,14 @@
 
     },
     "在庫管理" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inventory Management"
+          }
+        }
+      }
     },
     "基本五味" : {
 
@@ -346,6 +553,9 @@
     "日本酒詳細" : {
 
     },
+    "更新" : {
+
+    },
     "未設定 (自動作成)" : {
 
     },
@@ -356,7 +566,14 @@
 
     },
     "次へ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        }
+      }
     },
     "残り %lld本" : {
 
@@ -419,6 +636,9 @@
     "総合評価・日付" : {
 
     },
+    "編集" : {
+
+    },
     "補足メモ (任意)" : {
 
     },
@@ -438,10 +658,24 @@
 
     },
     "赤" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Red"
+          }
+        }
+      }
     },
     "追加" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
     },
     "追加 (ステップ %lld/5)" : {
 
