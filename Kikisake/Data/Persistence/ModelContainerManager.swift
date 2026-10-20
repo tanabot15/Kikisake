@@ -19,7 +19,8 @@ public final class ModelContainerManager {
     private init() {
         let schema = Schema([
             BeverageItem.self,
-            TastingLog.self
+            TastingLog.self,
+            StorageLocation.self
         ])
         
         // プレビュー（Canvas）実行中かどうかを安全に判定する

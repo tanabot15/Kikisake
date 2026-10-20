@@ -15,9 +15,4 @@ public enum AppConstants {
         public static let defaultLocation = "ワインセラー"
         public static let availableLocations = ["ワインセラー", "冷蔵庫", "常温"]
     }
-    
-    public enum Limit {
-        public static let maxFreeLogs = 30
-        public static let maxFreeInventory = 10
-    }
 }

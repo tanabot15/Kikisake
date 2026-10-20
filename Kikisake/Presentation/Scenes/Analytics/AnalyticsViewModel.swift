@@ -54,7 +54,7 @@ public struct HeatmapDay: Identifiable {
 @Observable
 public final class AnalyticsViewModel {
     public var selectedSection: AnalyticsSection = .consumption
-    public var selectedTimeFilter: AnalyticsTimeFilter = .months3
+    public var selectedTimeFilter: AnalyticsTimeFilter = .all
     
     private let calculateUseCase = CalculateAnalyticsUseCase()
 
