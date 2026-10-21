@@ -257,6 +257,9 @@
         }
       }
     },
+    "エラー" : {
+
+    },
     "オレンジ" : {
       "localizations" : {
         "en" : {
@@ -397,6 +400,9 @@
         }
       }
     },
+    "テイスティングログの確認" : {
+
+    },
     "バージョン" : {
       "localizations" : {
         "en" : {
@@ -428,10 +434,24 @@
       }
     },
     "ビアスタイル (例: IPA, Stout)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beer Style (e.g., IPA, Stout)"
+          }
+        }
+      }
     },
     "ブドウ品種" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grape Varieties"
+          }
+        }
+      }
     },
     "プライバシーポリシー" : {
       "localizations" : {
@@ -444,25 +464,74 @@
       }
     },
     "プロフェッショナル・マトリクス分析" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Professional Matrix Analysis"
+          }
+        }
+      }
     },
     "ボトルのラベル写真を登録すると、リストで簡単に判別できます。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a bottle label photo to easily identify it in your list."
+          }
+        }
+      }
     },
     "マイベスト（お気に入り銘柄）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Best"
+          }
+        }
+      }
     },
     "マトリクス" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Matrix"
+          }
+        }
+      }
     },
     "よく感じる香り・アロマの好み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flavor & Aroma Preferences"
+          }
+        }
+      }
     },
     "ライブラリから選ぶ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose from Library"
+          }
+        }
+      }
     },
     "ラベル写真" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Label Photo"
+          }
+        }
+      }
     },
     "ログ" : {
       "localizations" : {
@@ -475,7 +544,14 @@
       }
     },
     "ログの修正 (%lld/5)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Log (%lld/5)"
+          }
+        }
+      }
     },
     "ログ詳細" : {
       "localizations" : {
@@ -518,10 +594,24 @@
       }
     },
     "件数" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
+          }
+        }
+      }
     },
     "余韻" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish"
+          }
+        }
+      }
     },
     "使い方ガイドを見る" : {
       "localizations" : {
@@ -534,13 +624,34 @@
       }
     },
     "使用米 (例: 山田錦)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rice Variety (e.g., Yamada Nishiki)"
+          }
+        }
+      }
     },
     "例: 温度14度設定" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g., Set to 14°C"
+          }
+        }
+      }
     },
     "例: 自宅メインセラー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g., Home Main Cellar"
+          }
+        }
+      }
     },
     "価格 (円)" : {
       "localizations" : {
@@ -563,34 +674,107 @@
       }
     },
     "保管場所" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage Location"
+          }
+        }
+      }
     },
     "保管場所が登録されていません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No storage locations registered."
+          }
+        }
+      }
     },
     "保管場所の名称" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location Name"
+          }
+        }
+      }
     },
     "保管場所の追加" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Location"
+          }
+        }
+      }
+    },
+    "保管場所を選択して保存" : {
 
     },
     "保管場所一覧" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location List"
+          }
+        }
+      }
     },
     "写真の追加方法を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Photo Source"
+          }
+        }
+      }
     },
     "写真を削除" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Photo"
+          }
+        }
+      }
     },
     "写真を変更する" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Photo"
+          }
+        }
+      }
     },
     "写真を撮る" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take Photo"
+          }
+        }
+      }
     },
     "写真を追加する" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Photo"
+          }
+        }
+      }
     },
     "分析" : {
       "localizations" : {
@@ -603,7 +787,14 @@
       }
     },
     "分析カテゴリ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analysis Category"
+          }
+        }
+      }
     },
     "割合" : {
       "localizations" : {
@@ -616,22 +807,64 @@
       }
     },
     "原産地呼称 (例: AOC ボルドー / DOCG バローロ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appellation (e.g., AOC Bordeaux / DOCG Barolo)"
+          }
+        }
+      }
     },
     "右上の「＋」ボタンから保管場所を追加してください。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a storage location using the \"+\" button at the top right."
+          }
+        }
+      }
     },
     "味わいプロファイル" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flavor Profile"
+          }
+        }
+      }
     },
     "味わい構造プロファイル" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taste Structure Profile"
+          }
+        }
+      }
     },
     "品種 (例: カベルネ・ソーヴィニヨン)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grape Variety (e.g., Cabernet Sauvignon) または Variety (e.g., Cabernet Sauvignon)"
+          }
+        }
+      }
     },
     "品種を追加" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Variety"
+          }
+        }
+      }
     },
     "在庫" : {
       "localizations" : {
@@ -644,80 +877,244 @@
       }
     },
     "在庫なし" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Out of Stock"
+          }
+        }
+      }
+    },
+    "在庫へ" : {
 
     },
     "在庫へ保存" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save to Inventory"
+          }
+        }
+      }
     },
     "在庫管理" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inventory Management"
+            "value" : "Inventory"
           }
         }
       }
     },
     "基本五味" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Five Basic Tastes"
+          }
+        }
+      }
     },
     "基本五味 (5味覚)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Five Basic Tastes"
+          }
+        }
+      }
     },
     "基本情報" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basic Info"
+          }
+        }
+      }
     },
     "場所を追加" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Location"
+          }
+        }
+      }
     },
     "外観" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        }
+      }
     },
     "外観・色調の選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Appearance & Color"
+          }
+        }
+      }
     },
     "外観・香り" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance & Aroma"
+          }
+        }
+      }
     },
     "外観の補足 (例: 輝きがある、粘性高い)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance Notes (e.g., Clear, Viscous)"
+          }
+        }
+      }
     },
     "外観モード" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance Mode"
+          }
+        }
+      }
     },
     "多" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "High"
+          }
+        }
+      }
     },
     "大吟醸" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daiginjo"
+          }
+        }
+      }
     },
     "少" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low"
+          }
+        }
+      }
     },
     "平均テイストバランス" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Average Taste Balance"
+          }
+        }
+      }
     },
     "戻る" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
+    },
+    "新しいログとして引き継ぐ" : {
 
     },
     "日本酒度 (例: +3.0)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sake Meter Value (e.g., +3.0)"
+          }
+        }
+      }
     },
     "日本酒詳細" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sake Details"
+          }
+        }
+      }
     },
     "更新" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update"
+          }
+        }
+      }
+    },
+    "未設定 (デフォルト)" : {
 
     },
     "未設定 (自動作成)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Set (Auto-created)"
+          }
+        }
+      }
     },
     "本醸造" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Honjozo"
+          }
+        }
+      }
     },
     "構造・特徴" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Structure & Characteristics"
+          }
+        }
+      }
     },
     "次へ" : {
       "localizations" : {
@@ -730,37 +1127,113 @@
       }
     },
     "残り %lld本" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Left"
+          }
+        }
+      }
     },
     "残り: %lld 本" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remaining: %lld"
+          }
+        }
+      }
     },
     "渋味" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tannin"
+          }
+        }
+      }
     },
     "特別純米" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tokubetsu Junmai"
+          }
+        }
+      }
     },
     "特定名称" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Designated Sake Designation"
+          }
+        }
+      }
     },
     "生産地 (例: ボルドー, 新潟、チェコ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Region (e.g., Bordeaux, Niigata, Czech Republic)"
+          }
+        }
+      }
     },
     "生産者 / 蔵元 / ブルワリー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Producer / Brewery"
+          }
+        }
+      }
     },
     "白" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White"
+          }
+        }
+      }
     },
     "確認" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm"
+          }
+        }
+      }
     },
     "種類" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
     },
     "精米歩合 (例: 50%)" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rice Polishing Ratio (e.g., 50%)"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -770,43 +1243,134 @@
       }
     },
     "純米吟醸" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Junmai Ginjo"
+          }
+        }
+      }
     },
     "純米大吟醸" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Junmai Daiginjo"
+          }
+        }
+      }
     },
     "純米酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Junmai"
+          }
+        }
+      }
     },
     "総合コメント" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overall Comments"
+          }
+        }
+      }
     },
     "総合スコア" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overall Score"
+          }
+        }
+      }
     },
     "総合スコア: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overall Score: %@"
+          }
+        }
+      }
     },
     "総合評価・日付" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overall Rating & Date"
+          }
+        }
+      }
     },
     "補足メモ (任意)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Additional Notes (Optional)"
+          }
+        }
+      }
     },
     "言語 / Language" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
+          }
+        }
+      }
     },
     "設定" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
     },
     "評価・スコア" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating & Score"
+          }
+        }
+      }
     },
     "該当期間の高評価（★4.5以上）の記録がありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No high-rated logs (★4.5 or higher) found for this period."
+          }
+        }
+      }
     },
     "詳細メモ・自由記述" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detailed Notes"
+          }
+        }
+      }
     },
     "赤" : {
       "localizations" : {
@@ -838,29 +1402,88 @@
         }
       }
     },
-    "酒種" : {
+    "選択したボトルの情報（%@）がすでに入力されています。このボトルのテイスティングログを新しく作成・編集しますか？" : {
 
+    },
+    "酒種" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beverage Type"
+          }
+        }
+      }
     },
     "酒種別 飲酒比率" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consumption Ratio by Type"
+          }
+        }
+      }
     },
     "重み・骨格" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Body & Structure"
+          }
+        }
+      }
     },
     "銘柄名 (必須)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name (Required)"
+          }
+        }
+      }
     },
     "銘柄名、生産者、メモで検索" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search by name, producer, or notes"
+          }
+        }
+      }
     },
     "飲んだ日" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date Tasted"
+          }
+        }
+      }
     },
     "香りタグ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma Tags"
+          }
+        }
+      }
     },
     "香りの記録データがありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No aroma records available."
+          }
+        }
+      }
     }
   },
   "version" : "1.2"

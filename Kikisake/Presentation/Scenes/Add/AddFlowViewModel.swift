@@ -11,6 +11,9 @@ import SwiftUI
 @Observable
 public final class AddFlowViewModel {
     public var currentStep: Int = 1
+    
+    public var showAlreadyFilledAlert: Bool = false
+    public var pendingOpeningItem: BeverageItem? = nil
 
     // Step 1: 一般的な情報
     public var selectedCategory: BeverageCategory = .wine
@@ -72,10 +75,18 @@ public final class AddFlowViewModel {
 
     public init() {
         if let item = AppState.shared.openingItem {
+            // 開けたボトルの情報を保持したまま、ステップ2（外観選択）へ直接進む
             configureWithItem(item)
             self.currentStep = 2
+            
+            // 読み込み完了後に openingItem をクリア
             AppState.shared.openingItem = nil
         }
+    }
+    
+    public func applyOpeningItem(_ item: BeverageItem) {
+        configureWithItem(item)
+        self.currentStep = 2
     }
 
     public func addBlendComponent() {

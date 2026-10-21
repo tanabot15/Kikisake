@@ -20,6 +20,10 @@ public struct InventoryView: View {
     // アコーディオンで展開中の保管場所名を保持するState
     @State private var expandedLocationName: String? = nil
 
+    // エラーハンドリング用のアラートState
+    @State private var showErrorAlert: Bool = false
+    @State private var errorMessage: String = ""
+
     public var body: some View {
         NavigationStack {
             ScrollView {
@@ -139,9 +143,15 @@ public struct InventoryView: View {
 
                                                             Button {
                                                                 do {
+                                                                    // 1. 在庫を1減らす消費処理を実行
                                                                     try viewModel.consumeBottle(item: item)
+                                                                    
+                                                                    // 2. アプリの状態として「今開けたボトル」を保持させる
+                                                                    AppState.shared.openingItem = item
+                                                                    
                                                                 } catch {
-                                                                    print("Error consuming bottle: \(error.localizedDescription)")
+                                                                    errorMessage = error.localizedDescription
+                                                                    showErrorAlert = true
                                                                 }
                                                             } label: {
                                                                 Text("このボトルを開ける")
@@ -190,6 +200,11 @@ public struct InventoryView: View {
             }
             .sheet(isPresented: $showAddLocationSheet) {
                 AddLocationSheetView()
+            }
+            .alert("エラー", isPresented: $showErrorAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(errorMessage)
             }
         }
     }

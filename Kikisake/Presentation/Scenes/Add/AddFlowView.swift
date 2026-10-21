@@ -11,6 +11,8 @@ import SwiftData
 /// [Tab 3] 追加・登録フロー統括ビュー（ツールバーナビゲーション版）
 public struct AddFlowView: View {
     @Environment(\.modelContext) private var modelContext
+    @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
+    
     @State private var viewModel = AddFlowViewModel()
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
@@ -69,26 +71,33 @@ public struct AddFlowView: View {
             .navigationTitle("追加 (ステップ \(viewModel.currentStep)/5)")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // 左上：ステップ1のときは「在庫へ保存」、ステップ2以降のときは「戻る」
+                // 左上：ステップ1のときは「在庫へ」メニューボタン、ステップ2以降のときは「戻る」
                 ToolbarItem(placement: .topBarLeading) {
                     if viewModel.currentStep == 1 {
-                        Button {
-                            if isNameEmpty {
-                                alertMessage = "銘柄名は必須項目です。"
-                                showAlert = true
-                                return
-                            }
-                            do {
-                                try viewModel.saveAsInventoryOnly(modelContext: modelContext)
-                                AppState.shared.selectedTab = 3 // 在庫タブへ移動
-                            } catch {
-                                alertMessage = "在庫の保存に失敗しました: \(error.localizedDescription)"
-                                showAlert = true
+                        Menu {
+                            Text("保管場所を選択して保存").font(.caption)
+                            Divider()
+                            if locations.isEmpty {
+                                Button("未設定 (デフォルト)") {
+                                    saveToInventory(locationName: "未設定")
+                                }
+                            } else {
+                                ForEach(locations, id: \.name) { loc in
+                                    Button(loc.name) {
+                                        saveToInventory(locationName: loc.name)
+                                    }
+                                }
                             }
                         } label: {
-                            Text("在庫へ保存")
-                                .foregroundColor(isNameEmpty ? .gray : .accentColor)
+                            HStack(spacing: 4) {
+                                Text("在庫へ")
+                                Image(systemName: "chevron.down")
+                                    .font(.caption2)
+                            }
+                            .fontWeight(.semibold)
+                            .foregroundColor(isNameEmpty ? .gray : .accentColor)
                         }
+                        .disabled(isNameEmpty)
                     } else {
                         Button {
                             viewModel.currentStep -= 1
@@ -101,7 +110,7 @@ public struct AddFlowView: View {
                     }
                 }
 
-                // 右上：次へ または 保存するボタン
+                // 右上：ステップ1〜4は「次へ」、ステップ5は「保存」
                 ToolbarItem(placement: .topBarTrailing) {
                     if viewModel.currentStep < 5 {
                         Button("次へ") {
@@ -130,7 +139,6 @@ public struct AddFlowView: View {
             }
             .alert("確認", isPresented: $showAlert) {
                 Button("OK", role: .cancel) {
-                    // ✨ アラートの「OK」を押した時に銘柄名テキストフィールドにフォーカスをあてる
                     if isNameEmpty {
                         focusedField = .name
                     }
@@ -138,6 +146,36 @@ public struct AddFlowView: View {
             } message: {
                 Text(alertMessage)
             }
+            .alert("テイスティングログの確認", isPresented: $viewModel.showAlreadyFilledAlert) {
+                Button("新しいログとして引き継ぐ", role: .none) {
+                    if let item = viewModel.pendingOpeningItem {
+                        viewModel.applyOpeningItem(item)
+                    }
+                }
+                Button("キャンセル", role: .cancel) {
+                    viewModel.pendingOpeningItem = nil
+                    viewModel.reset()
+                }
+            } message: {
+                Text("選択したボトルの情報（\(viewModel.pendingOpeningItem?.name ?? "")）がすでに入力されています。このボトルのテイスティングログを新しく作成・編集しますか？")
+            }
+        }
+    }
+
+    /// メニューから選択された保管場所を指定して在庫として保存するヘルパー
+    private func saveToInventory(locationName: String) {
+        if isNameEmpty {
+            alertMessage = "銘柄名は必須項目です。"
+            showAlert = true
+            return
+        }
+        do {
+            viewModel.storageLocation = locationName
+            try viewModel.saveAsInventoryOnly(modelContext: modelContext)
+            AppState.shared.selectedTab = 3 // 在庫タブへ移動（※環境に合わせてインデックスを調整してください）
+        } catch {
+            alertMessage = "在庫の保存に失敗しました: \(error.localizedDescription)"
+            showAlert = true
         }
     }
 }

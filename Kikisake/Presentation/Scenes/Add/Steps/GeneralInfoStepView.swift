@@ -20,7 +20,7 @@ public enum GeneralInfoField {
     case extra
 }
 
-/// [Step 1] 一般的な情報（酒種・基本情報・保管場所）入力ビュー
+/// [Step 1] 一般的な情報（酒種・基本情報）入力ビュー
 public struct GeneralInfoStepView: View {
     @Bindable var viewModel: AddFlowViewModel
     @FocusState.Binding var focusedField: GeneralInfoField?
@@ -29,7 +29,7 @@ public struct GeneralInfoStepView: View {
     @State private var selectedPhotoItem: PhotosPickerItem? = nil
     @State private var isShowingCamera: Bool = false
     @State private var isShowingPhotoSourceOptions: Bool = false
-    @State private var isShowingPhotosPicker: Bool = false // ライブラリピッカーを明示的に開くフラグ
+    @State private var isShowingPhotosPicker: Bool = false
 
     public init(
         viewModel: AddFlowViewModel,
@@ -45,7 +45,6 @@ public struct GeneralInfoStepView: View {
         Form {
             Section("ラベル写真") {
                 HStack(spacing: 16) {
-                    // 写真のプレビュー
                     if let imageData = viewModel.selectedImageData,
                        let uiImage = UIImage(data: imageData) {
                         Image(uiImage: uiImage)
@@ -70,7 +69,6 @@ public struct GeneralInfoStepView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
 
-                        // 撮影またはライブラリ選択を促すボタン
                         Button {
                             isShowingPhotoSourceOptions = true
                         } label: {
@@ -188,12 +186,7 @@ public struct GeneralInfoStepView: View {
                     .keyboardType(.numberPad)
                     .focused($focusedField, equals: .price)
             }
-
-            Section("保管場所") {
-                StoragePickerView(viewModel: viewModel)
-            }
         }
-        // 重複を解消し、ここに1つだけ confirmationDialog を配置
         .confirmationDialog("写真の追加方法を選択", isPresented: $isShowingPhotoSourceOptions, titleVisibility: .visible) {
             Button("写真を撮る") {
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -207,7 +200,6 @@ public struct GeneralInfoStepView: View {
             }
             Button("キャンセル", role: .cancel) {}
         }
-        // カメラ撮影画面（Sheet）
         .sheet(isPresented: $isShowingCamera) {
             ImagePickerView(sourceType: .camera) { image in
                 if let data = image.jpegData(compressionQuality: 0.8) {
@@ -215,7 +207,6 @@ public struct GeneralInfoStepView: View {
                 }
             }
         }
-        // 写真ライブラリピッカー
         .photosPicker(
             isPresented: $isShowingPhotosPicker,
             selection: $selectedPhotoItem,
@@ -231,7 +222,7 @@ public struct GeneralInfoStepView: View {
     }
 }
 
-/// UIKitのカメラ（UIImagePickerController）をSwiftUIで使うためのラッパー
+/// UIKitのカメラ（UIImagePickerController）ラッパー
 public struct ImagePickerView: UIViewControllerRepresentable {
     public var sourceType: UIImagePickerController.SourceType
     public var onImagePicked: (UIImage) -> Void
