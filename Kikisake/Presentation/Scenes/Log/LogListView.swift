@@ -24,7 +24,7 @@ public struct LogListView: View {
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                AdMobBannerView()
+                ConditionalAdMobBannerView()
                     .frame(height: 50)
                     .background(Color(.systemBackground))
                 

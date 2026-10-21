@@ -7,6 +7,8 @@
 
 import SwiftUI
 import SwiftData
+import GoogleMobileAds
+import AppTrackingTransparency
 
 /// アプリケーションのエントリーポイント
 @main
@@ -15,6 +17,9 @@ struct KikisakeApp: App {
     @Bindable private var appState = AppState.shared
 
     init() {
+        // Google Mobile Ads SDK の初期化
+        MobileAds.shared.start(completionHandler: nil)
+
         // デバッグビルド（シミュレータ等）の起動時にサンプルデータを自動挿入
         PreviewSampleLoader.insertSamplesIfNeeded(into: modelContainerManager.container.mainContext)
     }
@@ -35,6 +40,30 @@ struct KikisakeApp: App {
                     ))
                     .interactiveDismissDisabled(true) // 途中でスワイプして閉じられないように固定
                 }
+                .task {
+                    requestTrackingPermission()
+                }
+        }
+    }
+
+    /// ATT（トラッキング許可）のポップアップを要求するメソッド
+    private func requestTrackingPermission() {
+        // 少し遅延を入れて、画面表示やオンボーディングが落ち着いた後にポップアップを出すとスムーズです
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                switch status {
+                case .authorized:
+                    print("ユーザーがトラッキングを許可しました。")
+                case .denied:
+                    print("ユーザーがトラッキングを拒否しました。")
+                case .restricted:
+                    print("トラッキングが制限されています。")
+                case .notDetermined:
+                    print("まだトラッキングの選択がされていません。")
+                @unknown default:
+                    break
+                }
+            }
         }
     }
 }

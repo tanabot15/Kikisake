@@ -65,14 +65,14 @@ public struct GeneralInfoStepView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("ボトルのラベル写真を登録すると、リストで簡単に判別できます。")
+                        Text("ボトルのラベル写真を登録できます。")
                             .font(.caption)
                             .foregroundStyle(.secondary)
 
                         Button {
                             isShowingPhotoSourceOptions = true
                         } label: {
-                            Label(viewModel.selectedImageData == nil ? "写真を追加する" : "写真を変更する", systemImage: "camera.badge.plus")
+                            Label(viewModel.selectedImageData == nil ? "写真を追加する" : "写真を変更する", systemImage: "photo.badge.plus")
                                 .font(.subheadline)
                                 .foregroundStyle(.white)
                                 .fontWeight(.semibold)

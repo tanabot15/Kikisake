@@ -483,15 +483,8 @@
         }
       }
     },
-    "ボトルのラベル写真を登録すると、リストで簡単に判別できます。" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a bottle label photo to easily identify it in your list."
-          }
-        }
-      }
+    "ボトルのラベル写真を登録できます。" : {
+
     },
     "マイベスト（お気に入り銘柄）" : {
       "localizations" : {

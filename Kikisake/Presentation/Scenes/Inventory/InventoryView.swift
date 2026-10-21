@@ -24,7 +24,7 @@ public struct InventoryView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    AdMobBannerView()
+                    ConditionalAdMobBannerView()
                         .frame(height: 50)
                         .background(Color(.systemBackground))
                     
