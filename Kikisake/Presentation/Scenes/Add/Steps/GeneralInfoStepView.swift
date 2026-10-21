@@ -185,6 +185,9 @@ public struct GeneralInfoStepView: View {
                 TextField("価格 (円)", text: $viewModel.priceString)
                     .keyboardType(.numberPad)
                     .focused($focusedField, equals: .price)
+                
+                TextField("登録本数 (本)", text: $viewModel.stockQuantityString)
+                    .keyboardType(.numberPad)
             }
         }
         .confirmationDialog("写真の追加方法を選択", isPresented: $isShowingPhotoSourceOptions, titleVisibility: .visible) {

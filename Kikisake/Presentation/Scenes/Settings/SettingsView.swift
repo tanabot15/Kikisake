@@ -1,9 +1,5 @@
-//
 //  SettingsView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import SwiftUI
 import SwiftData
@@ -14,9 +10,9 @@ public struct SettingsView: View {
     @Bindable private var appState = AppState.shared
     @State private var viewModel = SettingsViewModel()
     
-    // オンボーディング再表示用の状態
+    // オンボーディング再表示用およびアラート用の状態
     @State private var showOnboarding: Bool = false
-    @State private var showResetAlert: Bool = false
+    @State private var showLoadedAlert: Bool = false
 
     public var body: some View {
         NavigationStack {
@@ -30,7 +26,6 @@ public struct SettingsView: View {
                     }
                     .pickerStyle(.menu)
                     
-                    // 言語設定（デバイスの設定アプリへ誘導）
                     Button {
                         viewModel.openDeviceSettings()
                     } label: {
@@ -56,7 +51,8 @@ public struct SettingsView: View {
                     }
 
                     Button {
-                        PreviewSampleLoader.insertSamplesIfNeeded(into: modelContext)
+                        PreviewSampleLoader.insertSamples(into: modelContext)
+                        showLoadedAlert = true
                     } label: {
                         Text("サンプルデータを読み込み")
                     }
@@ -81,6 +77,11 @@ public struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showOnboarding) {
                 BoardingView(isPresented: $showOnboarding)
+            }
+            .alert("サンプルデータの読み込み", isPresented: $showLoadedAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("サンプルデータと必要な保管場所が追加されました。")
             }
         }
     }

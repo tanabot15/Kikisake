@@ -22,6 +22,7 @@ public final class AddFlowViewModel {
     public var abvString: String = ""
     public var priceString: String = ""
     public var storageLocation: String = "未設定"
+    public var stockQuantityString: String = "1"
     public var selectedImageData: Data? = nil
 
     // - ワイン用
@@ -101,6 +102,7 @@ public final class AddFlowViewModel {
         self.vintage = ""
         self.abvString = ""
         self.priceString = ""
+        self.stockQuantityString = "1"
         self.storageLocation = "未設定"
         
         self.wineType = "赤"
@@ -216,6 +218,7 @@ public final class AddFlowViewModel {
 
         let abv = Double(abvString)
         let price = Int(priceString)
+        let quantity = Int(stockQuantityString) ?? 1
         let metadataJSON = buildMetadataJSON()
 
         let newItem = BeverageItem(
@@ -226,7 +229,7 @@ public final class AddFlowViewModel {
             vintage: vintage.isEmpty ? nil : vintage,
             alcoholByVolume: abv,
             price: price,
-            stockQuantity: 1,
+            stockQuantity: quantity,
             storageLocation: storageLocation,
             imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
             specificMetadataJSON: metadataJSON
@@ -234,6 +237,7 @@ public final class AddFlowViewModel {
 
         modelContext.insert(newItem)
         try modelContext.save()
+
         reset()
     }
 

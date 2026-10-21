@@ -115,25 +115,28 @@ public struct InventoryView: View {
                                                     .padding(.vertical, 16)
                                             } else {
                                                 ForEach(displayItems) { item in
+                                                    let averageRating: Double? = {
+                                                        guard let logs = item.tastingLogs, !logs.isEmpty else { return nil }
+                                                        let total = logs.reduce(0.0) { $0 + $1.rating }
+                                                        return total / Double(logs.count)
+                                                    }()
+
                                                     VStack(alignment: .leading, spacing: 8) {
-                                                        BeverageCardView(
-                                                            name: item.name,
-                                                            producer: item.producer,
-                                                            category: item.category,
-                                                            region: item.region,
-                                                            vintage: item.vintage,
-                                                            stockQuantity: item.stockQuantity,
-                                                            rating: nil,
-                                                            imageData: item.imageDatas?.first
-                                                        )
+                                                        // ✨ BeverageCardView を NavigationLink で囲み、紐づく最新の TastingLog があれば LogDetailView へ遷移
+                                                        Group {
+                                                            if let latestLog = item.tastingLogs?.sorted(by: { $0.date > $1.date }).first {
+                                                                NavigationLink(destination: LogDetailView(log: latestLog)) {
+                                                                    cardViewContent(item: item, averageRating: averageRating)
+                                                                }
+                                                                .buttonStyle(.plain)
+                                                            } else {
+                                                                // ログがまだない場合はタップしても遷移しない（またはそのまま表示）
+                                                                cardViewContent(item: item, averageRating: averageRating)
+                                                            }
+                                                        }
 
                                                         // ボトルを開けるアクション ＆ 削除ボタン
                                                         HStack {
-                                                            Text("残り: \(item.stockQuantity) 本")
-                                                                .font(.caption)
-                                                                .fontWeight(.semibold)
-                                                                .foregroundStyle(item.stockQuantity > 0 ? Color.accentColor : .secondary)
-                                                            
                                                             Spacer()
 
                                                             // 飲みきった（在庫0）場合のみ表示する削除ボタン
@@ -141,7 +144,7 @@ public struct InventoryView: View {
                                                                 Button(role: .destructive) {
                                                                     viewModel.deleteItem(item, modelContext: modelContext)
                                                                 } label: {
-                                                                    Label("削除", systemImage: "trash")
+                                                                    Text("飲みきった")
                                                                         .font(.caption)
                                                                         .fontWeight(.semibold)
                                                                 }
@@ -176,7 +179,6 @@ public struct InventoryView: View {
                                                     .background(Color(.systemGroupedBackground))
                                                     .cornerRadius(12)
                                                     .padding(.horizontal, 12)
-                                                    // ✨ スワイプによる削除機能（在庫が0の本人のみ、またはいつでもスワイプ削除可能に設定）
                                                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                                         if item.stockQuantity <= 0 {
                                                             Button(role: .destructive) {
@@ -229,6 +231,21 @@ public struct InventoryView: View {
                 Text(errorMessage)
             }
         }
+    }
+
+    /// カード部分のビューをまとめたヘルパー
+    @ViewBuilder
+    private func cardViewContent(item: BeverageItem, averageRating: Double?) -> some View {
+        BeverageCardView(
+            name: item.name,
+            producer: item.producer,
+            category: item.category,
+            region: item.region,
+            vintage: item.vintage,
+            stockQuantity: item.stockQuantity,
+            rating: averageRating,
+            imageData: item.imageDatas?.first
+        )
     }
 }
 

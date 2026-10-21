@@ -9,13 +9,21 @@ import Foundation
 import SwiftData
 
 public enum PreviewSampleLoader {
-    /// シミュレータ起動時などに、データが空であればリッチなサンプルデータを挿入する
-    public static func insertSamplesIfNeeded(into context: ModelContext) {
-        #if DEBUG
-        // すでにデータが存在する場合は重複挿入を防ぐためスキップ
-        let descriptor = FetchDescriptor<BeverageItem>()
-        guard let count = try? context.fetchCount(descriptor), count == 0 else {
-            return
+    /// サンプルデータを強制的に読み込む（設定画面のボタン用）
+    public static func insertSamples(into context: ModelContext) {
+        // 必要に応じてデフォルトの保管場所も自動生成して登録する
+        let locationDescriptor = FetchDescriptor<StorageLocation>()
+        let existingLocations = (try? context.fetch(locationDescriptor)) ?? []
+        let locationNames = existingLocations.map { $0.name }
+
+        if !locationNames.contains("ワインセラー") {
+            context.insert(StorageLocation(name: "ワインセラー", type: .cellar, memo: "自動追加"))
+        }
+        if !locationNames.contains("冷蔵庫") {
+            context.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator, memo: "自動追加"))
+        }
+        if !locationNames.contains("常温") {
+            context.insert(StorageLocation(name: "常温", type: .other, memo: "自動追加"))
         }
 
         let encoder = JSONEncoder()
@@ -49,7 +57,7 @@ public enum PreviewSampleLoader {
             date: Date().addingTimeInterval(-86400 * 3),
             rating: 4.9,
             appearanceNotes: "深みのあるルビーレッド",
-            appearanceColorHex: "#991A33", // ルビーレッドのHEX
+            appearanceColorHex: "#991A33",
             aromaTags: ["カシス", "ヴァニラ", "杉", "トースト"],
             sweetness: 2.0,
             saltiness: 0.0,
@@ -89,7 +97,7 @@ public enum PreviewSampleLoader {
             date: Date().addingTimeInterval(-86400 * 1),
             rating: 4.7,
             appearanceNotes: "微発泡が感じられる透明な輝き",
-            appearanceColorHex: "#F7FAFA", // クリスタル・クリアのHEX
+            appearanceColorHex: "#F7FAFA",
             aromaTags: ["吟醸香", "青りんご", "洋梨", "フレッシュ"],
             sweetness: 3.2,
             saltiness: 0.0,
@@ -127,7 +135,7 @@ public enum PreviewSampleLoader {
             date: Date().addingTimeInterval(-86400 * 6),
             rating: 4.3,
             appearanceNotes: "白濁したペールゴールド",
-            appearanceColorHex: "#EBC733", // ゴールデンのHEX
+            appearanceColorHex: "#EBC733",
             aromaTags: ["シトラス", "コリアンダー", "スパイス", "ホップ"],
             sweetness: 2.5,
             saltiness: 0.0,
@@ -150,7 +158,17 @@ public enum PreviewSampleLoader {
         context.insert(beerLog)
 
         try? context.save()
-        print("📸 [Simulator Demo] サンプルデータの挿入が完了しました。")
+        print("📸 [Sample Loader] サンプルデータの強制挿入が完了しました。")
+    }
+
+    /// シミュレータ起動時などに、データが空であれば自動挿入する（従来用）
+    public static func insertSamplesIfNeeded(into context: ModelContext) {
+        #if DEBUG
+        let descriptor = FetchDescriptor<BeverageItem>()
+        guard let count = try? context.fetchCount(descriptor), count == 0 else {
+            return
+        }
+        insertSamples(into: context)
         #endif
     }
 }

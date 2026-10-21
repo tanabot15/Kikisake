@@ -73,6 +73,7 @@ public struct LogListView: View {
                                 }
                             }
                             .onDelete(perform: deleteLogs)
+                            .onMove(perform: moveLogs)
                         }
                         .listStyle(.plain)
                     }
@@ -80,6 +81,11 @@ public struct LogListView: View {
             }
             .navigationTitle("テイスティングログ")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    EditButton()
+                }
+            }
             .searchable(text: $viewModel.searchText, prompt: "銘柄名、生産者、メモで検索")
         }
     }
@@ -91,6 +97,11 @@ public struct LogListView: View {
             modelContext.delete(log)
         }
         try? modelContext.save()
+    }
+    
+    private func moveLogs(from source: IndexSet, to destination: Int) {
+        var updatedLogs = filteredLogs
+        updatedLogs.move(fromOffsets: source, toOffset: destination)
     }
 }
 
