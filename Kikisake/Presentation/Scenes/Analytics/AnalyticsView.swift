@@ -17,6 +17,10 @@ public struct AnalyticsView: View {
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
+                AdMobBannerView()
+                    .frame(height: 50)
+                    .background(Color(.systemBackground))
+                
                 // セグメンテッドピッカー（上位切替）
                 Picker("分析カテゴリ", selection: $viewModel.selectedSection) {
                     ForEach(AnalyticsSection.allCases) { section in

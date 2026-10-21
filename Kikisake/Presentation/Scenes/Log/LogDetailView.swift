@@ -34,6 +34,10 @@ public struct LogDetailView: View {
     public var body: some View {
         ScrollView {
             VStack(spacing: 16) {
+                AdMobBannerView()
+                    .frame(height: 50)
+                    .background(Color(.systemBackground))
+                
                 heroHeaderView
 
                 VStack(spacing: 16) {

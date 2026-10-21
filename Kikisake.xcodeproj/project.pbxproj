@@ -53,6 +53,8 @@
 		D9044264308638D500EF4807 /* BoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044263308638D500EF4807 /* BoardingView.swift */; };
 		D90442663086F04700EF4807 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D90442653086F04700EF4807 /* Localizable.xcstrings */; };
 		D9044268308721A200EF4807 /* EditLogFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044267308721A200EF4807 /* EditLogFlowView.swift */; };
+		D904426B3088A33A00EF4807 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = D904426A3088A33A00EF4807 /* GoogleMobileAds */; };
+		D904426D3088A3D000EF4807 /* AdMobBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904426C3088A3D000EF4807 /* AdMobBannerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +106,7 @@
 		D9044263308638D500EF4807 /* BoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardingView.swift; sourceTree = "<group>"; };
 		D90442653086F04700EF4807 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		D9044267308721A200EF4807 /* EditLogFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogFlowView.swift; sourceTree = "<group>"; };
+		D904426C3088A3D000EF4807 /* AdMobBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobBannerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D904426B3088A33A00EF4807 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +309,7 @@
 				D904422A307E859300EF4807 /* BeverageCardView.swift */,
 				D904425E308602FD00EF4807 /* TasteRadarCardView.swift */,
 				D90442603086031D00EF4807 /* MatrixAnalysisCardView.swift */,
+				D904426C3088A3D000EF4807 /* AdMobBannerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -396,6 +401,7 @@
 			);
 			name = Kikisake;
 			packageProductDependencies = (
+				D904426A3088A33A00EF4807 /* GoogleMobileAds */,
 			);
 			productName = Kikisake;
 			productReference = D90441D1307E815800EF4807 /* Kikisake.app */;
@@ -426,6 +432,9 @@
 			);
 			mainGroup = D90441C8307E815800EF4807;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D90442693088A33A00EF4807 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D90441D2307E815800EF4807 /* Products */;
 			projectDirPath = "";
@@ -467,6 +476,7 @@
 				D9044207307E84AC00EF4807 /* Date+Extension.swift in Sources */,
 				D90442503081A43B00EF4807 /* AppearanceStepView.swift in Sources */,
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
+				D904426D3088A3D000EF4807 /* AdMobBannerView.swift in Sources */,
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
 				D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */,
 				D904425D3085D33000EF4807 /* TastingCardShareView.swift in Sources */,
@@ -632,7 +642,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -651,7 +661,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -674,7 +684,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -693,7 +703,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -732,6 +742,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D90442693088A33A00EF4807 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D904426A3088A33A00EF4807 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D90442693088A33A00EF4807 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D90441C9307E815800EF4807 /* Project object */;
 }

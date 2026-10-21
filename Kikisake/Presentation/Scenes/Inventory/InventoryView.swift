@@ -24,6 +24,10 @@ public struct InventoryView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
+                    AdMobBannerView()
+                        .frame(height: 50)
+                        .background(Color(.systemBackground))
+                    
                     Text("保管場所一覧")
                         .font(.title2)
                         .fontWeight(.bold)

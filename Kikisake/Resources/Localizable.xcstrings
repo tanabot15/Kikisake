@@ -217,9 +217,6 @@
         }
       }
     },
-    "this保管場所に在庫はありません" : {
-
-    },
     "アプリ情報" : {
       "localizations" : {
         "en" : {
@@ -321,7 +318,6 @@
       }
     },
     "この保管場所に在庫はありません" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -913,17 +909,6 @@
     "在庫へ" : {
 
     },
-    "在庫へ保存" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save to Inventory"
-          }
-        }
-      }
-    },
     "在庫管理" : {
       "localizations" : {
         "en" : {
@@ -1153,17 +1138,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld Left"
-          }
-        }
-      }
-    },
-    "残り: %lld 本" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remaining: %lld"
           }
         }
       }

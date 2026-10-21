@@ -24,6 +24,10 @@ public struct LogListView: View {
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
+                AdMobBannerView()
+                    .frame(height: 50)
+                    .background(Color(.systemBackground))
+                
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(filterCategories, id: \.self) { category in
