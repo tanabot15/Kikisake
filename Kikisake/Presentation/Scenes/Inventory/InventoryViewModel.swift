@@ -74,4 +74,10 @@ public final class InventoryViewModel {
     public func consumeBottle(item: BeverageItem) throws {
         try consumeUseCase.executeConsumption(for: item)
     }
+    
+    /// 指定したアイテムを削除する
+    public func deleteItem(_ item: BeverageItem, modelContext: ModelContext) {
+        let repository = BeverageRepository(modelContext: modelContext)
+        repository.deleteItem(item)
+    }
 }

@@ -1,9 +1,5 @@
-//
 //  AddFlowView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import SwiftUI
 import SwiftData
@@ -13,14 +9,14 @@ public struct AddFlowView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
     
-    @State private var viewModel = AddFlowViewModel()
+    // ✨ AppStateで共有されているViewModelを直接バインドして使用する
+    @Bindable private var viewModel = AppState.shared.addFlowViewModel
+    
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     
-    // フォーカス状態の管理
     @FocusState private var focusedField: GeneralInfoField?
 
-    /// ステップ1で銘柄名が未入力かどうかを判定するプロパティ
     private var isNameEmpty: Bool {
         viewModel.currentStep == 1 && viewModel.name.trimmingCharacters(in: .whitespaces).isEmpty
     }
@@ -28,7 +24,7 @@ public struct AddFlowView: View {
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                // 5ステップインジケータ（画面上部にスリムに配置）
+                // 5ステップインジケータ
                 HStack(spacing: 8) {
                     ForEach(1...5, id: \.self) { step in
                         Circle()
@@ -127,7 +123,7 @@ public struct AddFlowView: View {
                         Button("保存") {
                             do {
                                 try viewModel.save(modelContext: modelContext)
-                                AppState.shared.selectedTab = 0
+                                AppState.shared.selectedTab = 0 // ログタブへ移動
                             } catch {
                                 alertMessage = "保存に失敗しました: \(error.localizedDescription)"
                                 showAlert = true
@@ -146,23 +142,9 @@ public struct AddFlowView: View {
             } message: {
                 Text(alertMessage)
             }
-            .alert("テイスティングログの確認", isPresented: $viewModel.showAlreadyFilledAlert) {
-                Button("新しいログとして引き継ぐ", role: .none) {
-                    if let item = viewModel.pendingOpeningItem {
-                        viewModel.applyOpeningItem(item)
-                    }
-                }
-                Button("キャンセル", role: .cancel) {
-                    viewModel.pendingOpeningItem = nil
-                    viewModel.reset()
-                }
-            } message: {
-                Text("選択したボトルの情報（\(viewModel.pendingOpeningItem?.name ?? "")）がすでに入力されています。このボトルのテイスティングログを新しく作成・編集しますか？")
-            }
         }
     }
 
-    /// メニューから選択された保管場所を指定して在庫として保存するヘルパー
     private func saveToInventory(locationName: String) {
         if isNameEmpty {
             alertMessage = "銘柄名は必須項目です。"
@@ -172,7 +154,7 @@ public struct AddFlowView: View {
         do {
             viewModel.storageLocation = locationName
             try viewModel.saveAsInventoryOnly(modelContext: modelContext)
-            AppState.shared.selectedTab = 3 // 在庫タブへ移動（※環境に合わせてインデックスを調整してください）
+            AppState.shared.selectedTab = 3
         } catch {
             alertMessage = "在庫の保存に失敗しました: \(error.localizedDescription)"
             showAlert = true
@@ -181,6 +163,13 @@ public struct AddFlowView: View {
 }
 
 #Preview {
-    AddFlowView()
-        .modelContainer(for: [BeverageItem.self, TastingLog.self], inMemory: true)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: StorageLocation.self, BeverageItem.self, TastingLog.self, configurations: config)
+    
+    // プレビュー用にデフォルトの保管場所を挿入
+    container.mainContext.insert(StorageLocation(name: "ワインセラー", type: .cellar))
+    container.mainContext.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator))
+
+    return AddFlowView()
+        .modelContainer(container)
 }

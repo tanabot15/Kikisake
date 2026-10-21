@@ -1,13 +1,10 @@
-//
 //  AddFlowViewModel.swift
 //  Kikisake
-//
 
 import Foundation
 import SwiftData
 import SwiftUI
 
-/// 新規登録およびテイスティングフローを管理するViewModel
 @Observable
 public final class AddFlowViewModel {
     public var currentStep: Int = 1
@@ -73,15 +70,12 @@ public final class AddFlowViewModel {
 
     private let consumeUseCase = ConsumeBeverageUseCase()
 
-    public init() {
-        if let item = AppState.shared.openingItem {
-            // 開けたボトルの情報を保持したまま、ステップ2（外観選択）へ直接進む
-            configureWithItem(item)
-            self.currentStep = 2
-            
-            // 読み込み完了後に openingItem をクリア
-            AppState.shared.openingItem = nil
-        }
+    // ✨ AppStateへの初期化時アクセスを削除し、循環参照・クラッシュを回避
+    public init() {}
+    
+    public func handleOpeningItem(_ item: BeverageItem) {
+        configureWithItem(item)
+        self.currentStep = 2
     }
     
     public func applyOpeningItem(_ item: BeverageItem) {
@@ -153,53 +147,15 @@ public final class AddFlowViewModel {
             self.priceString = "\(price)"
         }
         self.storageLocation = item.storageLocation
+        self.selectedImageData = item.imageDatas?.first
     }
 
-    /// 既存の TastingLog からデータを初期ロードして編集モードにする
     public func configureWithLog(_ log: TastingLog) {
         self.editingLog = log
         self.editingItem = log.item
-
         if let item = log.item {
-            self.selectedCategory = item.category
-            self.name = item.name
-            self.producer = item.producer
-            self.region = item.region
-            self.vintage = item.vintage ?? ""
-            if let abv = item.alcoholByVolume {
-                self.abvString = "\(abv)"
-            }
-            if let price = item.price {
-                self.priceString = "\(price)"
-            }
-            self.storageLocation = item.storageLocation
-            self.selectedImageData = item.imageDatas?.first
-
-            if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
-                switch item.category {
-                case .wine:
-                    if let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data) {
-                        self.wineType = meta.wineType
-                        self.appellation = meta.appellation ?? ""
-                        self.grapeVarieties = meta.grapeVarieties
-                        self.blendComponents = meta.blendComponents.isEmpty ? [BlendComponent(variety: "", percentage: nil)] : meta.blendComponents
-                    }
-                case .sake:
-                    if let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data) {
-                        self.sakeSpecificName = meta.specificName
-                        self.riceVariety = meta.riceVariety
-                        self.polishingRate = meta.polishingRate
-                        self.sakeMeterValue = meta.sakeMeterValue
-                    }
-                case .beer:
-                    if let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data) {
-                        self.beerStyle = meta.beerStyle
-                        self.ibu = meta.ibu
-                    }
-                }
-            }
+            configureWithItem(item)
         }
-
         self.tastingDate = log.date
         self.rating = log.rating
         self.appearanceNotes = log.appearanceNotes
@@ -255,7 +211,6 @@ public final class AddFlowViewModel {
         }
     }
 
-    /// 在庫のみ保存
     public func saveAsInventoryOnly(modelContext: ModelContext) throws {
         try ensureStorageLocationExists(modelContext: modelContext)
 
@@ -279,33 +234,32 @@ public final class AddFlowViewModel {
 
         modelContext.insert(newItem)
         try modelContext.save()
-
         reset()
     }
 
-    /// テイスティングログ＋在庫管理の保存
     public func save(modelContext: ModelContext) throws {
         try ensureStorageLocationExists(modelContext: modelContext)
 
-        let price = Int(priceString)
         let isTanninApplicable: Bool = {
             guard selectedCategory == .wine else { return false }
             return wineType == "赤" || wineType == "ロゼ" || wineType == "オレンジ"
         }()
         
-        let metadataJSON = buildMetadataJSON()
-
         let targetItem: BeverageItem
         if let existingItem = sourceItem {
             targetItem = existingItem
-            try consumeUseCase.executeConsumption(for: existingItem)
         } else {
+            let price = Int(priceString)
+            let abv = Double(abvString)
+            let metadataJSON = buildMetadataJSON()
+            
             targetItem = BeverageItem(
                 name: name,
                 producer: producer,
                 category: selectedCategory,
                 region: region,
                 vintage: vintage.isEmpty ? nil : vintage,
+                alcoholByVolume: abv, // ✨ abv を正しく渡すことで警告を解除
                 price: price,
                 stockQuantity: 0,
                 storageLocation: storageLocation,
@@ -340,7 +294,6 @@ public final class AddFlowViewModel {
         reset()
     }
 
-    /// 既存ログおよびアイテムの上書き更新保存
     public func update(modelContext: ModelContext) throws {
         guard let targetLog = editingLog else {
             try save(modelContext: modelContext)

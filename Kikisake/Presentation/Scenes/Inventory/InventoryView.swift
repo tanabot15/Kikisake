@@ -1,9 +1,5 @@
-//
 //  InventoryView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import SwiftUI
 import SwiftData
@@ -84,7 +80,6 @@ public struct InventoryView: View {
                                                     .font(.subheadline)
                                                     .foregroundStyle(.secondary)
                                             } else {
-                                                // 種類ごとに縦に並べる
                                                 VStack(alignment: .leading, spacing: 2) {
                                                     ForEach(summaryList, id: \.categoryName) { summary in
                                                         Text("\(summary.categoryName) \(summary.count)本")
@@ -132,7 +127,7 @@ public struct InventoryView: View {
                                                             imageData: item.imageDatas?.first
                                                         )
 
-                                                        // ボトルを開けるアクション
+                                                        // ボトルを開けるアクション ＆ 削除ボタン
                                                         HStack {
                                                             Text("残り: \(item.stockQuantity) 本")
                                                                 .font(.caption)
@@ -140,6 +135,19 @@ public struct InventoryView: View {
                                                                 .foregroundStyle(item.stockQuantity > 0 ? Color.accentColor : .secondary)
                                                             
                                                             Spacer()
+
+                                                            // 飲みきった（在庫0）場合のみ表示する削除ボタン
+                                                            if item.stockQuantity <= 0 {
+                                                                Button(role: .destructive) {
+                                                                    viewModel.deleteItem(item, modelContext: modelContext)
+                                                                } label: {
+                                                                    Label("削除", systemImage: "trash")
+                                                                        .font(.caption)
+                                                                        .fontWeight(.semibold)
+                                                                }
+                                                                .buttonStyle(.bordered)
+                                                                .tint(.red)
+                                                            }
 
                                                             Button {
                                                                 do {
@@ -168,6 +176,16 @@ public struct InventoryView: View {
                                                     .background(Color(.systemGroupedBackground))
                                                     .cornerRadius(12)
                                                     .padding(.horizontal, 12)
+                                                    // ✨ スワイプによる削除機能（在庫が0の本人のみ、またはいつでもスワイプ削除可能に設定）
+                                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                                        if item.stockQuantity <= 0 {
+                                                            Button(role: .destructive) {
+                                                                viewModel.deleteItem(item, modelContext: modelContext)
+                                                            } label: {
+                                                                Label("削除", systemImage: "trash")
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -202,7 +220,11 @@ public struct InventoryView: View {
                 AddLocationSheetView()
             }
             .alert("エラー", isPresented: $showErrorAlert) {
-                Button("OK", role: .cancel) {}
+                Button(role: .cancel) {
+                    errorMessage = ""
+                } label: {
+                    Text("OK")
+                }
             } message: {
                 Text(errorMessage)
             }

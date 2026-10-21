@@ -29,29 +29,30 @@ public enum AppearanceMode: String, CaseIterable, Identifiable {
 public final class AppState {
     public static let shared = AppState()
 
-    /// 現在選択されているメインタブのインデックス
     public var selectedTab: Int = 0
-    /// プロバージョンフラグ
     public var isProVersion: Bool = false
     
-    /// オンボーディングを完了したかどうか（初回のみ表示するためのフラグ）
     public var hasCompletedOnboarding: Bool {
         didSet {
             UserDefaults.standard.set(hasCompletedOnboarding, forKey: "saved_has_completed_onboarding")
         }
     }
     
-    /// 在庫から開けるために一時保持するアイテム（セットされると自動的に追加タブへ移動）
+    // 追加・登録フロー用の共有ViewModel
+    public var addFlowViewModel: AddFlowViewModel = AddFlowViewModel()
+    
     public var openingItem: BeverageItem? {
         didSet {
-            if openingItem != nil {
-                // 追加タブのインデックス（※Tab 0:ログ, 1:分析, 2:追加, 3:在庫 の場合は 2）
+            if let item = openingItem {
+                // ボトルが指定されたら、共有ViewModelに即座に反映し、追加タブ（インデックス2）へ移動
+                addFlowViewModel.handleOpeningItem(item)
                 selectedTab = 2
+                // 処理が終わったらクリア
+                openingItem = nil
             }
         }
     }
 
-    /// 外観モード設定（UserDefaultsと連動、デフォルトはシステム）
     public var appearanceMode: AppearanceMode {
         didSet {
             UserDefaults.standard.set(appearanceMode.rawValue, forKey: "saved_appearance_mode")
@@ -59,10 +60,8 @@ public final class AppState {
     }
 
     private init() {
-        // オンボーディング状態の復元
         self.hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "saved_has_completed_onboarding")
 
-        // 外観モード設定の復元
         if let savedValue = UserDefaults.standard.string(forKey: "saved_appearance_mode"),
            let mode = AppearanceMode(rawValue: savedValue) {
             self.appearanceMode = mode
