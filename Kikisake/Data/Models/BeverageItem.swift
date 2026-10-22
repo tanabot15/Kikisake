@@ -20,7 +20,7 @@ public final class BeverageItem {
     public var alcoholByVolume: Double?      // アルコール度数 (例: 14.5)
     public var price: Int?                   // 価格
 
-    // インベントリ（在庫）管理
+    // 在庫管理
     public var stockQuantity: Int
     public var storageLocation: String
     public var purchaseDate: Date?
