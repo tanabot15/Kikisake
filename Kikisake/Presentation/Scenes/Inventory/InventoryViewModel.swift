@@ -75,6 +75,12 @@ public final class InventoryViewModel {
         try consumeUseCase.executeConsumption(for: item)
     }
     
+    /// 指定したアイテムの保管場所を変更（移動）する
+    public func moveItem(_ item: BeverageItem, to newLocationName: String, modelContext: ModelContext) {
+        item.storageLocation = newLocationName
+        try? modelContext.save()
+    }
+    
     /// 指定したアイテムを削除する
     public func deleteItem(_ item: BeverageItem, modelContext: ModelContext) {
         let repository = BeverageRepository(modelContext: modelContext)

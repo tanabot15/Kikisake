@@ -16,6 +16,10 @@ public struct InventoryView: View {
     // アコーディオンで展開中の保管場所名を保持するState
     @State private var expandedLocationName: String? = nil
 
+    // 移動先の選択用 State
+    @State private var targetItemForMove: BeverageItem? = nil
+    @State private var isShowingMoveDialog: Bool = false
+
     // エラーハンドリング用のアラートState
     @State private var showErrorAlert: Bool = false
     @State private var errorMessage: String = ""
@@ -126,7 +130,6 @@ public struct InventoryView: View {
                                                     }()
 
                                                     VStack(alignment: .leading, spacing: 8) {
-                                                        // ✨ BeverageCardView を NavigationLink で囲み、紐づく最新の TastingLog があれば LogDetailView へ遷移
                                                         Group {
                                                             if let latestLog = item.tastingLogs?.sorted(by: { $0.date > $1.date }).first {
                                                                 NavigationLink(destination: LogDetailView(log: latestLog)) {
@@ -134,13 +137,33 @@ public struct InventoryView: View {
                                                                 }
                                                                 .buttonStyle(.plain)
                                                             } else {
-                                                                // ログがまだない場合はタップしても遷移しない（またはそのまま表示）
                                                                 cardViewContent(item: item, averageRating: averageRating)
                                                             }
                                                         }
 
-                                                        // ボトルを開けるアクション ＆ 削除ボタン
+                                                        // アクションエリア（移動メニュー / ボトルを開ける / 削除）
                                                         HStack {
+                                                            // ✨ 保管場所移動のクイックメニューボタン
+                                                            Menu {
+                                                                Text("移動先の保管場所を選択").font(.caption)
+                                                                Divider()
+                                                                ForEach(locations, id: \.name) { otherLoc in
+                                                                    if otherLoc.name != item.storageLocation {
+                                                                        Button {
+                                                                            viewModel.moveItem(item, to: otherLoc.name, modelContext: modelContext)
+                                                                        } label: {
+                                                                            Label(otherLoc.name, systemImage: otherLoc.type.defaultIconName)
+                                                                        }
+                                                                    }
+                                                                }
+                                                            } label: {
+                                                                Text("保管場所を移動")
+                                                                    .font(.caption)
+                                                                    .fontWeight(.semibold)
+                                                            }
+                                                            .buttonStyle(.bordered)
+                                                            .tint(.green)
+
                                                             Spacer()
 
                                                             // 飲みきった（在庫0）場合のみ表示する削除ボタン
@@ -158,18 +181,14 @@ public struct InventoryView: View {
 
                                                             Button {
                                                                 do {
-                                                                    // 1. 在庫を1減らす消費処理を実行
                                                                     try viewModel.consumeBottle(item: item)
-                                                                    
-                                                                    // 2. アプリの状態として「今開けたボトル」を保持させる
                                                                     AppState.shared.openingItem = item
-                                                                    
                                                                 } catch {
                                                                     errorMessage = error.localizedDescription
                                                                     showErrorAlert = true
                                                                 }
                                                             } label: {
-                                                                Text("このボトルを開ける")
+                                                                Text("ボトルを開ける")
                                                                     .font(.caption)
                                                                     .fontWeight(.semibold)
                                                             }
@@ -183,6 +202,16 @@ public struct InventoryView: View {
                                                     .background(Color(.systemGroupedBackground))
                                                     .cornerRadius(12)
                                                     .padding(.horizontal, 12)
+                                                    // スワイプによる移動アクションも併せて提供
+                                                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                                                        Button {
+                                                            targetItemForMove = item
+                                                            isShowingMoveDialog = true
+                                                        } label: {
+                                                            Label("移動", systemImage: "folder.swipe")
+                                                        }
+                                                        .tint(.orange)
+                                                    }
                                                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                                         if item.stockQuantity <= 0 {
                                                             Button(role: .destructive) {
@@ -224,6 +253,26 @@ public struct InventoryView: View {
             }
             .sheet(isPresented: $showAddLocationSheet) {
                 AddLocationSheetView()
+            }
+            // スワイプ移動用ダイアログ
+            .confirmationDialog("移動先の選択", isPresented: $isShowingMoveDialog, titleVisibility: .visible) {
+                if let item = targetItemForMove {
+                    ForEach(locations, id: \.name) { loc in
+                        if loc.name != item.storageLocation {
+                            Button(loc.name) {
+                                viewModel.moveItem(item, to: loc.name, modelContext: modelContext)
+                                targetItemForMove = nil
+                            }
+                        }
+                    }
+                }
+                Button("キャンセル", role: .cancel) {
+                    targetItemForMove = nil
+                }
+            } message: {
+                if let item = targetItemForMove {
+                    Text("「\(item.name)」の移動先を選択してください。")
+                }
             }
             .alert("エラー", isPresented: $showErrorAlert) {
                 Button(role: .cancel) {
