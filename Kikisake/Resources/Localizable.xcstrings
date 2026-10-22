@@ -5,8 +5,8 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "(%lld %%)"
+            "state" : "translated",
+            "value" : "(%lld %)"
           }
         },
         "ja" : {
@@ -116,7 +116,14 @@
       }
     },
     "%@にストック（在庫1本）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stock in %@"
+          }
+        }
+      }
     },
     "%@の色調を選択してください" : {
       "localizations" : {
@@ -311,7 +318,14 @@
       }
     },
     "このテイスティング記録とともに、在庫をどのように登録しますか？" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How would you like to register the inventory along with this tasting record?"
+          }
+        }
+      }
     },
     "このボトルを開ける" : {
       "localizations" : {
@@ -344,10 +358,24 @@
       }
     },
     "サンプルデータが追加されました。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sample data has been added."
+          }
+        }
+      }
     },
     "サンプルデータの読み込み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Load Sample Data"
+          }
+        }
+      }
     },
     "サンプルデータを読み込み" : {
       "localizations" : {
@@ -490,10 +518,24 @@
       }
     },
     "ボトルのラベル写真を登録できます。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can add a photo of the bottle label."
+          }
+        }
+      }
     },
     "ボトルの扱いを選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Bottle Action"
+          }
+        }
+      }
     },
     "マイベスト（お気に入り銘柄）" : {
       "localizations" : {
@@ -726,7 +768,14 @@
       }
     },
     "保管場所を選択して保存" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Storage Location and Save"
+          }
+        }
+      }
     },
     "保管場所一覧" : {
       "localizations" : {
@@ -909,7 +958,14 @@
       }
     },
     "在庫へ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To Inventory"
+          }
+        }
+      }
     },
     "在庫管理" : {
       "localizations" : {
@@ -1092,7 +1148,14 @@
       }
     },
     "未設定 (デフォルト)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Set (Default)"
+          }
+        }
+      }
     },
     "未設定 (自動作成)" : {
       "localizations" : {
@@ -1105,7 +1168,14 @@
       }
     },
     "未設定の場所にストック（在庫1本）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stock in Unassigned Location "
+          }
+        }
+      }
     },
     "本醸造" : {
       "localizations" : {
@@ -1198,7 +1268,14 @@
       }
     },
     "登録本数 (本)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantity (Bottles)"
+          }
+        }
+      }
     },
     "白" : {
       "localizations" : {
@@ -1457,10 +1534,24 @@
       }
     },
     "飲みきった" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finished"
+          }
+        }
+      }
     },
     "飲みきった（ログのみ記録・在庫なし）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finished (Log only, no inventory)"
+          }
+        }
+      }
     },
     "飲んだ日" : {
       "localizations" : {
