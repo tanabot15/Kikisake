@@ -9,22 +9,35 @@ import Foundation
 import SwiftData
 
 public enum PreviewSampleLoader {
-    /// サンプルデータを強制的に読み込む（設定画面のボタン用）
-    public static func insertSamples(into context: ModelContext) {
-        // 必要に応じてデフォルトの保管場所も自動生成して登録する
+    /// ✨ 本番・デバッグ問わず、デフォルトの保管場所がなければ自動作成する
+    public static func insertDefaultLocationsIfNeeded(into context: ModelContext) {
         let locationDescriptor = FetchDescriptor<StorageLocation>()
         let existingLocations = (try? context.fetch(locationDescriptor)) ?? []
         let locationNames = existingLocations.map { $0.name }
 
+        var needsSave = false
         if !locationNames.contains("ワインセラー") {
-            context.insert(StorageLocation(name: "ワインセラー", type: .cellar, memo: "自動追加"))
+            context.insert(StorageLocation(name: "ワインセラー", type: .cellar, memo: "デフォルト"))
+            needsSave = true
         }
         if !locationNames.contains("冷蔵庫") {
-            context.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator, memo: "自動追加"))
+            context.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator, memo: "デフォルト"))
+            needsSave = true
         }
         if !locationNames.contains("常温") {
-            context.insert(StorageLocation(name: "常温", type: .other, memo: "自動追加"))
+            context.insert(StorageLocation(name: "常温", type: .roomTemp, memo: "デフォルト"))
+            needsSave = true
         }
+
+        if needsSave {
+            try? context.save()
+            print("📦 [Default Loader] デフォルトの保管場所を作成しました。")
+        }
+    }
+
+    /// サンプルデータを強制的に読み込む（設定画面のボタン用）
+    public static func insertSamples(into context: ModelContext) {
+        insertDefaultLocationsIfNeeded(into: context)
 
         let encoder = JSONEncoder()
 
@@ -161,8 +174,11 @@ public enum PreviewSampleLoader {
         print("📸 [Sample Loader] サンプルデータの強制挿入が完了しました。")
     }
 
-    /// シミュレータ起動時などに、データが空であれば自動挿入する（従来用）
+    /// アプリ起動時の自動セットアップ用
     public static func insertSamplesIfNeeded(into context: ModelContext) {
+        // 本番・デバッグ問わず、まずはデフォルトの保管場所が存在するかチェックして作成する
+        insertDefaultLocationsIfNeeded(into: context)
+
         #if DEBUG
         let descriptor = FetchDescriptor<BeverageItem>()
         guard let count = try? context.fetchCount(descriptor), count == 0 else {

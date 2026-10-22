@@ -12,6 +12,9 @@ public final class AddFlowViewModel {
     public var showAlreadyFilledAlert: Bool = false
     public var pendingOpeningItem: BeverageItem? = nil
 
+    // ✨ 在庫画面の「このボトルを開ける」から直接遷移してきたかどうかのフラグ
+    public var isOpeningExistingItem: Bool = false
+
     // Step 1: 一般的な情報
     public var selectedCategory: BeverageCategory = .wine
     public var sourceItem: BeverageItem? = nil
@@ -71,16 +74,17 @@ public final class AddFlowViewModel {
 
     private let consumeUseCase = ConsumeBeverageUseCase()
 
-    // ✨ AppStateへの初期化時アクセスを削除し、循環参照・クラッシュを回避
     public init() {}
     
     public func handleOpeningItem(_ item: BeverageItem) {
         configureWithItem(item)
+        self.isOpeningExistingItem = true
         self.currentStep = 2
     }
     
     public func applyOpeningItem(_ item: BeverageItem) {
         configureWithItem(item)
+        self.isOpeningExistingItem = true
         self.currentStep = 2
     }
 
@@ -94,6 +98,7 @@ public final class AddFlowViewModel {
 
     public func reset() {
         self.currentStep = 1
+        self.isOpeningExistingItem = false
         self.selectedCategory = .wine
         self.sourceItem = nil
         self.name = ""
@@ -104,6 +109,7 @@ public final class AddFlowViewModel {
         self.priceString = ""
         self.stockQuantityString = "1"
         self.storageLocation = "未設定"
+        self.selectedImageData = nil
         
         self.wineType = "赤"
         self.grapeVarieties = ""
@@ -123,7 +129,7 @@ public final class AddFlowViewModel {
         self.saltiness = 0.0
         self.acidity = 2.5
         self.bitterness = 2.5
-        self.umami = 2.5
+        self.umami = 0.0
         self.tannin = 2.5
         self.body = 2.5
         self.selectedBalanceTags = []
@@ -240,6 +246,66 @@ public final class AddFlowViewModel {
 
         reset()
     }
+    
+    /// ログを書き切ったあとに、飲みきり（在庫0）か在庫あり（指定の場所）かを選んで一括保存するメソッド
+    public func saveWithStock(modelContext: ModelContext, stockQuantity: Int) throws {
+        try ensureStorageLocationExists(modelContext: modelContext)
+
+        let isTanninApplicable: Bool = {
+            guard selectedCategory == .wine else { return false }
+            return wineType == "赤" || wineType == "ロゼ" || wineType == "オレンジ"
+        }()
+        
+        let price = Int(priceString)
+        let abv = Double(abvString)
+        let metadataJSON = buildMetadataJSON()
+        
+        let targetItem: BeverageItem
+        if let existingItem = sourceItem {
+            targetItem = existingItem
+            existingItem.storageLocation = storageLocation
+            existingItem.stockQuantity = stockQuantity
+        } else {
+            targetItem = BeverageItem(
+                name: name,
+                producer: producer,
+                category: selectedCategory,
+                region: region,
+                vintage: vintage.isEmpty ? nil : vintage,
+                alcoholByVolume: abv,
+                price: price,
+                stockQuantity: stockQuantity,
+                storageLocation: storageLocation,
+                imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
+                specificMetadataJSON: metadataJSON
+            )
+            modelContext.insert(targetItem)
+        }
+
+        let newLog = TastingLog(
+            date: tastingDate,
+            rating: rating,
+            appearanceNotes: appearanceNotes,
+            appearanceColorHex: appearanceColorHex,
+            aromaTags: selectedAromaTags,
+            sweetness: sweetness,
+            saltiness: saltiness,
+            acidity: acidity,
+            bitterness: bitterness,
+            umami: umami,
+            tannin: isTanninApplicable ? tannin : nil,
+            body: body,
+            balanceTags: selectedBalanceTags,
+            finishLength: finishLength,
+            memo: memo,
+            item: targetItem
+        )
+
+        modelContext.insert(newLog)
+        try modelContext.save()
+
+        reset()
+    }
 
     public func save(modelContext: ModelContext) throws {
         try ensureStorageLocationExists(modelContext: modelContext)
@@ -263,7 +329,7 @@ public final class AddFlowViewModel {
                 category: selectedCategory,
                 region: region,
                 vintage: vintage.isEmpty ? nil : vintage,
-                alcoholByVolume: abv, // ✨ abv を正しく渡すことで警告を解除
+                alcoholByVolume: abv,
                 price: price,
                 stockQuantity: 0,
                 storageLocation: storageLocation,

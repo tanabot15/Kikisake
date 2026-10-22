@@ -81,7 +81,7 @@ public struct SettingsView: View {
             .alert("サンプルデータの読み込み", isPresented: $showLoadedAlert) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text("サンプルデータと必要な保管場所が追加されました。")
+                Text("サンプルデータが追加されました。")
             }
         }
     }

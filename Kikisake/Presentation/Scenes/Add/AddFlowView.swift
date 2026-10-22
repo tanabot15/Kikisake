@@ -9,11 +9,11 @@ public struct AddFlowView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
     
-    // ✨ AppStateで共有されているViewModelを直接バインドして使用する
     @Bindable private var viewModel = AppState.shared.addFlowViewModel
     
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    @State private var isShowingSaveOptions: Bool = false
     
     @FocusState private var focusedField: GeneralInfoField?
 
@@ -67,7 +67,7 @@ public struct AddFlowView: View {
             .navigationTitle("追加 (ステップ \(viewModel.currentStep)/5)")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // 左上：ステップ1のときは「在庫へ」メニューボタン、ステップ2以降のときは「戻る」
+                // 左上：ステップ1のときは「在庫へ」メニューボタン、ステップ2以降は「戻る」
                 ToolbarItem(placement: .topBarLeading) {
                     if viewModel.currentStep == 1 {
                         Menu {
@@ -96,7 +96,13 @@ public struct AddFlowView: View {
                         .disabled(isNameEmpty)
                     } else {
                         Button {
-                            viewModel.currentStep -= 1
+                            // ステップ2で既存アイテムからの遷移時の「戻る」分岐ハンドリング
+                            if viewModel.currentStep == 2 && viewModel.isOpeningExistingItem {
+                                viewModel.reset()
+                                AppState.shared.selectedTab = 3 // 在庫管理タブに戻る
+                            } else {
+                                viewModel.currentStep -= 1
+                            }
                         } label: {
                             HStack(spacing: 4) {
                                 Image(systemName: "chevron.left")
@@ -121,17 +127,38 @@ public struct AddFlowView: View {
                         .foregroundColor(isNameEmpty ? .gray : .accentColor)
                     } else {
                         Button("保存") {
-                            do {
-                                try viewModel.save(modelContext: modelContext)
-                                AppState.shared.selectedTab = 0 // ログタブへ移動
-                            } catch {
-                                alertMessage = "保存に失敗しました: \(error.localizedDescription)"
+                            if isNameEmpty {
+                                alertMessage = "銘柄名は必須項目です。"
                                 showAlert = true
+                                return
                             }
+                            isShowingSaveOptions = true
                         }
                         .fontWeight(.bold)
                     }
                 }
+            }
+            // テイスティングログ書き切り後の保存先選択ダイアログ
+            .confirmationDialog("ボトルの扱いを選択", isPresented: $isShowingSaveOptions, titleVisibility: .visible) {
+                Button("飲みきった（ログのみ記録・在庫なし）") {
+                    executeFullSave(storageLocation: "未設定", stockQuantity: 0, targetTab: 0) // ログ一覧タブへ
+                }
+                
+                if locations.isEmpty {
+                    Button("未設定の場所にストック") {
+                        executeFullSave(storageLocation: "未設定", stockQuantity: 1, targetTab: 3) // 在庫一覧タブへ
+                    }
+                } else {
+                    ForEach(locations, id: \.name) { loc in
+                        Button("\(loc.name)にストック") {
+                            executeFullSave(storageLocation: loc.name, stockQuantity: 1, targetTab: 3) // 在庫一覧タブへ
+                        }
+                    }
+                }
+
+                Button("キャンセル", role: .cancel) {}
+            } message: {
+                Text("このテイスティング記録とともに、在庫をどのように登録しますか？")
             }
             .alert("確認", isPresented: $showAlert) {
                 Button("OK", role: .cancel) {
@@ -142,9 +169,17 @@ public struct AddFlowView: View {
             } message: {
                 Text(alertMessage)
             }
+            .onAppear {
+                if viewModel.editingLog == nil && viewModel.sourceItem == nil {
+                    if viewModel.name.isEmpty && viewModel.selectedImageData == nil {
+                        viewModel.reset()
+                    }
+                }
+            }
         }
     }
 
+    /// ステップ1から「未開栓のまま在庫として保存」する処理
     private func saveToInventory(locationName: String) {
         if isNameEmpty {
             alertMessage = "銘柄名は必須項目です。"
@@ -154,9 +189,24 @@ public struct AddFlowView: View {
         do {
             viewModel.storageLocation = locationName
             try viewModel.saveAsInventoryOnly(modelContext: modelContext)
-            AppState.shared.selectedTab = 3
+            AppState.shared.selectedTab = 3 // 在庫タブへ移動
         } catch {
             alertMessage = "在庫の保存に失敗しました: \(error.localizedDescription)"
+            showAlert = true
+        }
+    }
+
+    /// ステップ5から「テイスティングログ＋ボトルの扱いを選んで保存」する処理
+    private func executeFullSave(storageLocation: String, stockQuantity: Int, targetTab: Int) {
+        do {
+            viewModel.storageLocation = storageLocation
+            viewModel.stockQuantityString = "\(stockQuantity)"
+            
+            try viewModel.saveWithStock(modelContext: modelContext, stockQuantity: stockQuantity)
+            
+            AppState.shared.selectedTab = targetTab
+        } catch {
+            alertMessage = "保存に失敗しました: \(error.localizedDescription)"
             showAlert = true
         }
     }

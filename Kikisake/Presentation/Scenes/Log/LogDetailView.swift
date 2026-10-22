@@ -202,7 +202,7 @@ public struct LogDetailView: View {
                     rowContent(label: "ヴィンテージ / 年月", value: vintage)
                 }
                 if let abv = item.alcoholByVolume {
-                    rowContent(label: "アルコール度数", value: String(format: "%.1f %%", abv))
+                    rowContent(label: "アルコール度数", value: String(format: "%.1f %", abv))
                 }
                 if let price = item.price {
                     rowContent(label: "価格", value: "\(price) 円")
