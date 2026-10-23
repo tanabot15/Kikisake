@@ -1,9 +1,5 @@
-//
 //  AnalyticsView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import SwiftUI
 import SwiftData
@@ -13,6 +9,9 @@ import Charts
 public struct AnalyticsView: View {
     @Query private var logs: [TastingLog]
     @State private var viewModel = AnalyticsViewModel()
+    
+    // フィルターシート表示状態
+    @State private var isShowingFilterSheet: Bool = false
 
     public var body: some View {
         NavigationStack {
@@ -29,41 +28,18 @@ public struct AnalyticsView: View {
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
-                .padding(.top, 10)
-                .background(Color(.systemGroupedBackground))
-
-                // 期間フィルター用ピッカー
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        ForEach(AnalyticsTimeFilter.allCases) { filter in
-                            Button {
-                                viewModel.selectedTimeFilter = filter
-                            } label: {
-                                Text(filter.rawValue)
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 6)
-                                    .background(viewModel.selectedTimeFilter == filter ? Color.accentColor : Color(.systemGray5))
-                                    .foregroundStyle(viewModel.selectedTimeFilter == filter ? .white : .primary)
-                                    .cornerRadius(16)
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
-                }
+                .padding(.vertical, 10)
                 .background(Color(.systemGroupedBackground))
 
                 ScrollView {
                     VStack(spacing: 20) {
                         let targetLogs = viewModel.filteredLogs(from: logs)
 
-                        if logs.isEmpty {
+                        if logs.isEmpty || targetLogs.isEmpty {
                             ContentUnavailableView(
-                                "テイスティングデータがありません",
+                                "該当する分析データがありません",
                                 systemImage: "chart.bar.xaxis",
-                                description: Text("「追加」タブから飲んだ酒を記録すると、ここに分析が表示されます。")
+                                description: Text(viewModel.hasActiveFilters ? "フィルター条件を変更してみてください。" : "「追加」タブから飲んだ酒を記録すると、ここに分析が表示されます。")
                             )
                             .padding(.top, 40)
                         } else {
@@ -79,8 +55,28 @@ public struct AnalyticsView: View {
                 }
                 .background(Color(.systemGroupedBackground))
             }
-            .navigationTitle("分析")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("分析")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                }
+
+                // 右上ツールバー：フィルター呼び出しボタン
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isShowingFilterSheet = true
+                    } label: {
+                        Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                            .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
+                    }
+                    .accessibilityLabel("分析フィルター")
+                }
+            }
+            .sheet(isPresented: $isShowingFilterSheet) {
+                AnalyticsFilterSheet(viewModel: viewModel)
+            }
         }
     }
 
@@ -106,24 +102,24 @@ public struct AnalyticsView: View {
             }
 
             // 飲酒日ヒートマップ
-            heatmapCard
+            heatmapCard(for: targetLogs)
 
-            // 酒種別 飲酒比率
-            categoryRatioCard
+            // 酒種別・サブタイプ別 飲酒比率
+            categoryRatioCard(for: targetLogs)
         }
     }
 
     // MARK: - 2. 評価・好み分析セクション
     private func evaluationSection(for targetLogs: [TastingLog]) -> some View {
         VStack(spacing: 20) {
-            // マイベスト（ワイン・日本酒・ビール別 縦並び）
-            myBestSection
+            // マイベスト
+            myBestSection(for: targetLogs)
 
             // 好みの香り・特徴（アロマタグ）
-            aromaPreferenceCard
+            aromaPreferenceCard(for: targetLogs)
 
             // 平均テイストバランス
-            tasteProfileCard
+            tasteProfileCard(for: targetLogs)
         }
     }
 
@@ -156,18 +152,17 @@ public struct AnalyticsView: View {
         .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
     }
 
-    // --- ヒートマップカード（グリッドサイズを拡大して画面右側まで自然に配置） ---
-    private var heatmapCard: some View {
+    // --- ヒートマップカード ---
+    private func heatmapCard(for targetLogs: [TastingLog]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("お酒を飲んだ日（直近4ヶ月）")
                 .font(.headline)
 
-            let days = viewModel.drinkingHeatmapData(from: logs)
+            let days = viewModel.drinkingHeatmapData(from: targetLogs)
             let rows = Array(repeating: GridItem(.fixed(14), spacing: 4), count: 7)
             let weekdays = ["日", "月", "火", "水", "木", "金", "土"]
 
             HStack(alignment: .top, spacing: 8) {
-                // 左側の曜日ラベル
                 VStack(alignment: .leading, spacing: 4) {
                     ForEach(weekdays, id: \.self) { day in
                         Text(day)
@@ -178,7 +173,6 @@ public struct AnalyticsView: View {
                 }
                 .padding(.top, 1)
 
-                // ヒートマップグリッド本体
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHGrid(rows: rows, spacing: 4) {
                         ForEach(days) { day in
@@ -191,7 +185,6 @@ public struct AnalyticsView: View {
                 }
             }
 
-            // 凡例（レジェンド）
             HStack(spacing: 8) {
                 Text("少")
                     .font(.caption2)
@@ -229,55 +222,116 @@ public struct AnalyticsView: View {
         }
     }
 
-    // --- 酒種別比率カード ---
-    private var categoryRatioCard: some View {
+    // --- 酒種別・サブタイプ別比率カード ---
+    private func categoryRatioCard(for targetLogs: [TastingLog]) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("酒種別 飲酒比率")
+            let cardTitle: String = {
+                if let category = viewModel.selectedCategoryFilter {
+                    switch category {
+                    case .wine: return "ワインタイプ別 飲酒比率"
+                    case .sake: return "特定名称別 飲酒比率"
+                    case .beer: return "ビアスタイル別 飲酒比率"
+                    }
+                } else {
+                    return "酒種別 飲酒比率"
+                }
+            }()
+
+            Text(cardTitle)
                 .font(.headline)
 
-            let ratio = viewModel.categoryRatio(from: logs)
+            if viewModel.selectedCategoryFilter != nil {
+                // MARK: サブカテゴリ別グラフ（ワインタイプ / 特定名称 / ビアスタイル）
+                let subRatio = viewModel.subCategoryRatio(from: logs)
+                let totalCount = subRatio.values.reduce(0, +)
 
-            Chart {
-                ForEach(BeverageCategory.allCases, id: \.self) { category in
-                    let count = ratio[category] ?? 0
-                    if count > 0 {
-                        SectorMark(
-                            angle: .value("件数", count),
-                            innerRadius: .ratio(0.62),
-                            angularInset: 2.0
-                        )
-                        .cornerRadius(4)
-                        .foregroundStyle(by: .value("酒種", category.displayName))
-                    }
-                }
-            }
-            // グラフの色を categoryColor(_:) と完全に一致させる
-            .chartForegroundStyleScale([
-                BeverageCategory.wine.displayName: categoryColor(.wine),
-                BeverageCategory.sake.displayName: categoryColor(.sake),
-                BeverageCategory.beer.displayName: categoryColor(.beer)
-            ])
-            .frame(height: 180)
-            .chartLegend(.hidden)
-
-            // 件数が存在する（count > 0）酒種のみを抽出して凡例を表示する
-            let activeCategories = BeverageCategory.allCases.filter { (ratio[$0] ?? 0) > 0 }
-
-            if !activeCategories.isEmpty {
-                HStack(spacing: 16) {
-                    Spacer()
-                    ForEach(activeCategories, id: \.self) { category in
-                        let count = ratio[category] ?? 0
-                        HStack(spacing: 6) {
-                            Circle()
-                                .fill(categoryColor(category))
-                                .frame(width: 8, height: 8)
-                            Text("\(category.displayName): \(count)件")
-                                .font(.caption)
-                                .fontWeight(.medium)
+                if totalCount > 0 {
+                    Chart {
+                        ForEach(Array(subRatio.keys.sorted()), id: \.self) { key in
+                            let count = subRatio[key] ?? 0
+                            if count > 0 {
+                                SectorMark(
+                                    angle: .value("件数", count),
+                                    innerRadius: .ratio(0.62),
+                                    angularInset: 2.0
+                                )
+                                .cornerRadius(4)
+                                .foregroundStyle(by: .value("タイプ", key))
+                            }
                         }
                     }
-                    Spacer()
+                    .frame(height: 180)
+
+                    // タグ一覧・凡例
+                    FlowLayout(spacing: 8) {
+                        ForEach(Array(subRatio.keys.sorted()), id: \.self) { key in
+                            let count = subRatio[key] ?? 0
+                            if count > 0 {
+                                HStack(spacing: 4) {
+                                    Text(key)
+                                        .font(.caption)
+                                        .fontWeight(.medium)
+                                    Text("\(count)件")
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(Color(.systemGroupedBackground))
+                                .cornerRadius(8)
+                            }
+                        }
+                    }
+                } else {
+                    Text("サブカテゴリのメタデータが記録されていません")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .padding(.vertical, 12)
+                }
+            } else {
+                // MARK: 全酒種（メインカテゴリ）グラフ
+                let ratio = viewModel.categoryRatio(from: logs)
+
+                Chart {
+                    ForEach(BeverageCategory.allCases, id: \.self) { category in
+                        let count = ratio[category] ?? 0
+                        if count > 0 {
+                            SectorMark(
+                                angle: .value("件数", count),
+                                innerRadius: .ratio(0.62),
+                                angularInset: 2.0
+                            )
+                            .cornerRadius(4)
+                            .foregroundStyle(by: .value("酒種", category.displayName))
+                        }
+                    }
+                }
+                .chartForegroundStyleScale([
+                    BeverageCategory.wine.displayName: categoryColor(.wine),
+                    BeverageCategory.sake.displayName: categoryColor(.sake),
+                    BeverageCategory.beer.displayName: categoryColor(.beer)
+                ])
+                .frame(height: 180)
+                .chartLegend(.hidden)
+
+                let activeCategories = BeverageCategory.allCases.filter { (ratio[$0] ?? 0) > 0 }
+
+                if !activeCategories.isEmpty {
+                    HStack(spacing: 16) {
+                        Spacer()
+                        ForEach(activeCategories, id: \.self) { category in
+                            let count = ratio[category] ?? 0
+                            HStack(spacing: 6) {
+                                Circle()
+                                    .fill(categoryColor(category))
+                                    .frame(width: 8, height: 8)
+                                Text("\(category.displayName): \(count)件")
+                                    .font(.caption)
+                                    .fontWeight(.medium)
+                            }
+                        }
+                        Spacer()
+                    }
                 }
             }
         }
@@ -295,19 +349,20 @@ public struct AnalyticsView: View {
         }
     }
 
-    // --- マイベスト（ワイン・日本酒・ビール別 縦並び）セクション ---
-    private var myBestSection: some View {
+    // --- マイベストセクション ---
+    private func myBestSection(for targetLogs: [TastingLog]) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Image(systemName: "crown.fill")
                     .foregroundStyle(.yellow)
-                Text("マイベスト（お気に入り銘柄）")
+                Text("マイベスト")
                     .font(.headline)
             }
 
             VStack(spacing: 14) {
-                ForEach(BeverageCategory.allCases, id: \.self) { category in
-                    categoryBestView(for: category)
+                let categoriesToDisplay = viewModel.selectedCategoryFilter.map { [$0] } ?? BeverageCategory.allCases
+                ForEach(categoriesToDisplay, id: \.self) { category in
+                    categoryBestView(for: category, from: targetLogs)
                 }
             }
         }
@@ -317,8 +372,9 @@ public struct AnalyticsView: View {
         .shadow(color: Color.black.opacity(0.03), radius: 6, x: 0, y: 2)
     }
 
-    private func categoryBestView(for category: BeverageCategory) -> some View {
-        let bestLogs = viewModel.topRatedLogs(for: category, from: logs)
+    // ✨ 各酒種で最高評価の1件のみを表示するように変更
+    private func categoryBestView(for category: BeverageCategory, from targetLogs: [TastingLog]) -> some View {
+        let bestLog = viewModel.topRatedLog(for: category, from: targetLogs)
 
         return VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 6) {
@@ -331,48 +387,46 @@ public struct AnalyticsView: View {
                 Spacer()
             }
 
-            if bestLogs.isEmpty {
-                Text("該当期間の高評価（★4.5以上）の記録がありません")
+            if let log = bestLog {
+                HStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(log.item?.name ?? "不明な銘柄")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .lineLimit(1)
+                        if let producer = log.item?.producer, !producer.isEmpty {
+                            Text(producer)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                        }
+                    }
+                    
+                    Spacer()
+
+                    HStack(spacing: 2) {
+                        Image(systemName: "star.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.orange)
+                        Text(String(format: "%.1f", log.rating))
+                            .font(.caption)
+                            .fontWeight(.bold)
+                    }
+                }
+                .padding(10)
+                .background(Color(.systemGroupedBackground))
+                .cornerRadius(10)
+            } else {
+                Text("該当条件の記録がありません")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .padding(.vertical, 4)
-            } else {
-                VStack(spacing: 8) {
-                    ForEach(bestLogs) { log in
-                        HStack(spacing: 12) {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(log.item?.name ?? "不明な銘柄")
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                    .lineLimit(1)
-                                Text(log.item?.producer ?? "")
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                                    .lineLimit(1)
-                            }
-                            
-                            Spacer()
-
-                            HStack(spacing: 2) {
-                                Image(systemName: "star.fill")
-                                    .font(.caption2)
-                                    .foregroundStyle(.orange)
-                                Text(String(format: "%.1f", log.rating))
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                            }
-                        }
-                        .padding(10)
-                        .background(Color(.systemGroupedBackground))
-                        .cornerRadius(10)
-                    }
-                }
             }
         }
     }
 
     // --- 好みのアロマ・特徴タグ ---
-    private var aromaPreferenceCard: some View {
+    private func aromaPreferenceCard(for targetLogs: [TastingLog]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Image(systemName: "nose.fill")
@@ -381,7 +435,7 @@ public struct AnalyticsView: View {
                     .font(.headline)
             }
 
-            let topTags = viewModel.topAromaTags(from: logs)
+            let topTags = viewModel.topAromaTags(from: targetLogs)
 
             if topTags.isEmpty {
                 Text("香りの記録データがありません")
@@ -417,7 +471,7 @@ public struct AnalyticsView: View {
     }
 
     // --- 味わいプロファイルカード ---
-    private var tasteProfileCard: some View {
+    private func tasteProfileCard(for targetLogs: [TastingLog]) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
                 Image(systemName: "slider.horizontal.3")
@@ -426,7 +480,7 @@ public struct AnalyticsView: View {
                     .font(.headline)
             }
 
-            let profile = viewModel.averageTasteProfile(from: logs)
+            let profile = viewModel.averageTasteProfile(from: targetLogs)
 
             VStack(alignment: .leading, spacing: 10) {
                 Text("基本五味")
@@ -485,62 +539,39 @@ public struct AnalyticsView: View {
     }
 }
 
-/// 簡単な折り返しレイアウト（タグ用）
-struct FlowLayout: Layout {
-    var spacing: CGFloat = 8
-
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let width = proposal.width ?? .infinity
-        var height: CGFloat = 0
-        var x: CGFloat = 0
-        var rowHeight: CGFloat = 0
-
-        for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
-            if x + size.width > width {
-                x = 0
-                height += rowHeight + spacing
-                rowHeight = 0
-            }
-            x += size.width + spacing
-            rowHeight = max(rowHeight, size.height)
-        }
-        return CGSize(width: width, height: height + rowHeight)
-    }
-
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        var x = bounds.minX
-        var y = bounds.minY
-        var rowHeight: CGFloat = 0
-
-        for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
-            if x + size.width > bounds.maxX {
-                x = bounds.minX
-                y += rowHeight + spacing
-                rowHeight = 0
-            }
-            subview.place(at: CGPoint(x: x, y: y), proposal: .unspecified)
-            x += size.width + spacing
-            rowHeight = max(rowHeight, size.height)
-        }
-    }
-}
-
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
+    let encoder = JSONEncoder()
 
-    let wineItem = BeverageItem(name: "Barolo DOCG 2018", producer: "Prunotto", category: .wine, region: "イタリア")
-    let wineLog = TastingLog(rating: 4.8, aromaTags: ["スミレ", "樽香", "チェリー"], sweetness: 2.0, acidity: 4.2, bitterness: 2.0, umami: 2.5, body: 4.5, finishLength: 4.8, item: wineItem)
+    // --- 1. ワインサンプル ---
+    let wineRedMeta = WineSpecificMetadata(wineType: "赤", grapeVarieties: "ネッビオーロ", blendComponents: [])
+    let wineRedJSON = String(data: try! encoder.encode(wineRedMeta), encoding: .utf8)
+    let wine1 = BeverageItem(name: "Barolo DOCG 2018", producer: "Prunotto", category: .wine, region: "イタリア", specificMetadataJSON: wineRedJSON)
+    let logWine1 = TastingLog(rating: 4.8, aromaTags: ["スミレ", "樽香", "チェリー"], sweetness: 2.0, acidity: 4.2, bitterness: 2.0, umami: 2.5, body: 4.5, finishLength: 4.8, item: wine1)
 
-    let sakeItem = BeverageItem(name: "久保田 萬壽", producer: "朝日酒造", category: .sake, region: "新潟県")
-    let sakeLog = TastingLog(rating: 4.6, aromaTags: ["吟醸香", "青りんご"], sweetness: 3.0, acidity: 2.5, bitterness: 1.5, umami: 3.5, body: 3.0, finishLength: 4.0, item: sakeItem)
+    let wineWhiteMeta = WineSpecificMetadata(wineType: "白", grapeVarieties: "シャルドネ", blendComponents: [])
+    let wineWhiteJSON = String(data: try! encoder.encode(wineWhiteMeta), encoding: .utf8)
+    let wine2 = BeverageItem(name: "Chablis Premier Cru 2020", producer: "Domaine Laroche", category: .wine, region: "フランス", specificMetadataJSON: wineWhiteJSON)
+    let logWine2 = TastingLog(rating: 4.3, aromaTags: ["柑橘", "ミネラル"], sweetness: 1.5, acidity: 4.5, bitterness: 1.0, umami: 2.0, body: 3.0, finishLength: 4.0, item: wine2)
 
-    container.mainContext.insert(wineItem)
-    container.mainContext.insert(wineLog)
-    container.mainContext.insert(sakeItem)
-    container.mainContext.insert(sakeLog)
+    // --- 2. 日本酒サンプル ---
+    let sakeDaiginjoMeta = SakeSpecificMetadata(specificName: "純米大吟醸", riceVariety: "山田錦", polishingRate: "50%", sakeMeterValue: "+3.0")
+    let sakeDaiginjoJSON = String(data: try! encoder.encode(sakeDaiginjoMeta), encoding: .utf8)
+    let sake1 = BeverageItem(name: "久保田 萬壽", producer: "朝日酒造", category: .sake, region: "新潟県", specificMetadataJSON: sakeDaiginjoJSON)
+    let logSake1 = TastingLog(rating: 4.6, aromaTags: ["吟醸香", "青りんご"], sweetness: 3.0, acidity: 2.5, bitterness: 1.5, umami: 3.5, body: 3.0, finishLength: 4.0, item: sake1)
+
+    // --- 3. ビールサンプル ---
+    let beerIpaMeta = BeerSpecificMetadata(beerStyle: "IPA", ibu: "55")
+    let beerIpaJSON = String(data: try! encoder.encode(beerIpaMeta), encoding: .utf8)
+    let beer1 = BeverageItem(name: "Punk IPA", producer: "BrewDog", category: .beer, region: "スコットランド", specificMetadataJSON: beerIpaJSON)
+    let logBeer1 = TastingLog(rating: 4.4, aromaTags: ["グレープフルーツ", "ホップ"], sweetness: 2.0, acidity: 1.5, bitterness: 4.5, umami: 1.5, body: 3.5, finishLength: 3.8, item: beer1)
+
+    let items = [wine1, wine2, sake1, beer1]
+    let logs = [logWine1, logWine2, logSake1, logBeer1]
+
+    for item in items { container.mainContext.insert(item) }
+    for log in logs { container.mainContext.insert(log) }
 
     return AnalyticsView()
         .modelContainer(container)

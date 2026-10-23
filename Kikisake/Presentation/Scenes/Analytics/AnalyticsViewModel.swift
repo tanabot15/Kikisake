@@ -1,9 +1,5 @@
-//
 //  AnalyticsViewModel.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import Foundation
 import SwiftData
@@ -25,7 +21,6 @@ public enum AnalyticsTimeFilter: String, CaseIterable, Identifiable {
 
     public var id: String { rawValue }
 
-    /// 指定日が含まれるか、あるいは指定期間内かを判定する
     func evaluate(date: Date, relativeTo referenceDate: Date = Date()) -> Bool {
         let calendar = Calendar.current
         switch self {
@@ -54,48 +49,106 @@ public struct HeatmapDay: Identifiable {
 @Observable
 public final class AnalyticsViewModel {
     public var selectedSection: AnalyticsSection = .consumption
+    
+    // --- フィルター条件 ---
     public var selectedTimeFilter: AnalyticsTimeFilter = .all
+    public var selectedCategoryFilter: BeverageCategory? = nil
     
     private let calculateUseCase = CalculateAnalyticsUseCase()
 
     public init() {}
 
-    /// 期間フィルター適用済みのログを取得する
+    /// 期間および酒種フィルター適用済みのログを取得する
     public func filteredLogs(from logs: [TastingLog]) -> [TastingLog] {
-        logs.filter { selectedTimeFilter.evaluate(date: $0.date) }
+        logs.filter { log in
+            // 1. 期間判定
+            guard selectedTimeFilter.evaluate(date: log.date) else { return false }
+            
+            // 2. 酒種 (カテゴリ) 判定
+            if let category = selectedCategoryFilter {
+                guard log.item?.category == category else { return false }
+            }
+            
+            return true
+        }
     }
 
-    /// 酒種比率を取得する
+    /// デフォルト状態（全期間・全酒種）から何等かのフィルター条件が追加されているか
+    public var hasActiveFilters: Bool {
+        selectedTimeFilter != .all || selectedCategoryFilter != nil
+    }
+
+    /// フィルター条件をデフォルトにリセットする
+    public func resetFilters() {
+        self.selectedTimeFilter = .all
+        self.selectedCategoryFilter = nil
+    }
+
+    /// 酒種（メインカテゴリ）比率を取得する
     public func categoryRatio(from logs: [TastingLog]) -> [BeverageCategory: Int] {
         let targetLogs = filteredLogs(from: logs)
         return calculateUseCase.calculateCategoryRatio(from: targetLogs)
+    }
+
+    /// 選択された酒種に応じたサブタイプ別比率（wineType / specificName / beerStyle）を取得する
+    public func subCategoryRatio(from logs: [TastingLog]) -> [String: Int] {
+        guard let category = selectedCategoryFilter else { return [:] }
+        let targetLogs = filteredLogs(from: logs)
+        var counts: [String: Int] = [:]
+
+        for log in targetLogs {
+            guard let item = log.item, item.category == category else { continue }
+            guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else {
+                counts["未設定", default: 0] += 1
+                continue
+            }
+
+            switch category {
+            case .wine:
+                if let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data), !meta.wineType.isEmpty {
+                    counts[meta.wineType, default: 0] += 1
+                } else {
+                    counts["その他", default: 0] += 1
+                }
+            case .sake:
+                if let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data), !meta.specificName.isEmpty {
+                    counts[meta.specificName, default: 0] += 1
+                } else {
+                    counts["その他", default: 0] += 1
+                }
+            case .beer:
+                if let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data), !meta.beerStyle.isEmpty {
+                    counts[meta.beerStyle, default: 0] += 1
+                } else {
+                    counts["その他", default: 0] += 1
+                }
+            }
+        }
+        return counts
     }
 
     /// 直近17週間（約4ヶ月）の飲酒日ヒートマップ用データを生成
     public func drinkingHeatmapData(from logs: [TastingLog]) -> [HeatmapDay] {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
+        let targetLogs = filteredLogs(from: logs)
         
         var days: [HeatmapDay] = []
         for dayOffset in (0..<119).reversed() {
             if let date = calendar.date(byAdding: .day, value: -dayOffset, to: today) {
-                // ヒートマップは日付ベースの全体傾向または期間内に一致するもの
-                let count = logs.filter { calendar.isDate($0.date, inSameDayAs: date) }.count
+                let count = targetLogs.filter { calendar.isDate($0.date, inSameDayAs: date) }.count
                 days.append(HeatmapDay(date: date, count: count))
             }
         }
         return days
     }
 
-    /// 指定した酒種ごとの高評価（マイベスト）ログを取得（★4.5以上を降順で）
-    public func topRatedLogs(for category: BeverageCategory, from logs: [TastingLog], limit: Int = 3) -> [TastingLog] {
+    /// ✨ 指定した酒種の中で「最も評価が高いNo.1」のログ（1件のみ）を取得する
+    public func topRatedLog(for category: BeverageCategory, from logs: [TastingLog]) -> TastingLog? {
         let targetLogs = filteredLogs(from: logs)
-        return targetLogs.filter { log in
-            log.rating >= 4.5 && log.item?.category == category
-        }
-        .sorted { $0.rating > $1.rating }
-        .prefix(limit)
-        .map { $0 }
+        return targetLogs
+            .filter { $0.item?.category == category }
+            .max(by: { $0.rating < $1.rating })
     }
 
     /// よく登場する香りタグ上位を取得
