@@ -243,11 +243,19 @@ public struct AnalyticsView: View {
             if viewModel.selectedCategoryFilter != nil {
                 // MARK: サブカテゴリ別グラフ（ワインタイプ / 特定名称 / ビアスタイル）
                 let subRatio = viewModel.subCategoryRatio(from: logs)
+                let sortedKeys = Array(subRatio.keys.sorted())
                 let totalCount = subRatio.values.reduce(0, +)
 
                 if totalCount > 0 {
+                    // サブカテゴリ用のカラーパレットとマッピングを明示的なString型で作成
+                    let palette: [Color] = [.purple, .blue, .orange, .pink, .teal, .indigo, .brown]
+                    let colorPairs: [(String, Color)] = sortedKeys.enumerated().map { index, key in
+                        (String(key), palette[index % palette.count])
+                    }
+                    let colorMapping = Dictionary(uniqueKeysWithValues: colorPairs)
+
                     Chart {
-                        ForEach(Array(subRatio.keys.sorted()), id: \.self) { key in
+                        ForEach(sortedKeys, id: \.self) { key in
                             let count = subRatio[key] ?? 0
                             if count > 0 {
                                 SectorMark(
@@ -260,25 +268,25 @@ public struct AnalyticsView: View {
                             }
                         }
                     }
+                    .chartForegroundStyleScale(domain: sortedKeys, range: colorPairs.map { $0.1 })
                     .frame(height: 180)
+                    .chartLegend(.hidden)
 
-                    // タグ一覧・凡例
-                    FlowLayout(spacing: 8) {
-                        ForEach(Array(subRatio.keys.sorted()), id: \.self) { key in
-                            let count = subRatio[key] ?? 0
-                            if count > 0 {
-                                HStack(spacing: 4) {
-                                    Text(key)
+                    // 統一された凡例表示UI
+                    let activeKeys = sortedKeys.filter { (subRatio[$0] ?? 0) > 0 }
+                    if !activeKeys.isEmpty {
+                        FlowLayout(spacing: 12) {
+                            ForEach(activeKeys, id: \.self) { key in
+                                let count = subRatio[key] ?? 0
+                                let color = colorMapping[key] ?? .gray
+                                HStack(spacing: 6) {
+                                    Circle()
+                                        .fill(color)
+                                        .frame(width: 8, height: 8)
+                                    Text("\(key): \(count)件")
                                         .font(.caption)
                                         .fontWeight(.medium)
-                                    Text("\(count)件")
-                                        .font(.caption2)
-                                        .foregroundStyle(.secondary)
                                 }
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Color(.systemGroupedBackground))
-                                .cornerRadius(8)
                             }
                         }
                     }
@@ -372,7 +380,6 @@ public struct AnalyticsView: View {
         .shadow(color: Color.black.opacity(0.03), radius: 6, x: 0, y: 2)
     }
 
-    // ✨ 各酒種で最高評価の1件のみを表示するように変更
     private func categoryBestView(for category: BeverageCategory, from targetLogs: [TastingLog]) -> some View {
         let bestLog = viewModel.topRatedLog(for: category, from: targetLogs)
 

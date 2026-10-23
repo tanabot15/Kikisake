@@ -12,6 +12,7 @@ public struct InventoryView: View {
     
     @State private var viewModel = InventoryViewModel()
     @State private var showAddLocationSheet: Bool = false
+    @State private var isShowingFilterSheet: Bool = false
     
     // アコーディオンで展開中の保管場所名を保持するState
     @State private var expandedLocationName: String? = nil
@@ -38,16 +39,18 @@ public struct InventoryView: View {
                         .padding(.horizontal)
                         .padding(.top, 8)
 
-                    if locations.isEmpty {
+                    let targetLocations = viewModel.filteredLocations(locations)
+
+                    if locations.isEmpty || targetLocations.isEmpty {
                         ContentUnavailableView(
-                            "保管場所が登録されていません",
+                            "該当する保管場所がありません",
                             systemImage: "cabinet",
-                            description: Text("右上の「＋」ボタンから保管場所を追加してください。")
+                            description: Text(viewModel.hasActiveFilters ? "フィルター条件を変更してみてください。" : "右上の「＋」ボタンから保管場所を追加してください。")
                         )
                         .padding(.top, 40)
                     } else {
                         VStack(spacing: 14) {
-                            ForEach(locations, id: \.id) { loc in
+                            ForEach(targetLocations, id: \.id) { loc in
                                 let isExpanded = (expandedLocationName == loc.name)
                                 let summaryList = viewModel.categorySummaryList(for: loc.name, in: items)
                                 let displayItems = viewModel.filteredItems(items, for: loc.name)
@@ -117,7 +120,7 @@ public struct InventoryView: View {
                                                 .padding(.horizontal)
                                             
                                             if displayItems.isEmpty {
-                                                Text("この保管場所に在庫はありません")
+                                                Text("条件に一致する在庫はありません")
                                                     .font(.subheadline)
                                                     .foregroundStyle(.secondary)
                                                     .padding(.vertical, 16)
@@ -244,15 +247,30 @@ public struct InventoryView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showAddLocationSheet = true
-                    } label: {
-                        Label("場所を追加", systemImage: "plus")
+                    HStack(spacing: 12) {
+                        // フィルターボタン
+                        Button {
+                            isShowingFilterSheet = true
+                        } label: {
+                            Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                                .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
+                        }
+                        .accessibilityLabel("在庫フィルター")
+
+                        // 場所追加ボタン
+                        Button {
+                            showAddLocationSheet = true
+                        } label: {
+                            Label("場所を追加", systemImage: "plus")
+                        }
                     }
                 }
             }
             .sheet(isPresented: $showAddLocationSheet) {
                 AddLocationSheetView()
+            }
+            .sheet(isPresented: $isShowingFilterSheet) {
+                InventoryFilterSheet(viewModel: viewModel, allItems: items)
             }
             // スワイプ移動用ダイアログ
             .confirmationDialog("移動先の選択", isPresented: $isShowingMoveDialog, titleVisibility: .visible) {

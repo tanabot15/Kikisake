@@ -60,6 +60,7 @@
 		D9044273308AFE0100EF4807 /* TastingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044272308AFE0100EF4807 /* TastingOptions.swift */; };
 		D9044275308B18EE00EF4807 /* AnalyticsFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044274308B18EE00EF4807 /* AnalyticsFilterSheet.swift */; };
 		D9044277308B1ADF00EF4807 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044276308B1ADF00EF4807 /* FlowLayout.swift */; };
+		D9044279308B269300EF4807 /* InventoryFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044278308B269300EF4807 /* InventoryFilterSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -117,6 +118,7 @@
 		D9044272308AFE0100EF4807 /* TastingOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingOptions.swift; sourceTree = "<group>"; };
 		D9044274308B18EE00EF4807 /* AnalyticsFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsFilterSheet.swift; sourceTree = "<group>"; };
 		D9044276308B1ADF00EF4807 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
+		D9044278308B269300EF4807 /* InventoryFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryFilterSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -342,6 +344,7 @@
 				D9044243307E863000EF4807 /* InventoryView.swift */,
 				D9044245307E863A00EF4807 /* InventoryViewModel.swift */,
 				D904425A308368BF00EF4807 /* AddLocationSheetView.swift */,
+				D9044278308B269300EF4807 /* InventoryFilterSheet.swift */,
 			);
 			path = Inventory;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9044279308B269300EF4807 /* InventoryFilterSheet.swift in Sources */,
 				D90441F3307E83F600EF4807 /* AppState.swift in Sources */,
 				D90442523081A45200EF4807 /* AromaStepView.swift in Sources */,
 				D9044223307E856F00EF4807 /* CustomSlider.swift in Sources */,
