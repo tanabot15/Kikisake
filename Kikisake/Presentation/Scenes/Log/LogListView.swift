@@ -1,9 +1,5 @@
-//
 //  LogListView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import SwiftUI
 import SwiftData
@@ -11,14 +7,23 @@ import SwiftData
 /// [Tab 1] 飲んだ酒のリスト（テイスティングログ一覧）画面
 public struct LogListView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.editMode) private var editMode // 編集モードの状態を管理
     @Query(sort: \TastingLog.date, order: .reverse) private var logs: [TastingLog]
     @State private var viewModel = LogListViewModel()
+    
+    // ✨ フィルターシートの表示状態
+    @State private var isShowingFilterSheet: Bool = false
 
     private let filterCategories: [BeverageCategory?] = [nil] + BeverageCategory.allCases.map { Optional($0) }
 
     /// フィルタリング済みのログリスト
     private var filteredLogs: [TastingLog] {
         viewModel.filteredLogs(logs)
+    }
+
+    /// フィルターやソートがデフォルトから変更されているかどうか（バッジ表示用）
+    private var hasActiveFilters: Bool {
+        viewModel.selectedRatingFilter != nil || viewModel.sortOrder != .dateDescending
     }
 
     public var body: some View {
@@ -60,21 +65,28 @@ public struct LogListView: View {
                             ForEach(filteredLogs) { log in
                                 NavigationLink(destination: LogDetailView(log: log)) {
                                     if let item = log.item {
-                                        BeverageCardView(
-                                            name: item.name,
-                                            producer: item.producer,
-                                            category: item.category,
-                                            region: item.region,
-                                            vintage: item.vintage,
-                                            stockQuantity: nil,
-                                            rating: log.rating,
-                                            imageData: item.imageDatas?.first,
-                                            appearanceColorHex: log.appearanceColorHex // ✨ 追加
-                                        )
-                                        .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                        .listRowSeparator(.hidden)
+                                        VStack(spacing: 0) {
+                                            BeverageCardView(
+                                                name: item.name,
+                                                producer: item.producer,
+                                                category: item.category,
+                                                region: item.region,
+                                                vintage: item.vintage,
+                                                stockQuantity: nil,
+                                                rating: log.rating,
+                                                imageData: item.imageDatas?.first,
+                                                appearanceColorHex: log.appearanceColorHex
+                                            )
+                                            .padding(.bottom, 12)
+                                            
+                                            // 統一感のあるクリーンな区切り線
+                                            Divider()
+                                                .padding(.horizontal, 4)
+                                        }
                                     }
                                 }
+                                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                                .listRowSeparator(.hidden)
                             }
                             .onDelete(perform: deleteLogs)
                             .onMove(perform: moveLogs)
@@ -86,11 +98,40 @@ public struct LogListView: View {
             .navigationTitle("テイスティングログ")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    EditButton()
+                // ✨ ツールバーに「フィルターボタン」と「編集ボタン」を配置
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button {
+                        isShowingFilterSheet = true
+                    } label: {
+                        Image(systemName: hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                            .foregroundStyle(hasActiveFilters ? Color.accentColor : Color.primary)
+                    }
+
+                    Button {
+                        withAnimation {
+                            if editMode?.wrappedValue == .active {
+                                editMode?.wrappedValue = .inactive
+                            } else {
+                                editMode?.wrappedValue = .active
+                            }
+                        }
+                    } label: {
+                        Label(
+                            editMode?.wrappedValue == .active ? "完了" : "編集",
+                            systemImage: editMode?.wrappedValue == .active ? "checkmark.circle.fill" : "square.and.pencil"
+                        )
+                    }
                 }
             }
-            .searchable(text: $viewModel.searchText, prompt: "銘柄名、生産者、メモで検索")
+            .sheet(isPresented: $isShowingFilterSheet) {
+                LogFilterSheet(viewModel: viewModel)
+            }
+            // 検索バーを常に画面上に露出させ、ユーザーが見つけやすく操作しやすくする
+            .searchable(
+                text: $viewModel.searchText,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "銘柄名、生産者、メモで検索"
+            )
         }
     }
 
@@ -113,7 +154,6 @@ public struct LogListView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
     
-    // サンプルデータ 1: ワイン（ルビーレッド）
     let wineItem = BeverageItem(
         name: "Château Margaux 2015",
         producer: "Château Margaux",
@@ -126,7 +166,7 @@ public struct LogListView: View {
         date: Date(),
         rating: 4.8,
         appearanceNotes: "ルビーレッド",
-        appearanceColorHex: "#991A33", // ✨ ワインの赤色
+        appearanceColorHex: "#991A33",
         aromaTags: ["カシス", "ヴァニラ", "杉"],
         sweetness: 2.0,
         saltiness: 0.0,
@@ -140,69 +180,9 @@ public struct LogListView: View {
         memo: "圧倒的な気品と複雑味。",
         item: wineItem
     )
-    
-    // サンプルデータ 2: 日本酒（淡金色）
-    let sakeItem = BeverageItem(
-        name: "久保田 萬壽",
-        producer: "朝日酒造",
-        category: .sake,
-        region: "新潟県",
-        vintage: "2026/05",
-        stockQuantity: 2
-    )
-    let sakeLog = TastingLog(
-        date: Date().addingTimeInterval(-86400 * 2),
-        rating: 4.5,
-        appearanceNotes: "淡金色",
-        appearanceColorHex: "#F3E6B3", // ✨ 日本酒の黄金・淡黄色
-        aromaTags: ["吟醸香", "青りんご", "バナナ"],
-        sweetness: 3.0,
-        saltiness: 0.0,
-        acidity: 2.5,
-        bitterness: 1.5,
-        umami: 3.5,
-        tannin: nil,
-        body: 3.0,
-        balanceTags: ["まろやかな"],
-        finishLength: 4.0,
-        memo: "香りが華やかでなめらかな口当たり。",
-        item: sakeItem
-    )
-
-    // サンプルデータ 3: ビール（ペール・ストロー）
-    let beerItem = BeverageItem(
-        name: "Inedit Damm",
-        producer: "Damm",
-        category: .beer,
-        region: "バルセロナ, スペイン",
-        vintage: "2026",
-        stockQuantity: 0
-    )
-    let beerLog = TastingLog(
-        date: Date().addingTimeInterval(-86400 * 5),
-        rating: 4.2,
-        appearanceNotes: "ペール・ストロー",
-        appearanceColorHex: "#FAF080", // ✨ ビールの麦わら・ストロー色
-        aromaTags: ["シトラス", "ホップ", "スパイス"],
-        sweetness: 2.5,
-        saltiness: 0.0,
-        acidity: 3.0,
-        bitterness: 3.0,
-        umami: 2.5,
-        tannin: nil,
-        body: 3.5,
-        balanceTags: ["ドライな"],
-        finishLength: 3.5,
-        memo: "シャンパンのような華やかな香りとリッチな味わい。",
-        item: beerItem
-    )
 
     container.mainContext.insert(wineItem)
     container.mainContext.insert(wineLog)
-    container.mainContext.insert(sakeItem)
-    container.mainContext.insert(sakeLog)
-    container.mainContext.insert(beerItem)
-    container.mainContext.insert(beerLog)
 
     return LogListView()
         .modelContainer(container)

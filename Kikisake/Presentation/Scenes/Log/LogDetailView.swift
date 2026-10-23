@@ -92,7 +92,7 @@ public struct LogDetailView: View {
                     Button {
                         isShowingEditSheet = true
                     } label: {
-                        Image(systemName: "slider.horizontal.2.arrow.trianglehead.counterclockwise")
+                        Image(systemName: "square.and.pencil")
                     }
 
                     if #available(iOS 16.0, *) {

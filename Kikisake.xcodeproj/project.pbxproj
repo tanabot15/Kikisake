@@ -56,6 +56,7 @@
 		D904426B3088A33A00EF4807 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = D904426A3088A33A00EF4807 /* GoogleMobileAds */; };
 		D904426D3088A3D000EF4807 /* AdMobBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904426C3088A3D000EF4807 /* AdMobBannerView.swift */; };
 		D904426F3088ACCE00EF4807 /* AdMobConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = D904426E3088ACCE00EF4807 /* AdMobConfig.plist */; };
+		D9044271308AFA4E00EF4807 /* LogFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044270308AFA4E00EF4807 /* LogFilterSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +110,7 @@
 		D9044267308721A200EF4807 /* EditLogFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogFlowView.swift; sourceTree = "<group>"; };
 		D904426C3088A3D000EF4807 /* AdMobBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobBannerView.swift; sourceTree = "<group>"; };
 		D904426E3088ACCE00EF4807 /* AdMobConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AdMobConfig.plist; sourceTree = "<group>"; };
+		D9044270308AFA4E00EF4807 /* LogFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFilterSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,6 +362,7 @@
 			children = (
 				D904422C307E85A000EF4807 /* LogListView.swift */,
 				D904422E307E85AB00EF4807 /* LogListViewModel.swift */,
+				D9044270308AFA4E00EF4807 /* LogFilterSheet.swift */,
 				D9044230307E85B600EF4807 /* LogDetailView.swift */,
 				D904425C3085D32F00EF4807 /* TastingCardShareView.swift */,
 				D9044267308721A200EF4807 /* EditLogFlowView.swift */,
@@ -480,6 +483,7 @@
 				D9044207307E84AC00EF4807 /* Date+Extension.swift in Sources */,
 				D90442503081A43B00EF4807 /* AppearanceStepView.swift in Sources */,
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
+				D9044271308AFA4E00EF4807 /* LogFilterSheet.swift in Sources */,
 				D904426D3088A3D000EF4807 /* AdMobBannerView.swift in Sources */,
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
 				D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */,
