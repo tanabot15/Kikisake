@@ -32,10 +32,17 @@ public struct AromaCategory: Identifiable {
 /// 共通のテイスティング選択肢プロバイダ
 public enum TastingOptions {
     
+    /// 味わいのバランス表現のマスター選択肢一覧
+    public static let balanceOptions: [String] = [
+        "スムーズな", "コンパクトな", "スリムな", "ドライな",
+        "引き締まった", "ジューシーな", "豊潤な", "厚みのある",
+        "まろやかな", "ふくよかな", "ねっとりした"
+    ]
+    
     /// 酒種・タイプに応じた外観カラーオプションを取得
     public static func colorOptions(for category: BeverageCategory?, wineType: String = "赤") -> [ColorOption] {
         guard let category = category else {
-            // ✨ 「すべて」が選択されている場合は、全酒種のカラーを重複なく結合して返す
+            // 「すべて」が選択されている場合は全酒種のカラーを重複なく結合して返す
             var allOptions: [ColorOption] = []
             var seenNames = Set<String>()
             
@@ -133,7 +140,7 @@ public enum TastingOptions {
     /// 香りカテゴリ一覧を取得
     public static func aromaCategories(for category: BeverageCategory?, wineType: String = "赤") -> [AromaCategory] {
         guard let category = category else {
-            // ✨ 「すべて」が選択されている場合は、全酒種の香りを統合して返す
+            // 「すべて」が選択されている場合は全酒種の香りを統合して返す
             var tagSet = Set<String>()
             var combinedTags: [String] = []
             
@@ -225,7 +232,7 @@ public enum TastingOptions {
         case .beer:
             return [
                 AromaCategory(title: "果実", tags: ["シトラス", "グレープフルーツ", "トロピカルフルーツ", "青りんご", "オレンジピール"]),
-                AromaCategory(title: "花・植物", tags: ["Hop", "ハーバル", "松やに", "フローラル", "スパイス"]),
+                AromaCategory(title: "花・植物", tags: ["ホップ", "ハーバル", "松やに", "フローラル", "スパイス"]),
                 AromaCategory(title: "その他", tags: ["麦芽", "ロースト香", "キャラメル", "チョコレート", "ビスケット", "スモーキー", "酵母"])
             ]
         }

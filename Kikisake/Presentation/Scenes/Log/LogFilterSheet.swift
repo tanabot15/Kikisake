@@ -78,7 +78,7 @@ public struct LogFilterSheet: View {
                     }
                 }
 
-                // 4. テイスティングデータ (評価、外観カラー、香りタグ)
+                // 4. テイスティングデータ (評価、外観カラー、香りタグ、バランス表現)
                 Section("評価・テイスティングデータ") {
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
@@ -102,20 +102,11 @@ public struct LogFilterSheet: View {
                         .tint(.yellow)
                     }
 
-                    // ✨ 外観・色調の選択メニュー（色付きの丸を並列表示）
+                    // 外観・色調の選択メニュー
                     Picker("外観・色調", selection: $viewModel.appearanceNoteFilter) {
                         Text("指定なし").tag("")
                         ForEach(availableColorOptions) { option in
-                            HStack(spacing: 8) {
-                                Circle()
-                                    .fill(option.color)
-                                    .frame(width: 14, height: 14)
-                                    .overlay(
-                                        Circle()
-                                            .stroke(Color.primary.opacity(0.2), lineWidth: 0.5)
-                                    )
-                                Text(option.name)
-                            }.tag(option.name)
+                            Text(option.name).tag(option.name)
                         }
                     }
                     .pickerStyle(.menu)
@@ -125,6 +116,15 @@ public struct LogFilterSheet: View {
                         Text("指定なし").tag("")
                         ForEach(availableAromaTags, id: \.self) { tag in
                             Text(tag).tag(tag)
+                        }
+                    }
+                    .pickerStyle(.menu)
+
+                    // ✨ 味わい・バランス表現の選択メニュー（TastingOptions.balanceOptionsを利用）
+                    Picker("味わい・バランス表現", selection: $viewModel.balanceTagFilter) {
+                        Text("指定なし").tag("")
+                        ForEach(TastingOptions.balanceOptions, id: \.self) { option in
+                            Text(option).tag(option)
                         }
                     }
                     .pickerStyle(.menu)
@@ -177,7 +177,7 @@ public struct LogFilterSheet: View {
                     } label: {
                         HStack {
                             Spacer()
-                            Label("すべてのフィルターをリセット", systemImage: "arrow.counterclockwise")
+                            Text("すべてのフィルターをリセット")
                                 .fontWeight(.semibold)
                             Spacer()
                         }

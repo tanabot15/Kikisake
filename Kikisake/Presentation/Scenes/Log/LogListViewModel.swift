@@ -36,6 +36,7 @@ public final class LogListViewModel {
     // テイスティングデータフィルター
     public var aromaTagFilter: String = ""
     public var appearanceNoteFilter: String = ""
+    public var balanceTagFilter: String = ""
 
     // 固有メタデータフィルター
     public var wineTypeFilter: String = "すべて"
@@ -95,13 +96,17 @@ public final class LogListViewModel {
                 if price > maxPrice { return false }
             }
 
-            // 9. テイスティングデータ (香りタグ & 外観)
+            // 9. テイスティングデータ (香りタグ、外観、バランス表現)
             if !aromaTagFilter.isEmpty {
                 let hasTag = log.aromaTags.contains { $0.localizedCaseInsensitiveContains(aromaTagFilter) }
                 if !hasTag { return false }
             }
             if !appearanceNoteFilter.isEmpty {
                 if !log.appearanceNotes.localizedCaseInsensitiveContains(appearanceNoteFilter) { return false }
+            }
+            if !balanceTagFilter.isEmpty {
+                let hasBalanceTag = log.balanceTags.contains { $0.localizedCaseInsensitiveContains(balanceTagFilter) }
+                if !hasBalanceTag { return false }
             }
 
             // 10. 酒種固有のメタデータ (JSONデコードによる判定)
@@ -159,6 +164,7 @@ public final class LogListViewModel {
         maxPrice != nil ||
         !aromaTagFilter.isEmpty ||
         !appearanceNoteFilter.isEmpty ||
+        !balanceTagFilter.isEmpty || // ✨ 追加
         wineTypeFilter != "すべて" ||
         sakeSpecificNameFilter != "すべて" ||
         !beerStyleFilter.isEmpty ||
@@ -176,6 +182,7 @@ public final class LogListViewModel {
         self.maxPrice = nil
         self.aromaTagFilter = ""
         self.appearanceNoteFilter = ""
+        self.balanceTagFilter = "" // ✨ 追加
         self.wineTypeFilter = "すべて"
         self.sakeSpecificNameFilter = "すべて"
         self.beerStyleFilter = ""

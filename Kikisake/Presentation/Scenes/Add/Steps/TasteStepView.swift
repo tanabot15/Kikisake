@@ -1,9 +1,5 @@
-//
 //  TasteStepView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/15.
-//
 
 import SwiftUI
 
@@ -43,13 +39,6 @@ public struct TasteStepView: View {
         return type == "赤" || type == "ロゼ" || type == "オレンジ"
     }
 
-    /// バランス表現の選択肢
-    private let balanceOptions = [
-        "スムーズな", "コンパクトな", "スリムな", "ドライな",
-        "引き締まった", "ジューシーな", "豊潤な", "厚みのある",
-        "まろやかな", "ふくよかな", "ねっとりした"
-    ]
-
     public var body: some View {
         Form {
             // 1. 基本五味
@@ -73,10 +62,10 @@ public struct TasteStepView: View {
                 CustomSlider(title: "ボディ (Body)", value: $viewModel.body)
             }
 
-            // 4. バランス (複数選択タグ)
+            // 4. バランス (複数選択タグ) ✨ TastingOptions.balanceOptions を参照
             Section("バランス表現 (複数選択可)") {
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: 10)], spacing: 10) {
-                    ForEach(balanceOptions, id: \.self) { option in
+                    ForEach(TastingOptions.balanceOptions, id: \.self) { option in
                         let isSelected = viewModel.selectedBalanceTags.contains(option)
                         Button {
                             if isSelected {
@@ -120,7 +109,6 @@ public struct TasteStepView: View {
     }
 }
 
-// プレビューでワインタイプごとのタンニン表示切り替えをテスト可能
 #Preview {
     struct PreviewWrapper: View {
         @State private var vm = AddFlowViewModel()

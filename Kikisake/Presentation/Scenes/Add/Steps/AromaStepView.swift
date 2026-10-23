@@ -1,9 +1,5 @@
-//
 //  AromaStepView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/15.
-//
 
 import SwiftUI
 
@@ -13,13 +9,6 @@ public struct AromaStepView: View {
 
     public init(viewModel: AddFlowViewModel) {
         self.viewModel = viewModel
-    }
-
-    /// 香りの分類データ構造
-    private struct AromaCategory: Identifiable {
-        let id = UUID()
-        let title: String
-        let tags: [String]
     }
 
     /// ワインのJSONメタデータから現在のワインタイプを安全に取得するヘルパー
@@ -43,92 +32,9 @@ public struct AromaStepView: View {
         return String(data: data, encoding: .utf8)
     }
 
-    /// 資料（赤ワイン・白ワイン・日本酒のテイスティング用紙）に基づく3分類の香り定義
+    /// ✨ TastingOptions から香りデータを取得
     private var aromaCategories: [AromaCategory] {
-        switch viewModel.selectedCategory {
-        case .wine:
-            let type = currentWineType
-            if type == "白" || type == "スパークリング" {
-                // 白ワインの要素[cite: 54]
-                return [
-                    AromaCategory(title: "果実", tags: [
-                        "柑橘類", "青リンゴ", "リンゴ", "洋梨", "マスカット", "花梨",
-                        "パッションフルーツ", "白桃", "アプリコット", "パイナップル", "ライチ", "バナナ", "マンゴー"
-                    ]),
-                    AromaCategory(title: "花・植物", tags: [
-                        "スイカズラ", "アカシア", "白バラ", "キンモクセイ", "菩提樹",
-                        "ミント", "アニス", "ヴェルヴェーヌ", "草", "タイム", "フレッシュアーモンド", "ヘーゼルナッツ"
-                    ]),
-                    AromaCategory(title: "その他", tags: [
-                        "石灰", "火打石", "貝殻", "鉱物", "海の香り", "トースト", "ヴァニラ",
-                        "煙・薫製", "シナモン", "白胡椒", "コリアンダー", "丁字", "香木",
-                        "ジンジャーブレッド", "ペトロール", "パン・ド・ミ", "乳製品",
-                        "フェノール", "麝香", "花の蜜", "硫黄", "ワックス", "蜜蝋", "蜂蜜"
-                    ])
-                ]
-            } else if type == "ロゼ" {
-                // ロゼワイン（赤・白の要素をミックス）
-                return [
-                    AromaCategory(title: "果実", tags: ["ストロベリー", "ラズベリー", "チェリー", "赤スグリ", "桃", "柑橘類"]),
-                    AromaCategory(title: "花・植物", tags: ["ローズ", "ゼラニウム", "グリーンリーフ", "アカシア"]),
-                    AromaCategory(title: "その他", tags: ["キャンディ", "白コショウ", "ミネラル", "ハチミツ"])
-                ]
-            } else if type == "オレンジ" {
-                // オレンジワイン（白ワイン＋スキンコンタクトの要素）
-                return [
-                    AromaCategory(title: "果実", tags: ["オレンジピール", "アプリコット", "ドライフルーツ", "マーマレード", "洋梨"]),
-                    AromaCategory(title: "花・植物", tags: ["カモミール", "ドライフラワー", "紅茶の葉", "ハーブ"]),
-                    AromaCategory(title: "その他", tags: ["ナッツ", "スパイス", "ハチミツ", "酵母", "鉱物", "トースト"])
-                ]
-            } else {
-                // 赤ワインの要素[cite: 53]
-                return [
-                    AromaCategory(title: "果実", tags: [
-                        "イチゴ", "ラズベリー", "ブルーベリー", "カシス", "ブラックベリー",
-                        "ブラックチェリー", "干しプラム", "乾燥イチジク"
-                    ]),
-                    AromaCategory(title: "花・植物", tags: [
-                        "バラ", "スミレ", "牡丹", "ゼラニウム", "ピーマン", "トマト",
-                        "黒オリーブ", "メントール", "シダ", "ローリエ", "杉", "針葉樹", "ユーカリ", "ドライハーブ"
-                    ]),
-                    AromaCategory(title: "その他", tags: [
-                        "タバコ", "紅茶", "スーボア", "キノコ", "トリュフ", "黒胡椒", "丁子",
-                        "シナモン", "ナツメグ", "甘草", "ヴァニラ", "ロースト", "コーヒー",
-                        "チョコレート", "煙・薫製", "動物的なニュアンス", "鉄分", "生肉",
-                        "グリエ", "乾いた肉", "なめし皮", "樹脂", "ヨード", "ランシオ"
-                    ])
-                ]
-            }
-
-        case .sake:
-            // 日本酒の要素[cite: 55]
-            return [
-                AromaCategory(title: "果実", tags: [
-                    "グレープフルーツ", "黄色いリンゴ", "洋ナシ", "白桃", "バナナ",
-                    "メロン", "マスカット", "ライチ", "パイナップル"
-                ]),
-                AromaCategory(title: "花・植物", tags: [
-                    "スイカズラ", "スミレ", "アカシア", "菩提樹",
-                    "セルフィーユ", "青竹", "新緑", "紅茶", "月桂樹の葉", "ヒノキ", "香木"
-                ]),
-                AromaCategory(title: "その他", tags: [
-                    "ゴボウ", "朝鮮人参", "マッシュルーム", "椎茸", "丁字", "シナモン",
-                    "ビターチョコレート", "栗", "クルミ", "アーモンド", "炊いた米",
-                    "つきたての餅", "上新粉", "白玉団子", "杏仁豆腐", "生クリーム",
-                    "サワークリーム", "ヨーグルト", "発酵バター", "クリームチーズ",
-                    "粘土", "腐葉土", "石灰", "カラメル", "コーヒー", "醤油",
-                    "ヨード香", "蜂蜜", "スモーク香", "カビ", "タマネギ", "熟成チーズ"
-                ])
-            ]
-
-        case .beer:
-            // ビール向け要素
-            return [
-                AromaCategory(title: "果実", tags: ["シトラス", "グレープフルーツ", "トロピカルフルーツ", "青りんご", "オレンジピール"]),
-                AromaCategory(title: "花・植物", tags: ["ホップ", "ハーバル", "松やに", "フローラル", "スパイス"]),
-                AromaCategory(title: "その他", tags: ["麦芽", "ロースト香", "キャラメル", "チョコレート", "ビスケット", "スモーキー", "酵母"])
-            ]
-        }
+        return TastingOptions.aromaCategories(for: viewModel.selectedCategory, wineType: currentWineType)
     }
 
     public var body: some View {
@@ -176,7 +82,6 @@ public struct AromaStepView: View {
     }
 }
 
-// プレビューで各種切り替えテストが可能
 #Preview {
     struct PreviewWrapper: View {
         @State private var vm = AddFlowViewModel()
