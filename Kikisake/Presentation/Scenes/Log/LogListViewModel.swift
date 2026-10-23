@@ -20,6 +20,9 @@ public final class LogListViewModel {
     public var searchText: String = ""
     public var sortOrder: LogSortOrder = .dateDescending
 
+    // --- 表示形式の状態管理 ---
+    public var isCompactView: Bool = false // ✨ デフォルトはfalse（リッチカード表示）
+
     // --- 高機能フィルタープロパティ ---
     public var selectedCategoryFilter: BeverageCategory? = nil
     public var selectedRatingFilter: Double? = nil
@@ -129,7 +132,6 @@ public final class LogListViewModel {
                     }
                 }
             } else {
-                // 固有メタデータが存在しない場合で条件が絞り込まれている場合は除外
                 if wineTypeFilter != "すべて" || sakeSpecificNameFilter != "すべて" || !beerStyleFilter.isEmpty {
                     return false
                 }
@@ -164,7 +166,7 @@ public final class LogListViewModel {
         maxPrice != nil ||
         !aromaTagFilter.isEmpty ||
         !appearanceNoteFilter.isEmpty ||
-        !balanceTagFilter.isEmpty || // ✨ 追加
+        !balanceTagFilter.isEmpty ||
         wineTypeFilter != "すべて" ||
         sakeSpecificNameFilter != "すべて" ||
         !beerStyleFilter.isEmpty ||
@@ -182,7 +184,7 @@ public final class LogListViewModel {
         self.maxPrice = nil
         self.aromaTagFilter = ""
         self.appearanceNoteFilter = ""
-        self.balanceTagFilter = "" // ✨ 追加
+        self.balanceTagFilter = ""
         self.wineTypeFilter = "すべて"
         self.sakeSpecificNameFilter = "すべて"
         self.beerStyleFilter = ""

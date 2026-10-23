@@ -38,41 +38,70 @@ public struct LogListView: View {
                             ForEach(filteredLogs) { log in
                                 NavigationLink(destination: LogDetailView(log: log)) {
                                     if let item = log.item {
-                                        VStack(spacing: 0) {
-                                            BeverageCardView(
-                                                name: item.name,
-                                                producer: item.producer,
-                                                category: item.category,
-                                                region: item.region,
-                                                vintage: item.vintage,
-                                                stockQuantity: nil,
-                                                rating: log.rating,
-                                                imageData: item.imageDatas?.first,
-                                                appearanceColorHex: log.appearanceColorHex
-                                            )
-                                            .padding(.bottom, 12)
-                                            
-                                            // 統一感のある区切り線
-                                            Divider()
-                                                .padding(.horizontal, 4)
+                                        if viewModel.isCompactView {
+                                            // ✨ シンプル・コンパクトなリスト行
+                                            LogCompactRowView(log: log, item: item)
+                                                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                                                .listRowSeparator(.automatic)
+                                        } else {
+                                            // 従来のリッチなカード表示
+                                            VStack(spacing: 0) {
+                                                BeverageCardView(
+                                                    name: item.name,
+                                                    producer: item.producer,
+                                                    category: item.category,
+                                                    region: item.region,
+                                                    vintage: item.vintage,
+                                                    stockQuantity: nil,
+                                                    rating: log.rating,
+                                                    imageData: item.imageDatas?.first,
+                                                    appearanceColorHex: log.appearanceColorHex
+                                                )
+                                                .padding(.bottom, 12)
+                                                
+                                                Divider()
+                                                    .padding(.horizontal, 4)
+                                            }
+                                            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                                            .listRowSeparator(.hidden)
                                         }
                                     }
                                 }
-                                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                                .listRowSeparator(.hidden)
                             }
                             .onDelete(perform: deleteLogs)
                             .onMove(perform: moveLogs)
                         }
                         .listStyle(.plain)
+                        .searchable(
+                            text: $viewModel.searchText,
+                            placement: .navigationBarDrawer(displayMode: .always),
+                            prompt: "銘柄名、生産者、メモで検索"
+                        )
                     }
                 }
             }
-            .navigationTitle("テイスティングログ")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // ツールバーに「フィルターボタン」と「編集ボタン」を配置
+                ToolbarItem(placement: .principal) {
+                    Text("テイスティングログ")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                }
+
+                // ツールバーに「表示切替ボタン」「フィルターボタン」「編集ボタン」を配置
                 ToolbarItemGroup(placement: .topBarTrailing) {
+                    // ✨ 1. 表示形式切替ボタン (.primaryを適用)
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            viewModel.isCompactView.toggle()
+                        }
+                    } label: {
+                        Image(systemName: viewModel.isCompactView ? "rectangle.grid.1x2" : "list.bullet")
+                            .foregroundStyle(.primary)
+                    }
+                    .accessibilityLabel("表示形式の切り替え")
+
+                    // ✨ 2. フィルターボタン (アクティブ時のみアクセントカラー、通常は .primary)
                     Button {
                         isShowingFilterSheet = true
                     } label: {
@@ -80,6 +109,7 @@ public struct LogListView: View {
                             .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
                     }
 
+                    // ✨ 3. 編集ボタン (.primaryを適用)
                     Button {
                         withAnimation {
                             if editMode?.wrappedValue == .active {
@@ -93,17 +123,13 @@ public struct LogListView: View {
                             editMode?.wrappedValue == .active ? "完了" : "編集",
                             systemImage: editMode?.wrappedValue == .active ? "checkmark.circle.fill" : "square.and.pencil"
                         )
+                        .foregroundStyle(.primary)
                     }
                 }
             }
             .sheet(isPresented: $isShowingFilterSheet) {
                 LogFilterSheet(viewModel: viewModel)
             }
-            .searchable(
-                text: $viewModel.searchText,
-                placement: .navigationBarDrawer(displayMode: .always),
-                prompt: "銘柄名、生産者、メモで検索"
-            )
         }
     }
 
@@ -119,6 +145,41 @@ public struct LogListView: View {
     private func moveLogs(from source: IndexSet, to destination: Int) {
         var updatedLogs = filteredLogs
         updatedLogs.move(fromOffsets: source, toOffset: destination)
+    }
+}
+
+/// シンプル・コンパクトなリスト行コンポーネント
+private struct LogCompactRowView: View {
+    let log: TastingLog
+    let item: BeverageItem
+
+    var body: some View {
+        HStack(spacing: 12) {
+            // 外観カラーのドット表現 (Color+Extensionのイニシャライザを利用)
+            Circle()
+                .fill(Color(hex: log.appearanceColorHex) ?? Color.gray)
+                .frame(width: 14, height: 14)
+                .overlay(
+                    Circle().stroke(Color.primary.opacity(0.2), lineWidth: 0.5)
+                )
+            
+            Text(item.name)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .lineLimit(1)
+
+            Spacer()
+            
+            HStack(spacing: 2) {
+                Image(systemName: "star.fill")
+                    .font(.caption2)
+                    .foregroundStyle(.yellow)
+                Text(String(format: "%.1f", log.rating))
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+            }
+        }
+        .padding(.vertical, 4)
     }
 }
 

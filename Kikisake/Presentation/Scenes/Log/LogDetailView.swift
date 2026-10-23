@@ -1,9 +1,5 @@
-//
 //  LogDetailView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import SwiftUI
 import SwiftData
@@ -25,7 +21,7 @@ public struct LogDetailView: View {
         if scanner.scanHexInt64(&rgbValue) {
             let red = Double((rgbValue & 0xFF0000) >> 16) / 255.0
             let green = Double((rgbValue & 0x00FF00) >> 8) / 255.0
-            let blue = Double(rgbValue & 0x0000FF) / 255.0
+            let blue = Double((rgbValue & 0x0000FF) >> 8) / 255.0
             return Color(red: red, green: green, blue: blue)
         }
         return .gray
@@ -115,21 +111,37 @@ public struct LogDetailView: View {
         }
     }
 
+    /// ✨ 横長写真でも画面をはみ出さない、安全かつ洗練されたヘッダービュー
     private var heroHeaderView: some View {
-        ZStack(alignment: .bottomLeading) {
+        ZStack(alignment: .bottom) {
             if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
                 Button {
                     isShowingImageModal = true
                 } label: {
                     ZStack(alignment: .bottomTrailing) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(height: 240)
-                            .clipped()
+                        ZStack {
+                            Color.black
+                            // 背景にぼかした画像を敷き詰めてリッチに演出
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .blur(radius: 20)
+                                .opacity(0.4)
+
+                            // メインの写真：横長・縦長問わず綺麗に収まるように調整
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 320)
+                                .padding(.vertical, 8)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 320)
+                        .clipped() // ✨ はみ出しを確実に防止
 
                         LinearGradient(
-                            colors: [.clear, .black.opacity(0.6)],
+                            colors: [.clear, .black.opacity(0.75)],
                             startPoint: .center,
                             endPoint: .bottom
                         )
@@ -155,7 +167,7 @@ public struct LogDetailView: View {
                         .font(.system(size: 48))
                         .foregroundStyle(.white.opacity(0.8))
                 }
-                .frame(height: 180)
+                .frame(height: 200)
             }
 
             if let item = log.item {
@@ -172,9 +184,12 @@ public struct LogDetailView: View {
                             .foregroundStyle(item.imageDatas?.first != nil ? .white.opacity(0.8) : .primary)
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(16)
             }
         }
+        .frame(maxWidth: .infinity)
+        .clipped()
     }
     
     @MainActor
@@ -202,7 +217,7 @@ public struct LogDetailView: View {
                     rowContent(label: "ヴィンテージ / 年月", value: vintage)
                 }
                 if let abv = item.alcoholByVolume {
-                    rowContent(label: "アルコール度数", value: String(format: "%.1f %", abv))
+                    rowContent(label: "アルコール度数", value: String(format: "%.1f %%", abv))
                 }
                 if let price = item.price {
                     rowContent(label: "価格", value: "\(price) 円")
@@ -422,7 +437,7 @@ public struct LogDetailView: View {
             Text(value)
                 .font(.subheadline)
                 .fontWeight(.medium)
-        }
+            }
     }
 }
 
