@@ -11,19 +11,12 @@ public struct LogListView: View {
     @Query(sort: \TastingLog.date, order: .reverse) private var logs: [TastingLog]
     @State private var viewModel = LogListViewModel()
     
-    // ✨ フィルターシートの表示状態
+    // フィルターシートの表示状態
     @State private var isShowingFilterSheet: Bool = false
-
-    private let filterCategories: [BeverageCategory?] = [nil] + BeverageCategory.allCases.map { Optional($0) }
 
     /// フィルタリング済みのログリスト
     private var filteredLogs: [TastingLog] {
         viewModel.filteredLogs(logs)
-    }
-
-    /// フィルターやソートがデフォルトから変更されているかどうか（バッジ表示用）
-    private var hasActiveFilters: Bool {
-        viewModel.selectedRatingFilter != nil || viewModel.sortOrder != .dateDescending
     }
 
     public var body: some View {
@@ -32,33 +25,13 @@ public struct LogListView: View {
                 ConditionalAdMobBannerView()
                     .frame(height: 50)
                     .background(Color(.systemBackground))
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        ForEach(filterCategories, id: \.self) { category in
-                            Button {
-                                viewModel.selectedCategoryFilter = category
-                            } label: {
-                                Text(category?.displayName ?? "すべて")
-                                    .font(.subheadline)
-                                    .padding(.horizontal, 14)
-                                    .padding(.vertical, 8)
-                                    .background(viewModel.selectedCategoryFilter == category ? Color.accentColor : Color(.systemGray6))
-                                    .foregroundStyle(viewModel.selectedCategoryFilter == category ? Color.white : Color.primary)
-                                    .cornerRadius(16)
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
-                }
 
                 Group {
                     if filteredLogs.isEmpty {
                         ContentUnavailableView(
-                            "テイスティングログがありません",
+                            "該当するログが見つかりません",
                             systemImage: "wineglass",
-                            description: Text("「追加」タブから新しい記録を作成しましょう。")
+                            description: Text(viewModel.hasActiveFilters ? "フィルター条件を変更してみてください。" : "「追加」タブから新しい記録を作成しましょう。")
                         )
                     } else {
                         List {
@@ -79,7 +52,7 @@ public struct LogListView: View {
                                             )
                                             .padding(.bottom, 12)
                                             
-                                            // 統一感のあるクリーンな区切り線
+                                            // 統一感のある区切り線
                                             Divider()
                                                 .padding(.horizontal, 4)
                                         }
@@ -98,13 +71,13 @@ public struct LogListView: View {
             .navigationTitle("テイスティングログ")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // ✨ ツールバーに「フィルターボタン」と「編集ボタン」を配置
+                // ツールバーに「フィルターボタン」と「編集ボタン」を配置
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button {
                         isShowingFilterSheet = true
                     } label: {
-                        Image(systemName: hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                            .foregroundStyle(hasActiveFilters ? Color.accentColor : Color.primary)
+                        Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                            .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
                     }
 
                     Button {
@@ -126,7 +99,6 @@ public struct LogListView: View {
             .sheet(isPresented: $isShowingFilterSheet) {
                 LogFilterSheet(viewModel: viewModel)
             }
-            // 検索バーを常に画面上に露出させ、ユーザーが見つけやすく操作しやすくする
             .searchable(
                 text: $viewModel.searchText,
                 placement: .navigationBarDrawer(displayMode: .always),
