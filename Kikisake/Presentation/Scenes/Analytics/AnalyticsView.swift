@@ -75,7 +75,7 @@ public struct AnalyticsView: View {
                 }
             }
             .sheet(isPresented: $isShowingFilterSheet) {
-                AnalyticsFilterSheet(viewModel: viewModel)
+                AnalyticsFilterSheet(viewModel: viewModel, allLogs: logs)
             }
         }
     }

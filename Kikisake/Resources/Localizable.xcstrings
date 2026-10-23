@@ -18,7 +18,14 @@
       }
     },
     "「%@」の移動先を選択してください。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a destination for \"%@\"."
+          }
+        }
+      }
     },
     "「追加」タブから新しい記録を作成しましょう。" : {
       "localizations" : {
@@ -119,15 +126,11 @@
       }
     },
     "%@にストック" : {
-
-    },
-    "%@にストック（在庫1本）" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stock in %@"
+            "value" : "Stocked in %@"
           }
         }
       }
@@ -153,7 +156,14 @@
       }
     },
     "%lld件" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%lld items"
+          }
+        }
+      }
     },
     "▲ %@: %@" : {
       "localizations" : {
@@ -228,7 +238,14 @@
       }
     },
     "No Image" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Image"
+          }
+        }
+      }
     },
     "OK" : {
       "localizations" : {
@@ -340,17 +357,6 @@
         }
       }
     },
-    "このボトルを開ける" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open This Bottle"
-          }
-        }
-      }
-    },
     "この保管場所に在庫はありません" : {
       "localizations" : {
         "en" : {
@@ -372,7 +378,14 @@
       }
     },
     "サブカテゴリのメタデータが記録されていません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No subcategory metadata recorded"
+          }
+        }
+      }
     },
     "サンプルデータが追加されました。" : {
       "localizations" : {
@@ -415,13 +428,34 @@
       }
     },
     "スペック" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Specs"
+          }
+        }
+      }
     },
     "すべて" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        }
+      }
     },
     "すべてのフィルターをリセット" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset All Filters"
+          }
+        }
+      }
     },
     "その他" : {
       "localizations" : {
@@ -434,7 +468,14 @@
       }
     },
     "タイプ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
     },
     "データ管理" : {
       "localizations" : {
@@ -446,34 +487,12 @@
         }
       }
     },
-    "テイスティングデータがありません" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No tasting data available"
-          }
-        }
-      }
-    },
     "テイスティングログ" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tasting Log"
-          }
-        }
-      }
-    },
-    "テイスティングログがありません" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No tasting logs available"
           }
         }
       }
@@ -519,13 +538,34 @@
       }
     },
     "フィルターと並び替え" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter & Sort"
+          }
+        }
+      }
     },
     "フィルター条件をリセット" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset Filters"
+          }
+        }
+      }
     },
     "フィルター条件を変更してみてください。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try changing your filter criteria."
+          }
+        }
+      }
     },
     "ブドウ品種" : {
       "localizations" : {
@@ -578,7 +618,14 @@
       }
     },
     "ボトルを開ける" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Bottle"
+          }
+        }
+      }
     },
     "マイベスト（お気に入り銘柄）" : {
       "localizations" : {
@@ -691,10 +738,24 @@
       }
     },
     "上限価格" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max Price"
+          }
+        }
+      }
     },
     "並び替え (ソート)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort By"
+          }
+        }
+      }
     },
     "件数" : {
       "localizations" : {
@@ -817,7 +878,14 @@
       }
     },
     "保管場所を移動" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move Storage Location"
+          }
+        }
+      }
     },
     "保管場所を選択して保存" : {
       "localizations" : {
@@ -840,13 +908,34 @@
       }
     },
     "円" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "JPY"
+          }
+        }
+      }
     },
     "最低アルコール度数" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min ABV"
+          }
+        }
+      }
     },
     "最低評価 (スコア)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min Rating"
+          }
+        }
+      }
     },
     "写真の追加方法を選択" : {
       "localizations" : {
@@ -919,10 +1008,24 @@
       }
     },
     "分析フィルター" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analytics Filters"
+          }
+        }
+      }
     },
     "分析対象の期間" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Period"
+          }
+        }
+      }
     },
     "削除" : {
       "localizations" : {
@@ -965,7 +1068,14 @@
       }
     },
     "味わい・バランス表現" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flavor & Balance"
+          }
+        }
+      }
     },
     "味わいプロファイル" : {
       "localizations" : {
@@ -1008,7 +1118,14 @@
       }
     },
     "固有詳細条件" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Specific Details"
+          }
+        }
+      }
     },
     "在庫" : {
       "localizations" : {
@@ -1101,7 +1218,14 @@
       }
     },
     "外観・色調" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance & Color"
+          }
+        }
+      }
     },
     "外観・色調の選択" : {
       "localizations" : {
@@ -1164,7 +1288,14 @@
       }
     },
     "完了" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
     },
     "少" : {
       "localizations" : {
@@ -1197,10 +1328,24 @@
       }
     },
     "指定なし" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None"
+          }
+        }
+      }
     },
     "日本酒 特定名称" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sake Designation"
+          }
+        }
+      }
     },
     "日本酒度 (例: +3.0)" : {
       "localizations" : {
@@ -1233,7 +1378,14 @@
       }
     },
     "期間を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Period"
+          }
+        }
+      }
     },
     "未設定 (デフォルト)" : {
       "localizations" : {
@@ -1256,15 +1408,11 @@
       }
     },
     "未設定の場所にストック" : {
-
-    },
-    "未設定の場所にストック（在庫1本）" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stock in Unassigned Location "
+            "value" : "Stocked in Unassigned"
           }
         }
       }
@@ -1350,7 +1498,14 @@
       }
     },
     "生産地 (例: ボルドー, 新潟)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Region (e.g., Bordeaux, Niigata)"
+          }
+        }
+      }
     },
     "生産者 / 蔵元 / ブルワリー" : {
       "localizations" : {
@@ -1393,13 +1548,34 @@
       }
     },
     "移動" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move"
+          }
+        }
+      }
     },
     "移動先の保管場所を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Destination Location"
+          }
+        }
+      }
     },
     "移動先の選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Destination"
+          }
+        }
+      }
     },
     "種類" : {
       "localizations" : {
@@ -1498,13 +1674,34 @@
       }
     },
     "編集" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
     },
     "表示形式の切り替え" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch View"
+          }
+        }
+      }
     },
     "表示順序" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort Order"
+          }
+        }
+      }
     },
     "補足メモ (任意)" : {
       "localizations" : {
@@ -1537,7 +1734,14 @@
       }
     },
     "評価" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating"
+          }
+        }
+      }
     },
     "評価・スコア" : {
       "localizations" : {
@@ -1550,27 +1754,44 @@
       }
     },
     "評価・テイスティングデータ" : {
-
-    },
-    "該当するログが見つかりません" : {
-
-    },
-    "該当する分析データがありません" : {
-
-    },
-    "該当期間の高評価（★4.5以上）の記録がありません" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No high-rated logs (★4.5 or higher) found for this period."
+            "value" : "Rating & Tasting Data"
+          }
+        }
+      }
+    },
+    "該当するログが見つかりません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matching logs found"
+          }
+        }
+      }
+    },
+    "該当する分析データがありません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matching analytics data"
           }
         }
       }
     },
     "該当条件の高評価（★4.5以上）の記録がありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No highly rated records (★4.5+) matching criteria"
+          }
+        }
+      }
     },
     "詳細メモ・自由記述" : {
       "localizations" : {
@@ -1623,18 +1844,21 @@
       }
     },
     "酒種 (カテゴリ)" : {
-
-    },
-    "酒種を選択" : {
-
-    },
-    "酒種別 飲酒比率" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Consumption Ratio by Type"
+            "value" : "Category"
+          }
+        }
+      }
+    },
+    "酒種を選択" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Category"
           }
         }
       }
@@ -1700,7 +1924,14 @@
       }
     },
     "香り" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma"
+          }
+        }
+      }
     },
     "香りタグ" : {
       "localizations" : {

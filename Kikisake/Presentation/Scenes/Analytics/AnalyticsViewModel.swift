@@ -53,12 +53,13 @@ public final class AnalyticsViewModel {
     // --- フィルター条件 ---
     public var selectedTimeFilter: AnalyticsTimeFilter = .all
     public var selectedCategoryFilter: BeverageCategory? = nil
+    public var selectedSubCategoryFilter: String? = nil
     
     private let calculateUseCase = CalculateAnalyticsUseCase()
 
     public init() {}
 
-    /// 期間および酒種フィルター適用済みのログを取得する
+    /// 期間、酒種、およびサブタイプフィルター適用済みのログを取得する
     public func filteredLogs(from logs: [TastingLog]) -> [TastingLog] {
         logs.filter { log in
             // 1. 期間判定
@@ -66,22 +67,69 @@ public final class AnalyticsViewModel {
             
             // 2. 酒種 (カテゴリ) 判定
             if let category = selectedCategoryFilter {
-                guard log.item?.category == category else { return false }
+                guard let item = log.item, item.category == category else { return false }
+                
+                // 3. サブカテゴリ判定
+                if let subCategory = selectedSubCategoryFilter {
+                    guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else { return false }
+                    
+                    switch category {
+                    case .wine:
+                        guard let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data),
+                              meta.wineType == subCategory else { return false }
+                    case .sake:
+                        guard let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data),
+                              meta.specificName == subCategory else { return false }
+                    case .beer:
+                        guard let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data),
+                              meta.beerStyle == subCategory else { return false }
+                    }
+                }
             }
             
             return true
         }
     }
 
-    /// デフォルト状態（全期間・全酒種）から何等かのフィルター条件が追加されているか
+    /// デフォルト状態（全期間・全酒種・サブタイプなし）から何等かのフィルター条件が追加されているか
     public var hasActiveFilters: Bool {
-        selectedTimeFilter != .all || selectedCategoryFilter != nil
+        selectedTimeFilter != .all || selectedCategoryFilter != nil || selectedSubCategoryFilter != nil
     }
 
     /// フィルター条件をデフォルトにリセットする
     public func resetFilters() {
         self.selectedTimeFilter = .all
         self.selectedCategoryFilter = nil
+        self.selectedSubCategoryFilter = nil
+    }
+
+    /// 選択された酒種に応じて、ログから動的に存在するサブタイプリストを取得する
+    public func availableSubCategories(from logs: [TastingLog]) -> [String] {
+        guard let category = selectedCategoryFilter else { return [] }
+        var subTypes = Set<String>()
+
+        for log in logs {
+            guard let item = log.item,
+                  item.category == category,
+                  let json = item.specificMetadataJSON,
+                  let data = json.data(using: .utf8) else { continue }
+
+            switch category {
+            case .wine:
+                if let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data), !meta.wineType.isEmpty {
+                    subTypes.insert(meta.wineType)
+                }
+            case .sake:
+                if let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data), !meta.specificName.isEmpty {
+                    subTypes.insert(meta.specificName)
+                }
+            case .beer:
+                if let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data), !meta.beerStyle.isEmpty {
+                    subTypes.insert(meta.beerStyle)
+                }
+            }
+        }
+        return Array(subTypes).sorted()
     }
 
     /// 酒種（メインカテゴリ）比率を取得する
@@ -143,7 +191,7 @@ public final class AnalyticsViewModel {
         return days
     }
 
-    /// ✨ 指定した酒種の中で「最も評価が高いNo.1」のログ（1件のみ）を取得する
+    /// 指定した酒種の中で「最も評価が高いNo.1」のログ（1件のみ）を取得する
     public func topRatedLog(for category: BeverageCategory, from logs: [TastingLog]) -> TastingLog? {
         let targetLogs = filteredLogs(from: logs)
         return targetLogs
