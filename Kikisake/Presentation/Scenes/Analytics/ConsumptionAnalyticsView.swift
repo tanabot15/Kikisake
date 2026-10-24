@@ -20,21 +20,22 @@ public struct ConsumptionAnalyticsView: View {
 
     private var summaryCardsView: some View {
         HStack(spacing: 12) {
-            summaryCard(
-                title: "総記録回数",
-                value: "\(targetLogs.count)",
-                unit: "回",
-                iconName: "square.and.pencil",
-                color: .accentColor
-            )
-            
             let uniqueItemsCount = Set(targetLogs.compactMap { $0.item?.id }).count
             summaryCard(
                 title: "飲んだ種類",
                 value: "\(uniqueItemsCount)",
-                unit: "銘柄",
+                unit: " 銘柄",
                 iconName: "wineglass.fill",
                 color: .purple
+            )
+            
+            let averageRating = viewModel.averageRating(from: targetLogs)
+            summaryCard(
+                title: "平均スコア",
+                value: String(format: "%.1f", averageRating),
+                unit: " 点",
+                iconName: "star.fill",
+                color: .orange
             )
         }
     }
