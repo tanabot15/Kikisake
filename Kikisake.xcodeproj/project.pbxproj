@@ -61,6 +61,8 @@
 		D9044275308B18EE00EF4807 /* AnalyticsFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044274308B18EE00EF4807 /* AnalyticsFilterSheet.swift */; };
 		D9044277308B1ADF00EF4807 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044276308B1ADF00EF4807 /* FlowLayout.swift */; };
 		D9044279308B269300EF4807 /* InventoryFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044278308B269300EF4807 /* InventoryFilterSheet.swift */; };
+		D904427B308C9C8000EF4807 /* ConsumptionAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */; };
+		D904427D308C9C9B00EF4807 /* EvaluationAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,6 +121,8 @@
 		D9044274308B18EE00EF4807 /* AnalyticsFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsFilterSheet.swift; sourceTree = "<group>"; };
 		D9044276308B1ADF00EF4807 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		D9044278308B269300EF4807 /* InventoryFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryFilterSheet.swift; sourceTree = "<group>"; };
+		D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumptionAnalyticsView.swift; sourceTree = "<group>"; };
+		D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationAnalyticsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -365,6 +369,8 @@
 				D9044232307E85C300EF4807 /* AnalyticsView.swift */,
 				D9044234307E85CF00EF4807 /* AnalyticsViewModel.swift */,
 				D9044274308B18EE00EF4807 /* AnalyticsFilterSheet.swift */,
+				D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */,
+				D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -500,6 +506,7 @@
 				D9044271308AFA4E00EF4807 /* LogFilterSheet.swift in Sources */,
 				D904426D3088A3D000EF4807 /* AdMobBannerView.swift in Sources */,
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
+				D904427D308C9C9B00EF4807 /* EvaluationAnalyticsView.swift in Sources */,
 				D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */,
 				D904425D3085D33000EF4807 /* TastingCardShareView.swift in Sources */,
 				D9044233307E85C300EF4807 /* AnalyticsView.swift in Sources */,
@@ -530,6 +537,7 @@
 				D9044221307E854100EF4807 /* ConsumeBeverageUseCase.swift in Sources */,
 				D9044244307E863000EF4807 /* InventoryView.swift in Sources */,
 				D9044217307E850500EF4807 /* TastingLog.swift in Sources */,
+				D904427B308C9C8000EF4807 /* ConsumptionAnalyticsView.swift in Sources */,
 				D904422B307E859300EF4807 /* BeverageCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
