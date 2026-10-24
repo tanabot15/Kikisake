@@ -81,6 +81,9 @@ public enum PreviewSampleLoader {
             body: 4.8,
             balanceTags: ["豊潤な", "厚みのある"],
             finishLength: 5.0,
+            isCostEffective: false,        // 高級ワインのためfalse
+            isWillingToRepeat: true,       // リピート意向あり
+            hasAgingPotential: true,       // 熟成ポテンシャルあり
             memo: "圧倒的な気品と複雑味。カシスの芳醇な香りに樽のニュアンスが完璧に溶け込んでいる。",
             item: wineItem
         )
@@ -121,6 +124,9 @@ public enum PreviewSampleLoader {
             body: 3.0,
             balanceTags: ["ジューシーな", "まろやかな"],
             finishLength: 4.2,
+            isCostEffective: true,         // コスパ良好
+            isWillingToRepeat: true,       // リピート意向あり
+            hasAgingPotential: false,      // 生酒のため熟成ポテンシャルは控えめ
             memo: "ジューシーな酸味と上品な甘みのバランスが素晴らしい。キレも抜群。",
             item: sakeItem
         )
@@ -159,6 +165,9 @@ public enum PreviewSampleLoader {
             body: 3.5,
             balanceTags: ["スムーズな", "ドライな"],
             finishLength: 3.8,
+            isCostEffective: true,         // コスパ良好
+            isWillingToRepeat: true,       // リピート意向あり
+            hasAgingPotential: false,      // ビールのため熟成ポテンシャルなし
             memo: "シャンパンのように華やかで、食事に合わせやすいプレミアム・ホワイトビール。",
             item: beerItem
         )
