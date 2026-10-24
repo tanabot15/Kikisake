@@ -1,9 +1,5 @@
-//
 //  StorageLocation.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/17.
-//
 
 import Foundation
 import SwiftData
@@ -15,6 +11,12 @@ public final class StorageLocation {
     public var name: String             // 保管場所の名前（例: "自宅セラー", "サブ冷蔵庫"）
     public var typeRawValue: String     // 種類（"ワインセラー", "冷蔵庫", "常温" など）
     public var memo: String             // 補足メモ
+    
+    // グリッド（棚番）管理用のプロパティ
+    public var isGridEnabled: Bool      // グリッド表示を有効にするか
+    public var gridRows: Int            // 段数（行）
+    public var gridColumns: Int         // 1段あたりの本数（列）
+    
     public var createdAt: Date
 
     public var type: StorageCategoryType {
@@ -27,12 +29,18 @@ public final class StorageLocation {
         name: String,
         type: StorageCategoryType,
         memo: String = "",
+        isGridEnabled: Bool = false,
+        gridRows: Int = 4,
+        gridColumns: Int = 6,
         createdAt: Date = Date()
     ) {
         self.id = id
         self.name = name
         self.typeRawValue = type.rawValue
         self.memo = memo
+        self.isGridEnabled = isGridEnabled
+        self.gridRows = gridRows
+        self.gridColumns = gridColumns
         self.createdAt = createdAt
     }
 }

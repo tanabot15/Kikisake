@@ -1,9 +1,5 @@
-//
 //  AddLocationSheetView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/17.
-//
 
 import SwiftUI
 import SwiftData
@@ -16,6 +12,11 @@ public struct AddLocationSheetView: View {
     @State private var name: String = ""
     @State private var selectedType: StorageCategoryType = .cellar
     @State private var memo: String = ""
+    
+    // グリッド設定用のState（デフォルトで有効に設定）
+    @State private var isGridEnabled: Bool = true
+    @State private var gridRows: Int = 4
+    @State private var gridColumns: Int = 6
 
     public init() {}
 
@@ -38,6 +39,16 @@ public struct AddLocationSheetView: View {
                 Section("補足メモ (任意)") {
                     TextField("例: 温度14度設定", text: $memo)
                 }
+
+                // セラー構造（グリッド）設定セクション
+                Section("セラー構造・棚番マッピング") {
+                    Toggle("グリッド（棚）で視覚管理する", isOn: $isGridEnabled)
+                    
+                    if isGridEnabled {
+                        Stepper("段数（行）: \(gridRows)段", value: $gridRows, in: 1...10)
+                        Stepper("1段あたりの本数（列）: \(gridColumns)本", value: $gridColumns, in: 1...12)
+                    }
+                }
             }
             .navigationTitle("保管場所の追加")
             .navigationBarTitleDisplayMode(.inline)
@@ -49,7 +60,14 @@ public struct AddLocationSheetView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("追加") {
-                        let newLoc = StorageLocation(name: name, type: selectedType, memo: memo)
+                        let newLoc = StorageLocation(
+                            name: name,
+                            type: selectedType,
+                            memo: memo,
+                            isGridEnabled: isGridEnabled,
+                            gridRows: gridRows,
+                            gridColumns: gridColumns
+                        )
                         modelContext.insert(newLoc)
                         try? modelContext.save()
                         dismiss()

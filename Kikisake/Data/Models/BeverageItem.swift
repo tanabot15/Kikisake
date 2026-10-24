@@ -1,9 +1,5 @@
-//
 //  BeverageItem.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import Foundation
 import SwiftData
@@ -24,6 +20,10 @@ public final class BeverageItem {
     public var stockQuantity: Int
     public var storageLocation: String
     public var purchaseDate: Date?
+
+    // セラー内グリッド位置情報（未配置の場合はnil）
+    public var gridRow: Int?
+    public var gridColumn: Int?
 
     // 写真データ
     @Attribute(.externalStorage) public var imageDatas: [Data]?
@@ -54,6 +54,8 @@ public final class BeverageItem {
         stockQuantity: Int = 1,
         storageLocation: String = "ワインセラー",
         purchaseDate: Date? = nil,
+        gridRow: Int? = nil,
+        gridColumn: Int? = nil,
         imageDatas: [Data]? = nil,
         specificMetadataJSON: String? = nil,
         createdAt: Date = Date()
@@ -69,6 +71,8 @@ public final class BeverageItem {
         self.stockQuantity = stockQuantity
         self.storageLocation = storageLocation
         self.purchaseDate = purchaseDate
+        self.gridRow = gridRow
+        self.gridColumn = gridColumn
         self.imageDatas = imageDatas
         self.specificMetadataJSON = specificMetadataJSON
         self.tastingLogs = []

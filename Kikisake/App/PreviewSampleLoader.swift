@@ -1,15 +1,11 @@
-//
 //  PreviewSampleLoader.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import Foundation
 import SwiftData
 
 public enum PreviewSampleLoader {
-    /// ✨ 本番・デバッグ問わず、デフォルトの保管場所がなければ自動作成する
+    /// ✨ 本番・デバッグ問わず、デフォルトの保管場所がなければ自動作成する（グリッドデフォルト有効）
     public static func insertDefaultLocationsIfNeeded(into context: ModelContext) {
         let locationDescriptor = FetchDescriptor<StorageLocation>()
         let existingLocations = (try? context.fetch(locationDescriptor)) ?? []
@@ -17,21 +13,21 @@ public enum PreviewSampleLoader {
 
         var needsSave = false
         if !locationNames.contains("ワインセラー") {
-            context.insert(StorageLocation(name: "ワインセラー", type: .cellar, memo: "デフォルト"))
+            context.insert(StorageLocation(name: "ワインセラー", type: .cellar, memo: "デフォルトセラー", isGridEnabled: true, gridRows: 4, gridColumns: 6))
             needsSave = true
         }
         if !locationNames.contains("冷蔵庫") {
-            context.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator, memo: "デフォルト"))
+            context.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator, memo: "生酒用", isGridEnabled: true, gridRows: 3, gridColumns: 4))
             needsSave = true
         }
         if !locationNames.contains("常温") {
-            context.insert(StorageLocation(name: "常温", type: .roomTemp, memo: "デフォルト"))
+            context.insert(StorageLocation(name: "常温", type: .roomTemp, memo: "常温保管", isGridEnabled: true, gridRows: 2, gridColumns: 4))
             needsSave = true
         }
 
         if needsSave {
             try? context.save()
-            print("📦 [Default Loader] デフォルトの保管場所を作成しました。")
+            print("📦 [Default Loader] デフォルトの保管場所（グリッド有効）を作成しました。")
         }
     }
 
@@ -64,6 +60,8 @@ public enum PreviewSampleLoader {
             price: 85000,
             stockQuantity: 1,
             storageLocation: "ワインセラー",
+            gridRow: 1,
+            gridColumn: 1,
             specificMetadataJSON: wineMetaJSON
         )
         let wineLog = TastingLog(
@@ -81,9 +79,9 @@ public enum PreviewSampleLoader {
             body: 4.8,
             balanceTags: ["豊潤な", "厚みのある"],
             finishLength: 5.0,
-            isCostEffective: false,        // 高級ワインのためfalse
-            isWillingToRepeat: true,       // リピート意向あり
-            hasAgingPotential: true,       // 熟成ポテンシャルあり
+            isCostEffective: false,
+            isWillingToRepeat: true,
+            hasAgingPotential: true,
             memo: "圧倒的な気品と複雑味。カシスの芳醇な香りに樽のニュアンスが完璧に溶け込んでいる。",
             item: wineItem
         )
@@ -107,6 +105,8 @@ public enum PreviewSampleLoader {
             price: 2400,
             stockQuantity: 2,
             storageLocation: "冷蔵庫",
+            gridRow: 1,
+            gridColumn: 1,
             specificMetadataJSON: sakeMetaJSON
         )
         let sakeLog = TastingLog(
@@ -124,9 +124,9 @@ public enum PreviewSampleLoader {
             body: 3.0,
             balanceTags: ["ジューシーな", "まろやかな"],
             finishLength: 4.2,
-            isCostEffective: true,         // コスパ良好
-            isWillingToRepeat: true,       // リピート意向あり
-            hasAgingPotential: false,      // 生酒のため熟成ポテンシャルは控えめ
+            isCostEffective: true,
+            isWillingToRepeat: true,
+            hasAgingPotential: false,
             memo: "ジューシーな酸味と上品な甘みのバランスが素晴らしい。キレも抜群。",
             item: sakeItem
         )
@@ -148,6 +148,8 @@ public enum PreviewSampleLoader {
             price: 850,
             stockQuantity: 3,
             storageLocation: "常温",
+            gridRow: 1,
+            gridColumn: 1,
             specificMetadataJSON: beerMetaJSON
         )
         let beerLog = TastingLog(
@@ -165,9 +167,9 @@ public enum PreviewSampleLoader {
             body: 3.5,
             balanceTags: ["スムーズな", "ドライな"],
             finishLength: 3.8,
-            isCostEffective: true,         // コスパ良好
-            isWillingToRepeat: true,       // リピート意向あり
-            hasAgingPotential: false,      // ビールのため熟成ポテンシャルなし
+            isCostEffective: true,
+            isWillingToRepeat: true,
+            hasAgingPotential: false,
             memo: "シャンパンのように華やかで、食事に合わせやすいプレミアム・ホワイトビール。",
             item: beerItem
         )
@@ -185,7 +187,6 @@ public enum PreviewSampleLoader {
 
     /// アプリ起動時の自動セットアップ用
     public static func insertSamplesIfNeeded(into context: ModelContext) {
-        // 本番・デバッグ問わず、まずはデフォルトの保管場所が存在するかチェックして作成する
         insertDefaultLocationsIfNeeded(into: context)
 
         #if DEBUG

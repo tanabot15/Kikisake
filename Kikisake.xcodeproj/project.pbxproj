@@ -63,6 +63,7 @@
 		D9044279308B269300EF4807 /* InventoryFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044278308B269300EF4807 /* InventoryFilterSheet.swift */; };
 		D904427B308C9C8000EF4807 /* ConsumptionAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */; };
 		D904427D308C9C9B00EF4807 /* EvaluationAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */; };
+		D904427F308CF04500EF4807 /* CellarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427E308CF04500EF4807 /* CellarGridView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -123,6 +124,7 @@
 		D9044278308B269300EF4807 /* InventoryFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryFilterSheet.swift; sourceTree = "<group>"; };
 		D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumptionAnalyticsView.swift; sourceTree = "<group>"; };
 		D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationAnalyticsView.swift; sourceTree = "<group>"; };
+		D904427E308CF04500EF4807 /* CellarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellarGridView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -349,6 +351,7 @@
 				D9044245307E863A00EF4807 /* InventoryViewModel.swift */,
 				D904425A308368BF00EF4807 /* AddLocationSheetView.swift */,
 				D9044278308B269300EF4807 /* InventoryFilterSheet.swift */,
+				D904427E308CF04500EF4807 /* CellarGridView.swift */,
 			);
 			path = Inventory;
 			sourceTree = "<group>";
@@ -493,6 +496,7 @@
 				D9044223307E856F00EF4807 /* CustomSlider.swift in Sources */,
 				D904425B308368BF00EF4807 /* AddLocationSheetView.swift in Sources */,
 				D9044211307E84E100EF4807 /* AppConstants.swift in Sources */,
+				D904427F308CF04500EF4807 /* CellarGridView.swift in Sources */,
 				D904422F307E85AB00EF4807 /* LogListViewModel.swift in Sources */,
 				D9044231307E85B600EF4807 /* LogDetailView.swift in Sources */,
 				D9044268308721A200EF4807 /* EditLogFlowView.swift in Sources */,
