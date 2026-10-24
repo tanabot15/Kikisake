@@ -15,6 +15,11 @@ public struct AddFlowView: View {
     @State private var alertMessage: String = ""
     @State private var isShowingSaveOptions: Bool = false
     
+    // スロット選択シート用 State
+    @State private var pendingTargetLocation: StorageLocation? = nil
+    @State private var isInventoryOnlyFlow: Bool = false
+    @State private var isShowingSlotSelectionSheet: Bool = false
+
     @FocusState private var focusedField: GeneralInfoField?
 
     private var isNameEmpty: Bool {
@@ -75,12 +80,12 @@ public struct AddFlowView: View {
                             Divider()
                             if locations.isEmpty {
                                 Button("未設定 (デフォルト)") {
-                                    saveToInventory(locationName: "未設定")
+                                    handleLocationSelection(locationName: "未設定", isInventoryOnly: true)
                                 }
                             } else {
                                 ForEach(locations, id: \.name) { loc in
                                     Button(loc.name) {
-                                        saveToInventory(locationName: loc.name)
+                                        handleLocationSelection(locationName: loc.name, isInventoryOnly: true)
                                     }
                                 }
                             }
@@ -96,10 +101,9 @@ public struct AddFlowView: View {
                         .disabled(isNameEmpty)
                     } else {
                         Button {
-                            // ステップ2で既存アイテムからの遷移時の「戻る」分岐ハンドリング
                             if viewModel.currentStep == 2 && viewModel.isOpeningExistingItem {
                                 viewModel.reset()
-                                AppState.shared.selectedTab = 3 // 在庫管理タブに戻る
+                                AppState.shared.selectedTab = 3
                             } else {
                                 viewModel.currentStep -= 1
                             }
@@ -141,17 +145,17 @@ public struct AddFlowView: View {
             // テイスティングログ書き切り後の保存先選択ダイアログ
             .confirmationDialog("ボトルの扱いを選択", isPresented: $isShowingSaveOptions, titleVisibility: .visible) {
                 Button("飲みきった（ログのみ記録・在庫なし）") {
-                    executeFullSave(storageLocation: "未設定", stockQuantity: 0, targetTab: 0) // ログ一覧タブへ
+                    executeFullSave(storageLocation: "未設定", stockQuantity: 0, targetTab: 0)
                 }
                 
                 if locations.isEmpty {
                     Button("未設定の場所にストック") {
-                        executeFullSave(storageLocation: "未設定", stockQuantity: 1, targetTab: 3) // 在庫一覧タブへ
+                        executeFullSave(storageLocation: "未設定", stockQuantity: 1, targetTab: 3)
                     }
                 } else {
                     ForEach(locations, id: \.name) { loc in
                         Button("\(loc.name)にストック") {
-                            executeFullSave(storageLocation: loc.name, stockQuantity: 1, targetTab: 3) // 在庫一覧タブへ
+                            handleLocationSelection(locationName: loc.name, isInventoryOnly: false)
                         }
                     }
                 }
@@ -159,6 +163,19 @@ public struct AddFlowView: View {
                 Button("キャンセル", role: .cancel) {}
             } message: {
                 Text("このテイスティング記録とともに、在庫をどのように登録しますか？")
+            }
+            // 棚・スロット位置選択シート
+            .sheet(isPresented: $isShowingSlotSelectionSheet) {
+                if let targetLoc = pendingTargetLocation {
+                    LocationSlotSelectionSheet(location: targetLoc, viewModel: viewModel) {
+                        // 選択完了時の保存実行
+                        if isInventoryOnlyFlow {
+                            saveToInventory(locationName: targetLoc.name)
+                        } else {
+                            executeFullSave(storageLocation: targetLoc.name, stockQuantity: 1, targetTab: 3)
+                        }
+                    }
+                }
             }
             .alert("確認", isPresented: $showAlert) {
                 Button("OK", role: .cancel) {
@@ -179,17 +196,37 @@ public struct AddFlowView: View {
         }
     }
 
-    /// ステップ1から「未開栓のまま在庫として保存」する処理
-    private func saveToInventory(locationName: String) {
+    /// 保管場所選択時のハンドラ（グリッド有効かつ設定があればスロット選択画面を挟む）
+    private func handleLocationSelection(locationName: String, isInventoryOnly: Bool) {
         if isNameEmpty {
             alertMessage = "銘柄名は必須項目です。"
             showAlert = true
             return
         }
+        
+        viewModel.storageLocation = locationName
+        viewModel.selectedGridRow = nil
+        viewModel.selectedGridColumn = nil
+
+        if let foundLoc = locations.first(where: { $0.name == locationName }), foundLoc.isGridEnabled {
+            pendingTargetLocation = foundLoc
+            isInventoryOnlyFlow = isInventoryOnly
+            isShowingSlotSelectionSheet = true
+        } else {
+            if isInventoryOnly {
+                saveToInventory(locationName: locationName)
+            } else {
+                executeFullSave(storageLocation: locationName, stockQuantity: 1, targetTab: 3)
+            }
+        }
+    }
+
+    /// ステップ1から「未開栓のまま在庫として保存」する処理
+    private func saveToInventory(locationName: String) {
         do {
             viewModel.storageLocation = locationName
             try viewModel.saveAsInventoryOnly(modelContext: modelContext)
-            AppState.shared.selectedTab = 3 // 在庫タブへ移動
+            AppState.shared.selectedTab = 3
         } catch {
             alertMessage = "在庫の保存に失敗しました: \(error.localizedDescription)"
             showAlert = true

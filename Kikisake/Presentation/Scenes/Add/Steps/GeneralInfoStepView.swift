@@ -1,9 +1,5 @@
-//
 //  GeneralInfoStepView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/15.
-//
 
 import SwiftUI
 import SwiftData
@@ -225,6 +221,108 @@ public struct GeneralInfoStepView: View {
     }
 }
 
+/// ✨ 保管場所選択に加え、選択したセラーがグリッド有効な場合に棚番（段・列）を選択できる専用コンポーネント
+public struct StoragePickerWithGridMappingView: View {
+    @Bindable var viewModel: AddFlowViewModel
+    @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
+    @Query private var allItems: [BeverageItem]
+
+    public init(viewModel: AddFlowViewModel) {
+        self.viewModel = viewModel
+    }
+
+    public var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Picker("保管場所", selection: $viewModel.storageLocation) {
+                if locations.isEmpty {
+                    Text("未設定 (自動作成)").tag("未設定")
+                } else {
+                    ForEach(locations, id: \.name) { loc in
+                        Text(loc.name).tag(loc.name)
+                    }
+                }
+            }
+            .onChange(of: viewModel.storageLocation) { _, _ in
+                // 保管場所が切り替わったら位置情報をクリア
+                viewModel.selectedGridRow = nil
+                viewModel.selectedGridColumn = nil
+            }
+
+            // 選択中の保管場所オブジェクトを取得
+            if let currentLocation = locations.first(where: { $0.name == viewModel.storageLocation }),
+               currentLocation.isGridEnabled {
+                
+                Divider()
+
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Image(systemName: "square.grid.3x3.fill")
+                            .foregroundStyle(Color.accentColor)
+                        Text("棚・スロット位置の指定 (任意)")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                    }
+
+                    // 段（行）と列（番号）のピッカー
+                    HStack(spacing: 12) {
+                        Picker("段 (Row)", selection: Binding(
+                            get: { viewModel.selectedGridRow ?? 1 },
+                            set: { viewModel.selectedGridRow = $0 }
+                        )) {
+                            ForEach(1...currentLocation.gridRows, id: \.self) { row in
+                                Text("第 \(row) 段").tag(row)
+                            }
+                        }
+                        .pickerStyle(.menu)
+
+                        Picker("列 (Column)", selection: Binding(
+                            get: { viewModel.selectedGridColumn ?? 1 },
+                            set: { viewModel.selectedGridColumn = $0 }
+                        )) {
+                            ForEach(1...currentLocation.gridColumns, id: \.self) { col in
+                                Text("\(col) 列目").tag(col)
+                            }
+                        }
+                        .pickerStyle(.menu)
+                    }
+
+                    // すでにそのスロットに他のボトルが入っているか判定
+                    if let row = viewModel.selectedGridRow,
+                       let col = viewModel.selectedGridColumn {
+                        let isOccupied = allItems.contains { item in
+                            item.storageLocation == currentLocation.name &&
+                            item.gridRow == row &&
+                            item.gridColumn == col &&
+                            item.stockQuantity > 0 &&
+                            item.id != viewModel.sourceItem?.id
+                        }
+
+                        if isOccupied {
+                            Label("⚠️ このスロットにはすでに別のボトルが配置されています", systemImage: "exclamationmark.triangle.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.orange)
+                        } else {
+                            Label("このスロットは空いています", systemImage: "checkmark.circle.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.green)
+                        }
+                    }
+                }
+                .padding(.vertical, 4)
+            }
+        }
+        .onAppear {
+            if locations.isEmpty {
+                viewModel.storageLocation = "未設定"
+            } else if viewModel.storageLocation.isEmpty || !locations.contains(where: { $0.name == viewModel.storageLocation }) {
+                if let first = locations.first {
+                    viewModel.storageLocation = first.name
+                }
+            }
+        }
+    }
+}
+
 /// UIKitのカメラ（UIImagePickerController）ラッパー
 public struct ImagePickerView: UIViewControllerRepresentable {
     public var sourceType: UIImagePickerController.SourceType
@@ -264,43 +362,11 @@ public struct ImagePickerView: UIViewControllerRepresentable {
     }
 }
 
-/// データベースから動的に保管場所を選ぶPickerビュー
-public struct StoragePickerView: View {
-    @Bindable var viewModel: AddFlowViewModel
-    @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
-
-    public init(viewModel: AddFlowViewModel) {
-        self.viewModel = viewModel
-    }
-
-    public var body: some View {
-        Picker("保管場所", selection: $viewModel.storageLocation) {
-            if locations.isEmpty {
-                Text("未設定 (自動作成)").tag("未設定")
-            } else {
-                ForEach(locations, id: \.name) { loc in
-                    Text(loc.name).tag(loc.name)
-                }
-            }
-        }
-        .onAppear {
-            if locations.isEmpty {
-                viewModel.storageLocation = "未設定"
-            } else if viewModel.storageLocation.isEmpty || !locations.contains(where: { $0.name == viewModel.storageLocation }) {
-                if let first = locations.first {
-                    viewModel.storageLocation = first.name
-                }
-            }
-        }
-    }
-}
-
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: StorageLocation.self, BeverageItem.self, TastingLog.self, configurations: config)
     
-    // プレビュー用にデフォルトの保管場所をいくつか挿入
-    container.mainContext.insert(StorageLocation(name: "ワインセラー", type: .cellar))
+    container.mainContext.insert(StorageLocation(name: "ワインセラー", type: .cellar, isGridEnabled: true, gridRows: 4, gridColumns: 6))
     container.mainContext.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator))
 
     struct PreviewWrapper: View {

@@ -64,6 +64,7 @@
 		D904427B308C9C8000EF4807 /* ConsumptionAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */; };
 		D904427D308C9C9B00EF4807 /* EvaluationAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */; };
 		D904427F308CF04500EF4807 /* CellarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427E308CF04500EF4807 /* CellarGridView.swift */; };
+		D9044281308CF53B00EF4807 /* LocationSlotSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044280308CF53B00EF4807 /* LocationSlotSelectionSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -125,6 +126,7 @@
 		D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumptionAnalyticsView.swift; sourceTree = "<group>"; };
 		D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationAnalyticsView.swift; sourceTree = "<group>"; };
 		D904427E308CF04500EF4807 /* CellarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellarGridView.swift; sourceTree = "<group>"; };
+		D9044280308CF53B00EF4807 /* LocationSlotSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSlotSelectionSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -399,6 +401,7 @@
 				D90442513081A45200EF4807 /* AromaStepView.swift */,
 				D90442533081A46800EF4807 /* TasteStepView.swift */,
 				D9044241307E862600EF4807 /* FinalizeStepView.swift */,
+				D9044280308CF53B00EF4807 /* LocationSlotSelectionSheet.swift */,
 			);
 			path = Steps;
 			sourceTree = "<group>";
@@ -504,6 +507,7 @@
 				D904420B307E84C300EF4807 /* Color+Extension.swift in Sources */,
 				D904424E3081A41E00EF4807 /* GeneralInfoStepView.swift in Sources */,
 				D9044207307E84AC00EF4807 /* Date+Extension.swift in Sources */,
+				D9044281308CF53B00EF4807 /* LocationSlotSelectionSheet.swift in Sources */,
 				D9044277308B1ADF00EF4807 /* FlowLayout.swift in Sources */,
 				D90442503081A43B00EF4807 /* AppearanceStepView.swift in Sources */,
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,

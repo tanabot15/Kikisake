@@ -28,6 +28,10 @@ public final class AddFlowViewModel {
     public var stockQuantityString: String = "1"
     public var selectedImageData: Data? = nil
 
+    // セラー内グリッド位置指定用プロパティ
+    public var selectedGridRow: Int? = nil
+    public var selectedGridColumn: Int? = nil
+
     // - ワイン用
     public var wineType: String = "赤"
     public var grapeVarieties: String = ""
@@ -65,9 +69,9 @@ public final class AddFlowViewModel {
 
     // Step 5: 総合評価・フラグ・メモ
     public var rating: Double = 4.0
-    public var isCostEffective: Bool = false         // ✨ コスパフラグ
-    public var isWillingToRepeat: Bool = false       // ✨ リピート意向フラグ
-    public var hasAgingPotential: Bool = false       // ✨ 熟成ポテンシャルフラグ
+    public var isCostEffective: Bool = false
+    public var isWillingToRepeat: Bool = false
+    public var hasAgingPotential: Bool = false
     public var memo: String = ""
     public var tastingDate: Date = Date()
 
@@ -112,6 +116,8 @@ public final class AddFlowViewModel {
         self.priceString = ""
         self.stockQuantityString = "1"
         self.storageLocation = "未設定"
+        self.selectedGridRow = nil
+        self.selectedGridColumn = nil
         self.selectedImageData = nil
         
         self.wineType = "赤"
@@ -161,6 +167,8 @@ public final class AddFlowViewModel {
             self.priceString = "\(price)"
         }
         self.storageLocation = item.storageLocation
+        self.selectedGridRow = item.gridRow
+        self.selectedGridColumn = item.gridColumn
         self.selectedImageData = item.imageDatas?.first
     }
 
@@ -246,6 +254,8 @@ public final class AddFlowViewModel {
             price: price,
             stockQuantity: quantity,
             storageLocation: storageLocation,
+            gridRow: selectedGridRow,
+            gridColumn: selectedGridColumn,
             imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
             specificMetadataJSON: metadataJSON
         )
@@ -256,7 +266,6 @@ public final class AddFlowViewModel {
         reset()
     }
     
-    /// ログを書き切ったあとに、飲みきり（在庫0）か在庫あり（指定の場所）かを選んで一括保存するメソッド
     public func saveWithStock(modelContext: ModelContext, stockQuantity: Int) throws {
         try ensureStorageLocationExists(modelContext: modelContext)
 
@@ -274,6 +283,8 @@ public final class AddFlowViewModel {
             targetItem = existingItem
             existingItem.storageLocation = storageLocation
             existingItem.stockQuantity = stockQuantity
+            existingItem.gridRow = selectedGridRow
+            existingItem.gridColumn = selectedGridColumn
         } else {
             targetItem = BeverageItem(
                 name: name,
@@ -285,6 +296,8 @@ public final class AddFlowViewModel {
                 price: price,
                 stockQuantity: stockQuantity,
                 storageLocation: storageLocation,
+                gridRow: selectedGridRow,
+                gridColumn: selectedGridColumn,
                 imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
                 specificMetadataJSON: metadataJSON
             )
@@ -345,6 +358,8 @@ public final class AddFlowViewModel {
                 price: price,
                 stockQuantity: 0,
                 storageLocation: storageLocation,
+                gridRow: selectedGridRow,
+                gridColumn: selectedGridColumn,
                 imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
                 specificMetadataJSON: metadataJSON
             )
@@ -404,6 +419,8 @@ public final class AddFlowViewModel {
             targetItem.alcoholByVolume = abv
             targetItem.price = price
             targetItem.storageLocation = storageLocation
+            targetItem.gridRow = selectedGridRow
+            targetItem.gridColumn = selectedGridColumn
             targetItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
             targetItem.specificMetadataJSON = metadataJSON
         }

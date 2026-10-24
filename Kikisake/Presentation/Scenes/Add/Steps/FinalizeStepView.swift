@@ -25,7 +25,7 @@ public struct FinalizeStepView: View {
                 .padding(.vertical, 4)
             }
 
-            // ✨ 特徴・印象（評価フラグ）セクションを追加
+            // 特徴・印象（評価フラグ）セクションを追加
             Section("特徴・評価フラグ") {
                 Toggle(isOn: $viewModel.isCostEffective) {
                     HStack {
