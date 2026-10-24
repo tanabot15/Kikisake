@@ -40,17 +40,6 @@
         }
       }
     },
-    "「追加」タブから飲んだ酒を記録すると、ここに分析が表示されます。" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Once you record the drinks you've had from the \"Add\" tab, analytics will appear here."
-          }
-        }
-      }
-    },
     "%" : {
       "localizations" : {
         "en" : {
@@ -168,6 +157,19 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%lld items"
+          }
+        }
+      }
+    },
+    "%lld段" : {
+
+    },
+    "%lld段 × %lld列 (%lld本収納)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld段 × %2$lld列 (%3$lld本収納)"
           }
         }
       }
@@ -360,10 +362,10 @@
         }
       }
     },
-    "グリッド（棚）で視覚管理する" : {
+    "グリッドで視覚管理する" : {
 
     },
-    "グリッド管理対応" : {
+    "ここに配置して保存" : {
 
     },
     "コスパ" : {
@@ -373,9 +375,6 @@
 
     },
     "コスパ高い" : {
-
-    },
-    "このスロットにはすでに別のボトルが配置されています" : {
 
     },
     "このスロットは空いています" : {
@@ -390,9 +389,6 @@
           }
         }
       }
-    },
-    "この位置に配置して保存" : {
-
     },
     "さっそくはじめる" : {
       "localizations" : {
@@ -450,9 +446,6 @@
         }
       }
     },
-    "スキップ（未配置）" : {
-
-    },
     "スパークリング" : {
       "localizations" : {
         "en" : {
@@ -492,9 +485,6 @@
           }
         }
       }
-    },
-    "セラー情報" : {
-
     },
     "セラー構造・棚番マッピング" : {
 
@@ -1079,17 +1069,6 @@
     "列 (Column)" : {
 
     },
-    "削除" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete"
-          }
-        }
-      }
-    },
     "割合" : {
       "localizations" : {
         "en" : {
@@ -1109,9 +1088,6 @@
           }
         }
       }
-    },
-    "収納スロットの選択" : {
-
     },
     "右上の「＋」ボタンから保管場所を追加してください。" : {
       "localizations" : {
@@ -1489,6 +1465,9 @@
     "条件に一致する在庫はありません" : {
 
     },
+    "格納するスロットをタップして選択してください" : {
+
+    },
     "格納スロットの指定" : {
 
     },
@@ -1639,17 +1618,6 @@
         }
       }
     },
-    "移動" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Move"
-          }
-        }
-      }
-    },
     "移動先の保管場所を選択" : {
       "localizations" : {
         "en" : {
@@ -1679,6 +1647,9 @@
           }
         }
       }
+    },
+    "空いているスロットを選択してください" : {
+
     },
     "第 %lld 段" : {
 
@@ -1917,6 +1888,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add (Step %lld/5)"
+          }
+        }
+      }
+    },
+    "選択中: 第 %lld 段 - %lld 列目" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "選択中: 第 %1$lld 段 - %2$lld 列目"
           }
         }
       }

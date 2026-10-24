@@ -42,7 +42,7 @@ public struct AddLocationSheetView: View {
 
                 // セラー構造（グリッド）設定セクション
                 Section("セラー構造・棚番マッピング") {
-                    Toggle("グリッド（棚）で視覚管理する", isOn: $isGridEnabled)
+                    Toggle("グリッドで視覚管理する", isOn: $isGridEnabled)
                     
                     if isGridEnabled {
                         Stepper("段数（行）: \(gridRows)段", value: $gridRows, in: 1...10)

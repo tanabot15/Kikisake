@@ -298,7 +298,7 @@ public struct StoragePickerWithGridMappingView: View {
                         }
 
                         if isOccupied {
-                            Label("⚠️ このスロットにはすでに別のボトルが配置されています", systemImage: "exclamationmark.triangle.fill")
+                            Label("このスロットにはすでに別のボトルが配置されています", systemImage: "exclamationmark.triangle.fill")
                                 .font(.caption2)
                                 .foregroundStyle(.orange)
                         } else {

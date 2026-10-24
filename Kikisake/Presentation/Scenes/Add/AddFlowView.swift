@@ -164,16 +164,14 @@ public struct AddFlowView: View {
             } message: {
                 Text("このテイスティング記録とともに、在庫をどのように登録しますか？")
             }
-            // 棚・スロット位置選択シート
-            .sheet(isPresented: $isShowingSlotSelectionSheet) {
-                if let targetLoc = pendingTargetLocation {
-                    LocationSlotSelectionSheet(location: targetLoc, viewModel: viewModel) {
-                        // 選択完了時の保存実行
-                        if isInventoryOnlyFlow {
-                            saveToInventory(locationName: targetLoc.name)
-                        } else {
-                            executeFullSave(storageLocation: targetLoc.name, stockQuantity: 1, targetTab: 3)
-                        }
+            // 棚・スロット位置選択シート（非オプショナルバインディング化で安定化）
+            .sheet(item: $pendingTargetLocation) { targetLoc in
+                LocationSlotSelectionSheet(location: targetLoc, viewModel: viewModel) {
+                    // 選択完了時の保存実行
+                    if isInventoryOnlyFlow {
+                        saveToInventory(locationName: targetLoc.name)
+                    } else {
+                        executeFullSave(storageLocation: targetLoc.name, stockQuantity: 1, targetTab: 3)
                     }
                 }
             }
@@ -196,7 +194,7 @@ public struct AddFlowView: View {
         }
     }
 
-    /// 保管場所選択時のハンドラ（グリッド有効かつ設定があればスロット選択画面を挟む）
+    /// 保管場所選択時のハンドラ（Menu/Dialog閉鎖後に非同期でシートをトリガー）
     private func handleLocationSelection(locationName: String, isInventoryOnly: Bool) {
         if isNameEmpty {
             alertMessage = "銘柄名は必須項目です。"
@@ -207,11 +205,15 @@ public struct AddFlowView: View {
         viewModel.storageLocation = locationName
         viewModel.selectedGridRow = nil
         viewModel.selectedGridColumn = nil
+        isInventoryOnlyFlow = isInventoryOnly
 
         if let foundLoc = locations.first(where: { $0.name == locationName }), foundLoc.isGridEnabled {
-            pendingTargetLocation = foundLoc
-            isInventoryOnlyFlow = isInventoryOnly
-            isShowingSlotSelectionSheet = true
+            // ✨ Menu/Dialogが完全に閉じた後にシートが立ち上がるようメインスレッドで非同期設定
+            Task { @MainActor in
+                // アニメーション競合を避けるための微小遅延
+                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1秒
+                pendingTargetLocation = foundLoc
+            }
         } else {
             if isInventoryOnly {
                 saveToInventory(locationName: locationName)

@@ -7,7 +7,7 @@ import SwiftData
 /// 表示モードの定義
 private enum CellarDisplayMode: String, CaseIterable, Identifiable {
     case list = "リスト"
-    case grid = "棚グリッド"
+    case grid = "グリッド"
     var id: String { rawValue }
 }
 
@@ -65,10 +65,10 @@ public struct InventoryView: View {
                                 let summaryList = viewModel.categorySummaryList(for: loc.name, in: items)
                                 let displayItems = viewModel.filteredItems(items, for: loc.name)
                                 
-                                // 現在の表示モード（デフォルトはグリッド有効ならグリッド、無ければリスト）
+                                // ✨ 保管場所ごとの現在の表示モード判定（セラーはデフォルトがグリッド、他はリスト）
                                 let currentMode: CellarDisplayMode = {
                                     if let mode = displayModes[loc.name] { return mode }
-                                    return loc.isGridEnabled ? .grid : .list
+                                    return (loc.type == .cellar && loc.isGridEnabled) ? .grid : .list
                                 }()
 
                                 VStack(spacing: 0) {
@@ -135,7 +135,7 @@ public struct InventoryView: View {
                                             Divider()
                                                 .padding(.horizontal)
 
-                                            // ✨ グリッド機能が有効な場所の場合、リスト ⇄ 棚グリッド の切り替えピッカーを表示
+                                            // ✨ グリッド機能が有効な場所の場合、ロケーションごとに独立したリスト ⇄ 棚グリッド の切り替えピッカーを表示
                                             if loc.isGridEnabled {
                                                 Picker("表示形式", selection: Binding(
                                                     get: { currentMode },
@@ -159,13 +159,12 @@ public struct InventoryView: View {
                                                         targetItemForMove = item
                                                         isShowingMoveDialog = true
                                                     } else {
-                                                        // 空きスロットタップ時の処理（必要に応じて未配置ボトルの割り当て等を呼び出し）
                                                         print("Empty slot tapped at Row: \(row), Col: \(col)")
                                                     }
                                                 }
                                                 .padding(.horizontal, 12)
                                             } else {
-                                                // 従来のリスト表示
+                                                // リスト表示
                                                 if displayItems.isEmpty {
                                                     Text("条件に一致する在庫はありません")
                                                         .font(.subheadline)
