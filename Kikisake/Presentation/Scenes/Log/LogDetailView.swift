@@ -21,7 +21,7 @@ public struct LogDetailView: View {
         if scanner.scanHexInt64(&rgbValue) {
             let red = Double((rgbValue & 0xFF0000) >> 16) / 255.0
             let green = Double((rgbValue & 0x00FF00) >> 8) / 255.0
-            let blue = Double((rgbValue & 0x0000FF) >> 8) / 255.0
+            let blue = Double(rgbValue & 0x0000FF) / 255.0
             return Color(red: red, green: green, blue: blue)
         }
         return .gray
@@ -50,6 +50,11 @@ public struct LogDetailView: View {
 
                     // マトリクス分析カード
                     MatrixAnalysisCardView(log: log, isCompactMode: false)
+
+                    // ✨ 特徴・評価フラグカード (設定されている場合のみ表示)
+                    if log.isCostEffective || log.isWillingToRepeat || log.hasAgingPotential {
+                        flagsCard
+                    }
 
                     if !log.memo.isEmpty {
                         memoCard
@@ -109,6 +114,53 @@ public struct LogDetailView: View {
         .sheet(isPresented: $isShowingEditSheet) {
             EditLogFlowView(log: log)
         }
+    }
+
+    /// ✨ 特徴・評価フラグを表示する洗練されたUIカード
+    private var flagsCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("特徴・評価フラグ")
+                .font(.headline)
+
+            FlowLayout(spacing: 8) {
+                if log.isCostEffective {
+                    Label("コスパ高い", systemImage: "yensign.circle.fill")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color.green.opacity(0.12))
+                        .foregroundStyle(.green)
+                        .cornerRadius(10)
+                }
+
+                if log.isWillingToRepeat {
+                    Label("リピート意向", systemImage: "arrow.clockwise.circle.fill")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color.orange.opacity(0.12))
+                        .foregroundStyle(.orange)
+                        .cornerRadius(10)
+                }
+
+                if log.hasAgingPotential {
+                    Label("熟成ポテンシャル", systemImage: "hourglass.circle.fill")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color.purple.opacity(0.12))
+                        .foregroundStyle(.purple)
+                        .cornerRadius(10)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
     }
 
     /// ✨ 横長写真でも画面をはみ出さない、安全かつ洗練されたヘッダービュー
@@ -481,6 +533,9 @@ public struct LogDetailView: View {
         body: 4.5,
         balanceTags: ["豊潤な"],
         finishLength: 4.8,
+        isCostEffective: true,
+        isWillingToRepeat: true,
+        hasAgingPotential: true,
         memo: "圧倒的な気品と複雑味。長期熟成のポテンシャルを感じさせる素晴らしいバランス。",
         item: sampleItem
     )

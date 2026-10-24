@@ -32,6 +32,11 @@ public final class TastingLog {
     public var balanceTags: [String]         // バランス評価表現（複数選択）
     public var finishLength: Double          // 余韻の長さ (0.0〜5.0)
 
+    // --- フラグ項目 ---
+    public var isCostEffective: Bool         // 1. コスパ（コストパフォーマンスが良いか）
+    public var isWillingToRepeat: Bool       // 2. リピート意向（また飲みたいか）
+    public var hasAgingPotential: Bool       // 3. 熟成ポテンシャル（さらに寝かせるポテンシャルがあるか）
+
     // 専門パラメータ（オプショナル）
     public var alcoholByVolume: Double?      // アルコール度数
     public var specificDataJSON: String?     // 日本酒度・酸度・IBU等の酒種特有メタデータ（JSON形式）
@@ -57,6 +62,9 @@ public final class TastingLog {
         body: Double = 2.5,
         balanceTags: [String] = [],
         finishLength: Double = 2.5,
+        isCostEffective: Bool = false,
+        isWillingToRepeat: Bool = false,
+        hasAgingPotential: Bool = false,
         alcoholByVolume: Double? = nil,
         specificDataJSON: String? = nil,
         memo: String = "",
@@ -77,6 +85,9 @@ public final class TastingLog {
         self.body = body
         self.balanceTags = balanceTags
         self.finishLength = finishLength
+        self.isCostEffective = isCostEffective
+        self.isWillingToRepeat = isWillingToRepeat
+        self.hasAgingPotential = hasAgingPotential
         self.alcoholByVolume = alcoholByVolume
         self.specificDataJSON = specificDataJSON
         self.memo = memo

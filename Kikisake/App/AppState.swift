@@ -1,9 +1,5 @@
-//
 //  AppState.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import SwiftUI
 
@@ -24,6 +20,13 @@ public enum AppearanceMode: String, CaseIterable, Identifiable {
     }
 }
 
+/// ✨ ログ一覧へ引き渡すフィルターの種別
+public enum LogFilterType {
+    case costEffective
+    case willingToRepeat
+    case agingPotential
+}
+
 /// アプリ全体で共有するグローバルな状態や環境設定を管理するクラス
 @Observable
 public final class AppState {
@@ -31,6 +34,9 @@ public final class AppState {
 
     public var selectedTab: Int = 0
     public var isProVersion: Bool = false
+    
+    // ✨ 分析画面等からログ一覧へのフィルター引き渡し用プロパティ
+    public var pendingLogFilter: LogFilterType? = nil
     
     public var hasCompletedOnboarding: Bool {
         didSet {

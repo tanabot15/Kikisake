@@ -48,6 +48,11 @@ public final class LogListViewModel {
     public var appearanceNoteFilter: String = ""
     public var balanceTagFilter: String = ""
 
+    // ✨ フラグフィルター
+    public var filterCostEffective: Bool? = nil
+    public var filterWillingToRepeat: Bool? = nil
+    public var filterAgingPotential: Bool? = nil
+
     // 固有メタデータフィルター
     public var wineTypeFilter: String = "すべて"
     public var sakeSpecificNameFilter: String = "すべて"
@@ -143,7 +148,18 @@ public final class LogListViewModel {
                 if !hasBalanceTag { return false }
             }
 
-            // 10. 酒種固有のメタデータ (JSONデコードによる判定)
+            // ✨ 10. フラグフィルター条件
+            if let costEffective = filterCostEffective, costEffective, !log.isCostEffective {
+                return false
+            }
+            if let repeatFlag = filterWillingToRepeat, repeatFlag, !log.isWillingToRepeat {
+                return false
+            }
+            if let aging = filterAgingPotential, aging, !log.hasAgingPotential {
+                return false
+            }
+
+            // 11. 酒種固有のメタデータ (JSONデコードによる判定)
             if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
                 switch item.category {
                 case .wine:
@@ -198,6 +214,9 @@ public final class LogListViewModel {
         !aromaTagFilter.isEmpty ||
         !appearanceNoteFilter.isEmpty ||
         !balanceTagFilter.isEmpty ||
+        filterCostEffective == true ||
+        filterWillingToRepeat == true ||
+        filterAgingPotential == true ||
         wineTypeFilter != "すべて" ||
         sakeSpecificNameFilter != "すべて" ||
         !beerStyleFilter.isEmpty ||
@@ -216,6 +235,9 @@ public final class LogListViewModel {
         self.aromaTagFilter = ""
         self.appearanceNoteFilter = ""
         self.balanceTagFilter = ""
+        self.filterCostEffective = nil
+        self.filterWillingToRepeat = nil
+        self.filterAgingPotential = nil
         self.wineTypeFilter = "すべて"
         self.sakeSpecificNameFilter = "すべて"
         self.beerStyleFilter = ""

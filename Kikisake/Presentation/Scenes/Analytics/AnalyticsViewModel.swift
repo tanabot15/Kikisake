@@ -218,4 +218,17 @@ public final class AnalyticsViewModel {
         let targetLogs = filteredLogs(from: logs)
         return calculateUseCase.calculateAverageTasteProfile(from: targetLogs)
     }
+
+    /// ✨ 特徴・評価フラグの集計データを取得する
+    public func featureFlagsSummary(from logs: [TastingLog]) -> (costEffective: Int, repeatIntent: Int, agingPotential: Int, total: Int) {
+        let targetLogs = filteredLogs(from: logs)
+        let total = targetLogs.count
+        guard total > 0 else { return (0, 0, 0, 0) }
+        
+        let costEffective = targetLogs.filter { $0.isCostEffective }.count
+        let repeatIntent = targetLogs.filter { $0.isWillingToRepeat }.count
+        let agingPotential = targetLogs.filter { $0.hasAgingPotential }.count
+        
+        return (costEffective, repeatIntent, agingPotential, total)
+    }
 }

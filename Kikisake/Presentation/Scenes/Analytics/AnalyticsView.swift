@@ -115,6 +115,9 @@ public struct AnalyticsView: View {
             // マイベスト
             myBestSection(for: targetLogs)
 
+            // 特徴・評価フラグの傾向カード（3つ横並びレイアウト）
+            featureFlagsSummaryCard(for: targetLogs)
+
             // 好みの香り・特徴（アロマタグ）
             aromaPreferenceCard(for: targetLogs)
 
@@ -241,13 +244,11 @@ public struct AnalyticsView: View {
                 .font(.headline)
 
             if viewModel.selectedCategoryFilter != nil {
-                // MARK: サブカテゴリ別グラフ（ワインタイプ / 特定名称 / ビアスタイル）
                 let subRatio = viewModel.subCategoryRatio(from: logs)
                 let sortedKeys = Array(subRatio.keys.sorted())
                 let totalCount = subRatio.values.reduce(0, +)
 
                 if totalCount > 0 {
-                    // サブカテゴリ用のカラーパレットとマッピングを明示的なString型で作成
                     let palette: [Color] = [.purple, .blue, .orange, .pink, .teal, .indigo, .brown]
                     let colorPairs: [(String, Color)] = sortedKeys.enumerated().map { index, key in
                         (String(key), palette[index % palette.count])
@@ -272,7 +273,6 @@ public struct AnalyticsView: View {
                     .frame(height: 180)
                     .chartLegend(.hidden)
 
-                    // 統一された凡例表示UI
                     let activeKeys = sortedKeys.filter { (subRatio[$0] ?? 0) > 0 }
                     if !activeKeys.isEmpty {
                         FlowLayout(spacing: 12) {
@@ -297,7 +297,6 @@ public struct AnalyticsView: View {
                         .padding(.vertical, 12)
                 }
             } else {
-                // MARK: 全酒種（メインカテゴリ）グラフ
                 let ratio = viewModel.categoryRatio(from: logs)
 
                 Chart {
@@ -360,12 +359,8 @@ public struct AnalyticsView: View {
     // --- マイベストセクション ---
     private func myBestSection(for targetLogs: [TastingLog]) -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "crown.fill")
-                    .foregroundStyle(.yellow)
-                Text("マイベスト")
-                    .font(.headline)
-            }
+            Text("マイベスト")
+                .font(.headline)
 
             VStack(spacing: 14) {
                 let categoriesToDisplay = viewModel.selectedCategoryFilter.map { [$0] } ?? BeverageCategory.allCases
@@ -395,34 +390,43 @@ public struct AnalyticsView: View {
             }
 
             if let log = bestLog {
-                HStack(spacing: 12) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(log.item?.name ?? "不明な銘柄")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                        if let producer = log.item?.producer, !producer.isEmpty {
-                            Text(producer)
-                                .font(.caption2)
-                                .foregroundStyle(.secondary)
+                NavigationLink(destination: LogDetailView(log: log)) {
+                    HStack(spacing: 12) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(log.item?.name ?? "不明な銘柄")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.primary)
                                 .lineLimit(1)
+                            if let producer = log.item?.producer, !producer.isEmpty {
+                                Text(producer)
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                                    .lineLimit(1)
+                            }
                         }
-                    }
-                    
-                    Spacer()
+                        
+                        Spacer()
 
-                    HStack(spacing: 2) {
-                        Image(systemName: "star.fill")
+                        HStack(spacing: 2) {
+                            Image(systemName: "star.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.orange)
+                            Text(String(format: "%.1f", log.rating))
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.primary)
+                        }
+
+                        Image(systemName: "chevron.right")
                             .font(.caption2)
-                            .foregroundStyle(.orange)
-                        Text(String(format: "%.1f", log.rating))
-                            .font(.caption)
-                            .fontWeight(.bold)
+                            .foregroundStyle(.tertiary)
                     }
+                    .padding(10)
+                    .background(Color(.systemGroupedBackground))
+                    .cornerRadius(10)
                 }
-                .padding(10)
-                .background(Color(.systemGroupedBackground))
-                .cornerRadius(10)
+                .buttonStyle(.plain)
             } else {
                 Text("該当条件の記録がありません")
                     .font(.caption)
@@ -432,15 +436,102 @@ public struct AnalyticsView: View {
         }
     }
 
+    // --- ✨ 特徴・評価フラグの傾向カード（3つ横並びのグリッド形式） ---
+    private func featureFlagsSummaryCard(for targetLogs: [TastingLog]) -> some View {
+        let summary = viewModel.featureFlagsSummary(from: targetLogs)
+        
+        return VStack(alignment: .leading, spacing: 14) {
+            Text("評価フラグの傾向")
+                .font(.headline)
+
+            if summary.total == 0 {
+                Text("データがありません")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .padding(.vertical, 8)
+            } else {
+                // 3つのフラグカードを横並びで配置
+                HStack(spacing: 10) {
+                    flagCardItem(
+                        title: "コスパ良好",
+                        count: summary.costEffective,
+                        systemImage: "yensign.circle.fill",
+                        color: .green,
+                        filterType: .costEffective
+                    )
+                    
+                    flagCardItem(
+                        title: "リピート確定",
+                        count: summary.repeatIntent,
+                        systemImage: "arrow.clockwise.circle.fill",
+                        color: .orange,
+                        filterType: .willingToRepeat
+                    )
+                    
+                    flagCardItem(
+                        title: "熟成ポテンシャル",
+                        count: summary.agingPotential,
+                        systemImage: "hourglass.circle.fill",
+                        color: .purple,
+                        filterType: .agingPotential
+                    )
+                }
+            }
+        }
+        .padding()
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+        .shadow(color: Color.black.opacity(0.03), radius: 6, x: 0, y: 2)
+    }
+
+    /// ✨ 横並び用にデザインされた個別のフラグカードコンポーネント
+    private func flagCardItem(
+        title: String,
+        count: Int,
+        systemImage: String,
+        color: Color,
+        filterType: LogFilterType
+    ) -> some View {
+        Button {
+            AppState.shared.pendingLogFilter = filterType
+            AppState.shared.selectedTab = 0
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Image(systemName: systemImage)
+                        .foregroundStyle(color)
+                        .font(.subheadline)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(.tertiary)
+                }
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                    
+                    Text("\(count)件")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.primary)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(10)
+            .background(Color(.systemGroupedBackground))
+            .cornerRadius(12)
+        }
+        .buttonStyle(.plain)
+    }
+
     // --- 好みのアロマ・特徴タグ ---
     private func aromaPreferenceCard(for targetLogs: [TastingLog]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "nose.fill")
-                    .foregroundStyle(Color.accentColor)
-                Text("よく感じる香り・アロマの好み")
-                    .font(.headline)
-            }
+            Text("よく感じる香り・アロマの好み")
+                .font(.headline)
 
             let topTags = viewModel.topAromaTags(from: targetLogs)
 
@@ -480,12 +571,8 @@ public struct AnalyticsView: View {
     // --- 味わいプロファイルカード ---
     private func tasteProfileCard(for targetLogs: [TastingLog]) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            HStack {
-                Image(systemName: "slider.horizontal.3")
-                    .foregroundStyle(Color.accentColor)
-                Text("平均テイストバランス")
-                    .font(.headline)
-            }
+            Text("平均テイストバランス")
+                .font(.headline)
 
             let profile = viewModel.averageTasteProfile(from: targetLogs)
 
@@ -551,33 +638,67 @@ public struct AnalyticsView: View {
     let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
     let encoder = JSONEncoder()
 
-    // --- 1. ワインサンプル ---
+    // --- 1. ワインサンプル (フラグをフル設定) ---
     let wineRedMeta = WineSpecificMetadata(wineType: "赤", grapeVarieties: "ネッビオーロ", blendComponents: [])
     let wineRedJSON = String(data: try! encoder.encode(wineRedMeta), encoding: .utf8)
     let wine1 = BeverageItem(name: "Barolo DOCG 2018", producer: "Prunotto", category: .wine, region: "イタリア", specificMetadataJSON: wineRedJSON)
-    let logWine1 = TastingLog(rating: 4.8, aromaTags: ["スミレ", "樽香", "チェリー"], sweetness: 2.0, acidity: 4.2, bitterness: 2.0, umami: 2.5, body: 4.5, finishLength: 4.8, item: wine1)
+    let logWine1 = TastingLog(
+        rating: 4.8,
+        aromaTags: ["スミレ", "樽香", "チェリー"],
+        sweetness: 2.0, acidity: 4.2, bitterness: 2.0, umami: 2.5, body: 4.5, finishLength: 4.8,
+        isCostEffective: true,
+        isWillingToRepeat: true,
+        hasAgingPotential: true,
+        item: wine1
+    )
 
     let wineWhiteMeta = WineSpecificMetadata(wineType: "白", grapeVarieties: "シャルドネ", blendComponents: [])
     let wineWhiteJSON = String(data: try! encoder.encode(wineWhiteMeta), encoding: .utf8)
     let wine2 = BeverageItem(name: "Chablis Premier Cru 2020", producer: "Domaine Laroche", category: .wine, region: "フランス", specificMetadataJSON: wineWhiteJSON)
-    let logWine2 = TastingLog(rating: 4.3, aromaTags: ["柑橘", "ミネラル"], sweetness: 1.5, acidity: 4.5, bitterness: 1.0, umami: 2.0, body: 3.0, finishLength: 4.0, item: wine2)
+    let logWine2 = TastingLog(
+        rating: 4.3,
+        aromaTags: ["柑橘", "ミネラル"],
+        sweetness: 1.5, acidity: 4.5, bitterness: 1.0, umami: 2.0, body: 3.0, finishLength: 4.0,
+        isCostEffective: true,
+        isWillingToRepeat: true,
+        hasAgingPotential: false,
+        item: wine2
+    )
 
     // --- 2. 日本酒サンプル ---
     let sakeDaiginjoMeta = SakeSpecificMetadata(specificName: "純米大吟醸", riceVariety: "山田錦", polishingRate: "50%", sakeMeterValue: "+3.0")
     let sakeDaiginjoJSON = String(data: try! encoder.encode(sakeDaiginjoMeta), encoding: .utf8)
     let sake1 = BeverageItem(name: "久保田 萬壽", producer: "朝日酒造", category: .sake, region: "新潟県", specificMetadataJSON: sakeDaiginjoJSON)
-    let logSake1 = TastingLog(rating: 4.6, aromaTags: ["吟醸香", "青りんご"], sweetness: 3.0, acidity: 2.5, bitterness: 1.5, umami: 3.5, body: 3.0, finishLength: 4.0, item: sake1)
+    let logSake1 = TastingLog(
+        rating: 4.6,
+        aromaTags: ["吟醸香", "青りんご"],
+        sweetness: 3.0, acidity: 2.5, bitterness: 1.5, umami: 3.5, body: 3.0, finishLength: 4.0,
+        isCostEffective: false,
+        isWillingToRepeat: true,
+        hasAgingPotential: true,
+        item: sake1
+    )
 
     // --- 3. ビールサンプル ---
     let beerIpaMeta = BeerSpecificMetadata(beerStyle: "IPA", ibu: "55")
     let beerIpaJSON = String(data: try! encoder.encode(beerIpaMeta), encoding: .utf8)
     let beer1 = BeverageItem(name: "Punk IPA", producer: "BrewDog", category: .beer, region: "スコットランド", specificMetadataJSON: beerIpaJSON)
-    let logBeer1 = TastingLog(rating: 4.4, aromaTags: ["グレープフルーツ", "ホップ"], sweetness: 2.0, acidity: 1.5, bitterness: 4.5, umami: 1.5, body: 3.5, finishLength: 3.8, item: beer1)
+    let logBeer1 = TastingLog(
+        rating: 4.4,
+        aromaTags: ["グレープフルーツ", "ホップ"],
+        sweetness: 2.0, acidity: 1.5, bitterness: 4.5, umami: 1.5, body: 3.5, finishLength: 3.8,
+        isCostEffective: true,
+        isWillingToRepeat: false,
+        hasAgingPotential: false,
+        item: beer1
+    )
 
     let items = [wine1, wine2, sake1, beer1]
     let logs = [logWine1, logWine2, logSake1, logBeer1]
 
     for item in items { container.mainContext.insert(item) }
+    for log in logs { container.mainContext.insert(log) }
+
     for log in logs { container.mainContext.insert(log) }
 
     return AnalyticsView()

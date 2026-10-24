@@ -120,7 +120,7 @@ public struct LogFilterSheet: View {
                     }
                     .pickerStyle(.menu)
 
-                    // ✨ 味わい・バランス表現の選択メニュー（TastingOptions.balanceOptionsを利用）
+                    // 味わい・バランス表現の選択メニュー
                     Picker("味わい・バランス表現", selection: $viewModel.balanceTagFilter) {
                         Text("指定なし").tag("")
                         ForEach(TastingOptions.balanceOptions, id: \.self) { option in
@@ -130,7 +130,23 @@ public struct LogFilterSheet: View {
                     .pickerStyle(.menu)
                 }
 
-                // 5. 酒種固有のメタデータ
+                // ✨ 5. 特徴・評価フラグフィルター
+                Section("特徴・評価フラグ") {
+                    Toggle("コスパが高い", isOn: Binding(
+                        get: { viewModel.filterCostEffective ?? false },
+                        set: { viewModel.filterCostEffective = $0 ? true : nil }
+                    ))
+                    Toggle("リピート意向あり", isOn: Binding(
+                        get: { viewModel.filterWillingToRepeat ?? false },
+                        set: { viewModel.filterWillingToRepeat = $0 ? true : nil }
+                    ))
+                    Toggle("熟成ポテンシャルあり", isOn: Binding(
+                        get: { viewModel.filterAgingPotential ?? false },
+                        set: { viewModel.filterAgingPotential = $0 ? true : nil }
+                    ))
+                }
+
+                // 6. 酒種固有のメタデータ
                 Section("固有詳細条件") {
                     if viewModel.selectedCategoryFilter == nil || viewModel.selectedCategoryFilter == .wine {
                         Picker("ワインタイプ", selection: $viewModel.wineTypeFilter) {
@@ -160,7 +176,7 @@ public struct LogFilterSheet: View {
                     }
                 }
 
-                // 6. ソート設定
+                // 7. ソート設定
                 Section("並び替え (ソート)") {
                     Picker("表示順序", selection: $viewModel.sortOrder) {
                         ForEach(LogSortOrder.allCases, id: \.self) { order in
@@ -170,7 +186,7 @@ public struct LogFilterSheet: View {
                     .pickerStyle(.menu)
                 }
 
-                // 7. 一括リセット
+                // 8. 一括リセット
                 Section {
                     Button(role: .destructive) {
                         viewModel.resetFilters()

@@ -102,7 +102,7 @@ public struct TastingCardShareView: View {
                             }
                         }
 
-                        // ✨ 基本情報 & スペックの下に入る「評価・外観・香り」サブセクション
+                        // ✨ 基本情報 & スペックの下に入る「評価・外観・香り・特徴フラグ」サブセクション
                         VStack(alignment: .leading, spacing: 4) {
                             // 評価
                             HStack(spacing: 3) {
@@ -152,8 +152,49 @@ public struct TastingCardShareView: View {
                                                 .font(.system(size: 7, weight: .medium))
                                                 .padding(.horizontal, 4)
                                                 .padding(.vertical, 1)
-                                                .background(Color.accentColor.opacity(0.1))
-                                                .foregroundStyle(Color.accentColor)
+                                                .background(Color.primary.opacity(0.1))
+                                                .foregroundStyle(Color.primary)
+                                                .cornerRadius(3)
+                                        }
+                                    }
+                                }
+                            }
+
+                            // ✨ 特徴フラグ (設定されている場合のみサブセクション内に表示)
+                            if log.isCostEffective || log.isWillingToRepeat || log.hasAgingPotential {
+                                HStack(alignment: .top, spacing: 4) {
+                                    Text("特徴")
+                                        .font(.system(size: 8, weight: .bold))
+                                        .foregroundStyle(.secondary)
+                                        .frame(width: 32, alignment: .leading)
+                                        .padding(.top, 2)
+                                    
+                                    FlowLayout(spacing: 3) {
+                                        if log.isCostEffective {
+                                            Text("コスパ")
+                                                .font(.system(size: 7, weight: .medium))
+                                                .padding(.horizontal, 4)
+                                                .padding(.vertical, 1)
+                                                .background(Color.green.opacity(0.15))
+                                                .foregroundStyle(.green)
+                                                .cornerRadius(3)
+                                        }
+                                        if log.isWillingToRepeat {
+                                            Text("リピート")
+                                                .font(.system(size: 7, weight: .medium))
+                                                .padding(.horizontal, 4)
+                                                .padding(.vertical, 1)
+                                                .background(Color.orange.opacity(0.15))
+                                                .foregroundStyle(.orange)
+                                                .cornerRadius(3)
+                                        }
+                                        if log.hasAgingPotential {
+                                            Text("熟成")
+                                                .font(.system(size: 7, weight: .medium))
+                                                .padding(.horizontal, 4)
+                                                .padding(.vertical, 1)
+                                                .background(Color.purple.opacity(0.15))
+                                                .foregroundStyle(.purple)
                                                 .cornerRadius(3)
                                         }
                                     }
@@ -168,7 +209,7 @@ public struct TastingCardShareView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                // --- 右側：正方形フォトフレーム (150 x 150) ---
+                // --- 右側：正方形フォトフレーム ---
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color(.tertiarySystemGroupedBackground))
@@ -190,7 +231,7 @@ public struct TastingCardShareView: View {
                         }
                     }
                 }
-                .frame(width: 170, height: 170) // ✨ 正方形サイズ
+                .frame(width: 150, height: 190)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(Color.primary.opacity(0.08), lineWidth: 1)
@@ -204,11 +245,9 @@ public struct TastingCardShareView: View {
 
             // MARK: - 2. 下部セクション（プロファイル・レーダーチャート ＆ マトリクス分析）
             HStack(spacing: 8) {
-                // 左側：味わい構造レーダーチャート
                 TasteRadarCardView(log: log, isCompactMode: true)
                     .frame(maxWidth: .infinity)
 
-                // 右側：位置づけマトリクス分析
                 MatrixAnalysisCardView(log: log, isCompactMode: true)
                     .frame(maxWidth: .infinity)
             }
@@ -312,6 +351,9 @@ private func generateVerticalSampleImage() -> Data? {
         body: 4.5,
         balanceTags: ["豊潤な"],
         finishLength: 4.8,
+        isCostEffective: true,       // ✨ プレビュー用にフラグをON
+        isWillingToRepeat: true,     // ✨ プレビュー用にフラグをON
+        hasAgingPotential: true,     // ✨ プレビュー用にフラグをON
         memo: "圧倒的な気品と複雑味。長期熟成のポテンシャルを感じさせる素晴らしいバランス。",
         item: sampleItem
     )

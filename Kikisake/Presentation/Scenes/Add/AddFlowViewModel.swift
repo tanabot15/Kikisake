@@ -12,7 +12,7 @@ public final class AddFlowViewModel {
     public var showAlreadyFilledAlert: Bool = false
     public var pendingOpeningItem: BeverageItem? = nil
 
-    // ✨ 在庫画面の「このボトルを開ける」から直接遷移してきたかどうかのフラグ
+    // 在庫画面の「このボトルを開ける」から直接遷移してきたかどうかのフラグ
     public var isOpeningExistingItem: Bool = false
 
     // Step 1: 一般的な情報
@@ -63,8 +63,11 @@ public final class AddFlowViewModel {
     public var selectedBalanceTags: [String] = []
     public var finishLength: Double = 2.5
 
-    // Step 5: 総合評価・メモ
+    // Step 5: 総合評価・フラグ・メモ
     public var rating: Double = 4.0
+    public var isCostEffective: Bool = false         // ✨ コスパフラグ
+    public var isWillingToRepeat: Bool = false       // ✨ リピート意向フラグ
+    public var hasAgingPotential: Bool = false       // ✨ 熟成ポテンシャルフラグ
     public var memo: String = ""
     public var tastingDate: Date = Date()
 
@@ -135,6 +138,9 @@ public final class AddFlowViewModel {
         self.selectedBalanceTags = []
         self.finishLength = 2.5
         self.rating = 4.0
+        self.isCostEffective = false
+        self.isWillingToRepeat = false
+        self.hasAgingPotential = false
         self.memo = ""
         self.tastingDate = Date()
         self.editingLog = nil
@@ -178,6 +184,9 @@ public final class AddFlowViewModel {
         self.body = log.body
         self.selectedBalanceTags = log.balanceTags
         self.finishLength = log.finishLength
+        self.isCostEffective = log.isCostEffective
+        self.isWillingToRepeat = log.isWillingToRepeat
+        self.hasAgingPotential = log.hasAgingPotential
         self.memo = log.memo
     }
 
@@ -297,6 +306,9 @@ public final class AddFlowViewModel {
             body: body,
             balanceTags: selectedBalanceTags,
             finishLength: finishLength,
+            isCostEffective: isCostEffective,
+            isWillingToRepeat: isWillingToRepeat,
+            hasAgingPotential: hasAgingPotential,
             memo: memo,
             item: targetItem
         )
@@ -354,6 +366,9 @@ public final class AddFlowViewModel {
             body: body,
             balanceTags: selectedBalanceTags,
             finishLength: finishLength,
+            isCostEffective: isCostEffective,
+            isWillingToRepeat: isWillingToRepeat,
+            hasAgingPotential: hasAgingPotential,
             memo: memo,
             item: targetItem
         )
@@ -407,6 +422,9 @@ public final class AddFlowViewModel {
         targetLog.body = body
         targetLog.balanceTags = selectedBalanceTags
         targetLog.finishLength = finishLength
+        targetLog.isCostEffective = isCostEffective
+        targetLog.isWillingToRepeat = isWillingToRepeat
+        targetLog.hasAgingPotential = hasAgingPotential
         targetLog.memo = memo
 
         try modelContext.save()

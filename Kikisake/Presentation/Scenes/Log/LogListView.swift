@@ -7,9 +7,9 @@ import SwiftData
 /// [Tab 1] 飲んだ酒のリスト（テイスティングログ一覧）画面
 public struct LogListView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.editMode) private var editMode // 編集モードの状態を管理
     @Query(sort: \TastingLog.date, order: .reverse) private var logs: [TastingLog]
     @State private var viewModel = LogListViewModel()
+    @State private var editMode: EditMode = .inactive
     
     // フィルターシートの表示状態
     @State private var isShowingFilterSheet: Bool = false
@@ -69,6 +69,8 @@ public struct LogListView: View {
                                 .onMove(perform: moveLogs)
                             }
                             .listStyle(.plain)
+                            // ✨ Listに編集モードの状態を明示的にバインド
+                            .environment(\.editMode, $editMode)
                             .searchable(
                                 text: $viewModel.searchText,
                                 placement: .navigationBarDrawer(displayMode: .always),
@@ -113,47 +115,57 @@ public struct LogListView: View {
                         .fontWeight(.semibold)
                 }
 
-                // ツールバーに「表示切替ボタン（3モード循環）」「フィルターボタン」「編集ボタン」を配置
+                // ツールバーに「表示切替ボタン」「フィルターボタン」「編集ボタン」を配置
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    // 1. 表示形式切替ボタン (タップで カード ⇄ コンパクト ⇄ タイムライン を循環)
+                    // 1. 表示形式切替ボタン
                     Button {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             viewModel.toggleViewMode()
                         }
                     } label: {
                         Image(systemName: viewModel.viewModeIconName)
-                            .foregroundStyle(.primary)
                     }
+                    .tint(.primary)
                     .accessibilityLabel("表示形式の切り替え")
 
                     // 2. フィルターボタン
                     Button {
                         isShowingFilterSheet = true
                     } label: {
-                        Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                        Image(systemName: "line.3.horizontal.decrease.circle")
                             .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
                     }
 
                     // 3. 編集ボタン
                     Button {
                         withAnimation {
-                            if editMode?.wrappedValue == .active {
-                                editMode?.wrappedValue = .inactive
-                            } else {
-                                editMode?.wrappedValue = .active
-                            }
+                            editMode = (editMode == .active) ? .inactive : .active
                         }
                     } label: {
-                        Label(
-                            editMode?.wrappedValue == .active ? "完了" : "編集",
-                            systemImage: editMode?.wrappedValue == .active ? "checkmark.circle.fill" : "square.and.pencil"
-                        )
-                        .foregroundStyle(.primary)
+                        Image(systemName: editMode == .active ? "checkmark.circle" : "square.and.pencil")
+                            .foregroundStyle(editMode == .active ? Color.accentColor : Color.primary)
                     }
+                    .tint(.primary)
                 }
             }
             .sheet(isPresented: $isShowingFilterSheet) {
                 LogFilterSheet(viewModel: viewModel)
+            }
+            .onAppear {
+                // ✨ 分析画面などからフラグフィルター指定を受けて遷移してきた場合の処理
+                if let pendingFilter = AppState.shared.pendingLogFilter {
+                    viewModel.resetFilters()
+                    switch pendingFilter {
+                    case .costEffective:
+                        viewModel.filterCostEffective = true
+                    case .willingToRepeat:
+                        viewModel.filterWillingToRepeat = true
+                    case .agingPotential:
+                        viewModel.filterAgingPotential = true
+                    }
+                    // 適用後にクリア
+                    AppState.shared.pendingLogFilter = nil
+                }
             }
         }
     }
@@ -242,24 +254,11 @@ private struct LogTimelineRowView: View {
 
             // 右側：タイムラインカードコンテンツ
             VStack(alignment: .leading, spacing: 6) {
-                // 日付 ＆ スコア
-                HStack {
-                    Text(log.date.toFormattedString(format: "yyyy年M月d日"))
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.secondary)
-                    
-                    Spacer()
-                    
-                    HStack(spacing: 2) {
-                        Image(systemName: "star.fill")
-                            .font(.caption2)
-                            .foregroundStyle(.yellow)
-                        Text(String(format: "%.1f", log.rating))
-                            .font(.caption)
-                            .fontWeight(.bold)
-                    }
-                }
+                // 日付
+                Text(log.date.toFormattedString(format: "yyyy年M月d日"))
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.secondary)
 
                 // メイン情報カード
                 HStack(spacing: 10) {
@@ -267,12 +266,12 @@ private struct LogTimelineRowView: View {
                         Image(uiImage: uiImage)
                             .resizable()
                             .scaledToFill()
-                            .frame(width: 50, height: 50)
+                            .frame(width: 35, height: 35)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     } else {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(Color(.systemGray5))
-                            .frame(width: 50, height: 50)
+                            .frame(width: 35, height: 35)
                             .overlay {
                                 Image(systemName: "wineglass")
                                     .font(.caption)
@@ -290,10 +289,13 @@ private struct LogTimelineRowView: View {
                                 .foregroundStyle(Color.accentColor)
                                 .cornerRadius(3)
 
-                            if let vintage = item.vintage, !vintage.isEmpty {
-                                Text(vintage)
+                            HStack(spacing: 2) {
+                                Image(systemName: "star.fill")
                                     .font(.caption2)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(.yellow)
+                                Text(String(format: "%.1f", log.rating))
+                                    .font(.caption)
+                                    .fontWeight(.bold)
                             }
                         }
 
@@ -301,13 +303,6 @@ private struct LogTimelineRowView: View {
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .lineLimit(1)
-
-                        if !item.producer.isEmpty {
-                            Text(item.producer)
-                                .font(.caption2)
-                                .foregroundStyle(.secondary)
-                                .lineLimit(1)
-                        }
                     }
                     
                     Spacer()
