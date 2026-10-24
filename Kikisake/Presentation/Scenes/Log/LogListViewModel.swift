@@ -13,6 +13,13 @@ public enum LogSortOrder: String, CaseIterable, Codable {
     public var displayName: String { rawValue }
 }
 
+/// 表示形式のモード
+public enum LogViewMode: CaseIterable {
+    case card       // リッチカード表示
+    case compact    // コンパクトリスト表示
+    case timeline   // タイムライン表示
+}
+
 /// 飲んだ酒のリスト画面のビジネスロジック・状態管理
 @Observable
 public final class LogListViewModel {
@@ -20,8 +27,8 @@ public final class LogListViewModel {
     public var searchText: String = ""
     public var sortOrder: LogSortOrder = .dateDescending
 
-    // --- 表示形式の状態管理 ---
-    public var isCompactView: Bool = false // ✨ デフォルトはfalse（リッチカード表示）
+    // --- 表示形式の状態管理 (3モード循環) ---
+    public var viewMode: LogViewMode = .card
 
     // --- 高機能フィルタープロパティ ---
     public var selectedCategoryFilter: BeverageCategory? = nil
@@ -47,6 +54,30 @@ public final class LogListViewModel {
     public var beerStyleFilter: String = ""
 
     public init() {}
+
+    /// 表示モードを次のものに切り替える
+    public func toggleViewMode() {
+        switch viewMode {
+        case .card:
+            viewMode = .compact
+        case .compact:
+            viewMode = .timeline
+        case .timeline:
+            viewMode = .card
+        }
+    }
+
+    /// 現在のモードに応じたアイコン名を返す
+    public var viewModeIconName: String {
+        switch viewMode {
+        case .card:
+            return "rectangle.grid.1x2"
+        case .compact:
+            return "list.bullet"
+        case .timeline:
+            return "calendar.day.timeline.left"
+        }
+    }
 
     /// すべてのフィルター条件とソートを適用してログを絞り込む
     public func filteredLogs(_ logs: [TastingLog]) -> [TastingLog] {

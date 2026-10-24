@@ -34,49 +34,74 @@ public struct LogListView: View {
                             description: Text(viewModel.hasActiveFilters ? "フィルター条件を変更してみてください。" : "「追加」タブから新しい記録を作成しましょう。")
                         )
                     } else {
-                        List {
-                            ForEach(filteredLogs) { log in
-                                NavigationLink(destination: LogDetailView(log: log)) {
-                                    if let item = log.item {
-                                        if viewModel.isCompactView {
-                                            // ✨ シンプル・コンパクトなリスト行
-                                            LogCompactRowView(log: log, item: item)
-                                                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                                .listRowSeparator(.automatic)
-                                        } else {
-                                            // 従来のリッチなカード表示
-                                            VStack(spacing: 0) {
-                                                BeverageCardView(
-                                                    name: item.name,
-                                                    producer: item.producer,
-                                                    category: item.category,
-                                                    region: item.region,
-                                                    vintage: item.vintage,
-                                                    stockQuantity: nil,
-                                                    rating: log.rating,
-                                                    imageData: item.imageDatas?.first,
-                                                    appearanceColorHex: log.appearanceColorHex
-                                                )
-                                                .padding(.bottom, 12)
-                                                
-                                                Divider()
-                                                    .padding(.horizontal, 4)
+                        // モードに応じたビューの出し分け
+                        switch viewModel.viewMode {
+                        case .card, .compact:
+                            List {
+                                ForEach(filteredLogs) { log in
+                                    NavigationLink(destination: LogDetailView(log: log)) {
+                                        if let item = log.item {
+                                            if viewModel.viewMode == .compact {
+                                                // ✨ シンプル・コンパクトなリスト行
+                                                LogCompactRowView(log: log, item: item)
+                                                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                                                    .listRowSeparator(.automatic)
+                                            } else {
+                                                // 従来のリッチなカード表示
+                                                VStack(spacing: 0) {
+                                                    BeverageCardView(
+                                                        name: item.name,
+                                                        producer: item.producer,
+                                                        category: item.category,
+                                                        region: item.region,
+                                                        vintage: item.vintage,
+                                                        stockQuantity: nil,
+                                                        rating: log.rating,
+                                                        imageData: item.imageDatas?.first,
+                                                        appearanceColorHex: log.appearanceColorHex
+                                                    )
+                                                }
                                             }
-                                            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                                            .listRowSeparator(.hidden)
                                         }
                                     }
                                 }
+                                .onDelete(perform: deleteLogs)
+                                .onMove(perform: moveLogs)
                             }
-                            .onDelete(perform: deleteLogs)
-                            .onMove(perform: moveLogs)
+                            .listStyle(.plain)
+                            .searchable(
+                                text: $viewModel.searchText,
+                                placement: .navigationBarDrawer(displayMode: .always),
+                                prompt: "銘柄名、生産者、メモで検索"
+                            )
+
+                        case .timeline:
+                            // ✨ 高速描画を考慮したタイムラインビュー（上から下に新しい順）
+                            ScrollView {
+                                LazyVStack(alignment: .leading, spacing: 0) {
+                                    ForEach(Array(filteredLogs.enumerated()), id: \.element.id) { index, log in
+                                        if let item = log.item {
+                                            NavigationLink(destination: LogDetailView(log: log)) {
+                                                LogTimelineRowView(
+                                                    log: log,
+                                                    item: item,
+                                                    isFirst: index == 0,
+                                                    isLast: index == filteredLogs.count - 1
+                                                )
+                                            }
+                                            .buttonStyle(.plain)
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 12)
+                            }
+                            .searchable(
+                                text: $viewModel.searchText,
+                                placement: .navigationBarDrawer(displayMode: .always),
+                                prompt: "銘柄名、生産者、メモで検索"
+                            )
                         }
-                        .listStyle(.plain)
-                        .searchable(
-                            text: $viewModel.searchText,
-                            placement: .navigationBarDrawer(displayMode: .always),
-                            prompt: "銘柄名、生産者、メモで検索"
-                        )
                     }
                 }
             }
@@ -88,20 +113,20 @@ public struct LogListView: View {
                         .fontWeight(.semibold)
                 }
 
-                // ツールバーに「表示切替ボタン」「フィルターボタン」「編集ボタン」を配置
+                // ツールバーに「表示切替ボタン（3モード循環）」「フィルターボタン」「編集ボタン」を配置
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    // ✨ 1. 表示形式切替ボタン (.primaryを適用)
+                    // 1. 表示形式切替ボタン (タップで カード ⇄ コンパクト ⇄ タイムライン を循環)
                     Button {
                         withAnimation(.easeInOut(duration: 0.2)) {
-                            viewModel.isCompactView.toggle()
+                            viewModel.toggleViewMode()
                         }
                     } label: {
-                        Image(systemName: viewModel.isCompactView ? "rectangle.grid.1x2" : "list.bullet")
+                        Image(systemName: viewModel.viewModeIconName)
                             .foregroundStyle(.primary)
                     }
                     .accessibilityLabel("表示形式の切り替え")
 
-                    // ✨ 2. フィルターボタン (アクティブ時のみアクセントカラー、通常は .primary)
+                    // 2. フィルターボタン
                     Button {
                         isShowingFilterSheet = true
                     } label: {
@@ -109,7 +134,7 @@ public struct LogListView: View {
                             .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
                     }
 
-                    // ✨ 3. 編集ボタン (.primaryを適用)
+                    // 3. 編集ボタン
                     Button {
                         withAnimation {
                             if editMode?.wrappedValue == .active {
@@ -155,7 +180,7 @@ private struct LogCompactRowView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            // 外観カラーのドット表現 (Color+Extensionのイニシャライザを利用)
+            // 外観カラーのドット表現
             Circle()
                 .fill(Color(hex: log.appearanceColorHex) ?? Color.gray)
                 .frame(width: 14, height: 14)
@@ -180,6 +205,120 @@ private struct LogCompactRowView: View {
             }
         }
         .padding(.vertical, 4)
+    }
+}
+
+/// ✨ タイムライン表示用のカスタム行コンポーネント
+private struct LogTimelineRowView: View {
+    let log: TastingLog
+    let item: BeverageItem
+    let isFirst: Bool
+    let isLast: Bool
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            // 左側：タイムライン軸（ノット ＋ 縦線）
+            VStack(spacing: 0) {
+                // 上側の縦線
+                Rectangle()
+                    .fill(isFirst ? Color.clear : Color(.systemGray4))
+                    .frame(width: 2, height: 12)
+
+                // ドット（外観カラーを反映、未設定ならアクセントカラー）
+                Circle()
+                    .fill(Color(hex: log.appearanceColorHex) ?? Color.accentColor)
+                    .frame(width: 14, height: 14)
+                    .overlay(
+                        Circle().stroke(Color(.systemBackground), lineWidth: 2)
+                    )
+                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
+
+                // 下側の縦線
+                Rectangle()
+                    .fill(isLast ? Color.clear : Color(.systemGray4))
+                    .frame(width: 2)
+            }
+            .frame(width: 20)
+
+            // 右側：タイムラインカードコンテンツ
+            VStack(alignment: .leading, spacing: 6) {
+                // 日付 ＆ スコア
+                HStack {
+                    Text(log.date.toFormattedString(format: "yyyy年M月d日"))
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.secondary)
+                    
+                    Spacer()
+                    
+                    HStack(spacing: 2) {
+                        Image(systemName: "star.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.yellow)
+                        Text(String(format: "%.1f", log.rating))
+                            .font(.caption)
+                            .fontWeight(.bold)
+                    }
+                }
+
+                // メイン情報カード
+                HStack(spacing: 10) {
+                    if let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 50, height: 50)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    } else {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color(.systemGray5))
+                            .frame(width: 50, height: 50)
+                            .overlay {
+                                Image(systemName: "wineglass")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                    }
+
+                    VStack(alignment: .leading, spacing: 3) {
+                        HStack(spacing: 6) {
+                            Text(item.category.displayName)
+                                .font(.system(size: 9, weight: .bold))
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 2)
+                                .background(Color.accentColor.opacity(0.15))
+                                .foregroundStyle(Color.accentColor)
+                                .cornerRadius(3)
+
+                            if let vintage = item.vintage, !vintage.isEmpty {
+                                Text(vintage)
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+
+                        Text(item.name)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .lineLimit(1)
+
+                        if !item.producer.isEmpty {
+                            Text(item.producer)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                        }
+                    }
+                    
+                    Spacer()
+                }
+                .padding(10)
+                .background(Color(.secondarySystemGroupedBackground))
+                .cornerRadius(12)
+                .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
+            }
+            .padding(.bottom, 8)
+        }
     }
 }
 
