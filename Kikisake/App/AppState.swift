@@ -20,7 +20,7 @@ public enum AppearanceMode: String, CaseIterable, Identifiable {
     }
 }
 
-/// ✨ ログ一覧へ引き渡すフィルターの種別
+/// ログ一覧へ引き渡すフィルターの種別
 public enum LogFilterType {
     case costEffective
     case willingToRepeat
@@ -35,8 +35,9 @@ public final class AppState {
     public var selectedTab: Int = 0
     public var isProVersion: Bool = false
     
-    // ✨ 分析画面等からログ一覧へのフィルター引き渡し用プロパティ
+    // 分析画面等からログ一覧へのフィルター引き渡し用プロパティ
     public var pendingLogFilter: LogFilterType? = nil
+    public var pendingAromaTagFilter: String? = nil // ✨ 香りタグの引き渡し用
     
     public var hasCompletedOnboarding: Bool {
         didSet {
@@ -44,16 +45,13 @@ public final class AppState {
         }
     }
     
-    // 追加・登録フロー用の共有ViewModel
     public var addFlowViewModel: AddFlowViewModel = AddFlowViewModel()
     
     public var openingItem: BeverageItem? {
         didSet {
             if let item = openingItem {
-                // ボトルが指定されたら、共有ViewModelに即座に反映し、追加タブ（インデックス2）へ移動
                 addFlowViewModel.handleOpeningItem(item)
                 selectedTab = 2
-                // 処理が終わったらクリア
                 openingItem = nil
             }
         }

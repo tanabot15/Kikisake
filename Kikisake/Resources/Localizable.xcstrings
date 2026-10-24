@@ -156,22 +156,11 @@
       }
     },
     "%lld件" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%lld items"
-          }
-        }
-      }
-    },
-    "%lld件 / %lld%%" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld件 / %2$lld%%"
           }
         }
       }
@@ -373,17 +362,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How would you like to register the inventory along with this tasting record?"
-          }
-        }
-      }
-    },
-    "この保管場所に在庫はありません" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "There is no stock in this storage location."
           }
         }
       }
@@ -663,17 +641,6 @@
     "マイベスト" : {
 
     },
-    "マイベスト（お気に入り銘柄）" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "My Best"
-          }
-        }
-      }
-    },
     "マトリクス" : {
       "localizations" : {
         "en" : {
@@ -895,17 +862,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Storage Location"
-          }
-        }
-      }
-    },
-    "保管場所が登録されていません" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No storage locations registered."
           }
         }
       }
@@ -1567,9 +1523,6 @@
     "特徴・評価フラグ" : {
 
     },
-    "特徴・評価フラグの傾向" : {
-
-    },
     "生産地 (例: ボルドー, 新潟、チェコ)" : {
       "localizations" : {
         "en" : {
@@ -1756,17 +1709,6 @@
         }
       }
     },
-    "編集" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit"
-          }
-        }
-      }
-    },
     "表示形式の切り替え" : {
       "localizations" : {
         "en" : {
@@ -1847,6 +1789,9 @@
         }
       }
     },
+    "評価フラグの傾向" : {
+
+    },
     "該当するログが見つかりません" : {
       "localizations" : {
         "en" : {
@@ -1872,17 +1817,6 @@
     },
     "該当条件の記録がありません" : {
 
-    },
-    "該当条件の高評価（★4.5以上）の記録がありません" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No highly rated records (★4.5+) matching criteria"
-          }
-        }
-      }
     },
     "詳細メモ・自由記述" : {
       "localizations" : {

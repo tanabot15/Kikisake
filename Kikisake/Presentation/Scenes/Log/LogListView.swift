@@ -42,7 +42,7 @@ public struct LogListView: View {
                                     NavigationLink(destination: LogDetailView(log: log)) {
                                         if let item = log.item {
                                             if viewModel.viewMode == .compact {
-                                                // ✨ シンプル・コンパクトなリスト行
+                                                // シンプル・コンパクトなリスト行
                                                 LogCompactRowView(log: log, item: item)
                                                     .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                                                     .listRowSeparator(.automatic)
@@ -69,7 +69,6 @@ public struct LogListView: View {
                                 .onMove(perform: moveLogs)
                             }
                             .listStyle(.plain)
-                            // ✨ Listに編集モードの状態を明示的にバインド
                             .environment(\.editMode, $editMode)
                             .searchable(
                                 text: $viewModel.searchText,
@@ -78,7 +77,6 @@ public struct LogListView: View {
                             )
 
                         case .timeline:
-                            // ✨ 高速描画を考慮したタイムラインビュー（上から下に新しい順）
                             ScrollView {
                                 LazyVStack(alignment: .leading, spacing: 0) {
                                     ForEach(Array(filteredLogs.enumerated()), id: \.element.id) { index, log in
@@ -115,9 +113,7 @@ public struct LogListView: View {
                         .fontWeight(.semibold)
                 }
 
-                // ツールバーに「表示切替ボタン」「フィルターボタン」「編集ボタン」を配置
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    // 1. 表示形式切替ボタン
                     Button {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             viewModel.toggleViewMode()
@@ -128,7 +124,6 @@ public struct LogListView: View {
                     .tint(.primary)
                     .accessibilityLabel("表示形式の切り替え")
 
-                    // 2. フィルターボタン
                     Button {
                         isShowingFilterSheet = true
                     } label: {
@@ -136,7 +131,6 @@ public struct LogListView: View {
                             .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
                     }
 
-                    // 3. 編集ボタン
                     Button {
                         withAnimation {
                             editMode = (editMode == .active) ? .inactive : .active
@@ -152,7 +146,7 @@ public struct LogListView: View {
                 LogFilterSheet(viewModel: viewModel)
             }
             .onAppear {
-                // ✨ 分析画面などからフラグフィルター指定を受けて遷移してきた場合の処理
+                // 評価フラグフィルター処理
                 if let pendingFilter = AppState.shared.pendingLogFilter {
                     viewModel.resetFilters()
                     switch pendingFilter {
@@ -163,8 +157,14 @@ public struct LogListView: View {
                     case .agingPotential:
                         viewModel.filterAgingPotential = true
                     }
-                    // 適用後にクリア
                     AppState.shared.pendingLogFilter = nil
+                }
+
+                // ✨ 香りタグフィルター処理
+                if let pendingAroma = AppState.shared.pendingAromaTagFilter {
+                    viewModel.resetFilters()
+                    viewModel.aromaTagFilter = pendingAroma
+                    AppState.shared.pendingAromaTagFilter = nil
                 }
             }
         }

@@ -116,7 +116,7 @@ public struct LogDetailView: View {
         }
     }
 
-    /// ✨ 特徴・評価フラグを表示する洗練されたUIカード
+    /// ✨ 特徴・評価フラグを表示するカード
     private var flagsCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("特徴・評価フラグ")

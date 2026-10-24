@@ -115,7 +115,7 @@ public struct AnalyticsView: View {
             // マイベスト
             myBestSection(for: targetLogs)
 
-            // 特徴・評価フラグの傾向カード（3つ横並びレイアウト）
+            // 評価フラグの傾向カード
             featureFlagsSummaryCard(for: targetLogs)
 
             // 好みの香り・特徴（アロマタグ）
@@ -436,7 +436,7 @@ public struct AnalyticsView: View {
         }
     }
 
-    // --- ✨ 特徴・評価フラグの傾向カード（3つ横並びのグリッド形式） ---
+    // --- 評価フラグの傾向カード ---
     private func featureFlagsSummaryCard(for targetLogs: [TastingLog]) -> some View {
         let summary = viewModel.featureFlagsSummary(from: targetLogs)
         
@@ -450,7 +450,6 @@ public struct AnalyticsView: View {
                     .foregroundStyle(.secondary)
                     .padding(.vertical, 8)
             } else {
-                // 3つのフラグカードを横並びで配置
                 HStack(spacing: 10) {
                     flagCardItem(
                         title: "コスパ良好",
@@ -484,7 +483,6 @@ public struct AnalyticsView: View {
         .shadow(color: Color.black.opacity(0.03), radius: 6, x: 0, y: 2)
     }
 
-    /// ✨ 横並び用にデザインされた個別のフラグカードコンポーネント
     private func flagCardItem(
         title: String,
         count: Int,
@@ -527,11 +525,17 @@ public struct AnalyticsView: View {
         .buttonStyle(.plain)
     }
 
-    // --- 好みのアロマ・特徴タグ ---
+    // --- ✨ 好みのアロマ・特徴タグ（タップでログ一覧へ遷移＆香りフィルター） ---
     private func aromaPreferenceCard(for targetLogs: [TastingLog]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("よく感じる香り・アロマの好み")
-                .font(.headline)
+            HStack {
+                Text("よく感じる香り・アロマの好み")
+                    .font(.headline)
+                Spacer()
+                Text("タップして一覧を表示")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
 
             let topTags = viewModel.topAromaTags(from: targetLogs)
 
@@ -543,21 +547,31 @@ public struct AnalyticsView: View {
             } else {
                 FlowLayout(spacing: 8) {
                     ForEach(topTags, id: \.tag) { item in
-                        HStack(spacing: 4) {
-                            Text(item.tag)
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                            Text("\(item.count)")
-                                .font(.caption2)
-                                .padding(.horizontal, 5)
-                                .padding(.vertical, 2)
-                                .background(Color.accentColor.opacity(0.15))
-                                .clipShape(Capsule())
+                        Button {
+                            // ✨ タップされた香りタグをAppStateに保持し、ログ一覧タブ（インデックス0）へ切り替え
+                            AppState.shared.pendingAromaTagFilter = item.tag
+                            AppState.shared.selectedTab = 0
+                        } label: {
+                            HStack(spacing: 4) {
+                                Text(item.tag)
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                                    .foregroundStyle(.primary)
+                                
+                                Text("\(item.count)")
+                                    .font(.caption2)
+                                    .padding(.horizontal, 5)
+                                    .padding(.vertical, 2)
+                                    .background(Color.accentColor.opacity(0.15))
+                                    .foregroundStyle(Color.accentColor)
+                                    .clipShape(Capsule())
+                            }
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(Color(.systemGroupedBackground))
+                            .cornerRadius(20)
                         }
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .background(Color(.systemGroupedBackground))
-                        .cornerRadius(20)
+                        .buttonStyle(.plain)
                     }
                 }
             }
