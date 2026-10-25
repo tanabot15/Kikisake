@@ -1252,6 +1252,7 @@
       }
     },
     "場所を追加" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

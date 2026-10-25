@@ -258,13 +258,13 @@ public struct InventoryView: View {
                         .foregroundStyle(.secondary)
                         .padding(.vertical, 16)
                 } else {
-                    // ✨ ScrollViewとの競合・見切れ・位置戻りを完全に解消しつつ、直感的なドラッグ並び替えを実現
+                    // ✨ VStackベースのリスト表示：見切れを防ぎつつ、長押しドラッグ＆ドロップ並び替えを確実に動作させる構造
                     VStack(spacing: 8) {
                         ForEach(Array(displayItems.enumerated()), id: \.element.id) { index, item in
                             HStack(spacing: 8) {
                                 renderItemRow(item: item)
                                 
-                                // 並び替え用のドラッグハンドル（上下スワイプ・ドラッグで順番を変更）
+                                // ドラッグハンドル
                                 Image(systemName: "line.3.horizontal")
                                     .font(.title3)
                                     .foregroundStyle(.tertiary)
@@ -313,9 +313,9 @@ public struct InventoryView: View {
             Button {
                 showAddLocationSheet = true
             } label: {
-                Label("場所を追加", systemImage: "plus")
-                    .foregroundStyle(.primary)
+                Image(systemName: "plus")
             }
+            .tint(.primary)
         }
     }
 

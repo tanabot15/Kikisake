@@ -181,3 +181,4 @@ public final class InventoryViewModel {
         repository.deleteItem(item)
     }
 }
+
