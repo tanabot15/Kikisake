@@ -98,6 +98,7 @@ public final class InventoryViewModel {
             // 2. サブカテゴリフィルター
             let matchesSubCategory: Bool = {
                 guard let subCategory = selectedSubCategory, let category = selectedCategory else { return true }
+                // ✨ `return false` に修正してガード節を正しく抜けるようにする
                 guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else { return false }
                 
                 switch category {
@@ -165,11 +166,12 @@ public final class InventoryViewModel {
         try? modelContext.save()
     }
     
-    /// リスト表示における並び替え処理（ドラッグによる順序変更）
-    public func moveItemsOrder(in items: [BeverageItem], from source: IndexSet, to destination: Int, modelContext: ModelContext) {
-        var updatedItems = items
-        updatedItems.move(fromOffsets: source, toOffset: destination)
-        
+    /// リスト表示における並び替え処理（ドラッグ＆ドロップによる順序の永続化）
+    public func saveNewOrder(for items: [BeverageItem], modelContext: ModelContext) {
+        let now = Date()
+        for (offset, item) in items.enumerated() {
+            item.createdAt = now.addingTimeInterval(Double(-offset))
+        }
         try? modelContext.save()
     }
     

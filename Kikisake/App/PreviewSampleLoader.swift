@@ -83,6 +83,7 @@ public enum PreviewSampleLoader {
             isWillingToRepeat: true,
             hasAgingPotential: true,
             memo: "圧倒的な気品と複雑味。カシスの芳醇な香りに樽のニュアンスが完璧に溶け込んでいる。",
+            isEvaluated: true,
             item: wineItem
         )
 
@@ -128,6 +129,7 @@ public enum PreviewSampleLoader {
             isWillingToRepeat: true,
             hasAgingPotential: false,
             memo: "ジューシーな酸味と上品な甘みのバランスが素晴らしい。キレも抜群。",
+            isEvaluated: true,
             item: sakeItem
         )
 
@@ -171,6 +173,7 @@ public enum PreviewSampleLoader {
             isWillingToRepeat: true,
             hasAgingPotential: false,
             memo: "シャンパンのように華やかで、食事に合わせやすいプレミアム・ホワイトビール。",
+            isEvaluated: true,
             item: beerItem
         )
 

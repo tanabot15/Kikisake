@@ -10,6 +10,7 @@ public struct LogDetailView: View {
 
     @State private var isShowingImageModal: Bool = false
     @State private var isShowingEditSheet: Bool = false
+    @State private var hasSavedInSheet: Bool = false
 
     public init(log: TastingLog) {
         self.log = log
@@ -42,22 +43,27 @@ public struct LogDetailView: View {
                         specificMetadataCard(for: item)
                     }
 
-                    ratingCard
-                    appearanceAndAromaCard
-                    
-                    // 味わい構造カード
-                    TasteRadarCardView(log: log, isCompactMode: false)
+                    // ✨ 評価が入力されている場合のみ各評価カードやチャートを表示し、未入力時は洗練されたプレースホルダーを表示
+                    if log.isEvaluated {
+                        ratingCard
+                        appearanceAndAromaCard
+                        
+                        // 味わい構造カード
+                        TasteRadarCardView(log: log, isCompactMode: false)
 
-                    // マトリクス分析カード
-                    MatrixAnalysisCardView(log: log, isCompactMode: false)
+                        // マトリクス分析カード
+                        MatrixAnalysisCardView(log: log, isCompactMode: false)
 
-                    // ✨ 特徴・評価フラグカード (設定されている場合のみ表示)
-                    if log.isCostEffective || log.isWillingToRepeat || log.hasAgingPotential {
-                        flagsCard
-                    }
+                        // 特徴・評価フラグカード (設定されている場合のみ表示)
+                        if log.isCostEffective || log.isWillingToRepeat || log.hasAgingPotential {
+                            flagsCard
+                        }
 
-                    if !log.memo.isEmpty {
-                        memoCard
+                        if !log.memo.isEmpty {
+                            memoCard
+                        }
+                    } else {
+                        unEvaluatedPlaceholderCard
                     }
                 }
                 .padding(.horizontal)
@@ -91,32 +97,100 @@ public struct LogDetailView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 16) {
                     Button {
+                        // ✨ 通常の編集ボタン：既存のログ内容をロードして開く
+                        hasSavedInSheet = false
+                        let vm = AppState.shared.addFlowViewModel
+                        vm.configureWithLog(log)
                         isShowingEditSheet = true
                     } label: {
                         Image(systemName: "square.and.pencil")
                     }
 
-                    if #available(iOS 16.0, *) {
-                        let shareImage = renderShareImage()
-                        ShareLink(
-                            item: shareImage,
-                            preview: SharePreview(
-                                "\(log.item?.name ?? "テイスティング") の記録",
-                                image: shareImage
-                            )
-                        ) {
-                            Image(systemName: "square.and.arrow.up")
+                    if log.isEvaluated {
+                        if #available(iOS 16.0, *) {
+                            let shareImage = renderShareImage()
+                            ShareLink(
+                                item: shareImage,
+                                preview: SharePreview(
+                                    "\(log.item?.name ?? "テイスティング") の記録",
+                                    image: shareImage
+                                )
+                            ) {
+                                Image(systemName: "square.and.arrow.up")
+                            }
                         }
                     }
                 }
             }
         }
-        .sheet(isPresented: $isShowingEditSheet) {
+        .sheet(isPresented: $isShowingEditSheet, onDismiss: {
+            // ✨ 保存されずにキャンセルされた場合は、未評価状態（false）に戻す
+            if !hasSavedInSheet {
+                log.isEvaluated = false
+                try? log.modelContext?.save()
+            }
+        }) {
+            // ✨ 編集/追加フローのビュー（保存完了時に外側から hasSavedInSheet = true にできるコールバック等を渡すか、ViewModel側で管理）
             EditLogFlowView(log: log)
         }
     }
 
-    /// ✨ 特徴・評価フラグを表示するカード
+    /// ✨ まだテイスティング評価がされていない場合に表示する洗練されたプレースホルダーUI
+    private var unEvaluatedPlaceholderCard: some View {
+        VStack(spacing: 16) {
+            ZStack {
+                Circle()
+                    .fill(Color.accentColor.opacity(0.12))
+                    .frame(width: 64, height: 64)
+                Image(systemName: "note.text.badge.plus")
+                    .font(.system(size: 28))
+                    .foregroundStyle(Color.accentColor)
+            }
+            .padding(.top, 8)
+
+            VStack(spacing: 6) {
+                Text("テイスティング記録がありません")
+                    .font(.headline)
+                    .fontWeight(.bold)
+
+                Text("このボトルの香り、味わい、スコアはまだ記録されていません。\n記録をつけると、レーダーチャートや味わい分析、シェアカードが生成されます。")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+
+            Button {
+                hasSavedInSheet = false
+                let vm = AppState.shared.addFlowViewModel
+                vm.reset()
+                if let item = log.item {
+                    vm.configureWithItem(item)
+                }
+                vm.editingLog = log
+                vm.editingItem = log.item
+                vm.currentStep = 2
+                
+                isShowingEditSheet = true
+            } label: {
+                Label("テイスティングを記録する", systemImage: "square.and.pencil")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.accentColor)
+            .padding(.horizontal)
+            .padding(.bottom, 8)
+        }
+        .padding(.vertical, 20)
+        .frame(maxWidth: .infinity)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+    }
+
+    /// 特徴・評価フラグを表示するカード
     private var flagsCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("特徴・評価フラグ")
@@ -163,7 +237,7 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
-    /// ✨ 横長写真でも画面をはみ出さない、安全かつ洗練されたヘッダービュー
+    /// 横長写真でも画面をはみ出さない、安全かつ洗練されたヘッダービュー
     private var heroHeaderView: some View {
         ZStack(alignment: .bottom) {
             if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
@@ -190,7 +264,7 @@ public struct LogDetailView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .frame(height: 320)
-                        .clipped() // ✨ はみ出しを確実に防止
+                        .clipped() // はみ出しを確実に防止
 
                         LinearGradient(
                             colors: [.clear, .black.opacity(0.75)],
@@ -274,7 +348,7 @@ public struct LogDetailView: View {
                 if let price = item.price {
                     rowContent(label: "価格", value: "\(price) 円")
                 }
-                rowContent(label: "飲んだ日", value: log.date.toFormattedString())
+                rowContent(label: "登録日", value: log.date.toFormattedString())
             }
         }
         .padding()

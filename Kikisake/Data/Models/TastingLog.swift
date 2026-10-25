@@ -43,6 +43,9 @@ public final class TastingLog {
 
     public var memo: String                  // 総合コメント・ペアリングメモ
 
+    // ✨ 評価がユーザーによって入力されたかどうか
+    public var isEvaluated: Bool
+
     // リレーション
     public var item: BeverageItem?
 
@@ -51,7 +54,7 @@ public final class TastingLog {
         date: Date = Date(),
         rating: Double = 4.0,
         appearanceNotes: String = "",
-        appearanceColorHex: String = "#991A33",
+        appearanceColorHex: String = "#802633",
         aromaTags: [String] = [],
         sweetness: Double = 2.5,
         saltiness: Double = 0.0,
@@ -68,6 +71,7 @@ public final class TastingLog {
         alcoholByVolume: Double? = nil,
         specificDataJSON: String? = nil,
         memo: String = "",
+        isEvaluated: Bool = false,
         item: BeverageItem? = nil
     ) {
         self.id = id
@@ -91,6 +95,7 @@ public final class TastingLog {
         self.alcoholByVolume = alcoholByVolume
         self.specificDataJSON = specificDataJSON
         self.memo = memo
+        self.isEvaluated = isEvaluated
         self.item = item
     }
 }

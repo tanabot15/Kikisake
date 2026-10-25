@@ -142,7 +142,8 @@ private struct CellarGridSlotCell: View {
         }
         .frame(height: 64)
         .frame(maxWidth: .infinity)
-        .draggable(item?.id.uuidString ?? "")
+        // ✨ ドラッグ操作を有効化（アイテムが存在する場合のみUUID文字列を転送）
+        .modifier(DraggableModifier(item: item))
     }
 
     @ViewBuilder
@@ -176,6 +177,19 @@ private struct CellarGridSlotCell: View {
         case .wine: return .purple
         case .sake: return .blue
         case .beer: return .orange
+        }
+    }
+}
+
+/// ドラッグ機能を安全に付与するためのモディファイアヘルパー
+private struct DraggableModifier: ViewModifier {
+    let item: BeverageItem?
+
+    func body(content: Content) -> some View {
+        if let item = item {
+            content.draggable(item.id.uuidString)
+        } else {
+            content
         }
     }
 }

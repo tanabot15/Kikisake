@@ -323,6 +323,7 @@ public final class AddFlowViewModel {
             isWillingToRepeat: isWillingToRepeat,
             hasAgingPotential: hasAgingPotential,
             memo: memo,
+            isEvaluated: true,
             item: targetItem
         )
 
@@ -385,6 +386,7 @@ public final class AddFlowViewModel {
             isWillingToRepeat: isWillingToRepeat,
             hasAgingPotential: hasAgingPotential,
             memo: memo,
+            isEvaluated: true,
             item: targetItem
         )
 
@@ -443,6 +445,7 @@ public final class AddFlowViewModel {
         targetLog.isWillingToRepeat = isWillingToRepeat
         targetLog.hasAgingPotential = hasAgingPotential
         targetLog.memo = memo
+        targetLog.isEvaluated = true
 
         try modelContext.save()
         reset()

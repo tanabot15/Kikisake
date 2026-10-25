@@ -258,21 +258,39 @@ public struct InventoryView: View {
                         .foregroundStyle(.secondary)
                         .padding(.vertical, 16)
                 } else {
-                    // ✨ リスト表示時における長押し＋ドラッグでの並び替え（.onMove）を実装
-                    List {
-                        ForEach(displayItems) { item in
-                            renderItemRow(item: item)
-                                .listRowInsets(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12))
-                                .listRowBackground(Color.clear)
-                                .listRowSeparator(.hidden)
-                        }
-                        .onMove { indices, newOffset in
-                            viewModel.moveItemsOrder(in: displayItems, from: indices, to: newOffset, modelContext: modelContext)
+                    // ✨ ScrollViewとの競合・見切れ・位置戻りを完全に解消しつつ、直感的なドラッグ並び替えを実現
+                    VStack(spacing: 8) {
+                        ForEach(Array(displayItems.enumerated()), id: \.element.id) { index, item in
+                            HStack(spacing: 8) {
+                                renderItemRow(item: item)
+                                
+                                // 並び替え用のドラッグハンドル（上下スワイプ・ドラッグで順番を変更）
+                                Image(systemName: "line.3.horizontal")
+                                    .font(.title3)
+                                    .foregroundStyle(.tertiary)
+                                    .padding(.trailing, 8)
+                                    .contentShape(Rectangle())
+                                    .draggable(item.id.uuidString)
+                            }
+                            .background(Color(.secondarySystemGroupedBackground))
+                            .dropDestination(for: String.self) { droppedItems, _ in
+                                guard let uuidString = droppedItems.first,
+                                      let uuid = UUID(uuidString: uuidString),
+                                      let sourceIndex = displayItems.firstIndex(where: { $0.id == uuid }) else {
+                                    return false
+                                }
+                                
+                                var mutableItems = displayItems
+                                let movedItem = mutableItems.remove(at: sourceIndex)
+                                mutableItems.insert(movedItem, at: index)
+                                
+                                viewModel.saveNewOrder(for: mutableItems, modelContext: modelContext)
+                                return true
+                            }
                         }
                     }
-                    .listStyle(.plain)
-                    .scrollDisabled(true)
-                    .frame(height: CGFloat(displayItems.count) * 100)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 4)
                 }
             }
         }
@@ -292,7 +310,6 @@ public struct InventoryView: View {
             }
             .accessibilityLabel("在庫フィルター")
 
-            // ✨ 「＋」アイコンの色をアクセントカラーから黒（.primary）に変更
             Button {
                 showAddLocationSheet = true
             } label: {
@@ -386,6 +403,7 @@ public struct InventoryView: View {
             )
         }
         .buttonStyle(.plain)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
