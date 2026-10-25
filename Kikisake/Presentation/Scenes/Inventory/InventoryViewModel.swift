@@ -1,12 +1,9 @@
-//
 //  InventoryViewModel.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 /// セラー＆冷蔵庫の在庫管理画面のビジネスロジック・状態管理
 @Observable
@@ -165,6 +162,14 @@ public final class InventoryViewModel {
     /// 指定したアイテムの保管場所を変更（移動）する
     public func moveItem(_ item: BeverageItem, to newLocationName: String, modelContext: ModelContext) {
         item.storageLocation = newLocationName
+        try? modelContext.save()
+    }
+    
+    /// リスト表示における並び替え処理（ドラッグによる順序変更）
+    public func moveItemsOrder(in items: [BeverageItem], from source: IndexSet, to destination: Int, modelContext: ModelContext) {
+        var updatedItems = items
+        updatedItems.move(fromOffsets: source, toOffset: destination)
+        
         try? modelContext.save()
     }
     

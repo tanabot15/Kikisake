@@ -387,6 +387,9 @@
         }
       }
     },
+    "このボトルに対して行う操作を選択してください。" : {
+
+    },
     "この位置に配置して保存" : {
 
     },
@@ -886,6 +889,9 @@
         }
       }
     },
+    "保存場所を移動する" : {
+
+    },
     "保管場所" : {
       "localizations" : {
         "en" : {
@@ -920,6 +926,7 @@
       }
     },
     "保管場所を移動" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1631,6 +1638,7 @@
       }
     },
     "移動先の保管場所を選択" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1871,6 +1879,9 @@
         }
       }
     },
+    "詳細を確認する" : {
+
+    },
     "赤" : {
       "localizations" : {
         "en" : {
@@ -1972,6 +1983,7 @@
       }
     },
     "飲みきった" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1990,6 +2002,9 @@
           }
         }
       }
+    },
+    "飲み切った" : {
+
     },
     "飲んだ日" : {
       "localizations" : {
