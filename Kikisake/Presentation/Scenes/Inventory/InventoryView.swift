@@ -21,17 +21,12 @@ public struct InventoryView: View {
     @State private var showAddLocationSheet: Bool = false
     @State private var isShowingFilterSheet: Bool = false
     
-    // アコーディオンで展開中の保管場所名を保持するState
     @State private var expandedLocationName: String? = nil
-
-    // 保管場所ごとの表示モード管理（キー: 保管場所名）
     @State private var displayModes: [String: CellarDisplayMode] = [:]
 
-    // 移動先の選択用 State
     @State private var targetItemForMove: BeverageItem? = nil
     @State private var isShowingMoveDialog: Bool = false
 
-    // エラーハンドリング用のアラートState
     @State private var showErrorAlert: Bool = false
     @State private var errorMessage: String = ""
 
@@ -65,14 +60,12 @@ public struct InventoryView: View {
                                 let summaryList = viewModel.categorySummaryList(for: loc.name, in: items)
                                 let displayItems = viewModel.filteredItems(items, for: loc.name)
                                 
-                                // ✨ 保管場所ごとの現在の表示モード判定（セラーはデフォルトがグリッド、他はリスト）
                                 let currentMode: CellarDisplayMode = {
                                     if let mode = displayModes[loc.name] { return mode }
                                     return (loc.type == .cellar && loc.isGridEnabled) ? .grid : .list
                                 }()
 
                                 VStack(spacing: 0) {
-                                    // --- 保管場所のヘッダーカード（クリックでアコーディオン開閉） ---
                                     Button {
                                         withAnimation(.snappy) {
                                             if isExpanded {
@@ -83,7 +76,6 @@ public struct InventoryView: View {
                                         }
                                     } label: {
                                         HStack(spacing: 16) {
-                                            // アイコン
                                             ZStack {
                                                 Circle()
                                                     .fill(Color.accentColor.opacity(0.12))
@@ -93,7 +85,6 @@ public struct InventoryView: View {
                                                     .foregroundStyle(Color.accentColor)
                                             }
 
-                                            // 保管場所名
                                             Text(loc.name)
                                                 .font(.headline)
                                                 .fontWeight(.semibold)
@@ -101,7 +92,6 @@ public struct InventoryView: View {
 
                                             Spacer()
                                             
-                                            // 酒の種類と本数を縦に並べて表示
                                             if summaryList.isEmpty {
                                                 Text("在庫なし")
                                                     .font(.subheadline)
@@ -116,7 +106,6 @@ public struct InventoryView: View {
                                                 }
                                             }
 
-                                            // 展開・折りたたみ矢印アイコン
                                             Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
                                                 .font(.subheadline)
                                                 .fontWeight(.semibold)
@@ -129,13 +118,11 @@ public struct InventoryView: View {
                                     }
                                     .buttonStyle(.plain)
 
-                                    // --- アコーディオン展開部分 ---
                                     if isExpanded {
                                         VStack(spacing: 12) {
                                             Divider()
                                                 .padding(.horizontal)
 
-                                            // ✨ グリッド機能が有効な場所の場合、ロケーションごとに独立したリスト ⇄ 棚グリッド の切り替えピッカーを表示
                                             if loc.isGridEnabled {
                                                 Picker("表示形式", selection: Binding(
                                                     get: { currentMode },
@@ -153,8 +140,8 @@ public struct InventoryView: View {
                                             
                                             // --- 表示モードに応じたビューの出し分け ---
                                             if currentMode == .grid && loc.isGridEnabled {
+                                                // 1. グリッド表示
                                                 CellarGridView(location: loc, items: displayItems) { row, col, item in
-                                                    // グリッドスロットタップ時のアクション
                                                     if let item = item {
                                                         targetItemForMove = item
                                                         isShowingMoveDialog = true
@@ -163,6 +150,24 @@ public struct InventoryView: View {
                                                     }
                                                 }
                                                 .padding(.horizontal, 12)
+
+                                                // ✨ 2. グリッド表示時でも、棚に位置が割り振られていない「未配置」のアイテムが存在する場合は下部にリスト表示する
+                                                let unassignedItems = displayItems.filter { $0.gridRow == nil || $0.gridColumn == nil }
+                                                if !unassignedItems.isEmpty {
+                                                    VStack(alignment: .leading, spacing: 8) {
+                                                        Text("棚の外（未配置の在庫）")
+                                                            .font(.subheadline)
+                                                            .fontWeight(.bold)
+                                                            .foregroundStyle(.secondary)
+                                                            .padding(.horizontal, 16)
+                                                            .padding(.top, 4)
+
+                                                        ForEach(unassignedItems) { item in
+                                                            renderItemRow(item: item)
+                                                        }
+                                                    }
+                                                }
+
                                             } else {
                                                 // リスト表示
                                                 if displayItems.isEmpty {
@@ -172,83 +177,7 @@ public struct InventoryView: View {
                                                         .padding(.vertical, 16)
                                                 } else {
                                                     ForEach(displayItems) { item in
-                                                        let averageRating: Double? = {
-                                                            guard let logs = item.tastingLogs, !logs.isEmpty else { return nil }
-                                                            let total = logs.reduce(0.0) { $0 + $1.rating }
-                                                            return total / Double(logs.count)
-                                                        }()
-
-                                                        VStack(alignment: .leading, spacing: 8) {
-                                                            Group {
-                                                                if let latestLog = item.tastingLogs?.sorted(by: { $0.date > $1.date }).first {
-                                                                    NavigationLink(destination: LogDetailView(log: latestLog)) {
-                                                                        cardViewContent(item: item, averageRating: averageRating)
-                                                                    }
-                                                                    .buttonStyle(.plain)
-                                                                } else {
-                                                                    cardViewContent(item: item, averageRating: averageRating)
-                                                                }
-                                                            }
-
-                                                            // アクションエリア（移動メニュー / ボトルを開ける / 削除）
-                                                            HStack {
-                                                                Menu {
-                                                                    Text("移動先の保管場所を選択").font(.caption)
-                                                                    Divider()
-                                                                    ForEach(locations, id: \.name) { otherLoc in
-                                                                        if otherLoc.name != item.storageLocation {
-                                                                            Button {
-                                                                                viewModel.moveItem(item, to: otherLoc.name, modelContext: modelContext)
-                                                                            } label: {
-                                                                                Label(otherLoc.name, systemImage: otherLoc.type.defaultIconName)
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                } label: {
-                                                                    Text("保管場所を移動")
-                                                                        .font(.caption)
-                                                                        .fontWeight(.semibold)
-                                                                }
-                                                                .buttonStyle(.bordered)
-                                                                .tint(.green)
-
-                                                                Spacer()
-
-                                                                if item.stockQuantity <= 0 {
-                                                                    Button(role: .destructive) {
-                                                                        viewModel.deleteItem(item, modelContext: modelContext)
-                                                                    } label: {
-                                                                        Text("飲みきった")
-                                                                            .font(.caption)
-                                                                            .fontWeight(.semibold)
-                                                                    }
-                                                                    .buttonStyle(.bordered)
-                                                                    .tint(.red)
-                                                                }
-
-                                                                Button {
-                                                                    do {
-                                                                        try viewModel.consumeBottle(item: item)
-                                                                        AppState.shared.openingItem = item
-                                                                    } catch {
-                                                                        errorMessage = error.localizedDescription
-                                                                        showErrorAlert = true
-                                                                    }
-                                                                } label: {
-                                                                    Text("ボトルを開ける")
-                                                                        .font(.caption)
-                                                                        .fontWeight(.semibold)
-                                                                }
-                                                                .buttonStyle(.bordered)
-                                                                .tint(.accentColor)
-                                                                .disabled(item.stockQuantity <= 0)
-                                                            }
-                                                            .padding(.horizontal)
-                                                            .padding(.bottom, 8)
-                                                        }
-                                                        .background(Color(.systemGroupedBackground))
-                                                        .cornerRadius(12)
-                                                        .padding(.horizontal, 12)
+                                                        renderItemRow(item: item)
                                                     }
                                                 }
                                             }
@@ -327,19 +256,104 @@ public struct InventoryView: View {
         }
     }
 
-    /// カード部分のビューをまとめたヘルパー
+    /// 各アイテムのリスト行を描画するヘルパー
     @ViewBuilder
-    private func cardViewContent(item: BeverageItem, averageRating: Double?) -> some View {
-        BeverageCardView(
-            name: item.name,
-            producer: item.producer,
-            category: item.category,
-            region: item.region,
-            vintage: item.vintage,
-            stockQuantity: item.stockQuantity,
-            rating: averageRating,
-            imageData: item.imageDatas?.first
-        )
+    private func renderItemRow(item: BeverageItem) -> some View {
+        let averageRating: Double? = {
+            guard let logs = item.tastingLogs, !logs.isEmpty else { return nil }
+            let total = logs.reduce(0.0) { $0 + $1.rating }
+            return total / Double(logs.count)
+        }()
+
+        VStack(alignment: .leading, spacing: 8) {
+            Group {
+                if let latestLog = item.tastingLogs?.sorted(by: { $0.date > $1.date }).first {
+                    NavigationLink(destination: LogDetailView(log: latestLog)) {
+                        BeverageCardView(
+                            name: item.name,
+                            producer: item.producer,
+                            category: item.category,
+                            region: item.region,
+                            vintage: item.vintage,
+                            stockQuantity: item.stockQuantity,
+                            rating: averageRating,
+                            imageData: item.imageDatas?.first
+                        )
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    BeverageCardView(
+                        name: item.name,
+                        producer: item.producer,
+                        category: item.category,
+                        region: item.region,
+                        vintage: item.vintage,
+                        stockQuantity: item.stockQuantity,
+                        rating: averageRating,
+                        imageData: item.imageDatas?.first
+                    )
+                }
+            }
+
+            // アクションエリア（移動メニュー / ボトルを開ける / 削除）
+            HStack {
+                Menu {
+                    Text("移動先の保管場所を選択").font(.caption)
+                    Divider()
+                    ForEach(locations, id: \.name) { otherLoc in
+                        if otherLoc.name != item.storageLocation {
+                            Button {
+                                viewModel.moveItem(item, to: otherLoc.name, modelContext: modelContext)
+                            } label: {
+                                Label(otherLoc.name, systemImage: otherLoc.type.defaultIconName)
+                            }
+                        }
+                    }
+                } label: {
+                    Text("保管場所を移動")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                }
+                .buttonStyle(.bordered)
+                .tint(.green)
+
+                Spacer()
+
+                if item.stockQuantity <= 0 {
+                    Button(role: .destructive) {
+                        viewModel.deleteItem(item, modelContext: modelContext)
+                    } label: {
+                        Text("飲みきった")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.red)
+                }
+
+                Button {
+                    do {
+                        try viewModel.consumeBottle(item: item)
+                        AppState.shared.openingItem = item
+                    } catch {
+                        errorMessage = error.localizedDescription
+                        showErrorAlert = true
+                    }
+                } label: {
+                    Text("ボトルを開ける")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                }
+                .buttonStyle(.bordered)
+                .tint(.accentColor)
+                .disabled(item.stockQuantity <= 0)
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 8)
+        }
+        .background(Color(.systemGroupedBackground))
+        .cornerRadius(12)
+        .padding(.horizontal, 12)
     }
 }
 

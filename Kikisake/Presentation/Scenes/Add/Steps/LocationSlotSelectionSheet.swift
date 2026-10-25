@@ -37,10 +37,24 @@ public struct LocationSlotSelectionSheet: View {
 
                     // 2. 視覚的セラーグリッド
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("格納するスロットをタップして選択してください")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.secondary)
+                        HStack {
+                            Text("格納するスロットを選択 (任意)")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundStyle(.secondary)
+                            
+                            Spacer()
+                            
+                            // 選択を解除して未配置にするボタン
+                            if viewModel.selectedGridRow != nil {
+                                Button("未配置にする") {
+                                    viewModel.selectedGridRow = nil
+                                    viewModel.selectedGridColumn = nil
+                                }
+                                .font(.caption)
+                                .tint(.red)
+                            }
+                        }
 
                         VStack(spacing: 8) {
                             ForEach(1...location.gridRows, id: \.self) { row in
@@ -57,8 +71,14 @@ public struct LocationSlotSelectionSheet: View {
 
                                         Button {
                                             if occupiedItem == nil {
-                                                viewModel.selectedGridRow = row
-                                                viewModel.selectedGridColumn = col
+                                                if isSelected {
+                                                    // タップ済みの場合はもう一度押すと未配置（解除）にできるようにする
+                                                    viewModel.selectedGridRow = nil
+                                                    viewModel.selectedGridColumn = nil
+                                                } else {
+                                                    viewModel.selectedGridRow = row
+                                                    viewModel.selectedGridColumn = col
+                                                }
                                             }
                                         } label: {
                                             ZStack {
@@ -86,7 +106,7 @@ public struct LocationSlotSelectionSheet: View {
                                             .frame(height: 44)
                                         }
                                         .buttonStyle(.plain)
-                                        .disabled(occupiedItem != nil) // 埋まっている場所はタップ不可
+                                        .disabled(occupiedItem != nil)
                                     }
                                 }
                             }
@@ -108,11 +128,11 @@ public struct LocationSlotSelectionSheet: View {
                         .padding(.vertical, 8)
                     } else {
                         HStack {
-                            Image(systemName: "exclamationmark.triangle.fill")
-                                .foregroundStyle(.orange)
-                            Text("空いているスロットを選択してください")
+                            Image(systemName: "info.circle.fill")
+                                .foregroundStyle(.secondary)
+                            Text("スロットを未選択のまま（棚の外に）保存することもできます")
                                 .font(.subheadline)
-                                .fontWeight(.semibold)
+                                .foregroundStyle(.secondary)
                         }
                         .padding(.vertical, 8)
                     }
@@ -124,26 +144,24 @@ public struct LocationSlotSelectionSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("キャンセル") {
+                    Button("未配置で保存") {
+                        viewModel.selectedGridRow = nil
+                        viewModel.selectedGridColumn = nil
                         dismiss()
+                        onComplete()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("ここに配置して保存") {
+                    Button("この位置に配置して保存") {
                         dismiss()
                         onComplete()
                     }
                     .fontWeight(.bold)
-                    .disabled(viewModel.selectedGridRow == nil || viewModel.selectedGridColumn == nil) // 場所未選択時は保存不可
                 }
-            }
-            .onAppear {
-                autoSelectFirstAvailableSlot()
             }
         }
     }
 
-    /// 該当位置にあるボトルを取得
     private func itemAt(row: Int, col: Int) -> BeverageItem? {
         allItems.first { item in
             item.storageLocation == location.name &&
@@ -154,27 +172,6 @@ public struct LocationSlotSelectionSheet: View {
         }
     }
 
-    /// 最初に見つかった空きスロットを自動選択
-    private func autoSelectFirstAvailableSlot() {
-        if viewModel.selectedGridRow != nil && viewModel.selectedGridColumn != nil {
-            // すでに有効な場所がセットされている場合はそのまま
-            if itemAt(row: viewModel.selectedGridRow!, col: viewModel.selectedGridColumn!) == nil {
-                return
-            }
-        }
-        
-        for r in 1...location.gridRows {
-            for c in 1...location.gridColumns {
-                if itemAt(row: r, col: c) == nil {
-                    viewModel.selectedGridRow = r
-                    viewModel.selectedGridColumn = c
-                    return
-                }
-            }
-        }
-    }
-
-    // タイルの背景色
     private func gridTileBackgroundColor(occupiedItem: BeverageItem?, isSelected: Bool) -> Color {
         if isSelected {
             return Color.accentColor.opacity(0.15)
@@ -185,7 +182,6 @@ public struct LocationSlotSelectionSheet: View {
         }
     }
 
-    // タイルの枠線色
     private func gridTileBorderColor(occupiedItem: BeverageItem?, isSelected: Bool) -> Color {
         if isSelected {
             return Color.accentColor
