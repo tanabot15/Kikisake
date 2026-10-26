@@ -55,6 +55,8 @@ public struct PaywallView: View {
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
                     }
+                    
+                    Spacer()
 
                     // MARK: - 機能比較リスト
                     VStack(spacing: 14) {
@@ -66,26 +68,28 @@ public struct PaywallView: View {
                         
                         FeatureRow(
                             icon: "sparkles",
-                            title: "プロ仕様のテイスティングタグ全解放",
+                            title: "プロ仕様のテイスティングタグ",
                             subtitle: "マニアックな色や香りの表現要素を全オープン"
                         )
 
                         FeatureRow(
                             icon: "eye.slash.fill",
                             title: "広告の完全非表示",
-                            subtitle: "バナー広告を排除し、洗練された記録空間を提供"
+                            subtitle: "バナー広告を排除し、洗練された記録空間を"
                         )
 
                         FeatureRow(
                             icon: "infinity",
                             title: "完全買い切り",
-                            subtitle: "追加課金・サブスクリプションは一切発生しません"
+                            subtitle: "追加課金・サブスクリプションは一切発生なし"
                         )
                     }
                     .padding()
                     .background(Color(.secondarySystemGroupedBackground))
                     .cornerRadius(16)
                     .padding(.horizontal)
+                    
+                    Spacer()
 
                     // MARK: - 購入ボタンエリア
                     VStack(spacing: 12) {
@@ -156,8 +160,10 @@ public struct PaywallView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("閉じる") { dismiss() }
-                        .fontWeight(.semibold)
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.primary)
+                    }
                 }
             }
             .task {
