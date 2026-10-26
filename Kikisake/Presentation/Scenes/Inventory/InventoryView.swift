@@ -27,8 +27,7 @@ public struct InventoryView: View {
     // 保管場所ごとの個別編集モード（並び替え・削除用）
     @State private var editingLocationNames: Set<String> = []
     
-    // ✨ グリッドサイズ変更用の状態管理
-    @State private var isShowingGridResizeSheet: Bool = false
+    // ✨ グリッドサイズ変更用の状態管理（item形式のシートに対応するため統合）
     @State private var resizingLocation: StorageLocation? = nil
     @State private var tempRows: Int = 4
     @State private var tempColumns: Int = 6
@@ -111,7 +110,7 @@ public struct InventoryView: View {
             .sheet(isPresented: $isShowingFilterSheet) {
                 InventoryFilterSheet(viewModel: viewModel, allItems: items)
             }
-            // ✨ sheet(item:) を利用して、データが存在するときのみ確実に描画・初期化を行う
+            // ✨ sheet(item:) により、データがセットされた状態で確実に初期化・描画され、白画面バグを解消
             .sheet(item: $resizingLocation) { loc in
                 NavigationStack {
                     Form {
@@ -263,7 +262,6 @@ public struct InventoryView: View {
             Divider()
                 .padding(.horizontal)
 
-            // ✨ セラーごとの表示モード切り替え ＆ グリッド時の「サイズ変更」ボタン、リスト時の「並び替え」ボタン
             HStack {
                 if loc.isGridEnabled {
                     Picker("表示形式", selection: Binding(
