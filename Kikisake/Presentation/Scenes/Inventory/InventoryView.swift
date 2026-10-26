@@ -24,8 +24,14 @@ public struct InventoryView: View {
     @State private var expandedLocationName: String? = nil
     @State private var displayModes: [String: CellarDisplayMode] = [:]
 
-    // ✨ 保管場所ごとの個別編集モード（並び替え・削除用）を管理するSet（例: "メインセラー" が編集中なら格納される）
+    // 保管場所ごとの個別編集モード（並び替え・削除用）
     @State private var editingLocationNames: Set<String> = []
+    
+    // ✨ グリッドサイズ変更用の状態管理
+    @State private var isShowingGridResizeSheet: Bool = false
+    @State private var resizingLocation: StorageLocation? = nil
+    @State private var tempRows: Int = 4
+    @State private var tempColumns: Int = 6
 
     // アイテムタップ時のアクション制御用 State
     @State private var selectedItemForAction: BeverageItem? = nil
@@ -104,6 +110,40 @@ public struct InventoryView: View {
             }
             .sheet(isPresented: $isShowingFilterSheet) {
                 InventoryFilterSheet(viewModel: viewModel, allItems: items)
+            }
+            // ✨ sheet(item:) を利用して、データが存在するときのみ確実に描画・初期化を行う
+            .sheet(item: $resizingLocation) { loc in
+                NavigationStack {
+                    Form {
+                        Section("セラーの構造設定") {
+                            Stepper("段数（行）: \(tempRows)段", value: $tempRows, in: 1...10)
+                            Stepper("1段あたりの本数（列）: \(tempColumns)本", value: $tempColumns, in: 1...12)
+                        }
+                        
+                        Section {
+                            Text("※縮小した際、新しいグリッド範囲外（はみ出し部分）に配置されていたボトルは、自動的に「棚の外（未配置）」に移動されます。")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .navigationTitle("\(loc.name)のサイズ変更")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("キャンセル") {
+                                resizingLocation = nil
+                            }
+                        }
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("保存") {
+                                viewModel.updateGridSize(for: loc, newRows: tempRows, newColumns: tempColumns, allItems: items, modelContext: modelContext)
+                                resizingLocation = nil
+                            }
+                            .fontWeight(.bold)
+                        }
+                    }
+                }
+                .presentationDetents([.medium])
             }
             .confirmationDialog(
                 selectedItemForAction?.name ?? "ボトルの操作",
@@ -223,7 +263,7 @@ public struct InventoryView: View {
             Divider()
                 .padding(.horizontal)
 
-            // ✨ セラーごとの表示モード切り替え ＆ 個別編集ボタンを配置するヘッダー行
+            // ✨ セラーごとの表示モード切り替え ＆ グリッド時の「サイズ変更」ボタン、リスト時の「並び替え」ボタン
             HStack {
                 if loc.isGridEnabled {
                     Picker("表示形式", selection: Binding(
@@ -241,7 +281,22 @@ public struct InventoryView: View {
 
                 Spacer()
 
-                // リスト表示かつアイテムがある場合のみ、このセラー専用の並び替え・編集ボタンを表示
+                // グリッド表示かつグリッド有効時：セラーの縦横サイズ変更ボタン
+                if currentMode == .grid && loc.isGridEnabled {
+                    Button {
+                        tempRows = loc.gridRows
+                        tempColumns = loc.gridColumns
+                        resizingLocation = loc
+                    } label: {
+                        Image(systemName: "slider.horizontal.3")
+                            .fontWeight(.semibold)
+                            .foregroundColor(.secondary)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                }
+
+                // リスト表示かつアイテムがある場合のみ：並び替え・編集ボタン
                 if currentMode == .list && !displayItems.isEmpty {
                     Button {
                         withAnimation {
@@ -289,7 +344,6 @@ public struct InventoryView: View {
                         .foregroundStyle(.secondary)
                         .padding(.vertical, 16)
                 } else {
-                    // ✨ このセラーが編集中（isLocEditing = true）のときだけ、並び替えハンドルと削除ボタンを表示
                     VStack(spacing: 8) {
                         ForEach(Array(displayItems.enumerated()), id: \.element.id) { index, item in
                             HStack(spacing: 8) {
@@ -423,7 +477,6 @@ public struct InventoryView: View {
         }
     }
 
-    /// リスト表示用の行（タップでアクションポップアップを起動）
     @ViewBuilder
     private func renderItemRow(item: BeverageItem, isLocEditing: Bool) -> some View {
         let averageRating: Double? = {
@@ -434,7 +487,6 @@ public struct InventoryView: View {
         }()
 
         Button {
-            // その保管場所が編集中でない通常時のみ、タップでアクションメニューを開く
             if !isLocEditing {
                 selectedItemForAction = item
                 isShowingActionSheet = true
