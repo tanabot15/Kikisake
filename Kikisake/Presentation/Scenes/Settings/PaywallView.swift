@@ -117,7 +117,7 @@ public struct PaywallView: View {
                                     }
                                     
                                     // ✨ StoreKitから取得した価格（例: "¥3,800"）を動的に反映
-                                    let priceString = storeProduct?.displayPrice ?? "¥3,800"
+                                    let priceString = storeProduct?.displayPrice ?? "¥100"
                                     Text("\(priceString) で買い切る（永久利用）")
                                         .font(.headline)
                                         .fontWeight(.bold)

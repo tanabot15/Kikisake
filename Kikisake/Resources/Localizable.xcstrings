@@ -2034,9 +2034,6 @@
         }
       }
     },
-    "閉じる" : {
-
-    },
     "飲みきった" : {
       "extractionState" : "stale",
       "localizations" : {
