@@ -24,6 +24,9 @@ public struct InventoryView: View {
     @State private var expandedLocationName: String? = nil
     @State private var displayModes: [String: CellarDisplayMode] = [:]
 
+    // ✨ 保管場所ごとの個別編集モード（並び替え・削除用）を管理するSet（例: "メインセラー" が編集中なら格納される）
+    @State private var editingLocationNames: Set<String> = []
+
     // アイテムタップ時のアクション制御用 State
     @State private var selectedItemForAction: BeverageItem? = nil
     @State private var isShowingActionSheet: Bool = false
@@ -39,33 +42,35 @@ public struct InventoryView: View {
 
     public var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    ConditionalAdMobBannerView()
-                        .frame(height: 50)
-                        .background(Color(.systemBackground))
-                    
-                    Text("保管場所一覧")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .padding(.horizontal)
-                        .padding(.top, 8)
-
-                    let targetLocations = viewModel.filteredLocations(locations)
-
-                    if locations.isEmpty || targetLocations.isEmpty {
-                        ContentUnavailableView(
-                            "該当する保管場所がありません",
-                            systemImage: "cabinet",
-                            description: Text(viewModel.hasActiveFilters ? "フィルター条件を変更してみてください。" : "右上の「＋」ボタンから保管場所を追加してください。")
-                        )
-                        .padding(.top, 40)
-                    } else {
-                        locationListContent(targetLocations: targetLocations)
+            VStack {
+                ConditionalAdMobBannerView()
+                    .frame(height: 50)
+                    .background(Color(.systemBackground))
+                
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("保管場所一覧")
+                            .font(.title2)
+                            .fontWeight(.bold)
                             .padding(.horizontal)
+                            .padding(.top, 8)
+                        
+                        let targetLocations = viewModel.filteredLocations(locations)
+                        
+                        if locations.isEmpty || targetLocations.isEmpty {
+                            ContentUnavailableView(
+                                "該当する保管場所がありません",
+                                systemImage: "cabinet",
+                                description: Text(viewModel.hasActiveFilters ? "フィルター条件を変更してみてください。" : "右上の「＋」ボタンから保管場所を追加してください。")
+                            )
+                            .padding(.top, 40)
+                        } else {
+                            locationListContent(targetLocations: targetLocations)
+                                .padding(.horizontal)
+                        }
                     }
+                    .padding(.vertical)
                 }
-                .padding(.vertical)
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("在庫管理")
@@ -212,24 +217,50 @@ public struct InventoryView: View {
 
     @ViewBuilder
     private func expandedContentView(loc: StorageLocation, currentMode: CellarDisplayMode, displayItems: [BeverageItem]) -> some View {
+        let isLocEditing = editingLocationNames.contains(loc.name)
+
         VStack(spacing: 12) {
             Divider()
                 .padding(.horizontal)
 
-            if loc.isGridEnabled {
-                Picker("表示形式", selection: Binding(
-                    get: { currentMode },
-                    set: { newMode in
-                        displayModes[loc.name] = newMode
+            // ✨ セラーごとの表示モード切り替え ＆ 個別編集ボタンを配置するヘッダー行
+            HStack {
+                if loc.isGridEnabled {
+                    Picker("表示形式", selection: Binding(
+                        get: { currentMode },
+                        set: { newMode in
+                            displayModes[loc.name] = newMode
+                        }
+                    )) {
+                        ForEach(CellarDisplayMode.allCases) { mode in
+                            Text(mode.rawValue).tag(mode)
+                        }
                     }
-                )) {
-                    ForEach(CellarDisplayMode.allCases) { mode in
-                        Text(mode.rawValue).tag(mode)
-                    }
+                    .pickerStyle(.segmented)
                 }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
+
+                Spacer()
+
+                // リスト表示かつアイテムがある場合のみ、このセラー専用の並び替え・編集ボタンを表示
+                if currentMode == .list && !displayItems.isEmpty {
+                    Button {
+                        withAnimation {
+                            if isLocEditing {
+                                editingLocationNames.remove(loc.name)
+                            } else {
+                                editingLocationNames.insert(loc.name)
+                            }
+                        }
+                    } label: {
+                        Image(systemName: isLocEditing ? "checkmark.circle.fill" : "square.and.pencil")
+                            .fontWeight(.semibold)
+                            .foregroundColor(isLocEditing ? .accentColor : .secondary)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                }
             }
+            .padding(.horizontal)
             
             if currentMode == .grid && loc.isGridEnabled {
                 CellarGridView(
@@ -258,19 +289,33 @@ public struct InventoryView: View {
                         .foregroundStyle(.secondary)
                         .padding(.vertical, 16)
                 } else {
-                    // ✨ VStackベースのリスト表示：見切れを防ぎつつ、長押しドラッグ＆ドロップ並び替えを確実に動作させる構造
+                    // ✨ このセラーが編集中（isLocEditing = true）のときだけ、並び替えハンドルと削除ボタンを表示
                     VStack(spacing: 8) {
                         ForEach(Array(displayItems.enumerated()), id: \.element.id) { index, item in
                             HStack(spacing: 8) {
-                                renderItemRow(item: item)
+                                if isLocEditing {
+                                    Button {
+                                        viewModel.deleteItem(item, modelContext: modelContext)
+                                    } label: {
+                                        Image(systemName: "minus.circle.fill")
+                                            .font(.title2)
+                                            .foregroundStyle(.red)
+                                    }
+                                    .transition(.scale.combined(with: .opacity))
+                                    .padding(.leading, 8)
+                                }
+
+                                renderItemRow(item: item, isLocEditing: isLocEditing)
                                 
-                                // ドラッグハンドル
-                                Image(systemName: "line.3.horizontal")
-                                    .font(.title3)
-                                    .foregroundStyle(.tertiary)
-                                    .padding(.trailing, 8)
-                                    .contentShape(Rectangle())
-                                    .draggable(item.id.uuidString)
+                                if isLocEditing {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.title3)
+                                        .foregroundStyle(.secondary)
+                                        .padding(.trailing, 8)
+                                        .contentShape(Rectangle())
+                                        .draggable(item.id.uuidString)
+                                        .transition(.scale.combined(with: .opacity))
+                                }
                             }
                             .background(Color(.secondarySystemGroupedBackground))
                             .dropDestination(for: String.self) { droppedItems, _ in
@@ -289,6 +334,7 @@ public struct InventoryView: View {
                             }
                         }
                     }
+                    .animation(.snappy, value: isLocEditing)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 4)
                 }
@@ -379,7 +425,7 @@ public struct InventoryView: View {
 
     /// リスト表示用の行（タップでアクションポップアップを起動）
     @ViewBuilder
-    private func renderItemRow(item: BeverageItem) -> some View {
+    private func renderItemRow(item: BeverageItem, isLocEditing: Bool) -> some View {
         let averageRating: Double? = {
             let logs = item.tastingLogs ?? []
             guard !logs.isEmpty else { return nil }
@@ -388,8 +434,11 @@ public struct InventoryView: View {
         }()
 
         Button {
-            selectedItemForAction = item
-            isShowingActionSheet = true
+            // その保管場所が編集中でない通常時のみ、タップでアクションメニューを開く
+            if !isLocEditing {
+                selectedItemForAction = item
+                isShowingActionSheet = true
+            }
         } label: {
             BeverageCardView(
                 name: item.name,
