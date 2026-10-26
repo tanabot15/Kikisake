@@ -6,6 +6,7 @@ import SwiftUI
 /// [Step 3] 酒種・タイプに応じた「果実」「花・植物」「その他」の3分類による香り選択ビュー
 public struct AromaStepView: View {
     @Bindable var viewModel: AddFlowViewModel
+    @State private var showPaywall: Bool = false
 
     public init(viewModel: AddFlowViewModel) {
         self.viewModel = viewModel
@@ -44,24 +45,47 @@ public struct AromaStepView: View {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 10)], spacing: 10) {
                         ForEach(category.tags, id: \.self) { tag in
                             let isSelected = viewModel.selectedAromaTags.contains(tag)
+                            // ✨ TastingOptions の正しいメソッド名に修正
+                            let isFree = TastingOptions.isFreeAromaTag(tag, in: category)
+                            let isLocked = !AppState.shared.isProVersion && !isFree
+
                             Button {
-                                if isSelected {
-                                    viewModel.selectedAromaTags.removeAll { $0 == tag }
+                                if isLocked {
+                                    showPaywall = true
                                 } else {
-                                    viewModel.selectedAromaTags.append(tag)
+                                    if isSelected {
+                                        viewModel.selectedAromaTags.removeAll { $0 == tag }
+                                    } else {
+                                        viewModel.selectedAromaTags.append(tag)
+                                    }
                                 }
                             } label: {
                                 HStack(spacing: 12) {
-                                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                                    Image(systemName: isSelected ? "checkmark.circle.fill" : (isLocked ? "lock.fill" : "circle"))
                                         .font(.subheadline)
-                                        .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
+                                        .foregroundStyle(isSelected ? Color.accentColor : (isLocked ? .secondary : .secondary))
                                     
                                     Text(tag)
                                         .font(.subheadline)
                                         .fontWeight(isSelected ? .bold : .regular)
-                                        .foregroundStyle(.primary)
+                                        .foregroundStyle(isLocked ? .secondary : .primary)
                                     
                                     Spacer()
+                                    
+                                    if isLocked {
+                                        HStack(spacing: 4) {
+                                            Image(systemName: "lock.fill")
+                                                .font(.caption2)
+                                            Text("Pro")
+                                                .font(.caption2)
+                                                .fontWeight(.bold)
+                                        }
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(Color.accentColor.opacity(0.15))
+                                        .foregroundStyle(Color.accentColor)
+                                        .cornerRadius(6)
+                                    }
                                 }
                                 .padding(.horizontal, 12)
                                 .padding(.vertical, 10)
@@ -78,6 +102,9 @@ public struct AromaStepView: View {
                     .padding(.vertical, 4)
                 }
             }
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
         }
     }
 }

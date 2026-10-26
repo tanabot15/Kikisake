@@ -65,6 +65,8 @@
 		D904427D308C9C9B00EF4807 /* EvaluationAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */; };
 		D904427F308CF04500EF4807 /* CellarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427E308CF04500EF4807 /* CellarGridView.swift */; };
 		D9044281308CF53B00EF4807 /* LocationSlotSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044280308CF53B00EF4807 /* LocationSlotSelectionSheet.swift */; };
+		D9044286308F113D00EF4807 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9044285308F113D00EF4807 /* StoreKit.framework */; };
+		D9044289308F136400EF4807 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044288308F136400EF4807 /* PaywallView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -127,6 +129,9 @@
 		D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationAnalyticsView.swift; sourceTree = "<group>"; };
 		D904427E308CF04500EF4807 /* CellarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellarGridView.swift; sourceTree = "<group>"; };
 		D9044280308CF53B00EF4807 /* LocationSlotSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSlotSelectionSheet.swift; sourceTree = "<group>"; };
+		D9044285308F113D00EF4807 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		D9044287308F116A00EF4807 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
+		D9044288308F136400EF4807 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D904426B3088A33A00EF4807 /* GoogleMobileAds in Frameworks */,
+				D9044286308F113D00EF4807 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,7 +150,9 @@
 		D90441C8307E815800EF4807 = {
 			isa = PBXGroup;
 			children = (
+				D9044287308F116A00EF4807 /* Products.storekit */,
 				D90441E5307E817B00EF4807 /* Kikisake */,
+				D9044284308F113D00EF4807 /* Frameworks */,
 				D90441D2307E815800EF4807 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -342,6 +350,7 @@
 			children = (
 				D9044247307E864800EF4807 /* SettingsView.swift */,
 				D9044249307E865300EF4807 /* SettingsViewModel.swift */,
+				D9044288308F136400EF4807 /* PaywallView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -412,6 +421,14 @@
 				D9044263308638D500EF4807 /* BoardingView.swift */,
 			);
 			path = Boarding;
+			sourceTree = "<group>";
+		};
+		D9044284308F113D00EF4807 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D9044285308F113D00EF4807 /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -520,6 +537,7 @@
 				D9044233307E85C300EF4807 /* AnalyticsView.swift in Sources */,
 				D90442613086031D00EF4807 /* MatrixAnalysisCardView.swift in Sources */,
 				D9044209307E84B900EF4807 /* View+Extension.swift in Sources */,
+				D9044289308F136400EF4807 /* PaywallView.swift in Sources */,
 				D90441E7307E817B00EF4807 /* MainTabView.swift in Sources */,
 				D904425F308602FD00EF4807 /* TasteRadarCardView.swift in Sources */,
 				D9044242307E862600EF4807 /* FinalizeStepView.swift in Sources */,

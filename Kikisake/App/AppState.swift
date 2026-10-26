@@ -33,11 +33,17 @@ public final class AppState {
     public static let shared = AppState()
 
     public var selectedTab: Int = 0
-    public var isProVersion: Bool = false
+
+    /// Pro版（買い切り）の有効フラグ（UserDefaultsに自動永続化）
+    public var isProVersion: Bool {
+        didSet {
+            UserDefaults.standard.set(isProVersion, forKey: "saved_is_pro_version")
+        }
+    }
     
     // 分析画面等からログ一覧へのフィルター引き渡し用プロパティ
     public var pendingLogFilter: LogFilterType? = nil
-    public var pendingAromaTagFilter: String? = nil // ✨ 香りタグの引き渡し用
+    public var pendingAromaTagFilter: String? = nil
     
     public var hasCompletedOnboarding: Bool {
         didSet {
@@ -65,6 +71,7 @@ public final class AppState {
 
     private init() {
         self.hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "saved_has_completed_onboarding")
+        self.isProVersion = UserDefaults.standard.bool(forKey: "saved_is_pro_version")
 
         if let savedValue = UserDefaults.standard.string(forKey: "saved_appearance_mode"),
            let mode = AppearanceMode(rawValue: savedValue) {

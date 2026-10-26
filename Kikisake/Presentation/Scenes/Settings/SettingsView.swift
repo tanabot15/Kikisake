@@ -10,13 +10,56 @@ public struct SettingsView: View {
     @Bindable private var appState = AppState.shared
     @State private var viewModel = SettingsViewModel()
     
-    // オンボーディング再表示用およびアラート用の状態
     @State private var showOnboarding: Bool = false
     @State private var showLoadedAlert: Bool = false
+    @State private var showPaywall: Bool = false
 
     public var body: some View {
         NavigationStack {
             Form {
+                // MARK: - 0. Kikisake Pro 案内カード（リッチなグラデーション仕様）
+                Section {
+                    Button {
+                        showPaywall = true
+                    } label: {
+                        HStack(spacing: 16) {
+                            Image(systemName: "crown.fill")
+                                .font(.title2)
+                                .foregroundStyle(.white)
+
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(appState.isProVersion ? "Kikisake Pro Active" : "Upgrade to Kikisake Pro")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.white)
+
+                                Text(appState.isProVersion ? "すべての機能が無制限に開放されています" : "無制限保管場所 • プロ向けタグ • 広告非表示")
+                                    .font(.caption)
+                                    .fontWeight(.medium)
+                                    .foregroundStyle(.white.opacity(0.9))
+                            }
+
+                            Spacer()
+
+                            if !appState.isProVersion {
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(
+                        LinearGradient(
+                            colors: [Color.orange, Color(red: 0.95, green: 0.35, blue: 0.1)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                }
+
                 // MARK: - 1. アプリ設定
                 Section("アプリ設定") {
                     Picker("外観モード", selection: $appState.appearanceMode) {
@@ -72,11 +115,21 @@ public struct SettingsView: View {
                     }
                     .foregroundStyle(.primary)
                 }
+
+                // MARK: - 4. デバッグ用（Preview・テスト用）
+                #if DEBUG
+                Section(header: Text("デバッグ機能")) {
+                    Toggle("isProVersion 強制ON/OFF", isOn: $appState.isProVersion)
+                }
+                #endif
             }
             .navigationTitle("設定")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showOnboarding) {
                 BoardingView(isPresented: $showOnboarding)
+            }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
             }
             .alert("サンプルデータの読み込み", isPresented: $showLoadedAlert) {
                 Button("OK", role: .cancel) {}

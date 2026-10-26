@@ -20,23 +20,20 @@ public struct InventoryView: View {
     @State private var viewModel = InventoryViewModel()
     @State private var showAddLocationSheet: Bool = false
     @State private var isShowingFilterSheet: Bool = false
+    @State private var showPaywall: Bool = false
     
     @State private var expandedLocationName: String? = nil
     @State private var displayModes: [String: CellarDisplayMode] = [:]
 
-    // 保管場所ごとの個別編集モード（並び替え・削除用）
     @State private var editingLocationNames: Set<String> = []
     
-    // ✨ グリッドサイズ変更用の状態管理（item形式のシートに対応するため統合）
     @State private var resizingLocation: StorageLocation? = nil
     @State private var tempRows: Int = 4
     @State private var tempColumns: Int = 6
 
-    // アイテムタップ時のアクション制御用 State
     @State private var selectedItemForAction: BeverageItem? = nil
     @State private var isShowingActionSheet: Bool = false
 
-    // 各種遷移・ポップアップ制御用 State
     @State private var itemToNavigate: BeverageItem? = nil
     @State private var isNavigatingToDetail: Bool = false
     @State private var targetItemForMove: BeverageItem? = nil
@@ -48,9 +45,12 @@ public struct InventoryView: View {
     public var body: some View {
         NavigationStack {
             VStack {
-                ConditionalAdMobBannerView()
-                    .frame(height: 50)
-                    .background(Color(.systemBackground))
+                // ✨ Pro版の場合は広告バナーを完全非表示
+                if !AppState.shared.isProVersion {
+                    ConditionalAdMobBannerView()
+                        .frame(height: 50)
+                        .background(Color(.systemBackground))
+                }
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
@@ -107,10 +107,12 @@ public struct InventoryView: View {
             .sheet(isPresented: $showAddLocationSheet) {
                 AddLocationSheetView()
             }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
+            }
             .sheet(isPresented: $isShowingFilterSheet) {
                 InventoryFilterSheet(viewModel: viewModel, allItems: items)
             }
-            // ✨ sheet(item:) により、データがセットされた状態で確実に初期化・描画され、白画面バグを解消
             .sheet(item: $resizingLocation) { loc in
                 NavigationStack {
                     Form {
@@ -279,7 +281,6 @@ public struct InventoryView: View {
 
                 Spacer()
 
-                // グリッド表示かつグリッド有効時：セラーの縦横サイズ変更ボタン
                 if currentMode == .grid && loc.isGridEnabled {
                     Button {
                         tempRows = loc.gridRows
@@ -294,7 +295,6 @@ public struct InventoryView: View {
                     .controlSize(.small)
                 }
 
-                // リスト表示かつアイテムがある場合のみ：並び替え・編集ボタン
                 if currentMode == .list && !displayItems.isEmpty {
                     Button {
                         withAnimation {
@@ -408,8 +408,13 @@ public struct InventoryView: View {
             }
             .accessibilityLabel("在庫フィルター")
 
+            // ✨ 無料版かつ保管場所数が3つ以上の場合は Paywall を表示
             Button {
-                showAddLocationSheet = true
+                if !AppState.shared.isProVersion && locations.count >= 3 {
+                    showPaywall = true
+                } else {
+                    showAddLocationSheet = true
+                }
             } label: {
                 Image(systemName: "plus")
             }
@@ -522,33 +527,6 @@ public struct InventoryView: View {
 
     container.mainContext.insert(mainCellar)
     container.mainContext.insert(fridge)
-
-    let mixedWine = BeverageItem(
-        name: "Barolo DOCG 2018",
-        producer: "Prunotto",
-        category: .wine,
-        region: "ピエモンテ, イタリア",
-        vintage: "2018",
-        stockQuantity: 1,
-        storageLocation: "メインセラー",
-        gridRow: 1,
-        gridColumn: 1
-    )
-
-    let mixedSake = BeverageItem(
-        name: "久保田 萬壽",
-        producer: "朝日酒造",
-        category: .sake,
-        region: "新潟県",
-        vintage: "2026/05",
-        stockQuantity: 1,
-        storageLocation: "メインセラー",
-        gridRow: 2,
-        gridColumn: 3
-    )
-
-    container.mainContext.insert(mixedWine)
-    container.mainContext.insert(mixedSake)
 
     return InventoryView()
         .modelContainer(container)

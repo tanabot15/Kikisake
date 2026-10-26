@@ -32,6 +32,48 @@ public struct AromaCategory: Identifiable {
 /// 共通のテイスティング選択肢プロバイダ
 public enum TastingOptions {
     
+    // MARK: - Pro限定アイテムの個別指定セット（ここを自由に編集可能）
+    
+    /// Pro版限定とする「香りのタグ名」一覧
+    /// ※ ここに含まれるタグは自動的にPro限定（鍵付き）になり、含まれないタグは無料版で選択可能になります。
+    public static let proAromaTags: Set<String> = [
+        // --- ワイン（赤・白・ロゼ・オレンジ） ---
+        "スーボア", "ペトロール", "トリュフ", "ランシオ", "ヨード", "なめし皮", "動物的なニュアンス",
+        "フェノール", "麝香", "硫黄", "ワックス", "蜜蝋", "ジンジャーブレッド", "パン・ド・ミ", "グリエ", "乾いた肉",
+        
+        // --- 日本酒 ---
+        "つきたての餅", "サワークリーム", "発酵バター", "クリームチーズ", "ヨード香", "腐葉土",
+        "朝鮮人参", "粘土", "熟成チーズ", "スモーク香", "杏仁豆腐",
+        
+        // --- ビール ---
+        "松やに", "スモーキー", "ビスケット"
+    ]
+    
+    /// Pro版限定とする「外観カラー名」一覧
+    /// ※ ここに含まれる色名は自動的にPro限定（鍵付き）になります。
+    public static let proColorNames: Set<String> = [
+        // ワイン
+        "アンバー", "マホガニー", "ダーク・ガーネット", "ダーク・ルビー", "ブロンズ", "コッパー",
+        // 日本酒
+        "琥珀色（古酒）", "ダーク・アンバー", "淡金色", "黄金色",
+        // ビール
+        "ブラウン", "ダーク・ブラウン", "ブラック", "ペール・アンバー"
+    ]
+
+    // MARK: - 判定ヘルパーメソッド
+    
+    /// 指定された香りタグが無料版で利用可能か判定（proAromaTags に含まれていなければ無料）
+    public static func isFreeAromaTag(_ tag: String, in category: AromaCategory) -> Bool {
+        return !proAromaTags.contains(tag)
+    }
+    
+    /// 指定されたカラーオプションが無料版で利用可能か判定（proColorNames に含まれていなければ無料）
+    public static func isFreeColorOption(_ option: ColorOption, in options: [ColorOption]) -> Bool {
+        return !proColorNames.contains(option.name)
+    }
+
+    // MARK: - マスター選択肢一覧
+    
     /// 味わいのバランス表現のマスター選択肢一覧
     public static let balanceOptions: [String] = [
         "スムーズな", "コンパクトな", "スリムな", "ドライな",
@@ -42,7 +84,6 @@ public enum TastingOptions {
     /// 酒種・タイプに応じた外観カラーオプションを取得
     public static func colorOptions(for category: BeverageCategory?, wineType: String = "赤") -> [ColorOption] {
         guard let category = category else {
-            // 「すべて」が選択されている場合は全酒種のカラーを重複なく結合して返す
             var allOptions: [ColorOption] = []
             var seenNames = Set<String>()
             
@@ -140,7 +181,6 @@ public enum TastingOptions {
     /// 香りカテゴリ一覧を取得
     public static func aromaCategories(for category: BeverageCategory?, wineType: String = "赤") -> [AromaCategory] {
         guard let category = category else {
-            // 「すべて」が選択されている場合は全酒種の香りを統合して返す
             var tagSet = Set<String>()
             var combinedTags: [String] = []
             

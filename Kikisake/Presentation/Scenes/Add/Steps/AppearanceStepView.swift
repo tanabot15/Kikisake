@@ -6,6 +6,7 @@ import SwiftUI
 /// [Step 2] 酒種・タイプに応じた最適化された色・外観入力ビュー
 public struct AppearanceStepView: View {
     @Bindable var viewModel: AddFlowViewModel
+    @State private var showPaywall: Bool = false
 
     public init(viewModel: AddFlowViewModel) {
         self.viewModel = viewModel
@@ -48,9 +49,16 @@ public struct AppearanceStepView: View {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 10)], spacing: 10) {
                         ForEach(colorOptions) { option in
                             let isSelected = viewModel.appearanceNotes == option.name
+                            let isFree = TastingOptions.isFreeColorOption(option, in: colorOptions)
+                            let isLocked = !AppState.shared.isProVersion && !isFree
+
                             Button {
-                                viewModel.appearanceNotes = option.name
-                                viewModel.appearanceColorHex = option.hex
+                                if isLocked {
+                                    showPaywall = true
+                                } else {
+                                    viewModel.appearanceNotes = option.name
+                                    viewModel.appearanceColorHex = option.hex
+                                }
                             } label: {
                                 HStack(spacing: 12) {
                                     Circle()
@@ -64,11 +72,24 @@ public struct AppearanceStepView: View {
                                     Text(option.name)
                                         .font(.subheadline)
                                         .fontWeight(isSelected ? .bold : .regular)
-                                        .foregroundStyle(.primary)
+                                        .foregroundStyle(isLocked ? .secondary : .primary)
                                     
                                     Spacer()
                                     
-                                    if isSelected {
+                                    if isLocked {
+                                        HStack(spacing: 4) {
+                                            Image(systemName: "lock.fill")
+                                                .font(.caption2)
+                                            Text("Pro")
+                                                .font(.caption2)
+                                                .fontWeight(.bold)
+                                        }
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(Color.accentColor.opacity(0.15))
+                                        .foregroundStyle(Color.accentColor)
+                                        .cornerRadius(6)
+                                    } else if isSelected {
                                         Image(systemName: "checkmark")
                                             .font(.subheadline)
                                             .fontWeight(.bold)
@@ -94,6 +115,9 @@ public struct AppearanceStepView: View {
             Section("詳細メモ・自由記述") {
                 TextField("外観の補足 (例: 輝きがある、粘性高い)", text: $viewModel.appearanceNotes)
             }
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
         }
     }
 }
