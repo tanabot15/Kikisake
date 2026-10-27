@@ -393,6 +393,46 @@
         }
       }
     },
+    "アーモンド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almond"
+          }
+        }
+      }
+    },
+    "アカシア" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acacia"
+          }
+        }
+      }
+    },
+    "アニス" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anise"
+          }
+        }
+      }
+    },
+    "アプリコット" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apricot"
+          }
+        }
+      }
+    },
     "アプリ情報" : {
       "localizations" : {
         "en" : {
@@ -423,12 +463,72 @@
         }
       }
     },
+    "アンバー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amber"
+          }
+        }
+      }
+    },
+    "アンバー・オレンジ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amber Orange"
+          }
+        }
+      }
+    },
+    "イチゴ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strawberry"
+          }
+        }
+      }
+    },
+    "ヴァニラ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vanilla"
+          }
+        }
+      }
+    },
     "ヴィンテージ / 製造年月 (例: 2020)" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vintage / Production Date (e.g., 2020)"
+          }
+        }
+      }
+    },
+    "ヴェルヴェーヌ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbena"
+          }
+        }
+      }
+    },
+    "うすにごり（ささにごり）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slightly Cloudy"
           }
         }
       }
@@ -453,6 +553,16 @@
         }
       }
     },
+    "オレンジピール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orange Peel"
+          }
+        }
+      }
+    },
     "お酒の感動を記録し、あなたの「好み」を\n深く知るためのテイスティング手帳" : {
       "localizations" : {
         "en" : {
@@ -473,6 +583,76 @@
         }
       }
     },
+    "ガーネット" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Garnet"
+          }
+        }
+      }
+    },
+    "カシス" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassis"
+          }
+        }
+      }
+    },
+    "カビ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mold"
+          }
+        }
+      }
+    },
+    "カモミール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chamomile"
+          }
+        }
+      }
+    },
+    "カラメル" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caramel"
+          }
+        }
+      }
+    },
+    "キノコ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mushroom"
+          }
+        }
+      }
+    },
+    "キャラメル" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caramel"
+          }
+        }
+      }
+    },
     "キャンセル" : {
       "localizations" : {
         "en" : {
@@ -483,12 +663,152 @@
         }
       }
     },
+    "キャンディ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Candy"
+          }
+        }
+      }
+    },
+    "キンモクセイ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Osmanthus"
+          }
+        }
+      }
+    },
+    "クリームチーズ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cream Cheese"
+          }
+        }
+      }
+    },
+    "グリーン・イエロー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green Yellow"
+          }
+        }
+      }
+    },
+    "グリーンリーフ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green Leaves"
+          }
+        }
+      }
+    },
+    "グリエ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toasted / Grilling"
+          }
+        }
+      }
+    },
+    "クリスタル・クリア" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crystal Clear"
+          }
+        }
+      }
+    },
     "グリッドで視覚管理する" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enable Visual Grid Layout"
+          }
+        }
+      }
+    },
+    "クリムゾン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crimson"
+          }
+        }
+      }
+    },
+    "クルミ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walnut"
+          }
+        }
+      }
+    },
+    "グレープフルーツ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grapefruit"
+          }
+        }
+      }
+    },
+    "コーヒー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coffee"
+          }
+        }
+      }
+    },
+    "ゴールデン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Golden"
+          }
+        }
+      }
+    },
+    "ゴールデン・イエロー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Golden Yellow"
+          }
+        }
+      }
+    },
+    "ゴールド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gold"
           }
         }
       }
@@ -519,6 +839,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Great Cost Performance"
+          }
+        }
+      }
+    },
+    "コッパー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copper"
           }
         }
       }
@@ -573,12 +903,52 @@
         }
       }
     },
-    "この位置に配置して保存" : {
+    "この位置に配置する" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Save to This Slot"
+            "value" : "Place at this slot"
+          }
+        }
+      }
+    },
+    "ゴボウ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Burdock Root"
+          }
+        }
+      }
+    },
+    "コリアンダー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coriander"
+          }
+        }
+      }
+    },
+    "コンパクトな" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compact"
+          }
+        }
+      }
+    },
+    "サーモン・ピンク" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salmon Pink"
           }
         }
       }
@@ -623,6 +993,16 @@
         }
       }
     },
+    "サワークリーム" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sour Cream"
+          }
+        }
+      }
+    },
     "サンプルデータが追加されました。" : {
       "localizations" : {
         "en" : {
@@ -653,12 +1033,132 @@
         }
       }
     },
+    "シダ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fern"
+          }
+        }
+      }
+    },
+    "シトラス" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Citrus"
+          }
+        }
+      }
+    },
+    "シナモン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cinnamon"
+          }
+        }
+      }
+    },
+    "ジューシーな" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Juicy"
+          }
+        }
+      }
+    },
+    "ジンジャーブレッド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gingerbread"
+          }
+        }
+      }
+    },
+    "スーボア" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sous-bois / Forest Floor"
+          }
+        }
+      }
+    },
+    "スイカズラ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Honeysuckle"
+          }
+        }
+      }
+    },
+    "ストロー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Straw"
+          }
+        }
+      }
+    },
+    "ストロー・イエロー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Straw Yellow"
+          }
+        }
+      }
+    },
+    "ストロー/麦わら色" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Straw"
+          }
+        }
+      }
+    },
+    "ストロベリー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strawberry"
+          }
+        }
+      }
+    },
     "スパークリング" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sparkling"
+          }
+        }
+      }
+    },
+    "スパイス" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spice"
           }
         }
       }
@@ -703,6 +1203,66 @@
         }
       }
     },
+    "すべての香り要素" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All Aroma Descriptors"
+          }
+        }
+      }
+    },
+    "スミレ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Violet"
+          }
+        }
+      }
+    },
+    "スムーズな" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smooth"
+          }
+        }
+      }
+    },
+    "スモーキー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smoky"
+          }
+        }
+      }
+    },
+    "スモーク香" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smoky Aroma"
+          }
+        }
+      }
+    },
+    "スリムな" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slim"
+          }
+        }
+      }
+    },
     "スロットを未選択のまま（棚の外に）保存することもできます" : {
       "localizations" : {
         "en" : {
@@ -733,12 +1293,72 @@
         }
       }
     },
+    "ゼラニウム" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geranium"
+          }
+        }
+      }
+    },
+    "セルフィーユ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chervil"
+          }
+        }
+      }
+    },
     "その他" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Others"
+          }
+        }
+      }
+    },
+    "ダーク・アンバー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Amber"
+          }
+        }
+      }
+    },
+    "ダーク・ガーネット" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Garnet"
+          }
+        }
+      }
+    },
+    "ダーク・ブラウン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Brown"
+          }
+        }
+      }
+    },
+    "ダーク・ルビー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Ruby"
           }
         }
       }
@@ -753,12 +1373,92 @@
         }
       }
     },
+    "タイム" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thyme"
+          }
+        }
+      }
+    },
     "タップして一覧を表示" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tap to view list"
+          }
+        }
+      }
+    },
+    "タバコ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tobacco"
+          }
+        }
+      }
+    },
+    "タマネギ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onion"
+          }
+        }
+      }
+    },
+    "チェリー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cherry"
+          }
+        }
+      }
+    },
+    "チェリー・ブロッサム" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cherry Blossom"
+          }
+        }
+      }
+    },
+    "チェリーレッド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cherry Red"
+          }
+        }
+      }
+    },
+    "チョコレート" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chocolate"
+          }
+        }
+      }
+    },
+    "つきたての餅" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fresh Mochi"
           }
         }
       }
@@ -783,12 +1483,12 @@
         }
       }
     },
-    "テイスティングログ" : {
+    "ディープ・ゴールデン" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tasting Log"
+            "value" : "Deep Golden"
           }
         }
       }
@@ -813,6 +1513,146 @@
         }
       }
     },
+    "トースト" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toast"
+          }
+        }
+      }
+    },
+    "トマト" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomato"
+          }
+        }
+      }
+    },
+    "ドライな" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dry"
+          }
+        }
+      }
+    },
+    "ドライハーブ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dried Herbs"
+          }
+        }
+      }
+    },
+    "ドライフラワー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dried Flowers"
+          }
+        }
+      }
+    },
+    "ドライフルーツ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dried Fruit"
+          }
+        }
+      }
+    },
+    "トリュフ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Truffle"
+          }
+        }
+      }
+    },
+    "トロピカルフルーツ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tropical Fruit"
+          }
+        }
+      }
+    },
+    "ナッツ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuts"
+          }
+        }
+      }
+    },
+    "ナツメグ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutmeg"
+          }
+        }
+      }
+    },
+    "なめし皮" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leather"
+          }
+        }
+      }
+    },
+    "にごり（濃い乳白色）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nigori (Cloudy / Milky White)"
+          }
+        }
+      }
+    },
+    "にごり（白濁・薄い）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nigori (Lightly Hazy)"
+          }
+        }
+      }
+    },
+    "ねっとりした" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viscous"
+          }
+        }
+      }
+    },
     "バージョン" : {
       "localizations" : {
         "en" : {
@@ -823,12 +1663,132 @@
         }
       }
     },
+    "ハーバル" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herbal"
+          }
+        }
+      }
+    },
+    "ハーブ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herbs"
+          }
+        }
+      }
+    },
+    "パープル" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purple"
+          }
+        }
+      }
+    },
+    "パイナップル" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pineapple"
+          }
+        }
+      }
+    },
+    "ハチミツ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Honey"
+          }
+        }
+      }
+    },
+    "パッションフルーツ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passion Fruit"
+          }
+        }
+      }
+    },
+    "バナナ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Banana"
+          }
+        }
+      }
+    },
+    "ハニー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Honey"
+          }
+        }
+      }
+    },
+    "バラ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rose"
+          }
+        }
+      }
+    },
     "バランス表現 (複数選択可)" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Balance Expressions (Multiple selection allowed)"
+          }
+        }
+      }
+    },
+    "パン・ド・ミ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pain de mie"
+          }
+        }
+      }
+    },
+    "ピーチ・スキン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peach Skin"
+          }
+        }
+      }
+    },
+    "ピーマン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bell Pepper"
           }
         }
       }
@@ -849,6 +1809,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Beer Style (e.g., IPA, Stout)"
+          }
+        }
+      }
+    },
+    "ビスケット" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biscuit"
+          }
+        }
+      }
+    },
+    "ビターチョコレート" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitter Chocolate"
+          }
+        }
+      }
+    },
+    "ヒノキ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Japanese Cypress (Hinoki)"
           }
         }
       }
@@ -883,6 +1873,26 @@
         }
       }
     },
+    "フェノール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phenolic"
+          }
+        }
+      }
+    },
+    "ふくよかな" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full-bodied"
+          }
+        }
+      }
+    },
     "ブドウ品種" : {
       "localizations" : {
         "en" : {
@@ -903,12 +1913,162 @@
         }
       }
     },
+    "ブラウン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brown"
+          }
+        }
+      }
+    },
+    "ブラック" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Black"
+          }
+        }
+      }
+    },
+    "ブラックチェリー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Black Cherry"
+          }
+        }
+      }
+    },
+    "ブラックベリー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blackberry"
+          }
+        }
+      }
+    },
+    "ブルーベリー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blueberry"
+          }
+        }
+      }
+    },
+    "フレッシュアーモンド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fresh Almond"
+          }
+        }
+      }
+    },
+    "フローラル" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floral"
+          }
+        }
+      }
+    },
     "プロフェッショナル・マトリクス分析" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Professional Matrix Analysis"
+          }
+        }
+      }
+    },
+    "ブロンズ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bronze"
+          }
+        }
+      }
+    },
+    "ヘーゼルナッツ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazelnut"
+          }
+        }
+      }
+    },
+    "ペール・アンバー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pale Amber"
+          }
+        }
+      }
+    },
+    "ペール・イエロー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pale Yellow"
+          }
+        }
+      }
+    },
+    "ペール・ゴールド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pale Gold"
+          }
+        }
+      }
+    },
+    "ペール・ストロー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pale Straw"
+          }
+        }
+      }
+    },
+    "ペトロール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Petrol / Kerosene"
+          }
+        }
+      }
+    },
+    "ホップ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hops"
           }
         }
       }
@@ -943,12 +2103,42 @@
         }
       }
     },
+    "マーマレード" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marmalade"
+          }
+        }
+      }
+    },
     "マイベスト" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "My Best"
+          }
+        }
+      }
+    },
+    "マスカット" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muscat"
+          }
+        }
+      }
+    },
+    "マッシュルーム" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mushroom"
           }
         }
       }
@@ -963,12 +2153,132 @@
         }
       }
     },
+    "マホガニー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mahogany"
+          }
+        }
+      }
+    },
+    "まろやかな" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mellow & Smooth"
+          }
+        }
+      }
+    },
+    "マンゴー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mango"
+          }
+        }
+      }
+    },
+    "ミネラル" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mineral"
+          }
+        }
+      }
+    },
+    "ミント" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mint"
+          }
+        }
+      }
+    },
+    "メロン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melon"
+          }
+        }
+      }
+    },
+    "メントール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menthol"
+          }
+        }
+      }
+    },
+    "ユーカリ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eucalyptus"
+          }
+        }
+      }
+    },
+    "ヨーグルト" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yogurt"
+          }
+        }
+      }
+    },
+    "ヨード" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iodine"
+          }
+        }
+      }
+    },
+    "ヨード香" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iodine Note"
+          }
+        }
+      }
+    },
     "よく感じる香り・アロマの好み" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Flavor & Aroma Preferences"
+          }
+        }
+      }
+    },
+    "ライチ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lychee"
           }
         }
       }
@@ -983,12 +2293,52 @@
         }
       }
     },
+    "ラズベリー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raspberry"
+          }
+        }
+      }
+    },
+    "ラズベリー・ピンク" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raspberry Pink"
+          }
+        }
+      }
+    },
+    "ラズベリーレッド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raspberry Red"
+          }
+        }
+      }
+    },
     "ラベル写真" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Label Photo"
+          }
+        }
+      }
+    },
+    "ランシオ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rancio"
           }
         }
       }
@@ -1029,6 +2379,86 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Definitely Buy Again"
+          }
+        }
+      }
+    },
+    "リンゴ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple"
+          }
+        }
+      }
+    },
+    "ルビーレッド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruby Red"
+          }
+        }
+      }
+    },
+    "レモン・イエロー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lemon Yellow"
+          }
+        }
+      }
+    },
+    "レンガ/ブリック" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brick"
+          }
+        }
+      }
+    },
+    "ローズ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rose"
+          }
+        }
+      }
+    },
+    "ロースト" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Roast"
+          }
+        }
+      }
+    },
+    "ロースト香" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Roasted Aroma"
+          }
+        }
+      }
+    },
+    "ローリエ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bay Leaf"
           }
         }
       }
@@ -1093,12 +2523,52 @@
         }
       }
     },
+    "ワックス" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wax"
+          }
+        }
+      }
+    },
     "一度の買い切りで、プロ向けの機能を永久に無制限解放" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "One-time purchase for permanent, unlimited access to all pro features."
+          }
+        }
+      }
+    },
+    "丁子" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clove"
+          }
+        }
+      }
+    },
+    "丁字" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clove"
+          }
+        }
+      }
+    },
+    "上新粉" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rice Flour"
           }
         }
       }
@@ -1119,6 +2589,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sort By"
+          }
+        }
+      }
+    },
+    "乳製品" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dairy"
+          }
+        }
+      }
+    },
+    "乾いた肉" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dried Meat"
+          }
+        }
+      }
+    },
+    "乾燥イチジク" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dried Fig"
           }
         }
       }
@@ -1423,6 +2923,26 @@
         }
       }
     },
+    "動物的なニュアンス" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animal Nuances"
+          }
+        }
+      }
+    },
+    "厚みのある" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rich"
+          }
+        }
+      }
+    },
     "原産地呼称 (例: AOC ボルドー / DOCG バローロ)" : {
       "localizations" : {
         "en" : {
@@ -1683,12 +3203,42 @@
         }
       }
     },
+    "干しプラム" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prune"
+          }
+        }
+      }
+    },
     "平均テイストバランス" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Average Taste Balance"
+          }
+        }
+      }
+    },
+    "引き締まった" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taut & Firm"
+          }
+        }
+      }
+    },
+    "微黄色" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pale Yellowish"
           }
         }
       }
@@ -1709,6 +3259,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "None"
+          }
+        }
+      }
+    },
+    "新緑" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fresh Foliage"
           }
         }
       }
@@ -1749,6 +3309,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Update"
+          }
+        }
+      }
+    },
+    "月桂樹の葉" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bay Leaf"
+          }
+        }
+      }
+    },
+    "朝鮮人参" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ginseng"
           }
         }
       }
@@ -1823,12 +3403,72 @@
         }
       }
     },
+    "杉" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cedar"
+          }
+        }
+      }
+    },
+    "杏仁豆腐" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almond Jelly"
+          }
+        }
+      }
+    },
     "条件に一致する在庫はありません" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No bottles match the selected criteria"
+          }
+        }
+      }
+    },
+    "松やに" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pine Resin"
+          }
+        }
+      }
+    },
+    "果実" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fruit"
+          }
+        }
+      }
+    },
+    "柑橘類" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Citrus Fruits"
+          }
+        }
+      }
+    },
+    "栗" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chestnut"
           }
         }
       }
@@ -1853,6 +3493,16 @@
         }
       }
     },
+    "桃" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peach"
+          }
+        }
+      }
+    },
     "棚・スロット位置の指定 (任意)" : {
       "localizations" : {
         "en" : {
@@ -1873,12 +3523,32 @@
         }
       }
     },
+    "椎茸" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shiitake Mushroom"
+          }
+        }
+      }
+    },
     "構造・特徴" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Structure & Characteristics"
+          }
+        }
+      }
+    },
+    "樹脂" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resin"
           }
         }
       }
@@ -1903,16 +3573,6 @@
         }
       }
     },
-    "残り %lld本" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld Left"
-          }
-        }
-      }
-    },
     "段 (Row)" : {
       "localizations" : {
         "en" : {
@@ -1933,12 +3593,72 @@
         }
       }
     },
+    "洋ナシ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pear"
+          }
+        }
+      }
+    },
+    "洋梨" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pear"
+          }
+        }
+      }
+    },
+    "海の香り" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocean Breeze"
+          }
+        }
+      }
+    },
+    "淡金色" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pale Gold"
+          }
+        }
+      }
+    },
     "渋味" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tannin"
+          }
+        }
+      }
+    },
+    "火打石" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flint"
+          }
+        }
+      }
+    },
+    "炊いた米" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steamed Rice"
           }
         }
       }
@@ -1953,12 +3673,42 @@
         }
       }
     },
+    "無色透明" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colorless & Clear"
+          }
+        }
+      }
+    },
+    "煙・薫製" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smoke / Cured"
+          }
+        }
+      }
+    },
     "熟成" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aging"
+          }
+        }
+      }
+    },
+    "熟成チーズ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aged Cheese"
           }
         }
       }
@@ -1979,6 +3729,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Good Aging Potential"
+          }
+        }
+      }
+    },
+    "牡丹" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peony"
           }
         }
       }
@@ -2023,6 +3783,36 @@
         }
       }
     },
+    "琥珀色（古酒）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amber"
+          }
+        }
+      }
+    },
+    "甘草" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Licorice"
+          }
+        }
+      }
+    },
+    "生クリーム" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fresh Cream"
+          }
+        }
+      }
+    },
     "生産地 (例: ボルドー, 新潟、チェコ)" : {
       "localizations" : {
         "en" : {
@@ -2053,12 +3843,22 @@
         }
       }
     },
-    "登録本数 (本)" : {
+    "生肉" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quantity (Bottles)"
+            "value" : "Raw Meat"
+          }
+        }
+      }
+    },
+    "発酵バター" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cultured Butter"
           }
         }
       }
@@ -2069,6 +3869,76 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "White"
+          }
+        }
+      }
+    },
+    "白コショウ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White Pepper"
+          }
+        }
+      }
+    },
+    "白バラ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White Rose"
+          }
+        }
+      }
+    },
+    "白桃" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White Peach"
+          }
+        }
+      }
+    },
+    "白玉団子" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shiratama Dango"
+          }
+        }
+      }
+    },
+    "白胡椒" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White Pepper"
+          }
+        }
+      }
+    },
+    "石灰" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chalk / Lime"
+          }
+        }
+      }
+    },
+    "硫黄" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sulfur"
           }
         }
       }
@@ -2113,6 +3983,16 @@
         }
       }
     },
+    "粘土" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clay"
+          }
+        }
+      }
+    },
     "精米歩合 (例: 50%)" : {
       "localizations" : {
         "en" : {
@@ -2125,6 +4005,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "精米歩合（例：50％）"
+          }
+        }
+      }
+    },
+    "紅茶" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Black Tea"
+          }
+        }
+      }
+    },
+    "紅茶の葉" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Black Tea Leaves"
           }
         }
       }
@@ -2195,6 +4095,86 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Overall Rating & Date"
+          }
+        }
+      }
+    },
+    "腐葉土" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leaf Mold / Humus"
+          }
+        }
+      }
+    },
+    "花・植物" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floral & Herbal"
+          }
+        }
+      }
+    },
+    "花の蜜" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nectar"
+          }
+        }
+      }
+    },
+    "花梨" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quince"
+          }
+        }
+      }
+    },
+    "草" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grass"
+          }
+        }
+      }
+    },
+    "菩提樹" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linden / Lime Tree"
+          }
+        }
+      }
+    },
+    "蜂蜜" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Honey"
+          }
+        }
+      }
+    },
+    "蜜蝋" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beeswax"
           }
         }
       }
@@ -2359,6 +4339,26 @@
         }
       }
     },
+    "豊潤な" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rich & Luscious"
+          }
+        }
+      }
+    },
+    "貝殻" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seashell"
+          }
+        }
+      }
+    },
     "購入を復元する（Restore）" : {
       "localizations" : {
         "en" : {
@@ -2375,6 +4375,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Red"
+          }
+        }
+      }
+    },
+    "赤スグリ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redcurrant"
           }
         }
       }
@@ -2445,12 +4455,62 @@
         }
       }
     },
+    "酵母" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeast"
+          }
+        }
+      }
+    },
+    "醤油" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soy Sauce"
+          }
+        }
+      }
+    },
     "重み・骨格" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Body & Structure"
+          }
+        }
+      }
+    },
+    "針葉樹" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conifer"
+          }
+        }
+      }
+    },
+    "鉄分" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iron"
+          }
+        }
+      }
+    },
+    "鉱物" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mineral"
           }
         }
       }
@@ -2471,6 +4531,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search by name, producer, or notes"
+          }
+        }
+      }
+    },
+    "青りんご" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green Apple"
+          }
+        }
+      }
+    },
+    "青リンゴ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green Apple"
+          }
+        }
+      }
+    },
+    "青竹" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green Bamboo"
           }
         }
       }
@@ -2531,6 +4621,76 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No aroma records available."
+          }
+        }
+      }
+    },
+    "香木" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aromatic Wood"
+          }
+        }
+      }
+    },
+    "麝香" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Musk"
+          }
+        }
+      }
+    },
+    "麦芽" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Malt"
+          }
+        }
+      }
+    },
+    "黄色いリンゴ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yellow Apple"
+          }
+        }
+      }
+    },
+    "黄金色" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep Gold"
+          }
+        }
+      }
+    },
+    "黒オリーブ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Black Olive"
+          }
+        }
+      }
+    },
+    "黒胡椒" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Black Pepper"
           }
         }
       }

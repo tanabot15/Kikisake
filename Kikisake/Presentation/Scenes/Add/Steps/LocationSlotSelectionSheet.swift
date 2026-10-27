@@ -152,7 +152,7 @@ public struct LocationSlotSelectionSheet: View {
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("この位置に配置して保存") {
+                    Button("この位置に配置する") {
                         dismiss()
                         onComplete()
                     }
