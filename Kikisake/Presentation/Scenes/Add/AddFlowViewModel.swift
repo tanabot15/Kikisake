@@ -25,7 +25,6 @@ public final class AddFlowViewModel {
     public var abvString: String = ""
     public var priceString: String = ""
     public var storageLocation: String = "未設定"
-    public var stockQuantityString: String = "1"
     public var selectedImageData: Data? = nil
 
     // セラー内グリッド位置指定用プロパティ
@@ -114,7 +113,6 @@ public final class AddFlowViewModel {
         self.vintage = ""
         self.abvString = ""
         self.priceString = ""
-        self.stockQuantityString = "1"
         self.storageLocation = "未設定"
         self.selectedGridRow = nil
         self.selectedGridColumn = nil
@@ -241,7 +239,6 @@ public final class AddFlowViewModel {
 
         let abv = Double(abvString)
         let price = Int(priceString)
-        let quantity = Int(stockQuantityString) ?? 1
         let metadataJSON = buildMetadataJSON()
 
         let newItem = BeverageItem(
@@ -252,7 +249,6 @@ public final class AddFlowViewModel {
             vintage: vintage.isEmpty ? nil : vintage,
             alcoholByVolume: abv,
             price: price,
-            stockQuantity: quantity,
             storageLocation: storageLocation,
             gridRow: selectedGridRow,
             gridColumn: selectedGridColumn,
@@ -266,7 +262,7 @@ public final class AddFlowViewModel {
         reset()
     }
     
-    public func saveWithStock(modelContext: ModelContext, stockQuantity: Int) throws {
+    public func saveWithStock(modelContext: ModelContext) throws {
         try ensureStorageLocationExists(modelContext: modelContext)
 
         let isTanninApplicable: Bool = {
@@ -282,7 +278,6 @@ public final class AddFlowViewModel {
         if let existingItem = sourceItem {
             targetItem = existingItem
             existingItem.storageLocation = storageLocation
-            existingItem.stockQuantity = stockQuantity
             existingItem.gridRow = selectedGridRow
             existingItem.gridColumn = selectedGridColumn
         } else {
@@ -294,7 +289,6 @@ public final class AddFlowViewModel {
                 vintage: vintage.isEmpty ? nil : vintage,
                 alcoholByVolume: abv,
                 price: price,
-                stockQuantity: stockQuantity,
                 storageLocation: storageLocation,
                 gridRow: selectedGridRow,
                 gridColumn: selectedGridColumn,
@@ -357,7 +351,6 @@ public final class AddFlowViewModel {
                 vintage: vintage.isEmpty ? nil : vintage,
                 alcoholByVolume: abv,
                 price: price,
-                stockQuantity: 0,
                 storageLocation: storageLocation,
                 gridRow: selectedGridRow,
                 gridColumn: selectedGridColumn,

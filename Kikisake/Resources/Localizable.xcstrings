@@ -28,7 +28,14 @@
       }
     },
     "「追加」タブからお酒を記録すると、ここに分析が表示されます。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log your drinks from the 'Add' tab to see analytics here."
+          }
+        }
+      }
     },
     "「追加」タブから新しい記録を作成しましょう。" : {
       "localizations" : {
@@ -93,7 +100,14 @@
       }
     },
     "%@ で買い切る（永久利用）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy for %@ (Lifetime Access)"
+          }
+        }
+      }
     },
     "%@ の記録" : {
       "localizations" : {
@@ -132,7 +146,14 @@
       }
     },
     "%@のサイズ変更" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resize %@"
+          }
+        }
+      }
     },
     "%@の色調を選択してください" : {
       "localizations" : {
@@ -155,7 +176,14 @@
       }
     },
     "%lld 列目" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 列目"
+          }
+        }
+      }
     },
     "%lld件" : {
       "localizations" : {
@@ -168,10 +196,23 @@
       }
     },
     "%lld段" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Row %lld"
+          }
+        }
+      }
     },
     "%lld段 × %lld列 (%lld本収納)" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld Rows × %2$lld Columns (%3$lld Bottles)"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -181,7 +222,14 @@
       }
     },
     "※縮小した際、新しいグリッド範囲外（はみ出し部分）に配置されていたボトルは、自動的に「棚の外（未配置）」に移動されます。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When shrinking the size, bottles positioned outside the new grid area will automatically be moved to 'Unassigned (Outside Grid)'."
+          }
+        }
+      }
     },
     "▲ %@: %@" : {
       "localizations" : {
@@ -226,7 +274,14 @@
       }
     },
     "1段あたりの本数（列）: %lld本" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bottles per Row (Columns): %lld"
+          }
+        }
+      }
     },
     "IBU (国際苦味単位)" : {
       "localizations" : {
@@ -249,13 +304,34 @@
       }
     },
     "Kikisake Pro" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kikisake Pro"
+          }
+        }
+      }
     },
     "Kikisake Pro Active" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kikisake Pro Active"
+          }
+        }
+      }
     },
     "Kikisake Pro の購入・復元が完了しました！" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kikisake Pro purchase/restoration complete!"
+          }
+        }
+      }
     },
     "Kikisakeへようこそ" : {
       "localizations" : {
@@ -288,13 +364,34 @@
       }
     },
     "Pro" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro"
+          }
+        }
+      }
     },
     "Pro版がアクティブです" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro Version is Active"
+          }
+        }
+      }
     },
     "Upgrade to Kikisake Pro" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to Kikisake Pro"
+          }
+        }
+      }
     },
     "アプリ情報" : {
       "localizations" : {
@@ -387,22 +484,64 @@
       }
     },
     "グリッドで視覚管理する" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Visual Grid Layout"
+          }
+        }
+      }
     },
     "コスパ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cost Performance"
+          }
+        }
+      }
     },
     "コスパが高い" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Great Cost Performance"
+          }
+        }
+      }
     },
     "コスパ高い" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Great Cost Performance"
+          }
+        }
+      }
     },
     "このスロットにはすでに別のボトルが配置されています" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Another bottle is already assigned to this slot"
+          }
+        }
+      }
     },
     "このスロットは空いています" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This slot is empty"
+          }
+        }
+      }
     },
     "このテイスティング記録とともに、在庫をどのように登録しますか？" : {
       "localizations" : {
@@ -415,13 +554,34 @@
       }
     },
     "このボトルに対して行う操作を選択してください。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select an action for this bottle."
+          }
+        }
+      }
     },
     "このボトルの香り、味わい、スコアはまだ記録されていません。\n記録をつけると、レーダーチャートや味わい分析、シェアカードが生成されます。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma, taste, and rating have not been logged for this bottle yet.\\nAdd a tasting note to generate radar charts, flavor analytics, and share cards."
+          }
+        }
+      }
     },
     "この位置に配置して保存" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save to This Slot"
+          }
+        }
+      }
     },
     "さっそくはじめる" : {
       "localizations" : {
@@ -444,10 +604,24 @@
       }
     },
     "サブタイプを選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Subtype"
+          }
+        }
+      }
     },
     "さらに時間を置いて寝かせる価値がある" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Worth aging further"
+          }
+        }
+      }
     },
     "サンプルデータが追加されました。" : {
       "localizations" : {
@@ -520,16 +694,44 @@
       }
     },
     "すべての機能が無制限に開放されています" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All features unlocked with no limits"
+          }
+        }
+      }
     },
     "スロットを未選択のまま（棚の外に）保存することもできます" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can also save without selecting a slot (Unassigned)"
+          }
+        }
+      }
     },
     "セラーの構造設定" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cellar Layout Settings"
+          }
+        }
+      }
     },
     "セラー構造・棚番マッピング" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cellar Grid & Slot Mapping"
+          }
+        }
+      }
     },
     "その他" : {
       "localizations" : {
@@ -552,10 +754,24 @@
       }
     },
     "タップして一覧を表示" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to view list"
+          }
+        }
+      }
     },
     "データがありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Data Available"
+          }
+        }
+      }
     },
     "データ管理" : {
       "localizations" : {
@@ -578,10 +794,24 @@
       }
     },
     "テイスティングを記録する" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Tasting Note"
+          }
+        }
+      }
     },
     "テイスティング記録がありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Data Available"
+          }
+        }
+      }
     },
     "バージョン" : {
       "localizations" : {
@@ -714,7 +944,14 @@
       }
     },
     "マイベスト" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Best"
+          }
+        }
+      }
     },
     "マトリクス" : {
       "localizations" : {
@@ -757,16 +994,44 @@
       }
     },
     "リピート" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy Again"
+          }
+        }
+      }
     },
     "リピート意向" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeat Intent"
+          }
+        }
+      }
     },
     "リピート意向あり" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Would Buy Again"
+          }
+        }
+      }
     },
     "リピート確定" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definitely Buy Again"
+          }
+        }
+      }
     },
     "ログ" : {
       "localizations" : {
@@ -829,7 +1094,14 @@
       }
     },
     "一度の買い切りで、プロ向けの機能を永久に無制限解放" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One-time purchase for permanent, unlimited access to all pro features."
+          }
+        }
+      }
     },
     "上限価格" : {
       "localizations" : {
@@ -922,7 +1194,14 @@
       }
     },
     "価格以上の価値や満足感がある" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivers great value and satisfaction for the price"
+          }
+        }
+      }
     },
     "保存" : {
       "localizations" : {
@@ -935,7 +1214,14 @@
       }
     },
     "保存場所を移動する" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move Storage Location"
+          }
+        }
+      }
     },
     "保管場所" : {
       "localizations" : {
@@ -958,7 +1244,14 @@
       }
     },
     "保管場所の種類" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage Type"
+          }
+        }
+      }
     },
     "保管場所の追加" : {
       "localizations" : {
@@ -966,17 +1259,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add Location"
-          }
-        }
-      }
-    },
-    "保管場所を移動" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Move Storage Location"
           }
         }
       }
@@ -1122,7 +1404,14 @@
       }
     },
     "列 (Column)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Column"
+          }
+        }
+      }
     },
     "割合" : {
       "localizations" : {
@@ -1235,7 +1524,14 @@
       }
     },
     "在庫フィルター" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inventory Filter"
+          }
+        }
+      }
     },
     "在庫へ" : {
       "localizations" : {
@@ -1283,17 +1579,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Basic Info"
-          }
-        }
-      }
-    },
-    "場所を追加" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add Location"
           }
         }
       }
@@ -1509,10 +1794,24 @@
       }
     },
     "未配置で保存" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save as Unassigned"
+          }
+        }
+      }
     },
     "未配置にする" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set to Unassigned"
+          }
+        }
+      }
     },
     "本醸造" : {
       "localizations" : {
@@ -1525,19 +1824,54 @@
       }
     },
     "条件に一致する在庫はありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No bottles match the selected criteria"
+          }
+        }
+      }
     },
     "格納するスロットを選択 (任意)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Slot (Optional)"
+          }
+        }
+      }
     },
     "格納スロットの指定" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assign Slot"
+          }
+        }
+      }
     },
     "棚・スロット位置の指定 (任意)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid Slot Location (Optional)"
+          }
+        }
+      }
     },
     "棚の外（未配置の在庫）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outside Grid (Unassigned)"
+          }
+        }
+      }
     },
     "構造・特徴" : {
       "localizations" : {
@@ -1560,7 +1894,14 @@
       }
     },
     "次回もぜひ購入または注文したい" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Would love to buy or order again"
+          }
+        }
+      }
     },
     "残り %lld本" : {
       "localizations" : {
@@ -1573,10 +1914,24 @@
       }
     },
     "段 (Row)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Row"
+          }
+        }
+      }
     },
     "段数（行）: %lld段" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rows: %lld"
+          }
+        }
+      }
     },
     "渋味" : {
       "localizations" : {
@@ -1589,16 +1944,44 @@
       }
     },
     "無制限保管場所 • プロ向けタグ • 広告非表示" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited Storage • Professional Tags • Ad-Free"
+          }
+        }
+      }
     },
     "熟成" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aging"
+          }
+        }
+      }
     },
     "熟成ポテンシャル" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aging Potential"
+          }
+        }
+      }
     },
     "熟成ポテンシャルあり" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good Aging Potential"
+          }
+        }
+      }
     },
     "特別純米" : {
       "localizations" : {
@@ -1621,10 +2004,24 @@
       }
     },
     "特徴" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Features"
+          }
+        }
+      }
     },
     "特徴・評価フラグ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Features & Attributes"
+          }
+        }
+      }
     },
     "生産地 (例: ボルドー, 新潟、チェコ)" : {
       "localizations" : {
@@ -1686,17 +2083,6 @@
         }
       }
     },
-    "移動先の保管場所を選択" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select Destination Location"
-          }
-        }
-      }
-    },
     "移動先の選択" : {
       "localizations" : {
         "en" : {
@@ -1718,7 +2104,14 @@
       }
     },
     "第 %lld 段" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Row %lld"
+          }
+        }
+      }
     },
     "精米歩合 (例: 50%)" : {
       "localizations" : {
@@ -1807,7 +2200,14 @@
       }
     },
     "表示形式" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display Mode"
+          }
+        }
+      }
     },
     "表示形式の切り替え" : {
       "localizations" : {
@@ -1890,7 +2290,14 @@
       }
     },
     "評価フラグの傾向" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attribute Trends"
+          }
+        }
+      }
     },
     "該当するログが見つかりません" : {
       "localizations" : {
@@ -1903,7 +2310,14 @@
       }
     },
     "該当する保管場所がありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No storage locations found"
+          }
+        }
+      }
     },
     "該当する分析データがありません" : {
       "localizations" : {
@@ -1916,7 +2330,14 @@
       }
     },
     "該当条件の記録がありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No logs match the criteria"
+          }
+        }
+      }
     },
     "詳細メモ・自由記述" : {
       "localizations" : {
@@ -1929,10 +2350,24 @@
       }
     },
     "詳細を確認する" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View Details"
+          }
+        }
+      }
     },
     "購入を復元する（Restore）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Purchases"
+          }
+        }
+      }
     },
     "赤" : {
       "localizations" : {
@@ -1966,6 +2401,12 @@
     },
     "選択中: 第 %lld 段 - %lld 列目" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected: Row %1$lld - Column %2$lld"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -2034,17 +2475,6 @@
         }
       }
     },
-    "飲みきった" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Finished"
-          }
-        }
-      }
-    },
     "飲みきった（ログのみ記録・在庫なし）" : {
       "localizations" : {
         "en" : {
@@ -2056,7 +2486,14 @@
       }
     },
     "飲み切った" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finished Bottle"
+          }
+        }
+      }
     },
     "飲んだ日" : {
       "localizations" : {

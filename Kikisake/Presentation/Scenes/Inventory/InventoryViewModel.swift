@@ -41,18 +41,16 @@ public final class InventoryViewModel {
     }
 
     public func totalCount(for locationName: String, in items: [BeverageItem]) -> Int {
-        items
-            .filter { $0.storageLocation == locationName && $0.stockQuantity > 0 }
-            .reduce(0) { $0 + $1.stockQuantity }
+        items.filter { $0.storageLocation == locationName }.count
     }
 
     public func categorySummary(for locationName: String, in items: [BeverageItem]) -> String {
-        let locationItems = filteredItems(items, for: locationName).filter { $0.stockQuantity > 0 }
+        let locationItems = filteredItems(items, for: locationName)
         guard !locationItems.isEmpty else { return "在庫なし" }
 
         var counts: [BeverageCategory: Int] = [:]
         for item in locationItems {
-            counts[item.category, default: 0] += item.stockQuantity
+            counts[item.category, default: 0] += 1
         }
 
         let summaryParts = BeverageCategory.allCases.compactMap { category -> String? in
@@ -64,12 +62,12 @@ public final class InventoryViewModel {
     }
 
     public func categorySummaryList(for locationName: String, in items: [BeverageItem]) -> [(categoryName: String, count: Int)] {
-        let locationItems = filteredItems(items, for: locationName).filter { $0.stockQuantity > 0 }
+        let locationItems = filteredItems(items, for: locationName)
         guard !locationItems.isEmpty else { return [] }
 
         var counts: [BeverageCategory: Int] = [:]
         for item in locationItems {
-            counts[item.category, default: 0] += item.stockQuantity
+            counts[item.category, default: 0] += 1
         }
 
         return BeverageCategory.allCases.compactMap { category in
@@ -157,7 +155,7 @@ public final class InventoryViewModel {
         location.gridRows = newRows
         location.gridColumns = newColumns
 
-        let targetItems = allItems.filter { $0.storageLocation == location.name && $0.stockQuantity > 0 }
+        let targetItems = allItems.filter { $0.storageLocation == location.name }
         for item in targetItems {
             if let row = item.gridRow, let col = item.gridColumn {
                 if row > newRows || col > newColumns {

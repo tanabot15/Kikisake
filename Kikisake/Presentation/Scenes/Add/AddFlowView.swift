@@ -145,12 +145,12 @@ public struct AddFlowView: View {
             // テイスティングログ書き切り後の保存先選択ダイアログ
             .confirmationDialog("ボトルの扱いを選択", isPresented: $isShowingSaveOptions, titleVisibility: .visible) {
                 Button("飲みきった（ログのみ記録・在庫なし）") {
-                    executeFullSave(storageLocation: "未設定", stockQuantity: 0, targetTab: 0)
+                    executeFullSave(storageLocation: "未設定", targetTab: 0)
                 }
                 
                 if locations.isEmpty {
                     Button("未設定の場所にストック") {
-                        executeFullSave(storageLocation: "未設定", stockQuantity: 1, targetTab: 3)
+                        executeFullSave(storageLocation: "未設定", targetTab: 3)
                     }
                 } else {
                     ForEach(locations, id: \.name) { loc in
@@ -164,14 +164,14 @@ public struct AddFlowView: View {
             } message: {
                 Text("このテイスティング記録とともに、在庫をどのように登録しますか？")
             }
-            // 棚・スロット位置選択シート（非オプショナルバインディング化で安定化）
+            // 棚・スロット位置選択シート
             .sheet(item: $pendingTargetLocation) { targetLoc in
                 LocationSlotSelectionSheet(location: targetLoc, viewModel: viewModel) {
                     // 選択完了時の保存実行
                     if isInventoryOnlyFlow {
                         saveToInventory(locationName: targetLoc.name)
                     } else {
-                        executeFullSave(storageLocation: targetLoc.name, stockQuantity: 1, targetTab: 3)
+                        executeFullSave(storageLocation: targetLoc.name, targetTab: 3)
                     }
                 }
             }
@@ -194,7 +194,7 @@ public struct AddFlowView: View {
         }
     }
 
-    /// 保管場所選択時のハンドラ（Menu/Dialog閉鎖後に非同期でシートをトリガー）
+    /// 保管場所選択時のハンドラ
     private func handleLocationSelection(locationName: String, isInventoryOnly: Bool) {
         if isNameEmpty {
             alertMessage = "銘柄名は必須項目です。"
@@ -208,17 +208,15 @@ public struct AddFlowView: View {
         isInventoryOnlyFlow = isInventoryOnly
 
         if let foundLoc = locations.first(where: { $0.name == locationName }), foundLoc.isGridEnabled {
-            // ✨ Menu/Dialogが完全に閉じた後にシートが立ち上がるようメインスレッドで非同期設定
             Task { @MainActor in
-                // アニメーション競合を避けるための微小遅延
-                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1秒
+                try? await Task.sleep(nanoseconds: 100_000_000)
                 pendingTargetLocation = foundLoc
             }
         } else {
             if isInventoryOnly {
                 saveToInventory(locationName: locationName)
             } else {
-                executeFullSave(storageLocation: locationName, stockQuantity: 1, targetTab: 3)
+                executeFullSave(storageLocation: locationName, targetTab: 3)
             }
         }
     }
@@ -236,12 +234,11 @@ public struct AddFlowView: View {
     }
 
     /// ステップ5から「テイスティングログ＋ボトルの扱いを選んで保存」する処理
-    private func executeFullSave(storageLocation: String, stockQuantity: Int, targetTab: Int) {
+    private func executeFullSave(storageLocation: String, targetTab: Int) {
         do {
             viewModel.storageLocation = storageLocation
-            viewModel.stockQuantityString = "\(stockQuantity)"
             
-            try viewModel.saveWithStock(modelContext: modelContext, stockQuantity: stockQuantity)
+            try viewModel.saveWithStock(modelContext: modelContext)
             
             AppState.shared.selectedTab = targetTab
         } catch {
@@ -255,7 +252,6 @@ public struct AddFlowView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: StorageLocation.self, BeverageItem.self, TastingLog.self, configurations: config)
     
-    // プレビュー用にデフォルトの保管場所を挿入
     container.mainContext.insert(StorageLocation(name: "ワインセラー", type: .cellar))
     container.mainContext.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator))
 

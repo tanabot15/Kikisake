@@ -44,9 +44,9 @@ public struct AromaStepView: View {
                 Section(header: Text(category.title)) {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 10)], spacing: 10) {
                         ForEach(category.tags, id: \.self) { tag in
-                            let isSelected = viewModel.selectedAromaTags.contains(tag)
-                            // ✨ TastingOptions の正しいメソッド名に修正
-                            let isFree = TastingOptions.isFreeAromaTag(tag, in: category)
+                            // ✨ tag.name を使用して String 同士で比較
+                            let isSelected = viewModel.selectedAromaTags.contains(tag.name)
+                            let isFree = TastingOptions.isFreeAromaTag(tag.name, in: category)
                             let isLocked = !AppState.shared.isProVersion && !isFree
 
                             Button {
@@ -54,9 +54,9 @@ public struct AromaStepView: View {
                                     showPaywall = true
                                 } else {
                                     if isSelected {
-                                        viewModel.selectedAromaTags.removeAll { $0 == tag }
+                                        viewModel.selectedAromaTags.removeAll { $0 == tag.name }
                                     } else {
-                                        viewModel.selectedAromaTags.append(tag)
+                                        viewModel.selectedAromaTags.append(tag.name)
                                     }
                                 }
                             } label: {
@@ -65,7 +65,8 @@ public struct AromaStepView: View {
                                         .font(.subheadline)
                                         .foregroundStyle(isSelected ? Color.accentColor : (isLocked ? .secondary : .secondary))
                                     
-                                    Text(tag)
+                                    // ✨ tag.name をテキストとして表示
+                                    Text(tag.name)
                                         .font(.subheadline)
                                         .fontWeight(isSelected ? .bold : .regular)
                                         .foregroundStyle(isLocked ? .secondary : .primary)

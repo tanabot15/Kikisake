@@ -58,8 +58,7 @@ public struct CellarGridView: View {
                                 let itemInSlot = items.first { item in
                                     item.storageLocation == location.name &&
                                     item.gridRow == row &&
-                                    item.gridColumn == col &&
-                                    item.stockQuantity > 0
+                                    item.gridColumn == col
                                 }
 
                                 CellarGridSlotCell(item: itemInSlot, row: row, column: col)
@@ -89,7 +88,7 @@ public struct CellarGridView: View {
             }
 
             // 「棚の外（未配置の在庫）」アイテムをアイコン形状で表示し、ドラッグでグリッド内へ移動できるようにする
-            let unassignedItems = items.filter { $0.storageLocation == location.name && ($0.gridRow == nil || $0.gridColumn == nil) && $0.stockQuantity > 0 }
+            let unassignedItems = items.filter { $0.storageLocation == location.name && ($0.gridRow == nil || $0.gridColumn == nil) }
             if !unassignedItems.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("棚の外（未配置の在庫）")
@@ -142,7 +141,6 @@ private struct CellarGridSlotCell: View {
         }
         .frame(height: 64)
         .frame(maxWidth: .infinity)
-        // ✨ ドラッグ操作を有効化（アイテムが存在する場合のみUUID文字列を転送）
         .modifier(DraggableModifier(item: item))
     }
 
@@ -181,7 +179,6 @@ private struct CellarGridSlotCell: View {
     }
 }
 
-/// ドラッグ機能を安全に付与するためのモディファイアヘルパー
 private struct DraggableModifier: ViewModifier {
     let item: BeverageItem?
 
@@ -211,7 +208,6 @@ private struct DraggableModifier: ViewModifier {
         name: "Barolo DOCG",
         producer: "Prunotto",
         category: .wine,
-        stockQuantity: 1,
         storageLocation: "自宅メインセラー",
         gridRow: 1,
         gridColumn: 2
@@ -221,7 +217,6 @@ private struct DraggableModifier: ViewModifier {
     container.mainContext.insert(sampleItem)
     
     return NavigationStack {
-        // ✨ プレビューでも onSelectItem を追加してコンパイルエラーを解消
         CellarGridView(
             location: sampleLocation,
             items: [sampleItem],

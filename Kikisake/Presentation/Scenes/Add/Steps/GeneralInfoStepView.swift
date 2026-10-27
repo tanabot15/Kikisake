@@ -181,9 +181,6 @@ public struct GeneralInfoStepView: View {
                 TextField("価格 (円)", text: $viewModel.priceString)
                     .keyboardType(.numberPad)
                     .focused($focusedField, equals: .price)
-                
-                TextField("登録本数 (本)", text: $viewModel.stockQuantityString)
-                    .keyboardType(.numberPad)
             }
         }
         .confirmationDialog("写真の追加方法を選択", isPresented: $isShowingPhotoSourceOptions, titleVisibility: .visible) {
@@ -286,14 +283,13 @@ public struct StoragePickerWithGridMappingView: View {
                         .pickerStyle(.menu)
                     }
 
-                    // すでにそのスロットに他のボトルが入っているか判定
+                    // すでにそのスロットに他のボトルが入っているか判定（1アイテム＝1本化に対応）
                     if let row = viewModel.selectedGridRow,
                        let col = viewModel.selectedGridColumn {
                         let isOccupied = allItems.contains { item in
                             item.storageLocation == currentLocation.name &&
                             item.gridRow == row &&
                             item.gridColumn == col &&
-                            item.stockQuantity > 0 &&
                             item.id != viewModel.sourceItem?.id
                         }
 

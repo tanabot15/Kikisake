@@ -5,7 +5,7 @@ import Foundation
 import SwiftData
 
 public enum PreviewSampleLoader {
-    /// ✨ 本番・デバッグ問わず、デフォルトの保管場所がなければ自動作成する（グリッドデフォルト有効）
+    /// デフォルトの保管場所を作成する
     public static func insertDefaultLocationsIfNeeded(into context: ModelContext) {
         let locationDescriptor = FetchDescriptor<StorageLocation>()
         let existingLocations = (try? context.fetch(locationDescriptor)) ?? []
@@ -31,13 +31,13 @@ public enum PreviewSampleLoader {
         }
     }
 
-    /// サンプルデータを強制的に読み込む（設定画面のボタン用）
+    /// サンプルデータを一意の1本としてそれぞれ独立挿入
     public static func insertSamples(into context: ModelContext) {
         insertDefaultLocationsIfNeeded(into: context)
 
         let encoder = JSONEncoder()
 
-        // 1. ワインのサンプルメタデータ
+        // 1. ワインのサンプルメタデータ（セラー 1行1列目）
         let wineMeta = WineSpecificMetadata(
             wineType: "赤",
             grapeVarieties: "カベルネ・ソーヴィニヨン, メルロ",
@@ -58,7 +58,6 @@ public enum PreviewSampleLoader {
             vintage: "2015",
             alcoholByVolume: 13.5,
             price: 85000,
-            stockQuantity: 1,
             storageLocation: "ワインセラー",
             gridRow: 1,
             gridColumn: 1,
@@ -87,7 +86,7 @@ public enum PreviewSampleLoader {
             item: wineItem
         )
 
-        // 2. 日本酒のサンプルメタデータ
+        // 2. 日本酒のサンプルメタデータ（冷蔵庫 1行1列目）
         let sakeMeta = SakeSpecificMetadata(
             specificName: "特別純米 生原酒",
             riceVariety: "秋田県産酒造好適米",
@@ -104,7 +103,6 @@ public enum PreviewSampleLoader {
             vintage: "2026/04",
             alcoholByVolume: 13.0,
             price: 2400,
-            stockQuantity: 2,
             storageLocation: "冷蔵庫",
             gridRow: 1,
             gridColumn: 1,
@@ -133,7 +131,7 @@ public enum PreviewSampleLoader {
             item: sakeItem
         )
 
-        // 3. ビールのサンプルメタデータ
+        // 3. ビールのサンプルメタデータ（常温 1行1列目）
         let beerMeta = BeerSpecificMetadata(
             beerStyle: "プレミアム・ホワイトビア",
             ibu: "11"
@@ -148,7 +146,6 @@ public enum PreviewSampleLoader {
             vintage: "2026",
             alcoholByVolume: 4.8,
             price: 850,
-            stockQuantity: 3,
             storageLocation: "常温",
             gridRow: 1,
             gridColumn: 1,
@@ -185,10 +182,9 @@ public enum PreviewSampleLoader {
         context.insert(beerLog)
 
         try? context.save()
-        print("📸 [Sample Loader] サンプルデータの強制挿入が完了しました。")
+        print("[Sample Loader] サンプルデータの強制挿入が完了しました。")
     }
 
-    /// アプリ起動時の自動セットアップ用
     public static func insertSamplesIfNeeded(into context: ModelContext) {
         insertDefaultLocationsIfNeeded(into: context)
 

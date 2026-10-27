@@ -16,8 +16,7 @@ public final class BeverageItem {
     public var alcoholByVolume: Double?      // アルコール度数 (例: 14.5)
     public var price: Int?                   // 価格
 
-    // 在庫管理
-    public var stockQuantity: Int
+    // 在庫管理（1アイテム＝1本のボトル）
     public var storageLocation: String
     public var purchaseDate: Date?
 
@@ -51,7 +50,6 @@ public final class BeverageItem {
         vintage: String? = nil,
         alcoholByVolume: Double? = nil,
         price: Int? = nil,
-        stockQuantity: Int = 1,
         storageLocation: String = "ワインセラー",
         purchaseDate: Date? = nil,
         gridRow: Int? = nil,
@@ -68,7 +66,6 @@ public final class BeverageItem {
         self.vintage = vintage
         self.alcoholByVolume = alcoholByVolume
         self.price = price
-        self.stockQuantity = stockQuantity
         self.storageLocation = storageLocation
         self.purchaseDate = purchaseDate
         self.gridRow = gridRow

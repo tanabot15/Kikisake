@@ -14,7 +14,6 @@ public struct BeverageCardView: View {
     let category: BeverageCategory
     let region: String
     let vintage: String?
-    let stockQuantity: Int?
     let rating: Double?
     let imageData: Data?
     let appearanceColorHex: String?
@@ -25,7 +24,6 @@ public struct BeverageCardView: View {
         category: BeverageCategory,
         region: String,
         vintage: String?,
-        stockQuantity: Int?,
         rating: Double?,
         imageData: Data? = nil,
         appearanceColorHex: String? = nil
@@ -35,7 +33,6 @@ public struct BeverageCardView: View {
         self.category = category
         self.region = region
         self.vintage = vintage
-        self.stockQuantity = stockQuantity
         self.rating = rating
         self.imageData = imageData
         self.appearanceColorHex = appearanceColorHex
@@ -126,14 +123,6 @@ public struct BeverageCardView: View {
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                         }
-                    } else if let stockQuantity {
-                        Text("残り \(stockQuantity)本")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color(.systemGray5))
-                            .cornerRadius(6)
                     }
                 }
 
@@ -164,7 +153,6 @@ public struct BeverageCardView: View {
             category: .wine,
             region: "ボルドー, フランス",
             vintage: "2015",
-            stockQuantity: nil,
             rating: 4.8,
             imageData: nil,
             appearanceColorHex: "#991A33" // ルビーレッド
@@ -177,7 +165,6 @@ public struct BeverageCardView: View {
             category: .sake,
             region: "新潟県",
             vintage: "2026",
-            stockQuantity: nil,
             rating: 4.5,
             imageData: nil,
             appearanceColorHex: "#F3E6B3" // 淡金色
@@ -190,7 +177,6 @@ public struct BeverageCardView: View {
             category: .beer,
             region: "バルセロナ, スペイン",
             vintage: "2026",
-            stockQuantity: nil,
             rating: 4.2,
             imageData: nil,
             appearanceColorHex: "#EBC733" // ゴールデン

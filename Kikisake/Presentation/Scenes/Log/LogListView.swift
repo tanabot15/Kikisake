@@ -55,7 +55,6 @@ public struct LogListView: View {
                                                         category: item.category,
                                                         region: item.region,
                                                         vintage: item.vintage,
-                                                        stockQuantity: nil,
                                                         rating: log.rating,
                                                         imageData: item.imageDatas?.first,
                                                         appearanceColorHex: log.appearanceColorHex
@@ -105,15 +104,10 @@ public struct LogListView: View {
                     }
                 }
             }
+            .navigationTitle("ログ")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("テイスティングログ")
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                }
-
-                ToolbarItemGroup(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             viewModel.toggleViewMode()
@@ -123,14 +117,18 @@ public struct LogListView: View {
                     }
                     .tint(.primary)
                     .accessibilityLabel("表示形式の切り替え")
-
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         isShowingFilterSheet = true
                     } label: {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                             .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
                     }
-
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         withAnimation {
                             editMode = (editMode == .active) ? .inactive : .active
@@ -327,7 +325,6 @@ private struct LogTimelineRowView: View {
         category: .wine,
         region: "ボルドー, フランス",
         vintage: "2015",
-        stockQuantity: 1
     )
     let wineLog = TastingLog(
         date: Date(),

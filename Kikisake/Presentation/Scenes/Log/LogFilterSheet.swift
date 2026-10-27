@@ -17,10 +17,10 @@ public struct LogFilterSheet: View {
         return TastingOptions.colorOptions(for: viewModel.selectedCategoryFilter, wineType: viewModel.wineTypeFilter)
     }
 
-    /// 現在の選択カテゴリに基づいた香りタグ一覧のフラットリスト
+    /// 現在の選択カテゴリに基づいた香りタグ一覧のフラットリスト（✨ AromaTag の name を抽出して [String] に変換）
     private var availableAromaTags: [String] {
         let categories = TastingOptions.aromaCategories(for: viewModel.selectedCategoryFilter, wineType: viewModel.wineTypeFilter)
-        return categories.flatMap { $0.tags }
+        return categories.flatMap { $0.tags }.map { $0.name }
     }
 
     public var body: some View {

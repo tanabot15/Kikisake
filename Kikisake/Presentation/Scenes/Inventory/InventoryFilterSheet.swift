@@ -103,11 +103,11 @@ public struct InventoryFilterSheet: View {
     // サンプルデータの作成
     let wineMeta = WineSpecificMetadata(wineType: "赤", grapeVarieties: "カベルネ・ソーヴィニヨン", blendComponents: [], appellation: "Bordeaux")
     let wineJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
-    let sampleWine = BeverageItem(name: "Chateau Margaux", producer: "Margaux", category: .wine, stockQuantity: 2, specificMetadataJSON: wineJSON)
+    let sampleWine = BeverageItem(name: "Chateau Margaux", producer: "Margaux", category: .wine, specificMetadataJSON: wineJSON)
 
     let sakeMeta = SakeSpecificMetadata(specificName: "純米大吟醸", riceVariety: "山田錦", polishingRate: "40%", sakeMeterValue: "+4.0")
     let sakeJSON = String(data: try! encoder.encode(sakeMeta), encoding: .utf8)
-    let sampleSake = BeverageItem(name: "獺祭 磨き二割三分", producer: "旭酒造", category: .sake, stockQuantity: 1, specificMetadataJSON: sakeJSON)
+    let sampleSake = BeverageItem(name: "獺祭 磨き二割三分", producer: "旭酒造", category: .sake, specificMetadataJSON: sakeJSON)
 
     container.mainContext.insert(sampleWine)
     container.mainContext.insert(sampleSake)

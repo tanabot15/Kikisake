@@ -167,7 +167,6 @@ public struct LocationSlotSelectionSheet: View {
             item.storageLocation == location.name &&
             item.gridRow == row &&
             item.gridColumn == col &&
-            item.stockQuantity > 0 &&
             item.id != viewModel.sourceItem?.id
         }
     }
@@ -212,7 +211,6 @@ public struct LocationSlotSelectionSheet: View {
         name: "Château Margaux 2015",
         producer: "Château Margaux",
         category: .wine,
-        stockQuantity: 1,
         storageLocation: "自宅メインセラー",
         gridRow: 1,
         gridColumn: 1
@@ -221,7 +219,6 @@ public struct LocationSlotSelectionSheet: View {
         name: "Opus One 2018",
         producer: "Opus One Winery",
         category: .wine,
-        stockQuantity: 1,
         storageLocation: "自宅メインセラー",
         gridRow: 1,
         gridColumn: 2

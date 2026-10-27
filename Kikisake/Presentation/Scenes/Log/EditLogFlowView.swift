@@ -151,7 +151,6 @@ public struct EditLogFlowView: View {
         region: "ボルドー, フランス",
         vintage: "2015",
         price: 85000,
-        stockQuantity: 1,
         storageLocation: "ワインセラー"
     )
     

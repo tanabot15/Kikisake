@@ -45,7 +45,6 @@ public struct InventoryView: View {
     public var body: some View {
         NavigationStack {
             VStack {
-                // ✨ Pro版の場合は広告バナーを完全非表示
                 if !AppState.shared.isProVersion {
                     ConditionalAdMobBannerView()
                         .frame(height: 50)
@@ -324,8 +323,6 @@ public struct InventoryView: View {
                         if let item = item {
                             selectedItemForAction = item
                             isShowingActionSheet = true
-                        } else {
-                            print("Empty slot tapped at Row: \(row), Col: \(col)")
                         }
                     },
                     onSelectItem: { item in
@@ -408,7 +405,6 @@ public struct InventoryView: View {
             }
             .accessibilityLabel("在庫フィルター")
 
-            // ✨ 無料版かつ保管場所数が3つ以上の場合は Paywall を表示
             Button {
                 if !AppState.shared.isProVersion && locations.count >= 3 {
                     showPaywall = true
@@ -439,7 +435,6 @@ public struct InventoryView: View {
                     showErrorAlert = true
                 }
             }
-            .disabled(item.stockQuantity <= 0)
 
             Button("保存場所を移動する") {
                 targetItemForMove = item
@@ -501,7 +496,6 @@ public struct InventoryView: View {
                 category: item.category,
                 region: item.region,
                 vintage: item.vintage,
-                stockQuantity: item.stockQuantity,
                 rating: averageRating,
                 imageData: item.imageDatas?.first
             )
