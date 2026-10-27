@@ -3,8 +3,8 @@
 
 import SwiftUI
 import SwiftData
+import UniformTypeIdentifiers
 
-/// [Tab 5] 設定画面
 public struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable private var appState = AppState.shared
@@ -14,10 +14,24 @@ public struct SettingsView: View {
     @State private var showLoadedAlert: Bool = false
     @State private var showPaywall: Bool = false
 
+    // MARK: - バックアップ/リストア用 State
+    @State private var isExporting: Bool = false
+    @State private var exportDocument: BackupFileDocument? = nil
+    @State private var exportFileName: String = ""
+
+    @State private var isImporting: Bool = false
+    @State private var showRestoreConfirmation: Bool = false
+    @State private var selectedImportURL: URL? = nil
+
+    @State private var isProcessing: Bool = false
+    @State private var alertTitle: String = ""
+    @State private var alertMessage: String = ""
+    @State private var showAlert: Bool = false
+
     public var body: some View {
         NavigationStack {
             Form {
-                // MARK: - 0. Kikisake Pro 案内カード（リッチなグラデーション仕様）
+                // MARK: - 0. Kikisake Pro 案内カード
                 Section {
                     Button {
                         showPaywall = true
@@ -85,8 +99,8 @@ public struct SettingsView: View {
                     .foregroundStyle(.primary)
                 }
 
-                // MARK: - 2. データ・管理
-                Section("データ管理") {
+                // MARK: - 2. データ・バックアップ管理
+                Section("データ管理・バックアップ") {
                     Button {
                         showOnboarding = true
                     } label: {
@@ -97,7 +111,22 @@ public struct SettingsView: View {
                         PreviewSampleLoader.insertSamples(into: modelContext)
                         showLoadedAlert = true
                     } label: {
-                        Text("サンプルデータを読み込み")
+                        Text("サンプルデータを読み込む")
+                    }
+
+                    // バックアップ（エクスポート）ボタン
+                    Button {
+                        handleExport()
+                    } label: {
+                        Text("バックアップを作成する (JSON)")
+                    }
+
+                    // リストア（インポート）ボタン
+                    Button {
+                        isImporting = true
+                    } label: {
+                        Text("データを復元する")
+                            .foregroundStyle(.orange)
                     }
                 }
 
@@ -125,6 +154,69 @@ public struct SettingsView: View {
             }
             .navigationTitle("設定")
             .navigationBarTitleDisplayMode(.inline)
+            .disabled(isProcessing)
+            .overlay {
+                if isProcessing {
+                    ZStack {
+                        Color.black.opacity(0.3).ignoresSafeArea()
+                        VStack(spacing: 12) {
+                            ProgressView()
+                                .controlSize(.large)
+                                .tint(.white)
+                            Text("処理中...")
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                        }
+                        .padding(24)
+                        .background(Color(.darkGray))
+                        .cornerRadius(16)
+                    }
+                }
+            }
+            .fileExporter(
+                isPresented: $isExporting,
+                document: exportDocument,
+                contentType: .json,
+                defaultFilename: exportFileName
+            ) { result in
+                switch result {
+                case .success(let url):
+                    presentAlert(title: "成功", message: "バックアップを正常に保存しました:\n\(url.lastPathComponent)")
+                case .failure(let error):
+                    presentAlert(title: "エラー", message: "ファイルの書き出しに失敗しました: \(error.localizedDescription)")
+                }
+            }
+            .fileImporter(
+                isPresented: $isImporting,
+                allowedContentTypes: [.json],
+                allowsMultipleSelection: false
+            ) { result in
+                switch result {
+                case .success(let urls):
+                    guard let url = urls.first else { return }
+                    selectedImportURL = url
+                    showRestoreConfirmation = true
+                case .failure(let error):
+                    presentAlert(title: "エラー", message: "ファイルの読み込みに失敗しました: \(error.localizedDescription)")
+                }
+            }
+            .confirmationDialog(
+                "データの復元",
+                isPresented: $showRestoreConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("既存データを上書きして復元", role: .destructive) {
+                    executeRestore(strategy: .replaceAll)
+                }
+                Button("既存データにマージ", role: .none) {
+                    executeRestore(strategy: .merge)
+                }
+                Button("キャンセル", role: .cancel) {
+                    selectedImportURL = nil
+                }
+            } message: {
+                Text("「上書き復元」を選択すると、現在のアプリ内の全データが上書きされます。この操作は取り消せません。")
+            }
             .sheet(isPresented: $showOnboarding) {
                 BoardingView(isPresented: $showOnboarding)
             }
@@ -136,7 +228,62 @@ public struct SettingsView: View {
             } message: {
                 Text("サンプルデータが追加されました。")
             }
+            .alert(alertTitle, isPresented: $showAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(alertMessage)
+            }
         }
+    }
+
+    // MARK: - Action Handlers
+
+    private func handleExport() {
+        isProcessing = true
+        Task {
+            do {
+                let data = try BackupManager.shared.exportData(modelContext: modelContext)
+                exportDocument = BackupFileDocument(payloadData: data)
+                exportFileName = BackupManager.shared.generateBackupFileName()
+                isProcessing = false
+                isExporting = true
+            } catch {
+                isProcessing = false
+                presentAlert(title: "エクスポート失敗", message: error.localizedDescription)
+            }
+        }
+    }
+
+    private func executeRestore(strategy: RestoreStrategy) {
+        guard let url = selectedImportURL else { return }
+        isProcessing = true
+
+        Task {
+            do {
+                // セキュリティスコープアクセスの取得（Filesアプリ等の安全なパーミッション処理）
+                guard url.startAccessingSecurityScopedResource() else {
+                    throw BackupError.importFailed("ファイルアクセスの権限が取得できませんでした。")
+                }
+                defer { url.stopAccessingSecurityScopedResource() }
+
+                let data = try Data(contentsOf: url)
+                try BackupManager.shared.importData(from: data, strategy: strategy, modelContext: modelContext)
+
+                isProcessing = false
+                selectedImportURL = nil
+                presentAlert(title: "復元完了", message: "バックアップからの復元が正常に完了しました。")
+            } catch {
+                isProcessing = false
+                selectedImportURL = nil
+                presentAlert(title: "リストア失敗", message: error.localizedDescription)
+            }
+        }
+    }
+
+    private func presentAlert(title: String, message: String) {
+        alertTitle = title
+        alertMessage = message
+        showAlert = true
     }
 }
 
