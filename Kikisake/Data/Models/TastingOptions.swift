@@ -113,7 +113,7 @@ public enum TastingOptions {
                     ColorOption(name: String(localized: "ゴールデン・イエロー"), color: Color(red: 0.92, green: 0.82, blue: 0.3), hex: "#EBD14D", isPro: true),
                     ColorOption(name: String(localized: "ゴールド"), color: Color(red: 0.88, green: 0.75, blue: 0.2), hex: "#E0BF33", isPro: false),
                     ColorOption(name: String(localized: "ハニー"), color: Color(red: 0.85, green: 0.70, blue: 0.3), hex: "#D9B34D", isPro: true),
-                    ColorOption(name: String(localized: "アンバー"), color: Color(red: 0.80, green: 0.62, blue: 0.2), hex: "#CC9E33", isPro: false)
+                    ColorOption(name: String(localized: "アンバー"), color: Color(red: 0.80, green: 0.62, blue: 0.2), hex: "#CC9E33", isPro: true)
                 ]
             } else if wineType == "ロゼ" {
                 return [
@@ -127,7 +127,7 @@ public enum TastingOptions {
                     ColorOption(name: String(localized: "アプリコット"), color: Color(red: 0.95, green: 0.65, blue: 0.35), hex: "#F3A659", isPro: true),
                     ColorOption(name: String(localized: "アンバー・オレンジ"), color: Color(red: 0.92, green: 0.55, blue: 0.2), hex: "#EB8C33", isPro: false),
                     ColorOption(name: String(localized: "コッパー"), color: Color(red: 0.85, green: 0.48, blue: 0.25), hex: "#D97A40", isPro: true),
-                    ColorOption(name: String(localized: "ブロンズ"), color: Color(red: 0.80, green: 0.50, blue: 0.3), hex: "#CC804D", isPro: false)
+                    ColorOption(name: String(localized: "ブロンズ"), color: Color(red: 0.80, green: 0.50, blue: 0.3), hex: "#CC804D", isPro: true)
                 ]
             } else {
                 return [
@@ -137,7 +137,7 @@ public enum TastingOptions {
                     ColorOption(name: String(localized: "ルビーレッド"), color: Color(red: 0.6, green: 0.1, blue: 0.2), hex: "#991A33", isPro: false),
                     ColorOption(name: String(localized: "レンガ/ブリック"), color: Color(red: 0.6, green: 0.25, blue: 0.2), hex: "#994033", isPro: true),
                     ColorOption(name: String(localized: "ガーネット"), color: Color(red: 0.5, green: 0.15, blue: 0.2), hex: "#802633", isPro: false),
-                    ColorOption(name: String(localized: "パープル"), color: Color(red: 0.45, green: 0.1, blue: 0.3), hex: "#731A4D", isPro: false),
+                    ColorOption(name: String(localized: "パープル"), color: Color(red: 0.45, green: 0.1, blue: 0.3), hex: "#731A4D", isPro: true),
                     ColorOption(name: String(localized: "ダーク・ルビー"), color: Color(red: 0.45, green: 0.05, blue: 0.15), hex: "#730D26", isPro: true),
                     ColorOption(name: String(localized: "ダーク・ガーネット"), color: Color(red: 0.45, green: 0.2, blue: 0.2), hex: "#733333", isPro: true),
                     ColorOption(name: String(localized: "マホガニー"), color: Color(red: 0.4, green: 0.15, blue: 0.1), hex: "#66261A", isPro: true)
@@ -203,13 +203,13 @@ public enum TastingOptions {
                         title: String(localized: "果実"),
                         tags: [
                             AromaTag(String(localized: "柑橘類"), isPro: false),
-                            AromaTag(String(localized: "青リンゴ"), isPro: true),
+                            AromaTag(String(localized: "青リンゴ"), isPro: false),
                             AromaTag(String(localized: "リンゴ"), isPro: false),
                             AromaTag(String(localized: "洋梨"), isPro: false),
                             AromaTag(String(localized: "マスカット"), isPro: true),
                             AromaTag(String(localized: "花梨"), isPro: true),
-                            AromaTag(String(localized: "パッションフルーツ"), isPro: false),
-                            AromaTag(String(localized: "白桃"), isPro: true),
+                            AromaTag(String(localized: "パッションフルーツ"), isPro: true),
+                            AromaTag(String(localized: "白桃"), isPro: false),
                             AromaTag(String(localized: "アプリコット"), isPro: true),
                             AromaTag(String(localized: "パイナップル"), isPro: true),
                             AromaTag(String(localized: "ライチ"), isPro: false),
@@ -220,15 +220,15 @@ public enum TastingOptions {
                     AromaCategory(
                         title: String(localized: "花・植物"),
                         tags: [
-                            AromaTag(String(localized: "スイカズラ"), isPro: false),
+                            AromaTag(String(localized: "スイカズラ"), isPro: true),
                             AromaTag(String(localized: "アカシア"), isPro: false),
                             AromaTag(String(localized: "白バラ"), isPro: true),
                             AromaTag(String(localized: "キンモクセイ"), isPro: true),
-                            AromaTag(String(localized: "菩提樹"), isPro: false),
-                            AromaTag(String(localized: "ミント"), isPro: true),
+                            AromaTag(String(localized: "菩提樹"), isPro: true),
+                            AromaTag(String(localized: "ミント"), isPro: false),
                             AromaTag(String(localized: "アニス"), isPro: true),
-                            AromaTag(String(localized: "ヴェルヴェーヌ"), isPro: false),
-                            AromaTag(String(localized: "草"), isPro: true),
+                            AromaTag(String(localized: "ヴェルヴェーヌ"), isPro: true),
+                            AromaTag(String(localized: "草"), isPro: false),
                             AromaTag(String(localized: "タイム"), isPro: true),
                             AromaTag(String(localized: "フレッシュアーモンド"), isPro: true),
                             AromaTag(String(localized: "ヘーゼルナッツ"), isPro: true)
@@ -237,8 +237,8 @@ public enum TastingOptions {
                     AromaCategory(
                         title: String(localized: "その他"),
                         tags: [
-                            AromaTag(String(localized: "石灰"), isPro: false),
-                            AromaTag(String(localized: "火打石"), isPro: false),
+                            AromaTag(String(localized: "石灰"), isPro: true),
+                            AromaTag(String(localized: "火打石"), isPro: true),
                             AromaTag(String(localized: "貝殻"), isPro: true),
                             AromaTag(String(localized: "鉱物"), isPro: true),
                             AromaTag(String(localized: "海の香り"), isPro: true),
@@ -247,12 +247,12 @@ public enum TastingOptions {
                             AromaTag(String(localized: "煙・薫製"), isPro: true),
                             AromaTag(String(localized: "シナモン"), isPro: true),
                             AromaTag(String(localized: "白胡椒"), isPro: false),
-                            AromaTag(String(localized: "コリアンダー"), isPro: false),
+                            AromaTag(String(localized: "コリアンダー"), isPro: true),
                             AromaTag(String(localized: "丁字"), isPro: true),
                             AromaTag(String(localized: "香木"), isPro: true),
                             AromaTag(String(localized: "ジンジャーブレッド"), isPro: true),
-                            AromaTag(String(localized: "ペトロール"), isPro: false),
-                            AromaTag(String(localized: "パン・ド・ミ"), isPro: false),
+                            AromaTag(String(localized: "ペトロール"), isPro: true),
+                            AromaTag(String(localized: "パン・ド・ミ"), isPro: true),
                             AromaTag(String(localized: "乳製品"), isPro: true),
                             AromaTag(String(localized: "フェノール"), isPro: true),
                             AromaTag(String(localized: "麝香"), isPro: true),
@@ -260,7 +260,7 @@ public enum TastingOptions {
                             AromaTag(String(localized: "硫黄"), isPro: true),
                             AromaTag(String(localized: "ワックス"), isPro: true),
                             AromaTag(String(localized: "蜜蝋"), isPro: true),
-                            AromaTag(String(localized: "蜂蜜"), isPro: true)
+                            AromaTag(String(localized: "蜂蜜"), isPro: false)
                         ]
                     )
                 ]
@@ -271,10 +271,10 @@ public enum TastingOptions {
                         tags: [
                             AromaTag(String(localized: "ストロベリー"), isPro: false),
                             AromaTag(String(localized: "ラズベリー"), isPro: false),
-                            AromaTag(String(localized: "チェリー"), isPro: true),
+                            AromaTag(String(localized: "チェリー"), isPro: false),
                             AromaTag(String(localized: "赤スグリ"), isPro: true),
-                            AromaTag(String(localized: "桃"), isPro: true),
-                            AromaTag(String(localized: "柑橘類"), isPro: true)
+                            AromaTag(String(localized: "桃"), isPro: false),
+                            AromaTag(String(localized: "柑橘類"), isPro: false)
                         ]
                     ),
                     AromaCategory(
@@ -283,16 +283,16 @@ public enum TastingOptions {
                             AromaTag(String(localized: "ローズ"), isPro: false),
                             AromaTag(String(localized: "ゼラニウム"), isPro: true),
                             AromaTag(String(localized: "グリーンリーフ"), isPro: true),
-                            AromaTag(String(localized: "アカシア"), isPro: false)
+                            AromaTag(String(localized: "アカシア"), isPro: true)
                         ]
                     ),
                     AromaCategory(
                         title: String(localized: "その他"),
                         tags: [
-                            AromaTag(String(localized: "キャンディ"), isPro: true),
+                            AromaTag(String(localized: "キャンディ"), isPro: false),
                             AromaTag(String(localized: "白コショウ"), isPro: true),
                             AromaTag(String(localized: "ミネラル"), isPro: true),
-                            AromaTag(String(localized: "ハチミツ"), isPro: true)
+                            AromaTag(String(localized: "ハチミツ"), isPro: false)
                         ]
                     )
                 ]
@@ -314,18 +314,18 @@ public enum TastingOptions {
                             AromaTag(String(localized: "カモミール"), isPro: false),
                             AromaTag(String(localized: "ドライフラワー"), isPro: true),
                             AromaTag(String(localized: "紅茶の葉"), isPro: false),
-                            AromaTag(String(localized: "ハーブ"), isPro: true)
+                            AromaTag(String(localized: "ハーブ"), isPro: false)
                         ]
                     ),
                     AromaCategory(
                         title: String(localized: "その他"),
                         tags: [
-                            AromaTag(String(localized: "ナッツ"), isPro: true),
-                            AromaTag(String(localized: "スパイス"), isPro: true),
-                            AromaTag(String(localized: "ハチミツ"), isPro: true),
+                            AromaTag(String(localized: "ナッツ"), isPro: false),
+                            AromaTag(String(localized: "スパイス"), isPro: false),
+                            AromaTag(String(localized: "ハチミツ"), isPro: false),
                             AromaTag(String(localized: "酵母"), isPro: true),
                             AromaTag(String(localized: "鉱物"), isPro: true),
-                            AromaTag(String(localized: "トースト"), isPro: true)
+                            AromaTag(String(localized: "トースト"), isPro: false)
                         ]
                     )
                 ]
@@ -347,20 +347,20 @@ public enum TastingOptions {
                     AromaCategory(
                         title: String(localized: "花・植物"),
                         tags: [
-                            AromaTag(String(localized: "バラ"), isPro: true),
+                            AromaTag(String(localized: "バラ"), isPro: false),
                             AromaTag(String(localized: "スミレ"), isPro: false),
-                            AromaTag(String(localized: "牡丹"), isPro: false),
+                            AromaTag(String(localized: "牡丹"), isPro: true),
                             AromaTag(String(localized: "ゼラニウム"), isPro: true),
                             AromaTag(String(localized: "ピーマン"), isPro: true),
                             AromaTag(String(localized: "トマト"), isPro: true),
                             AromaTag(String(localized: "黒オリーブ"), isPro: true),
                             AromaTag(String(localized: "メントール"), isPro: true),
-                            AromaTag(String(localized: "シダ"), isPro: false),
+                            AromaTag(String(localized: "シダ"), isPro: true),
                             AromaTag(String(localized: "ローリエ"), isPro: true),
-                            AromaTag(String(localized: "杉"), isPro: false),
+                            AromaTag(String(localized: "杉"), isPro: true),
                             AromaTag(String(localized: "針葉樹"), isPro: true),
                             AromaTag(String(localized: "ユーカリ"), isPro: true),
-                            AromaTag(String(localized: "ドライハーブ"), isPro: true)
+                            AromaTag(String(localized: "ドライハーブ"), isPro: false)
                         ]
                     ),
                     AromaCategory(
@@ -369,17 +369,17 @@ public enum TastingOptions {
                             AromaTag(String(localized: "タバコ"), isPro: true),
                             AromaTag(String(localized: "紅茶"), isPro: false),
                             AromaTag(String(localized: "スーボア"), isPro: true),
-                            AromaTag(String(localized: "キノコ"), isPro: true),
+                            AromaTag(String(localized: "キノコ"), isPro: false),
                             AromaTag(String(localized: "トリュフ"), isPro: true),
                             AromaTag(String(localized: "黒胡椒"), isPro: false),
-                            AromaTag(String(localized: "丁子"), isPro: false),
-                            AromaTag(String(localized: "シナモン"), isPro: true),
+                            AromaTag(String(localized: "丁子"), isPro: true),
+                            AromaTag(String(localized: "シナモン"), isPro: false),
                             AromaTag(String(localized: "ナツメグ"), isPro: true),
                             AromaTag(String(localized: "甘草"), isPro: true),
                             AromaTag(String(localized: "ヴァニラ"), isPro: false),
                             AromaTag(String(localized: "ロースト"), isPro: false),
-                            AromaTag(String(localized: "コーヒー"), isPro: true),
-                            AromaTag(String(localized: "チョコレート"), isPro: true),
+                            AromaTag(String(localized: "コーヒー"), isPro: false),
+                            AromaTag(String(localized: "チョコレート"), isPro: false),
                             AromaTag(String(localized: "煙・薫製"), isPro: true),
                             AromaTag(String(localized: "動物的なニュアンス"), isPro: true),
                             AromaTag(String(localized: "鉄分"), isPro: true),
@@ -414,10 +414,10 @@ public enum TastingOptions {
                 AromaCategory(
                     title: String(localized: "花・植物"),
                     tags: [
-                        AromaTag(String(localized: "スイカズラ"), isPro: false),
+                        AromaTag(String(localized: "スイカズラ"), isPro: true),
                         AromaTag(String(localized: "スミレ"), isPro: true),
                         AromaTag(String(localized: "アカシア"), isPro: true),
-                        AromaTag(String(localized: "菩提樹"), isPro: false),
+                        AromaTag(String(localized: "菩提樹"), isPro: true),
                         AromaTag(String(localized: "セルフィーユ"), isPro: true),
                         AromaTag(String(localized: "青竹"), isPro: false),
                         AromaTag(String(localized: "新緑"), isPro: false),
@@ -434,7 +434,7 @@ public enum TastingOptions {
                         AromaTag(String(localized: "朝鮮人参"), isPro: true),
                         AromaTag(String(localized: "マッシュルーム"), isPro: false),
                         AromaTag(String(localized: "椎茸"), isPro: true),
-                        AromaTag(String(localized: "丁字"), isPro: false),
+                        AromaTag(String(localized: "丁字"), isPro: true),
                         AromaTag(String(localized: "シナモン"), isPro: true),
                         AromaTag(String(localized: "ビターチョコレート"), isPro: true),
                         AromaTag(String(localized: "栗"), isPro: true),
@@ -445,22 +445,22 @@ public enum TastingOptions {
                         AromaTag(String(localized: "上新粉"), isPro: false),
                         AromaTag(String(localized: "白玉団子"), isPro: false),
                         AromaTag(String(localized: "杏仁豆腐"), isPro: true),
-                        AromaTag(String(localized: "生クリーム"), isPro: true),
+                        AromaTag(String(localized: "生クリーム"), isPro: false),
                         AromaTag(String(localized: "サワークリーム"), isPro: false),
                         AromaTag(String(localized: "ヨーグルト"), isPro: false),
                         AromaTag(String(localized: "発酵バター"), isPro: true),
                         AromaTag(String(localized: "クリームチーズ"), isPro: true),
                         AromaTag(String(localized: "粘土"), isPro: true),
                         AromaTag(String(localized: "腐葉土"), isPro: true),
-                        AromaTag(String(localized: "石灰"), isPro: false),
+                        AromaTag(String(localized: "石灰"), isPro: true),
                         AromaTag(String(localized: "カラメル"), isPro: false),
                         AromaTag(String(localized: "コーヒー"), isPro: false),
                         AromaTag(String(localized: "醤油"), isPro: false),
                         AromaTag(String(localized: "ヨード香"), isPro: true),
                         AromaTag(String(localized: "蜂蜜"), isPro: false),
                         AromaTag(String(localized: "スモーク香"), isPro: true),
-                        AromaTag(String(localized: "カビ"), isPro: false),
-                        AromaTag(String(localized: "タマネギ"), isPro: false),
+                        AromaTag(String(localized: "カビ"), isPro: true),
+                        AromaTag(String(localized: "タマネギ"), isPro: true),
                         AromaTag(String(localized: "熟成チーズ"), isPro: true)
                     ]
                 )
