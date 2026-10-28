@@ -46,7 +46,7 @@ public final class InventoryViewModel {
 
     public func categorySummary(for locationName: String, in items: [BeverageItem]) -> String {
         let locationItems = filteredItems(items, for: locationName)
-        guard !locationItems.isEmpty else { return "在庫なし" }
+        guard !locationItems.isEmpty else { return String(localized: "在庫なし") }
 
         var counts: [BeverageCategory: Int] = [:]
         for item in locationItems {
@@ -55,7 +55,7 @@ public final class InventoryViewModel {
 
         let summaryParts = BeverageCategory.allCases.compactMap { category -> String? in
             guard let count = counts[category], count > 0 else { return nil }
-            return "\(category.displayName) \(count)本"
+            return String(format: String(localized: "%@ %d本"), category.displayName, count)
         }
 
         return summaryParts.joined(separator: " / ")
@@ -150,7 +150,6 @@ public final class InventoryViewModel {
         try? modelContext.save()
     }
     
-    /// ✨ グリッドサイズ更新および範囲外ボトルの自動「未配置化」処理
     public func updateGridSize(for location: StorageLocation, newRows: Int, newColumns: Int, allItems: [BeverageItem], modelContext: ModelContext) {
         location.gridRows = newRows
         location.gridColumns = newColumns

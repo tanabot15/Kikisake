@@ -23,43 +23,43 @@ public struct AddLocationSheetView: View {
     public var body: some View {
         NavigationStack {
             Form {
-                Section("保管場所の名称") {
-                    TextField("例: 自宅メインセラー", text: $name)
+                Section(String(localized: "保管場所の名称")) {
+                    TextField(String(localized: "例: 自宅メインセラー"), text: $name)
                 }
 
-                Section("種類") {
-                    Picker("種類", selection: $selectedType) {
+                Section(String(localized: "種類")) {
+                    Picker(String(localized: "種類"), selection: $selectedType) {
                         ForEach(StorageCategoryType.allCases) { type in
-                            Text(type.rawValue).tag(type)
+                            Text(type.localizedName).tag(type)
                         }
                     }
                     .pickerStyle(.menu)
                 }
 
-                Section("補足メモ (任意)") {
-                    TextField("例: 温度14度設定", text: $memo)
+                Section(String(localized: "補足メモ (任意)")) {
+                    TextField(String(localized: "例: 温度14度設定"), text: $memo)
                 }
 
                 // セラー構造（グリッド）設定セクション
-                Section("セラー構造・棚番マッピング") {
-                    Toggle("グリッドで視覚管理する", isOn: $isGridEnabled)
+                Section(String(localized: "セラー構造・棚番マッピング")) {
+                    Toggle(String(localized: "グリッドで視覚管理する"), isOn: $isGridEnabled)
                     
                     if isGridEnabled {
-                        Stepper("段数（行）: \(gridRows)段", value: $gridRows, in: 1...10)
-                        Stepper("1段あたりの本数（列）: \(gridColumns)本", value: $gridColumns, in: 1...12)
+                        Stepper(String(format: String(localized: "段数（行）: %d段"), gridRows), value: $gridRows, in: 1...10)
+                        Stepper(String(format: String(localized: "1段あたりの本数（列）: %d本"), gridColumns), value: $gridColumns, in: 1...12)
                     }
                 }
             }
-            .navigationTitle("保管場所の追加")
+            .navigationTitle(String(localized: "保管場所の追加"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("キャンセル") {
+                    Button(String(localized: "キャンセル")) {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("追加") {
+                    Button(String(localized: "追加")) {
                         let newLoc = StorageLocation(
                             name: name,
                             type: selectedType,

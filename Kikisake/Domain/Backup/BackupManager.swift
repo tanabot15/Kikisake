@@ -17,10 +17,14 @@ public enum BackupError: LocalizedError {
 
     public var errorDescription: String? {
         switch self {
-        case .exportFailed(let msg): return "エクスポートに失敗しました: \(msg)"
-        case .importFailed(let msg): return "リストアに失敗しました: \(msg)"
-        case .unsupportedSchemaVersion(let ver): return "サポートされていないデータバージョンです (Version: \(ver))"
-        case .invalidFile: return "無効なバックアップファイルです。"
+        case .exportFailed(let msg):
+            return String(localized: "エクスポートに失敗しました: \(msg)")
+        case .importFailed(let msg):
+            return String(localized: "リストアに失敗しました: \(msg)")
+        case .unsupportedSchemaVersion(let ver):
+            return String(localized: "サポートされていないデータバージョンです (Version: \(ver))")
+        case .invalidFile:
+            return String(localized: "無効なバックアップファイルです。")
         }
     }
 }
@@ -43,7 +47,6 @@ public final class BackupManager {
     /// データのエクスポート（JSON Dataを作成）
     public func exportData(modelContext: ModelContext) throws -> Data {
         do {
-            // 全モデルのフェッチ
             let locations = try modelContext.fetch(FetchDescriptor<StorageLocation>())
             let items = try modelContext.fetch(FetchDescriptor<BeverageItem>())
 
@@ -77,10 +80,9 @@ public final class BackupManager {
         do {
             payload = try decoder.decode(BackupPayload.self, from: data)
         } catch {
-            throw BackupError.importFailed("JSON解析エラー: \(error.localizedDescription)")
+            throw BackupError.importFailed(error.localizedDescription)
         }
 
-        // バージョンチェック
         guard payload.schemaVersion <= Self.currentSchemaVersion else {
             throw BackupError.unsupportedSchemaVersion(payload.schemaVersion)
         }
@@ -88,22 +90,18 @@ public final class BackupManager {
         do {
             switch strategy {
             case .replaceAll:
-                // 1. 既存データをクリア
                 try clearAllData(modelContext: modelContext)
 
-                // 2. StorageLocation の復元
                 for locDTO in payload.storageLocations {
                     modelContext.insert(locDTO.toModel())
                 }
 
-                // 3. BeverageItem と TastingLog の復元
                 for itemDTO in payload.beverageItems {
                     let newItem = itemDTO.toModel()
                     modelContext.insert(newItem)
                 }
 
             case .merge:
-                // 既存のStorageLocationを取得
                 let existingLocations = try modelContext.fetch(FetchDescriptor<StorageLocation>())
                 let existingLocMap = Dictionary(uniqueKeysWithValues: existingLocations.map { ($0.id, $0) })
 
@@ -120,7 +118,6 @@ public final class BackupManager {
                     }
                 }
 
-                // 既存のBeverageItemを取得
                 let existingItems = try modelContext.fetch(FetchDescriptor<BeverageItem>())
                 let existingItemMap = Dictionary(uniqueKeysWithValues: existingItems.map { ($0.id, $0) })
 
@@ -145,14 +142,12 @@ public final class BackupManager {
                 }
             }
 
-            // 保存
             try modelContext.save()
         } catch {
             throw BackupError.importFailed(error.localizedDescription)
         }
     }
 
-    /// データベース上のすべてのエンティティを安全に削除
     private func clearAllData(modelContext: ModelContext) throws {
         try modelContext.delete(model: TastingLog.self)
         try modelContext.delete(model: BeverageItem.self)

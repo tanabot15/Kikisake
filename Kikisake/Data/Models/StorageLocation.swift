@@ -54,6 +54,11 @@ public enum StorageCategoryType: String, CaseIterable, Codable, Identifiable {
 
     public var id: String { rawValue }
 
+    /// ✨ Localizable.xcstrings でローカライズされた表示名を取得
+    public var localizedName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
+
     public var defaultIconName: String {
         switch self {
         case .cellar: return "cabinet.fill"

@@ -53,13 +53,13 @@ public struct TastingCardShareView: View {
                         // 詳細スペック (生産地, ヴィンテージ, 度数, 固有メタデータ)
                         VStack(alignment: .leading, spacing: 2) {
                             if !item.region.isEmpty {
-                                specRow(title: "生産地", value: item.region)
+                                specRow(title: String(localized: "生産地"), value: item.region)
                             }
                             if let vintage = item.vintage, !vintage.isEmpty {
-                                specRow(title: "VT/年月", value: vintage)
+                                specRow(title: String(localized: "VT/年月"), value: vintage)
                             }
                             if let abv = item.alcoholByVolume {
-                                specRow(title: "度数", value: String(format: "%.1f%%", abv))
+                                specRow(title: String(localized: "度数"), value: String(format: "%.1f%%", abv))
                             }
 
                             // 酒種固有のメタデータ
@@ -71,31 +71,31 @@ public struct TastingCardShareView: View {
                                             ? meta.blendComponents.map { "\($0.variety)(\($0.percentage.map { "\($0)%" } ?? ""))" }.joined(separator: ", ")
                                             : meta.grapeVarieties
                                         if !varietiesText.isEmpty {
-                                            specRow(title: "品種", value: varietiesText)
+                                            specRow(title: String(localized: "品種"), value: varietiesText)
                                         }
                                         if let appellation = meta.appellation, !appellation.isEmpty {
-                                            specRow(title: "呼称", value: appellation)
+                                            specRow(title: String(localized: "呼称"), value: appellation)
                                         }
                                     }
                                 case .sake:
                                     if let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data) {
                                         if !meta.specificName.isEmpty {
-                                            specRow(title: "特定名称", value: meta.specificName)
+                                            specRow(title: String(localized: "特定名称"), value: meta.specificName)
                                         }
                                         if !meta.riceVariety.isEmpty {
-                                            specRow(title: "使用米", value: meta.riceVariety)
+                                            specRow(title: String(localized: "使用米"), value: meta.riceVariety)
                                         }
                                         if !meta.polishingRate.isEmpty {
-                                            specRow(title: "精米歩合", value: meta.polishingRate)
+                                            specRow(title: String(localized: "精米歩合"), value: meta.polishingRate)
                                         }
                                     }
                                 case .beer:
                                     if let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data) {
                                         if !meta.beerStyle.isEmpty {
-                                            specRow(title: "スタイル", value: meta.beerStyle)
+                                            specRow(title: String(localized: "スタイル"), value: meta.beerStyle)
                                         }
                                         if !meta.ibu.isEmpty {
-                                            specRow(title: "IBU", value: meta.ibu)
+                                            specRow(title: String(localized: "IBU"), value: meta.ibu)
                                         }
                                     }
                                 }

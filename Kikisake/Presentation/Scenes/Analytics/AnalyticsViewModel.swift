@@ -10,6 +10,11 @@ public enum AnalyticsSection: String, CaseIterable, Identifiable {
     case evaluation = "評価・好み"
 
     public var id: String { rawValue }
+
+    /// ✨ Localizable.xcstrings 対応の表示名
+    public var displayName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
 }
 
 /// 期間フィルターの種類
@@ -20,6 +25,11 @@ public enum AnalyticsTimeFilter: String, CaseIterable, Identifiable {
     case year1 = "直近1年"
 
     public var id: String { rawValue }
+
+    /// ✨ Localizable.xcstrings 対応の表示名
+    public var displayName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
 
     func evaluate(date: Date, relativeTo referenceDate: Date = Date()) -> Bool {
         let calendar = Calendar.current
@@ -59,17 +69,13 @@ public final class AnalyticsViewModel {
 
     public init() {}
 
-    /// 期間、酒種、およびサブタイプフィルター適用済みのログを取得する
     public func filteredLogs(from logs: [TastingLog]) -> [TastingLog] {
         logs.filter { log in
-            // 1. 期間判定
             guard selectedTimeFilter.evaluate(date: log.date) else { return false }
             
-            // 2. 酒種 (カテゴリ) 判定
             if let category = selectedCategoryFilter {
                 guard let item = log.item, item.category == category else { return false }
                 
-                // 3. サブカテゴリ判定
                 if let subCategory = selectedSubCategoryFilter {
                     guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else { return false }
                     
@@ -91,19 +97,16 @@ public final class AnalyticsViewModel {
         }
     }
 
-    /// デフォルト状態（全期間・全酒種・サブタイプなし）から何等かのフィルター条件が追加されているか
     public var hasActiveFilters: Bool {
         selectedTimeFilter != .all || selectedCategoryFilter != nil || selectedSubCategoryFilter != nil
     }
 
-    /// フィルター条件をデフォルトにリセットする
     public func resetFilters() {
         self.selectedTimeFilter = .all
         self.selectedCategoryFilter = nil
         self.selectedSubCategoryFilter = nil
     }
 
-    /// 選択された酒種に応じて、ログから動的に存在するサブタイプリストを取得する
     public func availableSubCategories(from logs: [TastingLog]) -> [String] {
         guard let category = selectedCategoryFilter else { return [] }
         var subTypes = Set<String>()
@@ -132,13 +135,11 @@ public final class AnalyticsViewModel {
         return Array(subTypes).sorted()
     }
 
-    /// 酒種（メインカテゴリ）比率を取得する
     public func categoryRatio(from logs: [TastingLog]) -> [BeverageCategory: Int] {
         let targetLogs = filteredLogs(from: logs)
         return calculateUseCase.calculateCategoryRatio(from: targetLogs)
     }
 
-    /// 選択された酒種に応じたサブタイプ別比率（wineType / specificName / beerStyle）を取得する
     public func subCategoryRatio(from logs: [TastingLog]) -> [String: Int] {
         guard let category = selectedCategoryFilter else { return [:] }
         let targetLogs = filteredLogs(from: logs)
@@ -175,7 +176,6 @@ public final class AnalyticsViewModel {
         return counts
     }
 
-    /// 直近17週間（約4ヶ月）の飲酒日ヒートマップ用データを生成
     public func drinkingHeatmapData(from logs: [TastingLog]) -> [HeatmapDay] {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
@@ -191,7 +191,6 @@ public final class AnalyticsViewModel {
         return days
     }
 
-    /// 指定した酒種の中で「最も評価が高いNo.1」のログ（1件のみ）を取得する
     public func topRatedLog(for category: BeverageCategory, from logs: [TastingLog]) -> TastingLog? {
         let targetLogs = filteredLogs(from: logs)
         return targetLogs
@@ -199,7 +198,6 @@ public final class AnalyticsViewModel {
             .max(by: { $0.rating < $1.rating })
     }
 
-    /// よく登場する香りタグ上位を取得
     public func topAromaTags(from logs: [TastingLog], limit: Int = 8) -> [(tag: String, count: Int)] {
         let targetLogs = filteredLogs(from: logs)
         var counts: [String: Int] = [:]
@@ -213,13 +211,11 @@ public final class AnalyticsViewModel {
             .map { (tag: $0.key, count: $0.value) }
     }
 
-    /// 平均テイストプロファイルを取得する
     public func averageTasteProfile(from logs: [TastingLog]) -> (sweetness: Double, saltiness: Double, acidity: Double, bitterness: Double, umami: Double, tannin: Double, body: Double, finishLength: Double) {
         let targetLogs = filteredLogs(from: logs)
         return calculateUseCase.calculateAverageTasteProfile(from: targetLogs)
     }
 
-    /// 特徴・評価フラグの集計データを取得する
     public func featureFlagsSummary(from logs: [TastingLog]) -> (costEffective: Int, repeatIntent: Int, agingPotential: Int, total: Int) {
         let targetLogs = filteredLogs(from: logs)
         let total = targetLogs.count
@@ -232,7 +228,6 @@ public final class AnalyticsViewModel {
         return (costEffective, repeatIntent, agingPotential, total)
     }
     
-    /// フィルター済みログの平均評価スコアを取得する
     public func averageRating(from targetLogs: [TastingLog]) -> Double {
         guard !targetLogs.isEmpty else { return 0.0 }
         let totalRating = targetLogs.reduce(0.0) { $0 + $1.rating }

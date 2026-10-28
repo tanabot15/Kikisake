@@ -18,9 +18,9 @@ public struct AnalyticsView: View {
                     .frame(height: 50)
                     .background(Color(.systemBackground))
                 
-                Picker("分析カテゴリ", selection: $viewModel.selectedSection) {
+                Picker(String(localized: "分析カテゴリ"), selection: $viewModel.selectedSection) {
                     ForEach(AnalyticsSection.allCases) { section in
-                        Text(section.rawValue).tag(section)
+                        Text(section.displayName).tag(section)
                     }
                 }
                 .pickerStyle(.segmented)
@@ -34,9 +34,9 @@ public struct AnalyticsView: View {
 
                         if logs.isEmpty || targetLogs.isEmpty {
                             ContentUnavailableView(
-                                "該当する分析データがありません",
+                                String(localized: "該当する分析データがありません"),
                                 systemImage: "chart.bar.xaxis",
-                                description: Text(viewModel.hasActiveFilters ? "フィルター条件を変更してみてください。" : "「追加」タブからお酒を記録すると、ここに分析が表示されます。")
+                                description: Text(viewModel.hasActiveFilters ? String(localized: "フィルター条件を変更してみてください。") : String(localized: "「追加」タブからお酒を記録すると、ここに分析が表示されます。"))
                             )
                             .padding(.top, 40)
                         } else {
@@ -67,7 +67,7 @@ public struct AnalyticsView: View {
                         Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                             .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
                     }
-                    .accessibilityLabel("分析フィルター")
+                    .accessibilityLabel(String(localized: "分析フィルター"))
                 }
             }
             .sheet(isPresented: $isShowingFilterSheet) {

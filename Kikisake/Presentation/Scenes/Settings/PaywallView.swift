@@ -62,15 +62,15 @@ public struct PaywallView: View {
                     VStack(spacing: 14) {
                         FeatureRow(
                             icon: "cabinet.fill",
-                            title: "保管場所が無制限",
+                            title: "保管場所を無制限に",
                             subtitle: "複数セラー・サブ冷蔵庫など無制限に追加可能"
                         )
                         
                         // ✨ マトリクス分析の訴求を追加
                         FeatureRow(
-                            icon: "chart.xyaxis.scatter",
-                            title: "2軸4象限マトリクス分析",
-                            subtitle: "テイスティング記録を味わいマップに自動プロット"
+                            icon: "chart.dots.scatter",
+                            title: "プロ用マトリクス分析",
+                            subtitle: "テイスティング記録を味わいマップにプロット"
                         )
 
                         FeatureRow(

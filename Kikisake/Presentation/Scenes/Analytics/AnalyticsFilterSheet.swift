@@ -19,18 +19,18 @@ public struct AnalyticsFilterSheet: View {
         NavigationStack {
             Form {
                 // 1. 期間設定
-                Section("分析対象の期間") {
-                    Picker("期間を選択", selection: $viewModel.selectedTimeFilter) {
+                Section(String(localized: "分析対象の期間")) {
+                    Picker(String(localized: "期間を選択"), selection: $viewModel.selectedTimeFilter) {
                         ForEach(AnalyticsTimeFilter.allCases) { filter in
-                            Text(filter.rawValue).tag(filter)
+                            Text(filter.displayName).tag(filter)
                         }
                     }
                     .pickerStyle(.inline)
                 }
 
                 // 2. 酒種 (カテゴリ) 設定
-                Section("酒種 (カテゴリ)") {
-                    Picker("酒種を選択", selection: $viewModel.selectedCategoryFilter) {
+                Section(String(localized: "酒種 (カテゴリ)")) {
+                    Picker(String(localized: "酒種を選択"), selection: $viewModel.selectedCategoryFilter) {
                         Text("すべて").tag(BeverageCategory?.none)
                         ForEach(BeverageCategory.allCases, id: \.self) { category in
                             Text(category.displayName).tag(BeverageCategory?.some(category))
@@ -38,17 +38,16 @@ public struct AnalyticsFilterSheet: View {
                     }
                     .pickerStyle(.segmented)
                     .onChange(of: viewModel.selectedCategoryFilter) { _, _ in
-                        // 酒種が変更されたらサブタイプの選択をリセット
                         viewModel.selectedSubCategoryFilter = nil
                     }
                 }
 
-                // 3. 選択された酒種に応じたサブタイプ（ワインタイプ / 特定名称 / ビアスタイル）
+                // 3. 選択された酒種に応じたサブタイプ
                 if let category = viewModel.selectedCategoryFilter {
                     Section(subCategorySectionTitle(for: category)) {
                         let subCategories = viewModel.availableSubCategories(from: allLogs)
 
-                        Picker("サブタイプを選択", selection: $viewModel.selectedSubCategoryFilter) {
+                        Picker(String(localized: "サブタイプを選択"), selection: $viewModel.selectedSubCategoryFilter) {
                             Text("すべて").tag(String?.none)
                             ForEach(subCategories, id: \.self) { sub in
                                 Text(sub).tag(String?.some(sub))
@@ -72,11 +71,11 @@ public struct AnalyticsFilterSheet: View {
                     }
                 }
             }
-            .navigationTitle("分析フィルター")
+            .navigationTitle(String(localized: "分析フィルター"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("完了") {
+                    Button(String(localized: "完了")) {
                         dismiss()
                     }
                     .fontWeight(.bold)
@@ -87,9 +86,9 @@ public struct AnalyticsFilterSheet: View {
 
     private func subCategorySectionTitle(for category: BeverageCategory) -> String {
         switch category {
-        case .wine: return "ワインタイプ"
-        case .sake: return "特定名称"
-        case .beer: return "ビアスタイル"
+        case .wine: return String(localized: "ワインタイプ")
+        case .sake: return String(localized: "特定名称")
+        case .beer: return String(localized: "ビアスタイル")
         }
     }
 }

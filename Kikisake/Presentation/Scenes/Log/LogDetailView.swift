@@ -71,7 +71,7 @@ public struct LogDetailView: View {
             }
         }
         .background(Color(.systemGroupedBackground))
-        .navigationTitle("ログ詳細")
+        .navigationTitle(String(localized: "ログ詳細"))
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $isShowingImageModal) {
             if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
@@ -109,10 +109,11 @@ public struct LogDetailView: View {
                     if log.isEvaluated {
                         if #available(iOS 16.0, *) {
                             let shareImage = renderShareImage()
+                            let previewTitle = String(localized: "\(log.item?.name ?? "テイスティング") の記録")
                             ShareLink(
                                 item: shareImage,
                                 preview: SharePreview(
-                                    "\(log.item?.name ?? "テイスティング") の記録",
+                                    previewTitle,
                                     image: shareImage
                                 )
                             ) {
@@ -247,14 +248,12 @@ public struct LogDetailView: View {
                     ZStack(alignment: .bottomTrailing) {
                         ZStack {
                             Color.black
-                            // 背景にぼかした画像を敷き詰めてリッチに演出
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFill()
                                 .blur(radius: 20)
                                 .opacity(0.4)
 
-                            // メインの写真：横長・縦長問わず綺麗に収まるように調整
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFit()
@@ -264,7 +263,7 @@ public struct LogDetailView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .frame(height: 320)
-                        .clipped() // はみ出しを確実に防止
+                        .clipped()
 
                         LinearGradient(
                             colors: [.clear, .black.opacity(0.75)],
@@ -337,18 +336,19 @@ public struct LogDetailView: View {
 
             VStack(spacing: 8) {
                 if !item.region.isEmpty {
-                    rowContent(label: "生産地", value: item.region)
+                    rowContent(label: String(localized: "生産地"), value: item.region)
                 }
                 if let vintage = item.vintage, !vintage.isEmpty {
-                    rowContent(label: "ヴィンテージ / 年月", value: vintage)
+                    rowContent(label: String(localized: "ヴィンテージ / 年月"), value: vintage)
                 }
                 if let abv = item.alcoholByVolume {
-                    rowContent(label: "アルコール度数", value: String(format: "%.1f %%", abv))
+                    rowContent(label: String(localized: "アルコール度数"), value: String(format: "%.1f %%", abv))
                 }
                 if let price = item.price {
-                    rowContent(label: "価格", value: "\(price) 円")
+                    let priceString = String(format: String(localized: "%d 円"), price)
+                    rowContent(label: String(localized: "価格"), value: priceString)
                 }
-                rowContent(label: "登録日", value: log.date.toFormattedString())
+                rowContent(label: String(localized: "登録日"), value: log.date.toFormattedString())
             }
         }
         .padding()
@@ -367,9 +367,9 @@ public struct LogDetailView: View {
                             .font(.headline)
 
                         VStack(spacing: 8) {
-                            rowContent(label: "タイプ", value: meta.wineType)
+                            rowContent(label: String(localized: "タイプ"), value: meta.wineType)
                             if let appellation = meta.appellation, !appellation.isEmpty {
-                                rowContent(label: "原産地呼称", value: appellation)
+                                rowContent(label: String(localized: "原産地呼称"), value: appellation)
                             }
                             if !meta.blendComponents.isEmpty {
                                 HStack {
@@ -397,7 +397,7 @@ public struct LogDetailView: View {
                                 }
 
                             } else if !meta.grapeVarieties.isEmpty {
-                                rowContent(label: "主要品種", value: meta.grapeVarieties)
+                                rowContent(label: String(localized: "主要品種"), value: meta.grapeVarieties)
                             }
                         }
                     }
@@ -413,15 +413,15 @@ public struct LogDetailView: View {
                             .font(.headline)
 
                         VStack(spacing: 8) {
-                            rowContent(label: "特定名称", value: meta.specificName)
+                            rowContent(label: String(localized: "特定名称"), value: meta.specificName)
                             if !meta.riceVariety.isEmpty {
-                                rowContent(label: "使用米", value: meta.riceVariety)
+                                rowContent(label: String(localized: "使用米"), value: meta.riceVariety)
                             }
                             if !meta.polishingRate.isEmpty {
-                                rowContent(label: "精米歩合", value: meta.polishingRate)
+                                rowContent(label: String(localized: "精米歩合"), value: meta.polishingRate)
                             }
                             if !meta.sakeMeterValue.isEmpty {
-                                rowContent(label: "日本酒度", value: meta.sakeMeterValue)
+                                rowContent(label: String(localized: "日本酒度"), value: meta.sakeMeterValue)
                             }
                         }
                     }
@@ -437,9 +437,9 @@ public struct LogDetailView: View {
                             .font(.headline)
 
                         VStack(spacing: 8) {
-                            rowContent(label: "ビアスタイル", value: meta.beerStyle)
+                            rowContent(label: String(localized: "ビアスタイル"), value: meta.beerStyle)
                             if !meta.ibu.isEmpty {
-                                rowContent(label: "IBU (苦味単位)", value: meta.ibu)
+                                rowContent(label: String(localized: "IBU (苦味単位)"), value: meta.ibu)
                             }
                         }
                     }

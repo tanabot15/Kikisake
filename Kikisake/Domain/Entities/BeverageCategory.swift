@@ -13,8 +13,8 @@ public enum BeverageCategory: String, Codable, CaseIterable, Sendable {
     case sake = "日本酒"
     case beer = "ビール"
     
-    /// 画面表示用の名称
+    /// ✨ 画面表示用の名称（Localizable.xcstrings対応）
     public var displayName: String {
-        return self.rawValue
+        return String(localized: String.LocalizationValue(rawValue))
     }
 }

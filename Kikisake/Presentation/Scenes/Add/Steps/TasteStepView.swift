@@ -42,28 +42,28 @@ public struct TasteStepView: View {
     public var body: some View {
         Form {
             // 1. 基本五味
-            Section("基本五味 (5味覚)") {
-                CustomSlider(title: "甘味 (Sweetness)", value: $viewModel.sweetness)
-                CustomSlider(title: "塩味 (Saltiness)", value: $viewModel.saltiness)
-                CustomSlider(title: "酸味 (Acidity)", value: $viewModel.acidity)
-                CustomSlider(title: "苦味 (Bitterness)", value: $viewModel.bitterness)
-                CustomSlider(title: "旨味 (Umami)", value: $viewModel.umami)
+            Section(String(localized: "基本五味 (5味覚)")) {
+                CustomSlider(title: String(localized: "甘味 (Sweetness)"), value: $viewModel.sweetness)
+                CustomSlider(title: String(localized: "塩味 (Saltiness)"), value: $viewModel.saltiness)
+                CustomSlider(title: String(localized: "酸味 (Acidity)"), value: $viewModel.acidity)
+                CustomSlider(title: String(localized: "苦味 (Bitterness)"), value: $viewModel.bitterness)
+                CustomSlider(title: String(localized: "旨味 (Umami)"), value: $viewModel.umami)
             }
 
             // 2. タンニン (渋味) - 赤・ロゼ・オレンジワインのみ
             if isTanninApplicable {
-                Section("渋味") {
-                    CustomSlider(title: "タンニン (Tannin)", value: $viewModel.tannin)
+                Section(String(localized: "渋味")) {
+                    CustomSlider(title: String(localized: "タンニン (Tannin)"), value: $viewModel.tannin)
                 }
             }
 
             // 3. ボディ
-            Section("重み・骨格") {
-                CustomSlider(title: "ボディ (Body)", value: $viewModel.body)
+            Section(String(localized: "重み・骨格")) {
+                CustomSlider(title: String(localized: "ボディ (Body)"), value: $viewModel.body)
             }
 
             // 4. バランス (複数選択タグ) ✨ TastingOptions.balanceOptions を参照
-            Section("バランス表現 (複数選択可)") {
+            Section(String(localized: "バランス表現 (複数選択可)")) {
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: 10)], spacing: 10) {
                     ForEach(TastingOptions.balanceOptions, id: \.self) { option in
                         let isSelected = viewModel.selectedBalanceTags.contains(option)
@@ -102,8 +102,8 @@ public struct TasteStepView: View {
             }
 
             // 5. 余韻の長さ
-            Section("余韻") {
-                CustomSlider(title: "余韻の長さ (Finish)", value: $viewModel.finishLength)
+            Section(String(localized: "余韻")) {
+                CustomSlider(title: String(localized: "余韻の長さ (Finish)"), value: $viewModel.finishLength)
             }
         }
     }

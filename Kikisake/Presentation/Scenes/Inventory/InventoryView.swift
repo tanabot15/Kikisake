@@ -9,6 +9,10 @@ private enum CellarDisplayMode: String, CaseIterable, Identifiable {
     case list = "リスト"
     case grid = "グリッド"
     var id: String { rawValue }
+
+    var displayName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
 }
 
 /// [Tab 4] ユーザーカスタム可能なアコーディオン展開式・在庫管理画面
@@ -63,9 +67,9 @@ public struct InventoryView: View {
                         
                         if locations.isEmpty || targetLocations.isEmpty {
                             ContentUnavailableView(
-                                "該当する保管場所がありません",
+                                String(localized: "該当する保管場所がありません"),
                                 systemImage: "cabinet",
-                                description: Text(viewModel.hasActiveFilters ? "フィルター条件を変更してみてください。" : "右上の「＋」ボタンから保管場所を追加してください。")
+                                description: Text(viewModel.hasActiveFilters ? String(localized: "フィルター条件を変更してみてください。") : String(localized: "右上の「＋」ボタンから保管場所を追加してください。"))
                             )
                             .padding(.top, 40)
                         } else {
@@ -77,7 +81,7 @@ public struct InventoryView: View {
                 }
             }
             .background(Color(.systemGroupedBackground))
-            .navigationTitle("在庫管理")
+            .navigationTitle(String(localized: "在庫管理"))
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $isNavigatingToDetail) {
                 if let item = itemToNavigate {
@@ -91,7 +95,7 @@ public struct InventoryView: View {
                             appearanceNotes: "",
                             appearanceColorHex: "#802633",
                             aromaTags: [],
-                            memo: "基本情報のみ登録されています。",
+                            memo: String(localized: "基本情報のみ登録されています。"),
                             item: item
                         )
                         LogDetailView(log: dummyLog)
@@ -115,9 +119,9 @@ public struct InventoryView: View {
             .sheet(item: $resizingLocation) { loc in
                 NavigationStack {
                     Form {
-                        Section("セラーの構造設定") {
-                            Stepper("段数（行）: \(tempRows)段", value: $tempRows, in: 1...10)
-                            Stepper("1段あたりの本数（列）: \(tempColumns)本", value: $tempColumns, in: 1...12)
+                        Section(String(localized: "セラーの構造設定")) {
+                            Stepper(String(format: String(localized: "段数（行）: %d段"), tempRows), value: $tempRows, in: 1...10)
+                            Stepper(String(format: String(localized: "1段あたりの本数（列）: %d本"), tempColumns), value: $tempColumns, in: 1...12)
                         }
                         
                         Section {
@@ -126,16 +130,16 @@ public struct InventoryView: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
-                    .navigationTitle("\(loc.name)のサイズ変更")
+                    .navigationTitle(String(format: String(localized: "%@のサイズ変更"), loc.name))
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
-                            Button("キャンセル") {
+                            Button(String(localized: "キャンセル")) {
                                 resizingLocation = nil
                             }
                         }
                         ToolbarItem(placement: .confirmationAction) {
-                            Button("保存") {
+                            Button(String(localized: "保存")) {
                                 viewModel.updateGridSize(for: loc, newRows: tempRows, newColumns: tempColumns, allItems: items, modelContext: modelContext)
                                 resizingLocation = nil
                             }
@@ -146,7 +150,7 @@ public struct InventoryView: View {
                 .presentationDetents([.medium])
             }
             .confirmationDialog(
-                selectedItemForAction?.name ?? "ボトルの操作",
+                selectedItemForAction?.name ?? String(localized: "ボトルの操作"),
                 isPresented: $isShowingActionSheet,
                 titleVisibility: .visible
             ) {
@@ -154,12 +158,12 @@ public struct InventoryView: View {
             } message: {
                 Text("このボトルに対して行う操作を選択してください。")
             }
-            .confirmationDialog("移動先の選択", isPresented: $isShowingMoveDialog, titleVisibility: .visible) {
+            .confirmationDialog(String(localized: "移動先の選択"), isPresented: $isShowingMoveDialog, titleVisibility: .visible) {
                 moveDialogButtons
             } message: {
                 moveDialogMessage
             }
-            .alert("エラー", isPresented: $showErrorAlert) {
+            .alert(String(localized: "エラー"), isPresented: $showErrorAlert) {
                 Button(role: .cancel) {
                     errorMessage = ""
                 } label: {
@@ -265,14 +269,14 @@ public struct InventoryView: View {
 
             HStack {
                 if loc.isGridEnabled {
-                    Picker("表示形式", selection: Binding(
+                    Picker(String(localized: "表示形式"), selection: Binding(
                         get: { currentMode },
                         set: { newMode in
                             displayModes[loc.name] = newMode
                         }
                     )) {
                         ForEach(CellarDisplayMode.allCases) { mode in
-                            Text(mode.rawValue).tag(mode)
+                            Text(mode.displayName).tag(mode)
                         }
                     }
                     .pickerStyle(.segmented)
@@ -407,7 +411,7 @@ public struct InventoryView: View {
                 Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                     .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
             }
-            .accessibilityLabel("在庫フィルター")
+            .accessibilityLabel(String(localized: "在庫フィルター"))
 
             Button {
                 if !AppState.shared.isProVersion && locations.count >= 3 {
@@ -425,12 +429,12 @@ public struct InventoryView: View {
     @ViewBuilder
     private var actionSheetButtons: some View {
         if let item = selectedItemForAction {
-            Button("詳細を確認する") {
+            Button(String(localized: "詳細を確認する")) {
                 itemToNavigate = item
                 isNavigatingToDetail = true
             }
 
-            Button("ボトルを開ける") {
+            Button(String(localized: "ボトルを開ける")) {
                 do {
                     try viewModel.consumeBottle(item: item)
                     AppState.shared.openingItem = item
@@ -440,17 +444,17 @@ public struct InventoryView: View {
                 }
             }
 
-            Button("保存場所を移動する") {
+            Button(String(localized: "保存場所を移動する")) {
                 targetItemForMove = item
                 isShowingMoveDialog = true
             }
 
-            Button("飲み切った", role: .destructive) {
+            Button(String(localized: "飲み切った"), role: .destructive) {
                 viewModel.deleteItem(item, modelContext: modelContext)
             }
         }
 
-        Button("キャンセル", role: .cancel) {
+        Button(String(localized: "キャンセル"), role: .cancel) {
             selectedItemForAction = nil
         }
     }
@@ -467,7 +471,7 @@ public struct InventoryView: View {
                 }
             }
         }
-        Button("キャンセル", role: .cancel) {
+        Button(String(localized: "キャンセル"), role: .cancel) {
             targetItemForMove = nil
         }
     }

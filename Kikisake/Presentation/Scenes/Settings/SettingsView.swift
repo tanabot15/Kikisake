@@ -78,7 +78,7 @@ public struct SettingsView: View {
                 Section("アプリ設定") {
                     Picker("外観モード", selection: $appState.appearanceMode) {
                         ForEach(AppearanceMode.allCases) { mode in
-                            Text(mode.rawValue).tag(mode)
+                            Text(mode.localizedName).tag(mode)
                         }
                     }
                     .pickerStyle(.menu)

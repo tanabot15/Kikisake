@@ -19,19 +19,19 @@ public struct InventoryFilterSheet: View {
         NavigationStack {
             Form {
                 // 1. 保管場所の種類 (StorageCategoryType)
-                Section("保管場所の種類") {
-                    Picker("保管場所の種類", selection: $viewModel.selectedStorageCategoryType) {
+                Section(String(localized: "保管場所の種類")) {
+                    Picker(String(localized: "保管場所の種類"), selection: $viewModel.selectedStorageCategoryType) {
                         Text("すべて").tag(StorageCategoryType?.none)
                         ForEach(StorageCategoryType.allCases) { type in
-                            Text(type.rawValue).tag(StorageCategoryType?.some(type))
+                            Text(type.localizedName).tag(StorageCategoryType?.some(type))
                         }
                     }
                     .pickerStyle(.menu)
                 }
 
                 // 2. 酒種 (categoryRawValue)
-                Section("酒種 (カテゴリ)") {
-                    Picker("酒種を選択", selection: $viewModel.selectedCategory) {
+                Section(String(localized: "酒種 (カテゴリ)")) {
+                    Picker(String(localized: "酒種を選択"), selection: $viewModel.selectedCategory) {
                         Text("すべて").tag(BeverageCategory?.none)
                         ForEach(BeverageCategory.allCases, id: \.self) { category in
                             Text(category.displayName).tag(BeverageCategory?.some(category))
@@ -39,17 +39,16 @@ public struct InventoryFilterSheet: View {
                     }
                     .pickerStyle(.segmented)
                     .onChange(of: viewModel.selectedCategory) { _, _ in
-                        // 酒種が切り替わったらサブカテゴリの選択をリセット
                         viewModel.selectedSubCategory = nil
                     }
                 }
 
-                // 3. 選択された酒種に応じたサブタイプ（wineType / specificName / beerStyle）
+                // 3. 選択された酒種に応じたサブタイプ
                 if let category = viewModel.selectedCategory {
                     Section(subCategorySectionTitle(for: category)) {
                         let subCategories = viewModel.availableSubCategories(from: allItems)
                         
-                        Picker("サブタイプを選択", selection: $viewModel.selectedSubCategory) {
+                        Picker(String(localized: "サブタイプを選択"), selection: $viewModel.selectedSubCategory) {
                             Text("すべて").tag(String?.none)
                             ForEach(subCategories, id: \.self) { sub in
                                 Text(sub).tag(String?.some(sub))
@@ -73,11 +72,11 @@ public struct InventoryFilterSheet: View {
                     }
                 }
             }
-            .navigationTitle("在庫フィルター")
+            .navigationTitle(String(localized: "在庫フィルター"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("完了") {
+                    Button(String(localized: "完了")) {
                         dismiss()
                     }
                     .fontWeight(.bold)
@@ -88,9 +87,9 @@ public struct InventoryFilterSheet: View {
 
     private func subCategorySectionTitle(for category: BeverageCategory) -> String {
         switch category {
-        case .wine: return "ワインタイプ"
-        case .sake: return "特定名称"
-        case .beer: return "ビアスタイル"
+        case .wine: return String(localized: "ワインタイプ")
+        case .sake: return String(localized: "特定名称")
+        case .beer: return String(localized: "ビアスタイル")
         }
     }
 }

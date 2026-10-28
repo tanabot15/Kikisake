@@ -49,7 +49,7 @@ public struct EvaluationAnalyticsView: View {
                 NavigationLink(destination: LogDetailView(log: log)) {
                     HStack(spacing: 12) {
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(log.item?.name ?? "不明な銘柄")
+                            Text(log.item?.name ?? String(localized: "不明な銘柄"))
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.primary)
@@ -93,9 +93,9 @@ public struct EvaluationAnalyticsView: View {
                 Text("データがありません").font(.subheadline).foregroundStyle(.secondary).padding(.vertical, 8)
             } else {
                 HStack(spacing: 10) {
-                    flagCardItem(title: "コスパ良好", count: summary.costEffective, systemImage: "yensign.circle.fill", color: .green, filterType: .costEffective)
-                    flagCardItem(title: "リピート確定", count: summary.repeatIntent, systemImage: "arrow.clockwise.circle.fill", color: .orange, filterType: .willingToRepeat)
-                    flagCardItem(title: "熟成ポテンシャル", count: summary.agingPotential, systemImage: "hourglass.circle.fill", color: .purple, filterType: .agingPotential)
+                    flagCardItem(title: String(localized: "コスパ良好"), count: summary.costEffective, systemImage: "yensign.circle.fill", color: .green, filterType: .costEffective)
+                    flagCardItem(title: String(localized: "リピート確定"), count: summary.repeatIntent, systemImage: "arrow.clockwise.circle.fill", color: .orange, filterType: .willingToRepeat)
+                    flagCardItem(title: String(localized: "熟成ポテンシャル"), count: summary.agingPotential, systemImage: "hourglass.circle.fill", color: .purple, filterType: .agingPotential)
                 }
             }
         }
@@ -119,7 +119,7 @@ public struct EvaluationAnalyticsView: View {
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
-                    Text("\(count)件").font(.subheadline).fontWeight(.bold).foregroundStyle(.primary)
+                    Text(String(format: String(localized: "%d件"), count)).font(.subheadline).fontWeight(.bold).foregroundStyle(.primary)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -178,16 +178,16 @@ public struct EvaluationAnalyticsView: View {
 
             VStack(alignment: .leading, spacing: 10) {
                 Text("基本五味").font(.caption).fontWeight(.bold).foregroundStyle(.secondary)
-                tasteBar(title: "甘味", value: profile.sweetness)
-                tasteBar(title: "酸味", value: profile.acidity)
-                tasteBar(title: "苦味", value: profile.bitterness)
-                tasteBar(title: "旨味", value: profile.umami)
+                tasteBar(title: String(localized: "甘味"), value: profile.sweetness)
+                tasteBar(title: String(localized: "酸味"), value: profile.acidity)
+                tasteBar(title: String(localized: "苦味"), value: profile.bitterness)
+                tasteBar(title: String(localized: "旨味"), value: profile.umami)
 
                 Divider().padding(.vertical, 4)
 
                 Text("構造・特徴").font(.caption).fontWeight(.bold).foregroundStyle(.secondary)
-                tasteBar(title: "ボディ", value: profile.body)
-                tasteBar(title: "余韻の長さ", value: profile.finishLength)
+                tasteBar(title: String(localized: "ボディ"), value: profile.body)
+                tasteBar(title: String(localized: "余韻の長さ"), value: profile.finishLength)
             }
         }
         .padding()

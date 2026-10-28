@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-/// アプリの外観モードを表す列挙型
+/// アプリの外観モードを表す列挙型（日本語をベースキーとしてLocalizable.xcstringsで管理）
 public enum AppearanceMode: String, CaseIterable, Identifiable {
     case system = "端末の設定に合わせる"
     case light = "ライトモード"
@@ -17,6 +17,11 @@ public enum AppearanceMode: String, CaseIterable, Identifiable {
         case .light: return .light
         case .dark: return .dark
         }
+    }
+
+    /// ✨ String(localized:) を用いて現在のおよび多言語化された文字列を取得するプロパティ
+    public var localizedName: String {
+        String(localized: String.LocalizationValue(rawValue))
     }
 }
 
@@ -55,8 +60,9 @@ public final class AppState {
     
     public var openingItem: BeverageItem? {
         didSet {
-            if let item = openingItem {
-                addFlowViewModel.handleOpeningItem(item)
+            // ✨ 変更された openingItem が存在する場合の処理に修正
+            if let targetItem = openingItem {
+                addFlowViewModel.handleOpeningItem(targetItem)
                 selectedTab = 2
                 openingItem = nil
             }

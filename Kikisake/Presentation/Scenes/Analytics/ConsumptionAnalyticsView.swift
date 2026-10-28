@@ -22,18 +22,18 @@ public struct ConsumptionAnalyticsView: View {
         HStack(spacing: 12) {
             let uniqueItemsCount = Set(targetLogs.compactMap { $0.item?.id }).count
             summaryCard(
-                title: "飲んだ種類",
+                title: String(localized: "飲んだ種類"),
                 value: "\(uniqueItemsCount)",
-                unit: " 銘柄",
+                unit: String(localized: " 銘柄"),
                 iconName: "wineglass.fill",
                 color: .purple
             )
             
             let averageRating = viewModel.averageRating(from: targetLogs)
             summaryCard(
-                title: "平均スコア",
+                title: String(localized: "平均スコア"),
                 value: String(format: "%.1f", averageRating),
-                unit: " 点",
+                unit: String(localized: " 点"),
                 iconName: "star.fill",
                 color: .orange
             )
@@ -79,7 +79,15 @@ public struct ConsumptionAnalyticsView: View {
 
             let days = viewModel.drinkingHeatmapData(from: targetLogs)
             let rows = Array(repeating: GridItem(.fixed(14), spacing: 4), count: 7)
-            let weekdays = ["日", "月", "火", "水", "木", "金", "土"]
+            let weekdays = [
+                String(localized: "日"),
+                String(localized: "月"),
+                String(localized: "火"),
+                String(localized: "水"),
+                String(localized: "木"),
+                String(localized: "金"),
+                String(localized: "土")
+            ]
 
             HStack(alignment: .top, spacing: 8) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -146,12 +154,12 @@ public struct ConsumptionAnalyticsView: View {
             let cardTitle: String = {
                 if let category = viewModel.selectedCategoryFilter {
                     switch category {
-                    case .wine: return "ワインタイプ別 飲酒比率"
-                    case .sake: return "特定名称別 飲酒比率"
-                    case .beer: return "ビアスタイル別 飲酒比率"
+                    case .wine: return String(localized: "ワインタイプ別 飲酒比率")
+                    case .sake: return String(localized: "特定名称別 飲酒比率")
+                    case .beer: return String(localized: "ビアスタイル別 飲酒比率")
                     }
                 } else {
-                    return "酒種別 飲酒比率"
+                    return String(localized: "酒種別 飲酒比率")
                 }
             }()
 
@@ -174,9 +182,9 @@ public struct ConsumptionAnalyticsView: View {
                         ForEach(sortedKeys, id: \.self) { key in
                             let count = subRatio[key] ?? 0
                             if count > 0 {
-                                SectorMark(angle: .value("件数", count), innerRadius: .ratio(0.62), angularInset: 2.0)
+                                SectorMark(angle: .value(String(localized: "件数"), count), innerRadius: .ratio(0.62), angularInset: 2.0)
                                     .cornerRadius(4)
-                                    .foregroundStyle(by: .value("タイプ", key))
+                                    .foregroundStyle(by: .value(String(localized: "タイプ"), key))
                             }
                         }
                     }
@@ -192,7 +200,7 @@ public struct ConsumptionAnalyticsView: View {
                                 let color = colorMapping[key] ?? .gray
                                 HStack(spacing: 6) {
                                     Circle().fill(color).frame(width: 8, height: 8)
-                                    Text("\(key): \(count)件").font(.caption).fontWeight(.medium)
+                                    Text("\(key): \(String(format: String(localized: "%d件"), count))").font(.caption).fontWeight(.medium)
                                 }
                             }
                         }
@@ -210,9 +218,9 @@ public struct ConsumptionAnalyticsView: View {
                     ForEach(BeverageCategory.allCases, id: \.self) { category in
                         let count = ratio[category] ?? 0
                         if count > 0 {
-                            SectorMark(angle: .value("件数", count), innerRadius: .ratio(0.62), angularInset: 2.0)
+                            SectorMark(angle: .value(String(localized: "件数"), count), innerRadius: .ratio(0.62), angularInset: 2.0)
                                 .cornerRadius(4)
-                                .foregroundStyle(by: .value("酒種", category.displayName))
+                                .foregroundStyle(by: .value(String(localized: "酒種"), category.displayName))
                         }
                     }
                 }
@@ -232,7 +240,7 @@ public struct ConsumptionAnalyticsView: View {
                             let count = ratio[category] ?? 0
                             HStack(spacing: 6) {
                                 Circle().fill(categoryColor(category)).frame(width: 8, height: 8)
-                                Text("\(category.displayName): \(count)件").font(.caption).fontWeight(.medium)
+                                Text("\(category.displayName): \(String(format: String(localized: "%d件"), count))").font(.caption).fontWeight(.medium)
                             }
                         }
                         Spacer()

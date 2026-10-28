@@ -11,12 +11,9 @@ public struct CellarGridView: View {
     let items: [BeverageItem]
     let modelContext: ModelContext
     
-    // スロットタップ時のアクション
     let onSelectSlot: (Int, Int, BeverageItem?) -> Void
-    // 棚の外のアイテムタップ時のアクション
     let onSelectItem: (BeverageItem) -> Void
     
-    // ✨ 重複配置防止時のエラー通知用コールバック（任意）
     var onError: ((String) -> Void)? = nil
 
     public init(
@@ -51,7 +48,7 @@ public struct CellarGridView: View {
                 ForEach(1...location.gridRows, id: \.self) { row in
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
-                            Text("第 \(row) 段")
+                            Text(String(format: String(localized: "第 %d 段"), row))
                                 .font(.system(size: 10, weight: .bold))
                                 .foregroundStyle(.secondary)
                             Spacer()
@@ -74,8 +71,6 @@ public struct CellarGridView: View {
                                             return false
                                         }
                                         
-                                        // ✨ 重複配置のバリデーション：
-                                        // 移動先スロットに「自分以外」のアイテムが既に存在する場合は移動をブロック
                                         let existingItemInTargetSlot = self.items.first { item in
                                             item.storageLocation == self.location.name &&
                                             item.gridRow == row &&
@@ -84,12 +79,10 @@ public struct CellarGridView: View {
                                         }
                                         
                                         if existingItemInTargetSlot != nil {
-                                            // すでに埋まっているため移動拒否
-                                            onError?("指定されたスロット（第 \(row) 段 \(col) 列）にはすでに別のボトルが置かれているため移動できません。")
+                                            onError?(String(format: String(localized: "指定されたスロット（第 %d 段 %d 列）にはすでに別のボトルが置かれているため移動できません。"), row, col))
                                             return false
                                         }
                                         
-                                        // 正常に移動を反映
                                         movingItem.gridRow = row
                                         movingItem.gridColumn = col
                                         movingItem.storageLocation = self.location.name
@@ -108,7 +101,6 @@ public struct CellarGridView: View {
                 }
             }
 
-            // 「棚の外（未配置の在庫）」アイテムをアイコン形状で表示し、ドラッグでグリッド内へ移動できるようにする
             let unassignedItems = items.filter { $0.storageLocation == location.name && ($0.gridRow == nil || $0.gridColumn == nil) }
             if !unassignedItems.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
