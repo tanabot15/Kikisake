@@ -175,7 +175,37 @@ public final class AddFlowViewModel {
         self.editingItem = log.item
         if let item = log.item {
             configureWithItem(item)
+            
+            // ✨ 固有メタデータ（JSON）の復元処理を追加
+            if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
+                let decoder = JSONDecoder()
+                switch item.category {
+                case .wine:
+                    if let meta = try? decoder.decode(WineSpecificMetadata.self, from: data) {
+                        self.wineType = meta.wineType
+                        self.grapeVarieties = meta.grapeVarieties
+                        if !meta.blendComponents.isEmpty {
+                            self.blendComponents = meta.blendComponents
+                        }
+                        self.appellation = meta.appellation ?? ""
+                    }
+                case .sake:
+                    if let meta = try? decoder.decode(SakeSpecificMetadata.self, from: data) {
+                        self.sakeSpecificName = meta.specificName
+                        self.riceVariety = meta.riceVariety
+                        self.polishingRate = meta.polishingRate
+                        self.sakeMeterValue = meta.sakeMeterValue
+                    }
+                case .beer:
+                    if let meta = try? decoder.decode(BeerSpecificMetadata.self, from: data) {
+                        self.beerStyle = meta.beerStyle
+                        self.ibu = meta.ibu
+                    }
+                }
+            }
         }
+        
+        // 既存のテイスティングデータの復元
         self.tastingDate = log.date
         self.rating = log.rating
         self.appearanceNotes = log.appearanceNotes

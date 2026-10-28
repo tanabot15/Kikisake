@@ -10,7 +10,6 @@ public struct LogDetailView: View {
 
     @State private var isShowingImageModal: Bool = false
     @State private var isShowingEditSheet: Bool = false
-    @State private var hasSavedInSheet: Bool = false
 
     public init(log: TastingLog) {
         self.log = log
@@ -43,7 +42,7 @@ public struct LogDetailView: View {
                         specificMetadataCard(for: item)
                     }
 
-                    // ✨ 評価が入力されている場合のみ各評価カードやチャートを表示し、未入力時は洗練されたプレースホルダーを表示
+                    // ✨ 評価が入力されている場合のみ各評価カードやチャートを表示し、未入力時はプレースホルダーを表示
                     if log.isEvaluated {
                         ratingCard
                         appearanceAndAromaCard
@@ -97,8 +96,7 @@ public struct LogDetailView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 16) {
                     Button {
-                        // ✨ 通常の編集ボタン：既存のログ内容をロードして開く
-                        hasSavedInSheet = false
+                        // ✨ 編集ボタン：既存のログ内容をロードして開く
                         let vm = AppState.shared.addFlowViewModel
                         vm.configureWithLog(log)
                         isShowingEditSheet = true
@@ -124,19 +122,12 @@ public struct LogDetailView: View {
                 }
             }
         }
-        .sheet(isPresented: $isShowingEditSheet, onDismiss: {
-            // ✨ 保存されずにキャンセルされた場合は、未評価状態（false）に戻す
-            if !hasSavedInSheet {
-                log.isEvaluated = false
-                try? log.modelContext?.save()
-            }
-        }) {
-            // ✨ 編集/追加フローのビュー（保存完了時に外側から hasSavedInSheet = true にできるコールバック等を渡すか、ViewModel側で管理）
+        .sheet(isPresented: $isShowingEditSheet) {
             EditLogFlowView(log: log)
         }
     }
 
-    /// ✨ まだテイスティング評価がされていない場合に表示する洗練されたプレースホルダーUI
+    /// まだテイスティング評価がされていない場合に表示するプレースホルダーUI
     private var unEvaluatedPlaceholderCard: some View {
         VStack(spacing: 16) {
             ZStack {
@@ -162,7 +153,6 @@ public struct LogDetailView: View {
             }
 
             Button {
-                hasSavedInSheet = false
                 let vm = AppState.shared.addFlowViewModel
                 vm.reset()
                 if let item = log.item {
@@ -238,7 +228,7 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
-    /// 横長写真でも画面をはみ出さない、安全かつ洗練されたヘッダービュー
+    /// ヘッダービュー
     private var heroHeaderView: some View {
         ZStack(alignment: .bottom) {
             if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {

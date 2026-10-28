@@ -30,7 +30,7 @@ public struct MatrixAnalysisCardView: View {
                         HStack(spacing: 2) {
                             Text("マトリクス")
                                 .font(.system(size: 8, weight: .bold))
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.primary)
                             Spacer()
                             Text("\(axes.xTitle) / \(axes.yTitle)")
                                 .font(.system(size: 7, weight: .medium))

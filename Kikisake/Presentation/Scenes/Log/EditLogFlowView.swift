@@ -2,8 +2,6 @@
 //  EditLogFlowView.swift
 //  Kikisake
 //
-//  Created by Kenichiro Suzuki on 2026/10/20.
-//
 
 import SwiftUI
 import SwiftData
@@ -14,7 +12,7 @@ public struct EditLogFlowView: View {
     @Environment(\.dismiss) private var dismiss
 
     let targetLog: TastingLog
-    @State private var viewModel = AddFlowViewModel()
+    @Bindable private var viewModel = AppState.shared.addFlowViewModel
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
 
@@ -41,7 +39,7 @@ public struct EditLogFlowView: View {
                 }
                 .padding(.vertical, 12)
 
-                // 各ステップビューの切替（AddFlowViewと同じものをそのまま再利用）
+                // 各ステップビューの切替
                 Group {
                     switch viewModel.currentStep {
                     case 1:

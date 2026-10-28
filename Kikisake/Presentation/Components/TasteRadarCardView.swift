@@ -51,7 +51,7 @@ public struct TasteRadarCardView: View {
                     HStack(spacing: 2) {
                         Text("味わいプロファイル")
                             .font(.system(size: 8, weight: .bold))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.primary)
                         Spacer()
                     }
 

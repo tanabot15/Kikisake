@@ -31,8 +31,8 @@ public struct TastingCardShareView: View {
         let baseColor = colorFromHex(log.appearanceColorHex)
         
         // 酒種や外観色をベースに、上品で薄いトーンのグラデーションカラーを構築
-        let primaryColor = baseColor.opacity(0.18)
-        let secondaryColor = baseColor.opacity(0.04)
+        let primaryColor = baseColor.opacity(0.55)
+        let secondaryColor = baseColor.opacity(0.25)
         
         return (primaryColor, secondaryColor)
     }
