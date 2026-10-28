@@ -31,14 +31,16 @@ public enum PreviewSampleLoader {
         }
     }
 
-    /// サンプルデータを一意の1本としてそれぞれ独立挿入
+    /// サンプルデータを独立挿入（ワイン2本、日本酒2本、ビール1本）
     public static func insertSamples(into context: ModelContext) {
         insertDefaultLocationsIfNeeded(into: context)
 
         let encoder = JSONEncoder()
 
-        // 1. ワインのサンプルメタデータ（セラー 1行1列目）
-        let wineMeta = WineSpecificMetadata(
+        // ==========================================
+        // 1. ワイン 1本目: Château Margaux 2015 (ワインセラー 1行1列目)
+        // ==========================================
+        let wineMeta1 = WineSpecificMetadata(
             wineType: "赤",
             grapeVarieties: "カベルネ・ソーヴィニヨン, メルロ",
             blendComponents: [
@@ -48,9 +50,9 @@ public enum PreviewSampleLoader {
             ],
             appellation: "Margaux AOC"
         )
-        let wineMetaJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
+        let wineMeta1JSON = String(data: try! encoder.encode(wineMeta1), encoding: .utf8)
 
-        let wineItem = BeverageItem(
+        let wineItem1 = BeverageItem(
             name: "Château Margaux 2015",
             producer: "Château Margaux",
             category: .wine,
@@ -61,9 +63,9 @@ public enum PreviewSampleLoader {
             storageLocation: "ワインセラー",
             gridRow: 1,
             gridColumn: 1,
-            specificMetadataJSON: wineMetaJSON
+            specificMetadataJSON: wineMeta1JSON
         )
-        let wineLog = TastingLog(
+        let wineLog1 = TastingLog(
             date: Date().addingTimeInterval(-86400 * 3),
             rating: 4.9,
             appearanceNotes: "深みのあるルビーレッド",
@@ -83,19 +85,70 @@ public enum PreviewSampleLoader {
             hasAgingPotential: true,
             memo: "圧倒的な気品と複雑味。カシスの芳醇な香りに樽のニュアンスが完璧に溶け込んでいる。",
             isEvaluated: true,
-            item: wineItem
+            item: wineItem1
         )
 
-        // 2. 日本酒のサンプルメタデータ（冷蔵庫 1行1列目）
-        let sakeMeta = SakeSpecificMetadata(
+        // ==========================================
+        // 2. ワイン 2本目: Meursault 2020 (ワインセラー 1行2列目)
+        // ==========================================
+        let wineMeta2 = WineSpecificMetadata(
+            wineType: "白",
+            grapeVarieties: "シャルドネ",
+            blendComponents: [
+                BlendComponent(variety: "シャルドネ", percentage: 100)
+            ],
+            appellation: "Meursault AOC"
+        )
+        let wineMeta2JSON = String(data: try! encoder.encode(wineMeta2), encoding: .utf8)
+
+        let wineItem2 = BeverageItem(
+            name: "Domaine Leflaive Meursault 2020",
+            producer: "Domaine Leflaive",
+            category: .wine,
+            region: "ブルゴーニュ, フランス",
+            vintage: "2020",
+            alcoholByVolume: 13.0,
+            price: 24000,
+            storageLocation: "ワインセラー",
+            gridRow: 1,
+            gridColumn: 2,
+            specificMetadataJSON: wineMeta2JSON
+        )
+        let wineLog2 = TastingLog(
+            date: Date().addingTimeInterval(-86400 * 5),
+            rating: 4.7,
+            appearanceNotes: "美しいストロー・イエロー",
+            appearanceColorHex: "#F3E680",
+            aromaTags: ["レモン", "洋梨", "ヴァニラ", "アーモンド", "バター"],
+            sweetness: 2.0,
+            saltiness: 0.0,
+            acidity: 4.0,
+            bitterness: 1.5,
+            umami: 3.0,
+            tannin: nil,
+            body: 4.2,
+            balanceTags: ["まろやかな", "豊潤な"],
+            finishLength: 4.6,
+            isCostEffective: false,
+            isWillingToRepeat: true,
+            hasAgingPotential: true,
+            memo: "クリーミーな質感と引き締まったミネラルのバランスが絶妙。ナッツの芳ばしい余韻。",
+            isEvaluated: true,
+            item: wineItem2
+        )
+
+        // ==========================================
+        // 3. 日本酒 1本目: 新政 No.6 R-type 生原酒 (冷蔵庫 1行1列目)
+        // ==========================================
+        let sakeMeta1 = SakeSpecificMetadata(
             specificName: "特別純米 生原酒",
             riceVariety: "秋田県産酒造好適米",
             polishingRate: "65%",
             sakeMeterValue: "+1.0"
         )
-        let sakeMetaJSON = String(data: try! encoder.encode(sakeMeta), encoding: .utf8)
+        let sakeMeta1JSON = String(data: try! encoder.encode(sakeMeta1), encoding: .utf8)
 
-        let sakeItem = BeverageItem(
+        let sakeItem1 = BeverageItem(
             name: "新政 No.6 R-type 生原酒",
             producer: "新政酒造",
             category: .sake,
@@ -106,9 +159,9 @@ public enum PreviewSampleLoader {
             storageLocation: "冷蔵庫",
             gridRow: 1,
             gridColumn: 1,
-            specificMetadataJSON: sakeMetaJSON
+            specificMetadataJSON: sakeMeta1JSON
         )
-        let sakeLog = TastingLog(
+        let sakeLog1 = TastingLog(
             date: Date().addingTimeInterval(-86400 * 1),
             rating: 4.7,
             appearanceNotes: "微発泡が感じられる透明な輝き",
@@ -128,10 +181,59 @@ public enum PreviewSampleLoader {
             hasAgingPotential: false,
             memo: "ジューシーな酸味と上品な甘みのバランスが素晴らしい。キレも抜群。",
             isEvaluated: true,
-            item: sakeItem
+            item: sakeItem1
         )
 
-        // 3. ビールのサンプルメタデータ（常温 1行1列目）
+        // ==========================================
+        // 4. 日本酒 2本目: 黒龍 吟十八号 (冷蔵庫 1行2列目)
+        // ==========================================
+        let sakeMeta2 = SakeSpecificMetadata(
+            specificName: "純米吟醸",
+            riceVariety: "五百万石",
+            polishingRate: "55%",
+            sakeMeterValue: "+4.0"
+        )
+        let sakeMeta2JSON = String(data: try! encoder.encode(sakeMeta2), encoding: .utf8)
+
+        let sakeItem2 = BeverageItem(
+            name: "黒龍 吟十八号",
+            producer: "黒龍酒造",
+            category: .sake,
+            region: "福井県",
+            vintage: "2026/02",
+            alcoholByVolume: 15.5,
+            price: 3300,
+            storageLocation: "冷蔵庫",
+            gridRow: 1,
+            gridColumn: 2,
+            specificMetadataJSON: sakeMeta2JSON
+        )
+        let sakeLog2 = TastingLog(
+            date: Date().addingTimeInterval(-86400 * 4),
+            rating: 4.6,
+            appearanceNotes: "クリアで美しい無色透明",
+            appearanceColorHex: "#F2F2F7",
+            aromaTags: ["白桃", "メロン", "炊いた米", "アーモンド"],
+            sweetness: 2.5,
+            saltiness: 0.0,
+            acidity: 3.0,
+            bitterness: 1.2,
+            umami: 3.8,
+            tannin: nil,
+            body: 3.2,
+            balanceTags: ["スムーズな", "引き締まった"],
+            finishLength: 4.4,
+            isCostEffective: true,
+            isWillingToRepeat: true,
+            hasAgingPotential: false,
+            memo: "上品な香りと透明感のある口当たり。食事を引き立てる洗練された純米吟醸。",
+            isEvaluated: true,
+            item: sakeItem2
+        )
+
+        // ==========================================
+        // 5. ビール 1本目: Inedit Damm (常温 1行1列目)
+        // ==========================================
         let beerMeta = BeerSpecificMetadata(
             beerStyle: "プレミアム・ホワイトビア",
             ibu: "11"
@@ -174,15 +276,20 @@ public enum PreviewSampleLoader {
             item: beerItem
         )
 
-        context.insert(wineItem)
-        context.insert(wineLog)
-        context.insert(sakeItem)
-        context.insert(sakeLog)
+        // コンテキストへの挿入
+        context.insert(wineItem1)
+        context.insert(wineLog1)
+        context.insert(wineItem2)
+        context.insert(wineLog2)
+        context.insert(sakeItem1)
+        context.insert(sakeLog1)
+        context.insert(sakeItem2)
+        context.insert(sakeLog2)
         context.insert(beerItem)
         context.insert(beerLog)
 
         try? context.save()
-        print("[Sample Loader] サンプルデータの強制挿入が完了しました。")
+        print("[Sample Loader] ワイン2本・日本酒2本・ビール1本のサンプルデータ挿入が完了しました。")
     }
 
     public static func insertSamplesIfNeeded(into context: ModelContext) {

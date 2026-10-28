@@ -15,19 +15,24 @@ public struct CellarGridView: View {
     let onSelectSlot: (Int, Int, BeverageItem?) -> Void
     // 棚の外のアイテムタップ時のアクション
     let onSelectItem: (BeverageItem) -> Void
+    
+    // ✨ 重複配置防止時のエラー通知用コールバック（任意）
+    var onError: ((String) -> Void)? = nil
 
     public init(
         location: StorageLocation,
         items: [BeverageItem],
         modelContext: ModelContext,
         onSelectSlot: @escaping (Int, Int, BeverageItem?) -> Void,
-        onSelectItem: @escaping (BeverageItem) -> Void
+        onSelectItem: @escaping (BeverageItem) -> Void,
+        onError: ((String) -> Void)? = nil
     ) {
         self.location = location
         self.items = items
         self.modelContext = modelContext
         self.onSelectSlot = onSelectSlot
         self.onSelectItem = onSelectItem
+        self.onError = onError
     }
 
     public var body: some View {
@@ -69,6 +74,22 @@ public struct CellarGridView: View {
                                             return false
                                         }
                                         
+                                        // ✨ 重複配置のバリデーション：
+                                        // 移動先スロットに「自分以外」のアイテムが既に存在する場合は移動をブロック
+                                        let existingItemInTargetSlot = self.items.first { item in
+                                            item.storageLocation == self.location.name &&
+                                            item.gridRow == row &&
+                                            item.gridColumn == col &&
+                                            item.id != movingItem.id
+                                        }
+                                        
+                                        if existingItemInTargetSlot != nil {
+                                            // すでに埋まっているため移動拒否
+                                            onError?("指定されたスロット（第 \(row) 段 \(col) 列）にはすでに別のボトルが置かれているため移動できません。")
+                                            return false
+                                        }
+                                        
+                                        // 正常に移動を反映
                                         movingItem.gridRow = row
                                         movingItem.gridColumn = col
                                         movingItem.storageLocation = self.location.name

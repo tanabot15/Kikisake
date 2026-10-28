@@ -94,7 +94,7 @@ public struct LocationSlotSelectionSheet: View {
                                                         .font(.system(size: 18, weight: .bold))
                                                         .foregroundStyle(Color.accentColor)
                                                 } else if let _ = occupiedItem {
-                                                    Image(systemName: "winebottle.fill")
+                                                    Image(systemName: "wineglass.fill")
                                                         .font(.system(size: 14))
                                                         .foregroundStyle(Color(.systemGray3))
                                                 } else {
@@ -140,7 +140,7 @@ public struct LocationSlotSelectionSheet: View {
                 .padding()
             }
             .background(Color(.systemGroupedBackground))
-            .navigationTitle("格納スロットの指定")
+            .navigationTitle("スロット指定")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -152,7 +152,7 @@ public struct LocationSlotSelectionSheet: View {
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("この位置に配置する") {
+                    Button("ここに配置") {
                         dismiss()
                         onComplete()
                     }

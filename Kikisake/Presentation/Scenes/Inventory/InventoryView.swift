@@ -328,6 +328,10 @@ public struct InventoryView: View {
                     onSelectItem: { item in
                         selectedItemForAction = item
                         isShowingActionSheet = true
+                    },
+                    onError: { message in
+                        errorMessage = message
+                        showErrorAlert = true
                     }
                 )
                 .padding(.horizontal, 12)
