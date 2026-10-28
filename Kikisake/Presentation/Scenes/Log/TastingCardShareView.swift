@@ -7,6 +7,8 @@ import SwiftData
 /// X (Twitter) などのSNS投稿用に最適化された、プロフェッショナル仕様のテイスティングカード画像用ビュー
 public struct TastingCardShareView: View {
     let log: TastingLog
+    
+    @State private var processedBottleImage: UIImage? = nil
 
     public init(log: TastingLog) {
         self.log = log
@@ -24,10 +26,23 @@ public struct TastingCardShareView: View {
         return .gray
     }
 
+    /// 外観カラーコードや酒種に応じたシグネチャーカラー（グラデーション用）を算出
+    private var cardThemeColors: (primary: Color, secondary: Color) {
+        let baseColor = colorFromHex(log.appearanceColorHex)
+        
+        // 酒種や外観色をベースに、上品で薄いトーンのグラデーションカラーを構築
+        let primaryColor = baseColor.opacity(0.18)
+        let secondaryColor = baseColor.opacity(0.04)
+        
+        return (primaryColor, secondaryColor)
+    }
+
     public var body: some View {
+        let themeColors = cardThemeColors
+
         VStack(alignment: .leading, spacing: 10) {
             
-            // MARK: - 1. 上部セクション（左: 基本情報 ＋ スペック ＋ 評価/外観/香り / 右: 正方形のフォトフレーム）
+            // MARK: - 1. 上部セクション（左: 基本情報 ＋ スペック ＋ 評価/外観/香り / 右: ダイナミック・ボトルアプローチャ）
             HStack(alignment: .top, spacing: 12) {
                 // --- 左側コンテンツエリア ---
                 VStack(alignment: .leading, spacing: 6) {
@@ -102,7 +117,7 @@ public struct TastingCardShareView: View {
                             }
                         }
 
-                        // ✨ 基本情報 & スペックの下に入る「評価・外観・香り・特徴フラグ」サブセクション
+                        // 基本情報 & スペックの下に入る「評価・外観・香り・特徴フラグ」サブセクション
                         VStack(alignment: .leading, spacing: 4) {
                             // 評価
                             HStack(spacing: 3) {
@@ -152,7 +167,7 @@ public struct TastingCardShareView: View {
                                                 .font(.system(size: 7, weight: .medium))
                                                 .padding(.horizontal, 4)
                                                 .padding(.vertical, 1)
-                                                .background(Color.primary.opacity(0.1))
+                                                .background(Color(.systemBackground).opacity(0.7))
                                                 .foregroundStyle(Color.primary)
                                                 .cornerRadius(3)
                                         }
@@ -160,7 +175,7 @@ public struct TastingCardShareView: View {
                                 }
                             }
 
-                            // ✨ 特徴フラグ (設定されている場合のみサブセクション内に表示)
+                            // 特徴フラグ
                             if log.isCostEffective || log.isWillingToRepeat || log.hasAgingPotential {
                                 HStack(alignment: .top, spacing: 4) {
                                     Text("特徴")
@@ -202,24 +217,40 @@ public struct TastingCardShareView: View {
                             }
                         }
                         .padding(6)
-                        .background(Color(.tertiarySystemGroupedBackground).opacity(0.6))
+                        .background(Color(.systemBackground).opacity(0.5))
                         .cornerRadius(6)
                         .padding(.top, 2)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                // --- 右側：正方形フォトフレーム ---
+                // --- 右側：【ダイナミック・ボトルアプローチャ】透過・エッジ抽出フォトフレーム ---
                 ZStack {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(.tertiarySystemGroupedBackground))
+                    // 背景グラデーションポディウム（高級感を演出する台座風エフェクト）
+                    LinearGradient(
+                        colors: [Color(.tertiarySystemGroupedBackground), Color(.systemBackground)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                    if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
+                    if let uiImage = processedBottleImage {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+                            .shadow(color: Color.black.opacity(0.25), radius: 6, x: 2, y: 4)
+                            .padding(6)
+                    } else if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
+                        // 読み込み中またはフォールバック表示
                         Image(uiImage: uiImage)
                             .resizable()
                             .scaledToFit()
                             .cornerRadius(8)
                             .padding(4)
+                            .task {
+                                let backgroundRemoved = await BottleMattingHelper.removeBackground(from: uiImage)
+                                self.processedBottleImage = backgroundRemoved
+                            }
                     } else {
                         VStack(spacing: 4) {
                             Image(systemName: "wineglass")
@@ -275,9 +306,26 @@ public struct TastingCardShareView: View {
             .padding(.bottom, 10)
         }
         .frame(width: 380)
-        .background(Color(.systemBackground))
+        // ✨ シグネチャー・テイスティングカラーに基づくグラデーション背景を適用
+        .background(
+            ZStack {
+                LinearGradient(
+                    colors: [themeColors.primary, themeColors.secondary, Color(.systemBackground)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                // 上品なブラー（ぼかし）エフェクトを重ねてアートピースのような質感に
+                Rectangle()
+                    .fill(.ultraThinMaterial)
+                    .opacity(0.65)
+            }
+        )
         .cornerRadius(16)
-        .shadow(color: Color.black.opacity(0.12), radius: 8, x: 0, y: 4)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(colorFromHex(log.appearanceColorHex).opacity(0.25), lineWidth: 1.2)
+        )
+        .shadow(color: colorFromHex(log.appearanceColorHex).opacity(0.2), radius: 10, x: 0, y: 4)
     }
 
     private func specRow(title: String, value: String) -> some View {
@@ -295,20 +343,27 @@ public struct TastingCardShareView: View {
     }
 }
 
-/// 縦長ボトルのサンプル画像を生成するヘルパー（Preview用）
+/// プレビュー用のサンプル画像生成ヘルパー
 private func generateVerticalSampleImage() -> Data? {
     let size = CGSize(width: 600, height: 1200)
     let renderer = UIGraphicsImageRenderer(size: size)
     let image = renderer.image { context in
-        UIColor.systemIndigo.setFill()
-        context.fill(CGRect(origin: .zero, size: size))
+        UIColor(red: 0.15, green: 0.05, blue: 0.08, alpha: 1.0).setFill()
+        let bodyRect = CGRect(x: 180, y: 300, width: 240, height: 820)
+        UIBezierPath(roundedRect: bodyRect, cornerRadius: 40).fill()
         
-        UIColor.darkGray.setFill()
-        let rect = CGRect(x: 200, y: 150, width: 200, height: 900)
-        let path = UIBezierPath(roundedRect: rect, cornerRadius: 30)
-        path.fill()
+        let neckRect = CGRect(x: 235, y: 100, width: 130, height: 210)
+        UIBezierPath(rect: neckRect).fill()
+        
+        UIColor(red: 0.85, green: 0.70, blue: 0.35, alpha: 1.0).setFill()
+        let capRect = CGRect(x: 235, y: 70, width: 130, height: 70)
+        UIBezierPath(roundedRect: capRect, cornerRadius: 8).fill()
+        
+        UIColor(red: 0.95, green: 0.93, blue: 0.88, alpha: 1.0).setFill()
+        let labelRect = CGRect(x: 200, y: 480, width: 200, height: 320)
+        UIBezierPath(roundedRect: labelRect, cornerRadius: 12).fill()
     }
-    return image.jpegData(compressionQuality: 0.8)
+    return image.jpegData(compressionQuality: 0.9)
 }
 
 #Preview {
@@ -340,7 +395,7 @@ private func generateVerticalSampleImage() -> Data? {
         date: Date(),
         rating: 4.8,
         appearanceNotes: "ガーネット",
-        appearanceColorHex: "#802633",
+        appearanceColorHex: "#802633", // ガーネット色を反映したシグネチャーカラー
         aromaTags: ["スミレ", "樽香", "チェリー", "タバコ", "スパイス"],
         sweetness: 2.0,
         saltiness: 0.0,
@@ -351,9 +406,9 @@ private func generateVerticalSampleImage() -> Data? {
         body: 4.5,
         balanceTags: ["豊潤な"],
         finishLength: 4.8,
-        isCostEffective: true,       // ✨ プレビュー用にフラグをON
-        isWillingToRepeat: true,     // ✨ プレビュー用にフラグをON
-        hasAgingPotential: true,     // ✨ プレビュー用にフラグをON
+        isCostEffective: true,
+        isWillingToRepeat: true,
+        hasAgingPotential: true,
         memo: "圧倒的な気品と複雑味。長期熟成のポテンシャルを感じさせる素晴らしいバランス。",
         item: sampleItem
     )
