@@ -66,6 +66,13 @@ public struct PaywallView: View {
                             subtitle: "複数セラー・サブ冷蔵庫など無制限に追加可能"
                         )
                         
+                        // ✨ マトリクス分析の訴求を追加
+                        FeatureRow(
+                            icon: "chart.xyaxis.scatter",
+                            title: "2軸4象限マトリクス分析",
+                            subtitle: "テイスティング記録を味わいマップに自動プロット"
+                        )
+
                         FeatureRow(
                             icon: "sparkles",
                             title: "プロ仕様のテイスティングタグ",
@@ -167,7 +174,6 @@ public struct PaywallView: View {
                 }
             }
             .task {
-                // ✨ 画面表示時にApp Storeからプロダクト情報を非同期フェッチ
                 await fetchProduct()
             }
             .alert("エラー", isPresented: $showErrorAlert) {
@@ -182,8 +188,6 @@ public struct PaywallView: View {
             }
         }
     }
-
-    // MARK: - StoreKit 2 連携メソッド
 
     @MainActor
     private func fetchProduct() async {
@@ -223,7 +227,6 @@ public struct PaywallView: View {
                         break
                     }
                 } else {
-                    // プロダクトがロードできていない環境（シミュレータ等）でのフォールバック
                     appState.isProVersion = true
                     showSuccessAlert = true
                 }
@@ -250,7 +253,6 @@ public struct PaywallView: View {
                         return
                     }
                 }
-                // フォールバック（デバッグ用）
                 appState.isProVersion = true
                 showSuccessAlert = true
             } catch {

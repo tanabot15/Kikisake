@@ -19,7 +19,7 @@ public struct FinalizeStepView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("総合スコア: \(String(format: "%.1f", viewModel.rating))")
                         .font(.subheadline)
-                    Slider(value: $viewModel.rating, in: 1.0...5.0, step: 0.5)
+                    Slider(value: $viewModel.rating, in: 1.0...5.0, step: 0.1)
                         .tint(.yellow)
                 }
                 .padding(.vertical, 4)

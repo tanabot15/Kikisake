@@ -386,6 +386,9 @@
         }
       }
     },
+    "PRO限定機能" : {
+
+    },
     "Upgrade to Kikisake Pro" : {
       "localizations" : {
         "en" : {
@@ -1397,6 +1400,9 @@
         }
       }
     },
+    "タップしてPro版で詳細分析を解放" : {
+
+    },
     "タップして一覧を表示" : {
       "localizations" : {
         "en" : {
@@ -2011,6 +2017,7 @@
       }
     },
     "プロフェッショナル・マトリクス分析" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2179,6 +2186,9 @@
           }
         }
       }
+    },
+    "マトリクス分析" : {
+
     },
     "マホガニー" : {
       "localizations" : {
