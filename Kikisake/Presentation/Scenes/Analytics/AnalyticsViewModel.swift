@@ -6,29 +6,43 @@ import SwiftData
 
 /// 分析画面の表示セクション種類
 public enum AnalyticsSection: String, CaseIterable, Identifiable {
-    case consumption = "飲酒量・ログ"
-    case evaluation = "評価・好み"
+    case consumption
+    case evaluation
 
     public var id: String { rawValue }
 
-    /// ✨ Localizable.xcstrings 対応の表示名
+    /// ✨ Localizable.xcstrings が自動検出し、英訳を行えるように直接文字列リテラルを指定
     public var displayName: String {
-        String(localized: String.LocalizationValue(rawValue))
+        switch self {
+        case .consumption:
+            return String(localized: "飲酒量・ログ")
+        case .evaluation:
+            return String(localized: "評価・好み")
+        }
     }
 }
 
 /// 期間フィルターの種類
 public enum AnalyticsTimeFilter: String, CaseIterable, Identifiable {
-    case all = "全期間"
-    case month1 = "直近1ヶ月"
-    case months3 = "直近3ヶ月"
-    case year1 = "直近1年"
+    case all
+    case month1
+    case months3
+    case year1
 
     public var id: String { rawValue }
 
-    /// ✨ Localizable.xcstrings 対応の表示名
+    /// ✨ Localizable.xcstrings が自動検出し、英訳を行えるように直接文字列リテラルを指定
     public var displayName: String {
-        String(localized: String.LocalizationValue(rawValue))
+        switch self {
+        case .all:
+            return String(localized: "全期間")
+        case .month1:
+            return String(localized: "直近1ヶ月")
+        case .months3:
+            return String(localized: "直近3ヶ月")
+        case .year1:
+            return String(localized: "直近1年")
+        }
     }
 
     func evaluate(date: Date, relativeTo referenceDate: Date = Date()) -> Bool {

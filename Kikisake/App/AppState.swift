@@ -3,11 +3,11 @@
 
 import SwiftUI
 
-/// アプリの外観モードを表す列挙型（日本語をベースキーとしてLocalizable.xcstringsで管理）
+/// アプリの外観モードを表す列挙型
 public enum AppearanceMode: String, CaseIterable, Identifiable {
-    case system = "端末の設定に合わせる"
-    case light = "ライトモード"
-    case dark = "ダークモード"
+    case system
+    case light
+    case dark
 
     public var id: String { rawValue }
 
@@ -19,9 +19,16 @@ public enum AppearanceMode: String, CaseIterable, Identifiable {
         }
     }
 
-    /// ✨ String(localized:) を用いて現在のおよび多言語化された文字列を取得するプロパティ
+    /// ✨ Localizable.xcstrings が自動検出し、英訳を行えるように直接文字列リテラルを指定
     public var localizedName: String {
-        String(localized: String.LocalizationValue(rawValue))
+        switch self {
+        case .system:
+            return String(localized: "端末の設定に合わせる")
+        case .light:
+            return String(localized: "ライトモード")
+        case .dark:
+            return String(localized: "ダークモード")
+        }
     }
 }
 

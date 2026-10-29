@@ -1529,6 +1529,16 @@
         }
       }
     },
+    "ダークモード" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Mode"
+          }
+        }
+      }
+    },
     "タイプ" : {
       "localizations" : {
         "en" : {
@@ -2005,6 +2015,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bell Pepper"
+          }
+        }
+      }
+    },
+    "ビール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beer"
           }
         }
       }
@@ -2549,6 +2569,16 @@
         }
       }
     },
+    "ライトモード" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light Mode"
+          }
+        }
+      }
+    },
     "ライブラリから選ぶ" : {
       "localizations" : {
         "en" : {
@@ -2775,6 +2805,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rose"
+          }
+        }
+      }
+    },
+    "ワイン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine"
           }
         }
       }
@@ -3135,6 +3175,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Location List"
+          }
+        }
+      }
+    },
+    "全期間" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
           }
         }
       }
@@ -3781,6 +3831,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sun"
+          }
+        }
+      }
+    },
+    "日本酒" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sake"
           }
         }
       }
@@ -4555,6 +4615,36 @@
         }
       }
     },
+    "直近1ヶ月" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Past 1 Month"
+          }
+        }
+      }
+    },
+    "直近1年" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Past 1 Year"
+          }
+        }
+      }
+    },
+    "直近3ヶ月" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Past 3 Months"
+          }
+        }
+      }
+    },
     "石灰" : {
       "localizations" : {
         "en" : {
@@ -4601,6 +4691,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Type"
+          }
+        }
+      }
+    },
+    "端末の設定に合わせる" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
           }
         }
       }
@@ -4937,6 +5037,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rating & Tasting Data"
+          }
+        }
+      }
+    },
+    "評価・好み" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ratings & Preferences"
           }
         }
       }
@@ -5313,6 +5423,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unique Items Drunk"
+          }
+        }
+      }
+    },
+    "飲酒量・ログ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consumption"
           }
         }
       }
