@@ -689,12 +689,12 @@
         }
       }
     },
-    "お酒の感動を記録し、あなたの「好み」を\n深く知るためのテイスティング手帳" : {
+    "お酒の感動を記録し、あなたの「好み」を深く知るためのテイスティング手帳" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tasting Notebook to record your beverage experiences and deeply understand your \"preferences\"."
+            "value" : "A tasting journal to capture every sip and discover your personal preferences."
           }
         }
       }
@@ -855,6 +855,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crystal Clear"
+          }
+        }
+      }
+    },
+    "グリッド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid"
           }
         }
       }
@@ -1365,6 +1375,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "All Aroma Descriptors"
+          }
+        }
+      }
+    },
+    "スマートな在庫・セラー管理" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smart Inventory Management"
           }
         }
       }
@@ -2639,12 +2659,32 @@
         }
       }
     },
+    "リスト" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "List"
+          }
+        }
+      }
+    },
     "リストアに失敗しました: %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Failed to restore: %@"
+          }
+        }
+      }
+    },
+    "リッチな分析と好みの一覧" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rich Analytics & Insights"
           }
         }
       }
@@ -3625,6 +3665,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Appearance & Aroma"
+          }
+        }
+      }
+    },
+    "外観、香り、五味（甘味・酸味・苦味・旨味・塩味）を直感的に記録できます。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intuitively log appearance, aromas, and basic taste profiles."
           }
         }
       }
@@ -4861,6 +4911,16 @@
         }
       }
     },
+    "自宅のセラーや冷蔵庫ごとの在庫を把握し、スムーズにテイスティングへ移行できます。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Track stock in your cellar or fridge, and transition seamlessly to tasting."
+          }
+        }
+      }
+    },
     "花・植物" : {
       "localizations" : {
         "en" : {
@@ -5101,6 +5161,16 @@
         }
       }
     },
+    "詳細なテイスティング記録" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detailed Tasting Logs"
+          }
+        }
+      }
+    },
     "詳細メモ・自由記述" : {
       "localizations" : {
         "en" : {
@@ -5223,6 +5293,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Category"
+          }
+        }
+      }
+    },
+    "酒種ごとの比率や、あなた自身の味覚プロファイル、お気に入り銘柄を可視化します。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualize category ratios, flavor profiles, and favorite bottles."
           }
         }
       }

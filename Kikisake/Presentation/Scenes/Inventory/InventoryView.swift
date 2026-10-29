@@ -6,12 +6,18 @@ import SwiftData
 
 /// 表示モードの定義
 private enum CellarDisplayMode: String, CaseIterable, Identifiable {
-    case list = "リスト"
-    case grid = "グリッド"
+    case list
+    case grid
     var id: String { rawValue }
 
+    /// ✨ Localizable.xcstrings が自動検出し、英訳を行えるように直接文字列リテラルを指定
     var displayName: String {
-        String(localized: String.LocalizationValue(rawValue))
+        switch self {
+        case .list:
+            return String(localized: "リスト")
+        case .grid:
+            return String(localized: "グリッド")
+        }
     }
 }
 

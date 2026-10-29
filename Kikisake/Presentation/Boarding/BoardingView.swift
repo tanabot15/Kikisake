@@ -26,11 +26,11 @@ public struct BoardingView: View {
             }
 
             VStack(spacing: 8) {
-                Text("Kikisakeへようこそ")
+                Text(String(localized: "Kikisakeへようこそ"))
                     .font(.title)
                     .fontWeight(.bold)
 
-                Text("お酒の感動を記録し、あなたの「好み」を\n深く知るためのテイスティング手帳")
+                Text(String(localized: "お酒の感動を記録し、あなたの「好み」を深く知るためのテイスティング手帳"))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -42,20 +42,20 @@ public struct BoardingView: View {
             VStack(alignment: .leading, spacing: 20) {
                 boardingFeatureRow(
                     icon: "waveform.path.ecg.text.clipboard",
-                    title: "詳細なテイスティング記録",
-                    description: "外観、香り、五味（甘味・酸味・苦味・旨味・塩味）を直感的に記録できます。"
+                    title: String(localized: "詳細なテイスティング記録"),
+                    description: String(localized: "外観、香り、五味（甘味・酸味・苦味・旨味・塩味）を直感的に記録できます。")
                 )
 
                 boardingFeatureRow(
                     icon: "chart.pie",
-                    title: "リッチな分析と好みの一覧",
-                    description: "酒種ごとの比率や、あなた自身の味覚プロファイル、お気に入り銘柄を可視化します。"
+                    title: String(localized: "リッチな分析と好みの一覧"),
+                    description: String(localized: "酒種ごとの比率や、あなた自身の味覚プロファイル、お気に入り銘柄を可視化します。")
                 )
 
                 boardingFeatureRow(
                     icon: "refrigerator",
-                    title: "スマートな在庫・セラー管理",
-                    description: "自宅のセラーや冷蔵庫ごとの在庫を把握し、スムーズにテイスティングへ移行できます。"
+                    title: String(localized: "スマートな在庫・セラー管理"),
+                    description: String(localized: "自宅のセラーや冷蔵庫ごとの在庫を把握し、スムーズにテイスティングへ移行できます。")
                 )
             }
             .padding(.horizontal, 24)
@@ -66,7 +66,7 @@ public struct BoardingView: View {
             Button {
                 isPresented = false
             } label: {
-                Text("さっそくはじめる")
+                Text(String(localized: "さっそくはじめる"))
                     .font(.headline)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
