@@ -22,16 +22,16 @@ public struct GeneralInfoStepView: View {
     @FocusState<GeneralInfoField?>.Binding var focusedField: GeneralInfoField?
     var showAlert: (String) -> Void
 
-    // ── 表面ラベル用の完全に独立したUI状態変数 ──
-    @State private var isShowingFrontSourceOptions: Bool = false
+    // ── 表面ラベル用の状態 ──
     @State private var isShowingFrontCamera: Bool = false
-    @State private var isShowingFrontPhotosPicker: Bool = false
+    @State private var isShowingFrontLibrary: Bool = false
+    @State private var isShowingFrontActionDialog: Bool = false
     @State private var frontPhotoItem: PhotosPickerItem? = nil
 
-    // ── 裏面ラベル用の完全に独立したUI状態変数 ──
-    @State private var isShowingBackSourceOptions: Bool = false
+    // ── 裏面ラベル用の状態 ──
     @State private var isShowingBackCamera: Bool = false
-    @State private var isShowingBackPhotosPicker: Bool = false
+    @State private var isShowingBackLibrary: Bool = false
+    @State private var isShowingBackActionDialog: Bool = false
     @State private var backPhotoItem: PhotosPickerItem? = nil
 
     public init(
@@ -50,195 +50,221 @@ public struct GeneralInfoStepView: View {
             categorySection
             basicInfoSection
         }
+        // ── 全体のルート階層にモダールを一本化し、二重提示エラーを完全に防止 ──
+        .confirmationDialog("表面の写真を選択", isPresented: $isShowingFrontActionDialog, titleVisibility: .visible) {
+            Button("写真を撮る") {
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    isShowingFrontCamera = true
+                } else {
+                    showAlert("このデバイスではカメラを利用できません。")
+                }
+            }
+            Button("ライブラリから選ぶ") {
+                isShowingFrontLibrary = true
+            }
+            if viewModel.selectedImageData != nil {
+                Button("写真を削除", role: .destructive) {
+                    viewModel.selectedImageData = nil
+                    frontPhotoItem = nil
+                }
+            }
+            Button("キャンセル", role: .cancel) {}
+        }
+        .confirmationDialog("裏面の写真を選択", isPresented: $isShowingBackActionDialog, titleVisibility: .visible) {
+            Button("写真を撮る") {
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    isShowingBackCamera = true
+                } else {
+                    showAlert("このデバイスではカメラを利用できません。")
+                }
+            }
+            Button("ライブラリから選ぶ") {
+                isShowingBackLibrary = true
+            }
+            if viewModel.selectedBackImageData != nil {
+                Button("写真を削除", role: .destructive) {
+                    viewModel.selectedBackImageData = nil
+                    backPhotoItem = nil
+                }
+            }
+            Button("キャンセル", role: .cancel) {}
+        }
+        // ── 表面のシート・ピッカーモダール ──
+        .sheet(isPresented: $isShowingFrontCamera) {
+            ImagePickerView(sourceType: .camera) { image in
+                if let data = image.jpegData(compressionQuality: 0.8) {
+                    viewModel.selectedImageData = data
+                }
+            }
+        }
+        .photosPicker(isPresented: $isShowingFrontLibrary, selection: $frontPhotoItem, matching: .images)
+        .onChange(of: frontPhotoItem) { _, newValue in
+            guard let newItem = newValue else { return }
+            Task {
+                if let data = try? await newItem.loadTransferable(type: Data.self) {
+                    await MainActor.run {
+                        viewModel.selectedImageData = data
+                    }
+                }
+                await MainActor.run {
+                    frontPhotoItem = nil
+                }
+            }
+        }
+        // ── 裏面のシート・ピッカーモダール ──
+        .sheet(isPresented: $isShowingBackCamera) {
+            ImagePickerView(sourceType: .camera) { image in
+                if let data = image.jpegData(compressionQuality: 0.8) {
+                    viewModel.selectedBackImageData = data
+                }
+            }
+        }
+        .photosPicker(isPresented: $isShowingBackLibrary, selection: $backPhotoItem, matching: .images)
+        .onChange(of: backPhotoItem) { _, newValue in
+            guard let newItem = newValue else { return }
+            Task {
+                if let data = try? await newItem.loadTransferable(type: Data.self) {
+                    await MainActor.run {
+                        viewModel.selectedBackImageData = data
+                    }
+                }
+                await MainActor.run {
+                    backPhotoItem = nil
+                }
+            }
+        }
     }
 
     // MARK: - Subviews
 
     @ViewBuilder
     private var labelPhotoSection: some View {
-        Section("ラベル写真") {
+        Section("写真") {
             VStack(spacing: 16) {
-                // 1. 表面ラベル行（インライン化により状態混同を完全に防止）
-                HStack(spacing: 16) {
-                    if let data = viewModel.selectedImageData, let uiImage = UIImage(data: data) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 96, height: 96)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(.systemGray4), lineWidth: 1))
-                    } else {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color(.systemGray6))
-                            .frame(width: 96, height: 96)
-                            .overlay {
-                                Image(systemName: "camera.fill")
-                                    .font(.title2)
-                                    .foregroundStyle(.secondary)
-                            }
-                    }
-
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("写真")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.secondary)
-
-                        HStack(spacing: 12) {
-                            if viewModel.selectedImageData == nil {
-                                Button {
-                                    isShowingFrontSourceOptions = true
-                                } label: {
-                                    Label("写真を追加", systemImage: "photo.badge.plus")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.white)
-                                        .fontWeight(.semibold)
-                                }
-                                .buttonStyle(.borderedProminent)
-                                .controlSize(.small)
-                            } else {
-                                Button {
-                                    isShowingFrontSourceOptions = true
-                                } label: {
-                                    Label("変更", systemImage: "photo.badge.plus")
-                                        .font(.subheadline)
-                                        .fontWeight(.semibold)
-                                }
-                                .buttonStyle(.bordered)
-                                .controlSize(.small)
-
-                                Button("削除", role: .destructive) {
-                                    viewModel.selectedImageData = nil
-                                    frontPhotoItem = nil
-                                }
-                                .font(.caption)
-                            }
-                        }
-                    }
+                HStack {
+                    Label("ボトル・ラベル写真", systemImage: "camera.viewfinder")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
                     Spacer()
                 }
-                .confirmationDialog("写真を選択", isPresented: $isShowingFrontSourceOptions, titleVisibility: .visible) {
-                    Button("写真を撮る") {
-                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                            isShowingFrontCamera = true
-                        } else {
-                            showAlert("このデバイスではカメラを利用できません。")
-                        }
-                    }
-                    Button("ライブラリから選ぶ") {
-                        isShowingFrontPhotosPicker = true
-                    }
-                    Button("キャンセル", role: .cancel) {}
-                }
-                .sheet(isPresented: $isShowingFrontCamera) {
-                    ImagePickerView(sourceType: .camera) { image in
-                        if let data = image.jpegData(compressionQuality: 0.8) {
-                            viewModel.selectedImageData = data
-                        }
-                    }
-                }
-                .photosPicker(isPresented: $isShowingFrontPhotosPicker, selection: $frontPhotoItem, matching: .images)
-                .onChange(of: frontPhotoItem) { _, newValue in
-                    guard let newItem = newValue else { return }
-                    Task {
-                        if let data = try? await newItem.loadTransferable(type: Data.self) {
-                            await MainActor.run {
-                                viewModel.selectedImageData = data
-                            }
-                        }
-                        await MainActor.run {
+                .padding(.top, 4)
+
+                // 2カラムの洗練されたフォトカード配置
+                HStack(spacing: 12) {
+                    // 1. 表面ラベルカード
+                    photoCard(
+                        title: "表面",
+                        subtitle: "メイン写真",
+                        imageData: viewModel.selectedImageData,
+                        hasImage: viewModel.selectedImageData != nil,
+                        action: {
+                            isShowingFrontActionDialog = true
+                        },
+                        onDelete: {
+                            viewModel.selectedImageData = nil
                             frontPhotoItem = nil
                         }
-                    }
-                }
+                    )
 
-                Divider()
-
-                // 2. 裏面ラベル行（インライン化により状態混同を完全に防止）
-                HStack(spacing: 16) {
-                    if let data = viewModel.selectedBackImageData, let uiImage = UIImage(data: data) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 68, height: 68)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(.systemGray4), lineWidth: 1))
-                    } else {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color(.systemGray6))
-                            .frame(width: 68, height: 68)
-                            .overlay {
-                                Image(systemName: "rectangle.stack.fill.badge.plus")
-                                    .font(.body)
-                                    .foregroundStyle(.secondary)
-                            }
-                    }
-
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(viewModel.selectedBackImageData == nil ? "裏面ラベルを撮影・追加する" : "裏面ラベル (登録済み)")
-                            .font(.caption)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.secondary)
-
-                        HStack(spacing: 12) {
-                            Button {
-                                isShowingBackSourceOptions = true
-                            } label: {
-                                Label(viewModel.selectedBackImageData == nil ? "写真を追加" : "変更", systemImage: "photo.badge.plus")
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                            }
-                            .buttonStyle(.bordered)
-                            .controlSize(.small)
-
-                            if viewModel.selectedBackImageData != nil {
-                                Button("削除", role: .destructive) {
-                                    viewModel.selectedBackImageData = nil
-                                    backPhotoItem = nil
-                                }
-                                .font(.caption)
-                            }
-                        }
-                    }
-                    Spacer()
-                }
-                .confirmationDialog("裏面ラベルの写真を選択", isPresented: $isShowingBackSourceOptions, titleVisibility: .visible) {
-                    Button("写真を撮る") {
-                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                            isShowingBackCamera = true
-                        } else {
-                            showAlert("このデバイスではカメラを利用できません。")
-                        }
-                    }
-                    Button("ライブラリから選ぶ") {
-                        isShowingBackPhotosPicker = true
-                    }
-                    Button("キャンセル", role: .cancel) {}
-                }
-                .sheet(isPresented: $isShowingBackCamera) {
-                    ImagePickerView(sourceType: .camera) { image in
-                        if let data = image.jpegData(compressionQuality: 0.8) {
-                            viewModel.selectedBackImageData = data
-                        }
-                    }
-                }
-                .photosPicker(isPresented: $isShowingBackPhotosPicker, selection: $backPhotoItem, matching: .images)
-                .onChange(of: backPhotoItem) { _, newValue in
-                    guard let newItem = newValue else { return }
-                    Task {
-                        if let data = try? await newItem.loadTransferable(type: Data.self) {
-                            await MainActor.run {
-                                viewModel.selectedBackImageData = data
-                            }
-                        }
-                        await MainActor.run {
+                    // 2. 裏面ラベルカード
+                    photoCard(
+                        title: "裏面",
+                        subtitle: "詳細・スペック",
+                        imageData: viewModel.selectedBackImageData,
+                        hasImage: viewModel.selectedBackImageData != nil,
+                        action: {
+                            isShowingBackActionDialog = true
+                        },
+                        onDelete: {
+                            viewModel.selectedBackImageData = nil
                             backPhotoItem = nil
                         }
-                    }
+                    )
                 }
             }
             .padding(.vertical, 4)
         }
+    }
+
+    /// 縦横の大きさが完全に固定された洗練されたフォトカード
+    @ViewBuilder
+    private func photoCard(
+        title: String,
+        subtitle: String,
+        imageData: Data?,
+        hasImage: Bool,
+        action: @escaping () -> Void,
+        onDelete: @escaping () -> Void
+    ) -> some View {
+        let cardSize: CGFloat = 140
+
+        VStack(alignment: .center, spacing: 10) {
+            ZStack {
+                // 固定背景枠（正方形）
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Color(.systemGray6))
+                    .frame(width: cardSize, height: cardSize)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14)
+                            .stroke(Color(.systemGray4).opacity(0.6), lineWidth: 1)
+                    )
+
+                if let data = imageData, let uiImage = UIImage(data: data) {
+                    // 写真表示（縦横固定・フレーム内でクロップ）
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: cardSize, height: cardSize)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .clipped()
+
+                    // 右上の削除バッジボタン
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button(action: onDelete) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.title3)
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundStyle(.white, Color.black.opacity(0.65))
+                            }
+                            .padding(6)
+                        }
+                        Spacer()
+                    }
+                } else {
+                    // 未選択時プレースホルダー
+                    VStack(spacing: 6) {
+                        Image(systemName: title == "表面" ? "camera.viewfinder" : "text.document")
+                            .font(.system(size: 28))
+                            .foregroundStyle(Color.accentColor.opacity(0.8))
+                        Text(subtitle)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .frame(width: cardSize, height: cardSize)
+
+            // 下部アクションボタン
+            Button(action: action) {
+                HStack(spacing: 4) {
+                    Image(systemName: hasImage ? "ellipsis.circle.fill" : "plus.circle.fill")
+                        .font(.caption)
+                    Text(hasImage ? "編集・削除" : title)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
+                .frame(width: cardSize)
+                .padding(.vertical, 8)
+                .background(hasImage ? Color(.systemGray5) : Color.accentColor.opacity(0.1))
+                .foregroundStyle(hasImage ? .primary : Color.accentColor)
+                .cornerRadius(8)
+            }
+            .buttonStyle(.plain)
+        }
+        .frame(maxWidth: .infinity)
     }
 
     @ViewBuilder

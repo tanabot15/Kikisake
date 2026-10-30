@@ -36,6 +36,7 @@ public struct LogDetailView: View {
                     .background(Color(.systemBackground))
                 
                 heroHeaderView
+                    .padding(.horizontal)
 
                 VStack(spacing: 16) {
                     if let item = log.item {
@@ -227,39 +228,37 @@ public struct LogDetailView: View {
                 Button {
                     isShowingImageModal = true
                 } label: {
-                    ZStack(alignment: .bottomTrailing) {
-                        ZStack {
-                            Color.black
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFill()
-                                .blur(radius: 20)
-                                .opacity(0.4)
+                    // 💡 GeometryReaderを用いて親コンテナの横幅を厳格に取得し、はみ出しを完全に根絶
+                    GeometryReader { geometry in
+                        ZStack(alignment: .bottomTrailing) {
+                            ZStack {
+                                Color.black
+                                
+                                // 背景ぼかし画像
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: geometry.size.width, height: 260)
+                                    .blur(radius: 20)
+                                    .opacity(0.4)
 
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 320)
-                                .padding(.vertical, 8)
+                                // メイン画像：親の幅(geometry.size.width)を上限としてアスペクト比を維持
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: geometry.size.width, height: 260)
+                            }
+                            .frame(width: geometry.size.width, height: 260)
+                            .clipped()
+
+                            LinearGradient(
+                                colors: [.clear, .black.opacity(0.75)],
+                                startPoint: .center,
+                                endPoint: .bottom
+                            )
                         }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 320)
-                        .clipped()
-
-                        LinearGradient(
-                            colors: [.clear, .black.opacity(0.75)],
-                            startPoint: .center,
-                            endPoint: .bottom
-                        )
-
-                        Image(systemName: "arrow.up.left.and.arrow.down.right")
-                            .font(.caption)
-                            .padding(8)
-                            .background(.ultraThinMaterial)
-                            .clipShape(Circle())
-                            .padding(12)
                     }
+                    .frame(height: 260)
                 }
                 .buttonStyle(.plain)
             } else {
@@ -274,6 +273,7 @@ public struct LogDetailView: View {
                         .font(.system(size: 48))
                         .foregroundStyle(.white.opacity(0.8))
                 }
+                .frame(maxWidth: .infinity)
                 .frame(height: 200)
             }
 
@@ -323,7 +323,7 @@ public struct LogDetailView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .clipped()
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .fullScreenCover(isPresented: $isShowingBackImageModal) {
             if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
                 ZStack(alignment: .topTrailing) {
@@ -597,8 +597,8 @@ public struct LogDetailView: View {
     }
 }
 
-/// プレビュー用画像ヘルパー
-private func generatePreviewSampleImage() -> Data? {
+/// プレビュー用画像ヘルパー（縦長）
+private func generateVerticalSampleImage() -> Data? {
     let renderer = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 600))
     let image = renderer.image { _ in
         UIColor.darkGray.setFill()
@@ -607,52 +607,60 @@ private func generatePreviewSampleImage() -> Data? {
     return image.jpegData(compressionQuality: 0.8)
 }
 
-#Preview {
+/// プレビュー用画像ヘルパー（横長）
+private func generateHorizontalSampleImage() -> Data? {
+    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 800, height: 300))
+    let image = renderer.image { _ in
+        UIColor.systemIndigo.setFill()
+        UIRectFill(CGRect(x: 0, y: 0, width: 800, height: 300))
+    }
+    return image.jpegData(compressionQuality: 0.8)
+}
+
+#Preview("縦長") {
     let schema = Schema([BeverageItem.self, TastingLog.self])
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: schema, configurations: [config])
 
-    let wineMeta = WineSpecificMetadata(
-        wineType: "赤",
-        grapeVarieties: "ネッビオーロ",
-        blendComponents: [BlendComponent(variety: "ネッビオーロ", percentage: 100)],
-        appellation: "Barolo DOCG"
-    )
-    let encoder = JSONEncoder()
-    let metaJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
-
     let sampleItem = BeverageItem(
-        name: "Barolo DOCG 2018",
+        name: "Barolo DOCG 2018 (縦長画像)",
         producer: "Prunotto",
         category: .wine,
-        region: "ピエモンテ, イタリア",
-        vintage: "2018",
-        alcoholByVolume: 14.0,
-        price: 12000,
-        imageDatas: [generatePreviewSampleImage() ?? Data()],
-        backImageDatas: [generatePreviewSampleImage() ?? Data()],
-        specificMetadataJSON: metaJSON
+        imageDatas: [generateVerticalSampleImage() ?? Data()]
     )
 
     let sampleLog = TastingLog(
-        date: Date(),
         rating: 4.8,
-        appearanceNotes: "ガーネット",
-        appearanceColorHex: "#802633",
-        aromaTags: ["スミレ", "樽香", "チェリー", "タバコ", "スパイス"],
-        sweetness: 2.0,
-        saltiness: 0.0,
-        acidity: 4.2,
-        bitterness: 2.0,
-        umami: 2.5,
-        tannin: 4.5,
-        body: 4.5,
-        balanceTags: ["豊潤な"],
-        finishLength: 4.8,
-        isCostEffective: true,
-        isWillingToRepeat: true,
-        hasAgingPotential: true,
-        memo: "圧倒的な気品と複雑味。長期熟成のポテンシャルを感じさせる素晴らしいバランス。",
+        memo: "縦長画像のレイアウト確認用サンプルです。",
+        isEvaluated: true,
+        item: sampleItem
+    )
+
+    container.mainContext.insert(sampleItem)
+    container.mainContext.insert(sampleLog)
+
+    return NavigationStack {
+        LogDetailView(log: sampleLog)
+    }
+    .modelContainer(container)
+}
+
+#Preview("横長") {
+    let schema = Schema([BeverageItem.self, TastingLog.self])
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: schema, configurations: [config])
+
+    let sampleItem = BeverageItem(
+        name: "Wide Panorama Wine 2020 (横長画像)",
+        producer: "Château Test",
+        category: .wine,
+        imageDatas: [generateHorizontalSampleImage() ?? Data()]
+    )
+
+    let sampleLog = TastingLog(
+        rating: 4.5,
+        memo: "横長画像が画面からはみ出さないか確認するためのサンプルです。",
+        isEvaluated: true,
         item: sampleItem
     )
 
