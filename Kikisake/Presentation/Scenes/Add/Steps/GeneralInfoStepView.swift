@@ -19,13 +19,20 @@ public enum GeneralInfoField {
 /// [Step 1] 一般的な情報（酒種・基本情報）入力ビュー
 public struct GeneralInfoStepView: View {
     @Bindable var viewModel: AddFlowViewModel
-    @FocusState.Binding var focusedField: GeneralInfoField?
+    @FocusState<GeneralInfoField?>.Binding var focusedField: GeneralInfoField?
     var showAlert: (String) -> Void
-    
-    @State private var selectedPhotoItem: PhotosPickerItem? = nil
-    @State private var isShowingCamera: Bool = false
-    @State private var isShowingPhotoSourceOptions: Bool = false
-    @State private var isShowingPhotosPicker: Bool = false
+
+    // ── 表面ラベル用の完全に独立したUI状態変数 ──
+    @State private var isShowingFrontSourceOptions: Bool = false
+    @State private var isShowingFrontCamera: Bool = false
+    @State private var isShowingFrontPhotosPicker: Bool = false
+    @State private var frontPhotoItem: PhotosPickerItem? = nil
+
+    // ── 裏面ラベル用の完全に独立したUI状態変数 ──
+    @State private var isShowingBackSourceOptions: Bool = false
+    @State private var isShowingBackCamera: Bool = false
+    @State private var isShowingBackPhotosPicker: Bool = false
+    @State private var backPhotoItem: PhotosPickerItem? = nil
 
     public init(
         viewModel: AddFlowViewModel,
@@ -39,20 +46,31 @@ public struct GeneralInfoStepView: View {
 
     public var body: some View {
         Form {
-            Section("ラベル写真") {
+            labelPhotoSection
+            categorySection
+            basicInfoSection
+        }
+    }
+
+    // MARK: - Subviews
+
+    @ViewBuilder
+    private var labelPhotoSection: some View {
+        Section("ラベル写真") {
+            VStack(spacing: 16) {
+                // 1. 表面ラベル行（インライン化により状態混同を完全に防止）
                 HStack(spacing: 16) {
-                    if let imageData = viewModel.selectedImageData,
-                       let uiImage = UIImage(data: imageData) {
+                    if let data = viewModel.selectedImageData, let uiImage = UIImage(data: data) {
                         Image(uiImage: uiImage)
                             .resizable()
                             .scaledToFill()
-                            .frame(width: 80, height: 80)
+                            .frame(width: 96, height: 96)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(.systemGray4), lineWidth: 1))
                     } else {
                         RoundedRectangle(cornerRadius: 10)
                             .fill(Color(.systemGray6))
-                            .frame(width: 80, height: 80)
+                            .frame(width: 96, height: 96)
                             .overlay {
                                 Image(systemName: "camera.fill")
                                     .font(.title2)
@@ -60,165 +78,277 @@ public struct GeneralInfoStepView: View {
                             }
                     }
 
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("ボトルのラベル写真を登録できます。")
-                            .font(.caption)
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("写真")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
                             .foregroundStyle(.secondary)
 
-                        Button {
-                            isShowingPhotoSourceOptions = true
-                        } label: {
-                            Label(viewModel.selectedImageData == nil ? "写真を追加する" : "写真を変更する", systemImage: "photo.badge.plus")
-                                .font(.subheadline)
-                                .foregroundStyle(.white)
-                                .fontWeight(.semibold)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.accentColor)
-                        
-                        if viewModel.selectedImageData != nil {
-                            Button("写真を削除", role: .destructive) {
-                                viewModel.selectedImageData = nil
-                                selectedPhotoItem = nil
+                        HStack(spacing: 12) {
+                            if viewModel.selectedImageData == nil {
+                                Button {
+                                    isShowingFrontSourceOptions = true
+                                } label: {
+                                    Label("写真を追加", systemImage: "photo.badge.plus")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.white)
+                                        .fontWeight(.semibold)
+                                }
+                                .buttonStyle(.borderedProminent)
+                                .controlSize(.small)
+                            } else {
+                                Button {
+                                    isShowingFrontSourceOptions = true
+                                } label: {
+                                    Label("変更", systemImage: "photo.badge.plus")
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                }
+                                .buttonStyle(.bordered)
+                                .controlSize(.small)
+
+                                Button("削除", role: .destructive) {
+                                    viewModel.selectedImageData = nil
+                                    frontPhotoItem = nil
+                                }
+                                .font(.caption)
                             }
-                            .font(.caption)
+                        }
+                    }
+                    Spacer()
+                }
+                .confirmationDialog("写真を選択", isPresented: $isShowingFrontSourceOptions, titleVisibility: .visible) {
+                    Button("写真を撮る") {
+                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                            isShowingFrontCamera = true
+                        } else {
+                            showAlert("このデバイスではカメラを利用できません。")
+                        }
+                    }
+                    Button("ライブラリから選ぶ") {
+                        isShowingFrontPhotosPicker = true
+                    }
+                    Button("キャンセル", role: .cancel) {}
+                }
+                .sheet(isPresented: $isShowingFrontCamera) {
+                    ImagePickerView(sourceType: .camera) { image in
+                        if let data = image.jpegData(compressionQuality: 0.8) {
+                            viewModel.selectedImageData = data
                         }
                     }
                 }
-                .padding(.vertical, 4)
-            }
-            
-            Section("酒種") {
-                Picker("酒種", selection: $viewModel.selectedCategory) {
-                    ForEach(BeverageCategory.allCases, id: \.self) { category in
-                        Text(category.displayName).tag(category)
+                .photosPicker(isPresented: $isShowingFrontPhotosPicker, selection: $frontPhotoItem, matching: .images)
+                .onChange(of: frontPhotoItem) { _, newValue in
+                    guard let newItem = newValue else { return }
+                    Task {
+                        if let data = try? await newItem.loadTransferable(type: Data.self) {
+                            await MainActor.run {
+                                viewModel.selectedImageData = data
+                            }
+                        }
+                        await MainActor.run {
+                            frontPhotoItem = nil
+                        }
                     }
                 }
-                .pickerStyle(.segmented)
-                .padding(.vertical, 4)
-            }
 
-            Section("基本情報") {
-                TextField("銘柄名 (必須)", text: $viewModel.name)
-                    .focused($focusedField, equals: .name)
-                
-                TextField("生産者 / 蔵元 / ブルワリー", text: $viewModel.producer)
-                    .focused($focusedField, equals: .producer)
+                Divider()
 
-                switch viewModel.selectedCategory {
-                case .wine:
-                    Picker("ワインタイプ", selection: $viewModel.wineType) {
-                        Text("赤").tag("赤")
-                        Text("白").tag("白")
-                        Text("ロゼ").tag("ロゼ")
-                        Text("オレンジ").tag("オレンジ")
-                        Text("スパークリング").tag("スパークリング")
-                    }
-                    .padding(.vertical, 4)
-                    
-                    Section("ブドウ品種") {
-                        ForEach($viewModel.blendComponents) { $component in
-                            HStack(spacing: 12) {
-                                TextField("品種 (例: カベルネ・ソーヴィニヨン)", text: $component.variety)
-                                    .focused($focusedField, equals: .extra)
-                                
-                                TextField("割合", value: $component.percentage, format: .number)
-                                    .keyboardType(.numberPad)
-                                    .frame(width: 60)
-                                    .multilineTextAlignment(.trailing)
-                                
-                                Text("%")
+                // 2. 裏面ラベル行（インライン化により状態混同を完全に防止）
+                HStack(spacing: 16) {
+                    if let data = viewModel.selectedBackImageData, let uiImage = UIImage(data: data) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 68, height: 68)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(.systemGray4), lineWidth: 1))
+                    } else {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color(.systemGray6))
+                            .frame(width: 68, height: 68)
+                            .overlay {
+                                Image(systemName: "rectangle.stack.fill.badge.plus")
+                                    .font(.body)
                                     .foregroundStyle(.secondary)
                             }
-                        }
-                        .onDelete(perform: viewModel.removeBlendComponent)
+                    }
 
-                        Button {
-                            viewModel.addBlendComponent()
-                        } label: {
-                            Label("品種を追加", systemImage: "plus.circle.fill")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(viewModel.selectedBackImageData == nil ? "裏面ラベルを撮影・追加する" : "裏面ラベル (登録済み)")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.secondary)
+
+                        HStack(spacing: 12) {
+                            Button {
+                                isShowingBackSourceOptions = true
+                            } label: {
+                                Label(viewModel.selectedBackImageData == nil ? "写真を追加" : "変更", systemImage: "photo.badge.plus")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                            }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+
+                            if viewModel.selectedBackImageData != nil {
+                                Button("削除", role: .destructive) {
+                                    viewModel.selectedBackImageData = nil
+                                    backPhotoItem = nil
+                                }
+                                .font(.caption)
+                            }
                         }
                     }
-                    
-                    TextField("原産地呼称 (例: AOC ボルドー / DOCG バローロ)", text: $viewModel.appellation)
-                        .focused($focusedField, equals: .extra)
-                    
-                case .sake:
-                    Picker("特定名称", selection: $viewModel.sakeSpecificName) {
-                        Text("純米大吟醸").tag("純米大吟醸")
-                        Text("純米吟醸").tag("純米吟醸")
-                        Text("大吟醸").tag("大吟醸")
-                        Text("特別純米").tag("特別純米")
-                        Text("純米酒").tag("純米")
-                        Text("本醸造").tag("本醸造")
-                        Text("その他").tag("その他")
+                    Spacer()
+                }
+                .confirmationDialog("裏面ラベルの写真を選択", isPresented: $isShowingBackSourceOptions, titleVisibility: .visible) {
+                    Button("写真を撮る") {
+                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                            isShowingBackCamera = true
+                        } else {
+                            showAlert("このデバイスではカメラを利用できません。")
+                        }
                     }
-                    
-                    TextField("使用米 (例: 山田錦)", text: $viewModel.riceVariety)
-                        .focused($focusedField, equals: .extra)
-                    TextField("精米歩合 (例: 50%)", text: $viewModel.polishingRate)
-                    TextField("日本酒度 (例: +3.0)", text: $viewModel.sakeMeterValue)
-                    
-                case .beer:
-                    TextField("ビアスタイル (例: IPA, Stout)", text: $viewModel.beerStyle)
-                        .focused($focusedField, equals: .extra)
-                    TextField("IBU (国際苦味単位)", text: $viewModel.ibu)
-                        .keyboardType(.numberPad)
+                    Button("ライブラリから選ぶ") {
+                        isShowingBackPhotosPicker = true
+                    }
+                    Button("キャンセル", role: .cancel) {}
                 }
+                .sheet(isPresented: $isShowingBackCamera) {
+                    ImagePickerView(sourceType: .camera) { image in
+                        if let data = image.jpegData(compressionQuality: 0.8) {
+                            viewModel.selectedBackImageData = data
+                        }
+                    }
+                }
+                .photosPicker(isPresented: $isShowingBackPhotosPicker, selection: $backPhotoItem, matching: .images)
+                .onChange(of: backPhotoItem) { _, newValue in
+                    guard let newItem = newValue else { return }
+                    Task {
+                        if let data = try? await newItem.loadTransferable(type: Data.self) {
+                            await MainActor.run {
+                                viewModel.selectedBackImageData = data
+                            }
+                        }
+                        await MainActor.run {
+                            backPhotoItem = nil
+                        }
+                    }
+                }
+            }
+            .padding(.vertical, 4)
+        }
+    }
 
-                TextField("生産地 (例: ボルドー, 新潟、チェコ)", text: $viewModel.region)
-                    .focused($focusedField, equals: .region)
-                
-                TextField("ヴィンテージ / 製造年月 (例: 2020)", text: $viewModel.vintage)
-                    .focused($focusedField, equals: .vintage)
-                
-                TextField("アルコール度数 (例: 14.5 または 5)", text: $viewModel.abvString)
-                        .keyboardType(.decimalPad)
-                        .focused($focusedField, equals: .abv)
-                
-                TextField("価格 (円)", text: $viewModel.priceString)
-                    .keyboardType(.numberPad)
-                    .focused($focusedField, equals: .price)
-            }
-        }
-        .confirmationDialog("写真の追加方法を選択", isPresented: $isShowingPhotoSourceOptions, titleVisibility: .visible) {
-            Button("写真を撮る") {
-                if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    isShowingCamera = true
-                } else {
-                    showAlert("このデバイスではカメラを利用できません。")
+    @ViewBuilder
+    private var categorySection: some View {
+        Section("酒種") {
+            Picker("酒種", selection: $viewModel.selectedCategory) {
+                ForEach(BeverageCategory.allCases, id: \.self) { category in
+                    Text(category.displayName).tag(category)
                 }
             }
-            Button("ライブラリから選ぶ") {
-                isShowingPhotosPicker = true
-            }
-            Button("キャンセル", role: .cancel) {}
+            .pickerStyle(.segmented)
+            .padding(.vertical, 4)
         }
-        .sheet(isPresented: $isShowingCamera) {
-            ImagePickerView(sourceType: .camera) { image in
-                if let data = image.jpegData(compressionQuality: 0.8) {
-                    viewModel.selectedImageData = data
+    }
+
+    @ViewBuilder
+    private var basicInfoSection: some View {
+        Section("基本情報") {
+            TextField("銘柄名 (必須)", text: $viewModel.name)
+                .focused($focusedField, equals: .name)
+            
+            TextField("生産者 / 蔵元 / ブルワリー", text: $viewModel.producer)
+                .focused($focusedField, equals: .producer)
+
+            categorySpecificFields
+
+            TextField("生産地 (例: ボルドー, 新潟、チェコ)", text: $viewModel.region)
+                .focused($focusedField, equals: .region)
+            
+            TextField("ヴィンテージ / 製造年月 (例: 2020)", text: $viewModel.vintage)
+                .focused($focusedField, equals: .vintage)
+            
+            TextField("アルコール度数 (例: 14.5 または 5)", text: $viewModel.abvString)
+                .keyboardType(.decimalPad)
+                .focused($focusedField, equals: .abv)
+            
+            TextField("価格 (円)", text: $viewModel.priceString)
+                .keyboardType(.numberPad)
+                .focused($focusedField, equals: .price)
+        }
+    }
+
+    @ViewBuilder
+    private var categorySpecificFields: some View {
+        switch viewModel.selectedCategory {
+        case .wine:
+            Picker("ワインタイプ", selection: $viewModel.wineType) {
+                Text("赤").tag("赤")
+                Text("白").tag("白")
+                Text("ロゼ").tag("ロゼ")
+                Text("オレンジ").tag("オレンジ")
+                Text("スパークリング").tag("スパークリング")
+            }
+            .padding(.vertical, 4)
+            
+            Group {
+                ForEach($viewModel.blendComponents) { $component in
+                    HStack(spacing: 12) {
+                        TextField("品種 (例: カベルネ・ソーヴィニヨン)", text: $component.variety)
+                            .focused($focusedField, equals: .extra)
+                        
+                        TextField("割合", value: $component.percentage, format: .number)
+                            .keyboardType(.numberPad)
+                            .frame(width: 60)
+                            .multilineTextAlignment(.trailing)
+                        
+                        Text("%")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .onDelete(perform: viewModel.removeBlendComponent)
+
+                Button {
+                    viewModel.addBlendComponent()
+                } label: {
+                    Label("品種を追加", systemImage: "plus.circle.fill")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
                 }
             }
-        }
-        .photosPicker(
-            isPresented: $isShowingPhotosPicker,
-            selection: $selectedPhotoItem,
-            matching: .images
-        )
-        .onChange(of: selectedPhotoItem) { oldValue, newValue in
-            Task {
-                if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                    viewModel.selectedImageData = data
-                }
+            
+            TextField("原産地呼称 (例: AOC ボルドー / DOCG バローロ)", text: $viewModel.appellation)
+                .focused($focusedField, equals: .extra)
+            
+        case .sake:
+            Picker("特定名称", selection: $viewModel.sakeSpecificName) {
+                Text("純米大吟醸").tag("純米大吟醸")
+                Text("純米吟醸").tag("純米吟醸")
+                Text("大吟醸").tag("大吟醸")
+                Text("特別純米").tag("特別純米")
+                Text("純米酒").tag("純米")
+                Text("本醸造").tag("本醸造")
+                Text("その他").tag("その他")
             }
+            
+            TextField("使用米 (例: 山田錦)", text: $viewModel.riceVariety)
+                .focused($focusedField, equals: .extra)
+            TextField("精米歩合 (例: 50%)", text: $viewModel.polishingRate)
+            TextField("日本酒度 (例: +3.0)", text: $viewModel.sakeMeterValue)
+            
+        case .beer:
+            TextField("ビアスタイル (例: IPA, Stout)", text: $viewModel.beerStyle)
+                .focused($focusedField, equals: .extra)
+            TextField("IBU (国際苦味単位)", text: $viewModel.ibu)
+                .keyboardType(.numberPad)
         }
     }
 }
 
-/// ✨ 保管場所選択に加え、選択したセラーがグリッド有効な場合に棚番（段・列）を選択できる専用コンポーネント
+/// 保管場所選択に加え、選択したセラーがグリッド有効な場合に棚番（段・列）を選択できる専用コンポーネント
 public struct StoragePickerWithGridMappingView: View {
     @Bindable var viewModel: AddFlowViewModel
     @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
@@ -240,12 +370,10 @@ public struct StoragePickerWithGridMappingView: View {
                 }
             }
             .onChange(of: viewModel.storageLocation) { _, _ in
-                // 保管場所が切り替わったら位置情報をクリア
                 viewModel.selectedGridRow = nil
                 viewModel.selectedGridColumn = nil
             }
 
-            // 選択中の保管場所オブジェクトを取得
             if let currentLocation = locations.first(where: { $0.name == viewModel.storageLocation }),
                currentLocation.isGridEnabled {
                 
@@ -260,7 +388,6 @@ public struct StoragePickerWithGridMappingView: View {
                             .fontWeight(.semibold)
                     }
 
-                    // 段（行）と列（番号）のピッカー
                     HStack(spacing: 12) {
                         Picker("段 (Row)", selection: Binding(
                             get: { viewModel.selectedGridRow ?? 1 },
@@ -283,7 +410,6 @@ public struct StoragePickerWithGridMappingView: View {
                         .pickerStyle(.menu)
                     }
 
-                    // すでにそのスロットに他のボトルが入っているか判定（1アイテム＝1本化に対応）
                     if let row = viewModel.selectedGridRow,
                        let col = viewModel.selectedGridColumn {
                         let isOccupied = allItems.contains { item in
@@ -359,28 +485,15 @@ public struct ImagePickerView: UIViewControllerRepresentable {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: StorageLocation.self, BeverageItem.self, TastingLog.self, configurations: config)
-    
-    container.mainContext.insert(StorageLocation(name: "ワインセラー", type: .cellar, isGridEnabled: true, gridRows: 4, gridColumns: 6))
-    container.mainContext.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator))
-
+    let container = try! ModelContainer(for: StorageLocation.self, BeverageItem.self, TastingLog.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     struct PreviewWrapper: View {
         @State private var vm = AddFlowViewModel()
         @FocusState private var field: GeneralInfoField?
-
         var body: some View {
             NavigationStack {
-                GeneralInfoStepView(
-                    viewModel: vm,
-                    focusedField: $field
-                ) { message in
-                    print("Alert: \(message)")
-                }
+                GeneralInfoStepView(viewModel: vm, focusedField: $field) { _ in }
             }
         }
     }
-
-    return PreviewWrapper()
-        .modelContainer(container)
+    return PreviewWrapper().modelContainer(container)
 }

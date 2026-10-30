@@ -16,7 +16,7 @@ public final class BeverageItem {
     public var alcoholByVolume: Double?      // アルコール度数 (例: 14.5)
     public var price: Int?                   // 価格
 
-    // 在庫管理（1アイテム＝1本のボトル）
+    // 在庫管理
     public var storageLocation: String
     public var purchaseDate: Date?
 
@@ -24,8 +24,11 @@ public final class BeverageItem {
     public var gridRow: Int?
     public var gridColumn: Int?
 
-    // 写真データ
+    // 写真データ（表面・ラベル等）
     @Attribute(.externalStorage) public var imageDatas: [Data]?
+    
+    // 裏面ラベル写真データ
+    @Attribute(.externalStorage) public var backImageDatas: [Data]?
 
     // 酒種ごとの固有メタデータをJSON形式で保持
     public var specificMetadataJSON: String?
@@ -55,6 +58,7 @@ public final class BeverageItem {
         gridRow: Int? = nil,
         gridColumn: Int? = nil,
         imageDatas: [Data]? = nil,
+        backImageDatas: [Data]? = nil,
         specificMetadataJSON: String? = nil,
         createdAt: Date = Date()
     ) {
@@ -71,6 +75,7 @@ public final class BeverageItem {
         self.gridRow = gridRow
         self.gridColumn = gridColumn
         self.imageDatas = imageDatas
+        self.backImageDatas = backImageDatas
         self.specificMetadataJSON = specificMetadataJSON
         self.tastingLogs = []
         self.createdAt = createdAt

@@ -43,7 +43,7 @@ public enum PreviewSampleLoader {
 
         if needsSave {
             try? context.save()
-            print("📦 [Default Loader] デフォルトの保管場所（グリッド有効）を作成しました。")
+            print("[Default Loader] デフォルトの保管場所（グリッド有効）を作成しました。")
         }
     }
 

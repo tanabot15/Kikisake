@@ -25,7 +25,19 @@ public final class AddFlowViewModel {
     public var abvString: String = ""
     public var priceString: String = ""
     public var storageLocation: String = "未設定"
+    
+    // ✨ 表面と裏面の写真を完全に独立したプロパティとして保持
     public var selectedImageData: Data? = nil
+    public var selectedBackImageData: Data? = nil
+
+    // 削除アクションを明示的に分離（相互干渉を完全に防ぐため）
+    public func clearFrontImage() {
+        self.selectedImageData = nil
+    }
+
+    public func clearBackImage() {
+        self.selectedBackImageData = nil
+    }
 
     // セラー内グリッド位置指定用プロパティ
     public var selectedGridRow: Int? = nil
@@ -117,6 +129,7 @@ public final class AddFlowViewModel {
         self.selectedGridRow = nil
         self.selectedGridColumn = nil
         self.selectedImageData = nil
+        self.selectedBackImageData = nil
         
         self.wineType = "赤"
         self.grapeVarieties = ""
@@ -167,7 +180,10 @@ public final class AddFlowViewModel {
         self.storageLocation = item.storageLocation
         self.selectedGridRow = item.gridRow
         self.selectedGridColumn = item.gridColumn
+        
+        // 表面写真と裏面写真を完全に分けて安全にロード
         self.selectedImageData = item.imageDatas?.first
+        self.selectedBackImageData = item.backImageDatas?.first
     }
 
     public func configureWithLog(_ log: TastingLog) {
@@ -176,7 +192,6 @@ public final class AddFlowViewModel {
         if let item = log.item {
             configureWithItem(item)
             
-            // ✨ 固有メタデータ（JSON）の復元処理を追加
             if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
                 let decoder = JSONDecoder()
                 switch item.category {
@@ -205,7 +220,6 @@ public final class AddFlowViewModel {
             }
         }
         
-        // 既存のテイスティングデータの復元
         self.tastingDate = log.date
         self.rating = log.rating
         self.appearanceNotes = log.appearanceNotes
@@ -283,6 +297,7 @@ public final class AddFlowViewModel {
             gridRow: selectedGridRow,
             gridColumn: selectedGridColumn,
             imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
+            backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
             specificMetadataJSON: metadataJSON
         )
 
@@ -310,6 +325,8 @@ public final class AddFlowViewModel {
             existingItem.storageLocation = storageLocation
             existingItem.gridRow = selectedGridRow
             existingItem.gridColumn = selectedGridColumn
+            existingItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
+            existingItem.backImageDatas = selectedBackImageData != nil ? [selectedBackImageData!] : nil
         } else {
             targetItem = BeverageItem(
                 name: name,
@@ -323,6 +340,7 @@ public final class AddFlowViewModel {
                 gridRow: selectedGridRow,
                 gridColumn: selectedGridColumn,
                 imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
+                backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
                 specificMetadataJSON: metadataJSON
             )
             modelContext.insert(targetItem)
@@ -385,6 +403,7 @@ public final class AddFlowViewModel {
                 gridRow: selectedGridRow,
                 gridColumn: selectedGridColumn,
                 imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
+                backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
                 specificMetadataJSON: metadataJSON
             )
             modelContext.insert(targetItem)
@@ -447,6 +466,7 @@ public final class AddFlowViewModel {
             targetItem.gridRow = selectedGridRow
             targetItem.gridColumn = selectedGridColumn
             targetItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
+            targetItem.backImageDatas = selectedBackImageData != nil ? [selectedBackImageData!] : nil
             targetItem.specificMetadataJSON = metadataJSON
         }
 

@@ -2360,6 +2360,7 @@
       }
     },
     "ボトルのラベル写真を登録できます。" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3259,7 +3260,11 @@
         }
       }
     },
+    "写真" : {
+
+    },
     "写真の追加方法を選択" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3270,6 +3275,7 @@
       }
     },
     "写真を削除" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3280,6 +3286,7 @@
       }
     },
     "写真を変更する" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3299,7 +3306,11 @@
         }
       }
     },
+    "写真を追加" : {
+
+    },
     "写真を追加する" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3378,6 +3389,9 @@
           }
         }
       }
+    },
+    "削除" : {
+
     },
     "割合" : {
       "localizations" : {
@@ -3628,6 +3642,9 @@
           }
         }
       }
+    },
+    "変更" : {
+
     },
     "外観" : {
       "localizations" : {
@@ -5040,6 +5057,18 @@
           }
         }
       }
+    },
+    "表面ラベルの写真を選択" : {
+
+    },
+    "裏面ラベル (登録済み)" : {
+
+    },
+    "裏面ラベルの写真を選択" : {
+
+    },
+    "裏面ラベルを撮影・追加する" : {
+
     },
     "補足メモ (任意)" : {
       "localizations" : {

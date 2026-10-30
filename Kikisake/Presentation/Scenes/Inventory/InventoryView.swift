@@ -110,7 +110,26 @@ public struct InventoryView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    toolbarContent
+                    Button {
+                        isShowingFilterSheet = true
+                    } label: {
+                        Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                            .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
+                    }
+                    .accessibilityLabel(String(localized: "在庫フィルター"))
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        if !AppState.shared.isProVersion && locations.count >= 3 {
+                            showPaywall = true
+                        } else {
+                            showAddLocationSheet = true
+                        }
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .tint(.primary)
                 }
             }
             .sheet(isPresented: $showAddLocationSheet) {
@@ -406,30 +425,6 @@ public struct InventoryView: View {
         .padding(.bottom, 12)
         .background(Color(.secondarySystemGroupedBackground))
         .transition(.opacity.combined(with: .move(edge: .top)))
-    }
-
-    @ViewBuilder
-    private var toolbarContent: some View {
-        HStack(spacing: 12) {
-            Button {
-                isShowingFilterSheet = true
-            } label: {
-                Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                    .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
-            }
-            .accessibilityLabel(String(localized: "在庫フィルター"))
-
-            Button {
-                if !AppState.shared.isProVersion && locations.count >= 3 {
-                    showPaywall = true
-                } else {
-                    showAddLocationSheet = true
-                }
-            } label: {
-                Image(systemName: "plus")
-            }
-            .tint(.primary)
-        }
     }
 
     @ViewBuilder

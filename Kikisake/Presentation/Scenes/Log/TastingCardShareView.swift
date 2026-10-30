@@ -30,7 +30,6 @@ public struct TastingCardShareView: View {
     private var cardThemeColors: (primary: Color, secondary: Color) {
         let baseColor = colorFromHex(log.appearanceColorHex)
         
-        // 酒種や外観色をベースに、上品で薄いトーンのグラデーションカラーを構築
         let primaryColor = baseColor.opacity(0.55)
         let secondaryColor = baseColor.opacity(0.25)
         
@@ -224,45 +223,61 @@ public struct TastingCardShareView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                // --- 右側：【ダイナミック・ボトルアプローチャ】透過・エッジ抽出フォトフレーム ---
-                ZStack {
-                    // 背景グラデーションポディウム（高級感を演出する台座風エフェクト）
-                    LinearGradient(
-                        colors: [Color(.tertiarySystemGroupedBackground), Color(.systemBackground)],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                // --- 右側：【ダイナミック・ボトルアプローチャ】透過・エッジ抽出フォトフレーム ＋ 裏面ラベルオーバーレイ ---
+                ZStack(alignment: .bottomTrailing) {
+                    ZStack {
+                        // 背景グラデーションポディウム
+                        LinearGradient(
+                            colors: [Color(.tertiarySystemGroupedBackground), Color(.systemBackground)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                    if let uiImage = processedBottleImage {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFit()
-                            .shadow(color: Color.black.opacity(0.25), radius: 6, x: 2, y: 4)
-                            .padding(6)
-                    } else if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
-                        // 読み込み中またはフォールバック表示
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFit()
-                            .cornerRadius(8)
-                            .padding(4)
-                            .task {
-                                let backgroundRemoved = await BottleMattingHelper.removeBackground(from: uiImage)
-                                self.processedBottleImage = backgroundRemoved
+                        if let uiImage = processedBottleImage {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFit()
+                                .shadow(color: Color.black.opacity(0.25), radius: 6, x: 2, y: 4)
+                                .padding(6)
+                        } else if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFit()
+                                .cornerRadius(8)
+                                .padding(4)
+                                .task {
+                                    let backgroundRemoved = await BottleMattingHelper.removeBackground(from: uiImage)
+                                    self.processedBottleImage = backgroundRemoved
+                                }
+                        } else {
+                            VStack(spacing: 4) {
+                                Image(systemName: "wineglass")
+                                    .font(.system(size: 24))
+                                    .foregroundStyle(.secondary)
+                                Text("No Image")
+                                    .font(.system(size: 8))
+                                    .foregroundStyle(.tertiary)
                             }
-                    } else {
-                        VStack(spacing: 4) {
-                            Image(systemName: "wineglass")
-                                .font(.system(size: 24))
-                                .foregroundStyle(.secondary)
-                            Text("No Image")
-                                .font(.system(size: 8))
-                                .foregroundStyle(.tertiary)
                         }
                     }
+                    .frame(width: 150, height: 190)
+
+                    // ✨ 右下に洗練されたサイズで重ねる裏面ラベルのミニサムネイル
+                    if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
+                        Image(uiImage: backUiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 44, height: 44)
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 4)
+                                    .stroke(Color.white.opacity(0.9), lineWidth: 1)
+                            )
+                            .shadow(color: Color.black.opacity(0.35), radius: 3, x: 0, y: 1)
+                            .padding(8)
+                    }
                 }
-                .frame(width: 150, height: 190)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(Color.primary.opacity(0.08), lineWidth: 1)
@@ -306,7 +321,6 @@ public struct TastingCardShareView: View {
             .padding(.bottom, 10)
         }
         .frame(width: 380)
-        // ✨ シグネチャー・テイスティングカラーに基づくグラデーション背景を適用
         .background(
             ZStack {
                 LinearGradient(
@@ -314,7 +328,6 @@ public struct TastingCardShareView: View {
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
-                // 上品なブラー（ぼかし）エフェクトを重ねてアートピースのような質感に
                 Rectangle()
                     .fill(.ultraThinMaterial)
                     .opacity(0.65)
@@ -366,6 +379,16 @@ private func generateVerticalSampleImage() -> Data? {
     return image.jpegData(compressionQuality: 0.9)
 }
 
+/// プレビュー用の裏面ラベル画像生成ヘルパー
+private func generateBackSampleImage() -> Data? {
+    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 600))
+    let image = renderer.image { _ in
+        UIColor.darkGray.setFill()
+        UIRectFill(CGRect(x: 0, y: 0, width: 400, height: 600))
+    }
+    return image.jpegData(compressionQuality: 0.8)
+}
+
 #Preview {
     let schema = Schema([BeverageItem.self, TastingLog.self])
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
@@ -388,6 +411,7 @@ private func generateVerticalSampleImage() -> Data? {
         vintage: "2018",
         alcoholByVolume: 14.0,
         imageDatas: [generateVerticalSampleImage() ?? Data()],
+        backImageDatas: [generateBackSampleImage() ?? Data()], // ✨ プレビュー用に裏面ラベルデータを付与
         specificMetadataJSON: metaJSON
     )
 
@@ -395,7 +419,7 @@ private func generateVerticalSampleImage() -> Data? {
         date: Date(),
         rating: 4.8,
         appearanceNotes: "ガーネット",
-        appearanceColorHex: "#802633", // ガーネット色を反映したシグネチャーカラー
+        appearanceColorHex: "#802633",
         aromaTags: ["スミレ", "樽香", "チェリー", "タバコ", "スパイス"],
         sweetness: 2.0,
         saltiness: 0.0,

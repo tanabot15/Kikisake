@@ -10,6 +10,7 @@ public struct LogDetailView: View {
 
     @State private var isShowingImageModal: Bool = false
     @State private var isShowingEditSheet: Bool = false
+    @State private var isShowingBackImageModal: Bool = false
 
     public init(log: TastingLog) {
         self.log = log
@@ -42,18 +43,13 @@ public struct LogDetailView: View {
                         specificMetadataCard(for: item)
                     }
 
-                    // ✨ 評価が入力されている場合のみ各評価カードやチャートを表示し、未入力時はプレースホルダーを表示
                     if log.isEvaluated {
                         ratingCard
                         appearanceAndAromaCard
                         
-                        // 味わい構造カード
                         TasteRadarCardView(log: log, isCompactMode: false)
-
-                        // マトリクス分析カード
                         MatrixAnalysisCardView(log: log, isCompactMode: false)
 
-                        // 特徴・評価フラグカード (設定されている場合のみ表示)
                         if log.isCostEffective || log.isWillingToRepeat || log.hasAgingPotential {
                             flagsCard
                         }
@@ -96,7 +92,6 @@ public struct LogDetailView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 16) {
                     Button {
-                        // ✨ 編集ボタン：既存のログ内容をロードして開く
                         let vm = AppState.shared.addFlowViewModel
                         vm.configureWithLog(log)
                         isShowingEditSheet = true
@@ -127,7 +122,6 @@ public struct LogDetailView: View {
         }
     }
 
-    /// まだテイスティング評価がされていない場合に表示するプレースホルダーUI
     private var unEvaluatedPlaceholderCard: some View {
         VStack(spacing: 16) {
             ZStack {
@@ -181,7 +175,6 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
-    /// 特徴・評価フラグを表示するカード
     private var flagsCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("特徴・評価フラグ")
@@ -228,7 +221,6 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
-    /// ヘッダービュー
     private var heroHeaderView: some View {
         ZStack(alignment: .bottom) {
             if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
@@ -285,6 +277,33 @@ public struct LogDetailView: View {
                 .frame(height: 200)
             }
 
+            if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button {
+                            isShowingBackImageModal = true
+                        } label: {
+                            Image(uiImage: backUiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 72, height: 72)
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 6)
+                                        .stroke(.white.opacity(0.8), lineWidth: 1)
+                                )
+                                .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
+                        }
+                        .buttonStyle(.plain)
+                        .padding(12)
+                    }
+                    Spacer()
+                        .frame(height: 36)
+                }
+            }
+
             if let item = log.item {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(item.name)
@@ -305,6 +324,26 @@ public struct LogDetailView: View {
         }
         .frame(maxWidth: .infinity)
         .clipped()
+        .fullScreenCover(isPresented: $isShowingBackImageModal) {
+            if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
+                ZStack(alignment: .topTrailing) {
+                    Color.black.ignoresSafeArea()
+                    Image(uiImage: backUiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                    Button {
+                        isShowingBackImageModal = false
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 28))
+                            .foregroundStyle(.white.opacity(0.8))
+                            .padding()
+                    }
+                }
+            }
+        }
     }
     
     @MainActor
@@ -558,6 +597,16 @@ public struct LogDetailView: View {
     }
 }
 
+/// プレビュー用画像ヘルパー
+private func generatePreviewSampleImage() -> Data? {
+    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 600))
+    let image = renderer.image { _ in
+        UIColor.darkGray.setFill()
+        UIRectFill(CGRect(x: 0, y: 0, width: 400, height: 600))
+    }
+    return image.jpegData(compressionQuality: 0.8)
+}
+
 #Preview {
     let schema = Schema([BeverageItem.self, TastingLog.self])
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
@@ -580,6 +629,8 @@ public struct LogDetailView: View {
         vintage: "2018",
         alcoholByVolume: 14.0,
         price: 12000,
+        imageDatas: [generatePreviewSampleImage() ?? Data()],
+        backImageDatas: [generatePreviewSampleImage() ?? Data()],
         specificMetadataJSON: metaJSON
     )
 

@@ -184,13 +184,7 @@ public struct AddFlowView: View {
             } message: {
                 Text(alertMessage)
             }
-            .onAppear {
-                if viewModel.editingLog == nil && viewModel.sourceItem == nil {
-                    if viewModel.name.isEmpty && viewModel.selectedImageData == nil {
-                        viewModel.reset()
-                    }
-                }
-            }
+            // ✨ 誤動作して写真データを消去する原因となっていた .onAppear の自動リセット処理を完全に削除
         }
     }
 

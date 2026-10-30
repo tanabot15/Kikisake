@@ -152,35 +152,58 @@ private struct CellarGridSlotCell: View {
                     )
             }
         }
-        .frame(height: 64)
+        .frame(height: 76)
         .frame(maxWidth: .infinity)
         .modifier(DraggableModifier(item: item))
     }
 
     @ViewBuilder
     private func slotContent(item: BeverageItem) -> some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(categoryColor(item.category).opacity(0.12))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(categoryColor(item.category), lineWidth: 1.5)
+        ZStack(alignment: .bottom) {
+            // 背景部分にグラデーションを重ねてテキストの視認性を確保
+            if item.imageDatas?.first != nil {
+                LinearGradient(
+                    colors: [Color.black.opacity(0.7), Color.clear],
+                    startPoint: .bottom,
+                    endPoint: .center
                 )
+            }
 
+            // 銘柄名・アイコン
             VStack(spacing: 2) {
-                Image(systemName: "wineglass.fill")
-                    .font(.caption2)
-                    .foregroundStyle(categoryColor(item.category))
+                if item.imageDatas?.first == nil {
+                    Image(systemName: "wineglass.fill")
+                        .font(.caption2)
+                        .foregroundStyle(categoryColor(item.category))
+                }
 
                 Text(item.name)
                     .font(.system(size: 8, weight: .semibold))
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(item.imageDatas?.first != nil ? .white : .primary)
                     .padding(.horizontal, 2)
             }
             .padding(4)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        // ✨ 画像をセルの背景（Background）として安全に敷き詰めることで枠外への飛び出しを完全に防止
+        .background {
+            if let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                categoryColor(item.category).opacity(0.15)
+            }
+        }
+        // セルの枠線
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(categoryColor(item.category), lineWidth: item.imageDatas?.first != nil ? 1 : 1.5)
+        )
+        // 最終的に全体の角丸で完全にクリップ
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
     private func categoryColor(_ category: BeverageCategory) -> Color {
@@ -204,6 +227,21 @@ private struct DraggableModifier: ViewModifier {
     }
 }
 
+/// ✨ プレビュー用にラベル写真のサンプルデータを生成するヘルパー
+private func generateSampleLabelImage(color: UIColor) -> Data? {
+    let size = CGSize(width: 200, height: 300)
+    let renderer = UIGraphicsImageRenderer(size: size)
+    let image = renderer.image { context in
+        color.setFill()
+        context.fill(CGRect(origin: .zero, size: size))
+        
+        // ラベル風のデザイン（中央の白い枠）
+        UIColor.white.withAlphaComponent(0.9).setFill()
+        context.fill(CGRect(x: 20, y: 40, width: 160, height: 220))
+    }
+    return image.jpegData(compressionQuality: 0.8)
+}
+
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: StorageLocation.self, BeverageItem.self, TastingLog.self, configurations: config)
@@ -214,25 +252,50 @@ private struct DraggableModifier: ViewModifier {
         memo: "温度14度設定・5段ラック",
         isGridEnabled: true,
         gridRows: 3,
-        gridColumns: 4
+        gridColumns: 3
     )
     
-    let sampleItem = BeverageItem(
-        name: "Barolo DOCG",
+    // 1. 写真ありのサンプルアイテム 1 (ワイン: 赤系ラベル)
+    let itemWithPhoto1 = BeverageItem(
+        name: "Barolo DOCG 2018",
         producer: "Prunotto",
         category: .wine,
         storageLocation: "自宅メインセラー",
         gridRow: 1,
+        gridColumn: 1,
+        imageDatas: [generateSampleLabelImage(color: UIColor(red: 0.5, green: 0.1, blue: 0.15, alpha: 1.0)) ?? Data()]
+    )
+
+    // 2. 写真ありのサンプルアイテム 2 (日本酒: 白系ラベル)
+    let itemWithPhoto2 = BeverageItem(
+        name: "獺祭 純米大吟醸 磨き二割三分",
+        producer: "旭酒造",
+        category: .sake,
+        storageLocation: "自宅メインセラー",
+        gridRow: 1,
+        gridColumn: 3,
+        imageDatas: [generateSampleLabelImage(color: UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)) ?? Data()]
+    )
+
+    // 3. 写真なしのサンプルアイテム（従来のプレースホルダー表示確認用）
+    let itemWithoutPhoto = BeverageItem(
+        name: "Chablis 2021",
+        producer: "William Fevre",
+        category: .wine,
+        storageLocation: "自宅メインセラー",
+        gridRow: 2,
         gridColumn: 2
     )
     
     container.mainContext.insert(sampleLocation)
-    container.mainContext.insert(sampleItem)
+    container.mainContext.insert(itemWithPhoto1)
+    container.mainContext.insert(itemWithPhoto2)
+    container.mainContext.insert(itemWithoutPhoto)
     
     return NavigationStack {
         CellarGridView(
             location: sampleLocation,
-            items: [sampleItem],
+            items: [itemWithPhoto1, itemWithPhoto2, itemWithoutPhoto],
             modelContext: container.mainContext,
             onSelectSlot: { row, col, item in
                 print("Tapped row: \(row), col: \(col), item: \(item?.name ?? "Empty")")
