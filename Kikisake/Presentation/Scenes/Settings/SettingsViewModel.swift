@@ -1,12 +1,9 @@
-//
 //  SettingsViewModel.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import Foundation
 import UIKit
+import SwiftData // 💡 追加
 
 /// 設定画面のビジネスロジック・状態管理
 @Observable
@@ -29,6 +26,19 @@ public final class SettingsViewModel {
         if let url = URL(string: UIApplication.openSettingsURLString),
            UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
+        }
+    }
+
+    /// 💡 すべてのデータを削除する（BeverageItem, StorageLocation）
+    /// ※ TastingLog は BeverageItem とのリレーション（.cascade）により自動削除されます
+    public func deleteAllData(using modelContext: ModelContext) {
+        do {
+            try modelContext.delete(model: BeverageItem.self)
+            try modelContext.delete(model: StorageLocation.self)
+            try modelContext.save()
+            print("[SettingsViewModel] すべてのデータを削除しました。")
+        } catch {
+            print("[SettingsViewModel] データの全削除に失敗しました: \(error)")
         }
     }
 }

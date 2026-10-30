@@ -1,7 +1,7 @@
 //  PreviewSampleLoader.swift
 //  Kikisake
 
-import Foundation
+import SwiftUI
 import SwiftData
 
 public enum PreviewSampleLoader {
@@ -47,7 +47,18 @@ public enum PreviewSampleLoader {
         }
     }
 
+    /// 💡 Assetsから画像を安全にロードして Data 型に変換するヘルパー関数
+    private static func loadAssetImageData(named name: String) -> Data? {
+        // UIKitの UIImage を経由して Assets から読み込み、JPEGデータに変換する
+        if let uiImage = UIImage(named: name) {
+            return uiImage.jpegData(compressionQuality: 0.8)
+        }
+        print("[PreviewSampleLoader] Warning: アセット \"\(name)\" が見つかりませんでした。")
+        return nil
+    }
+
     /// サンプルデータを独立挿入（ワイン2本、日本酒2本、ビール1本）
+    @MainActor
     public static func insertSamples(into context: ModelContext) {
         insertDefaultLocationsIfNeeded(into: context)
 
@@ -57,6 +68,14 @@ public enum PreviewSampleLoader {
         let cellarLocationName = isEn ? "Wine Cellar" : "ワインセラー"
         let fridgeLocationName = isEn ? "Refrigerator" : "冷蔵庫"
         let roomLocationName = isEn ? "Room Temp" : "常温"
+
+        // 💡 Assets に登録した画像の名称を指定して Data を取得
+        // ※ 実際のAssetsカタログに登録した名前に書き換えてください
+        let wineImg1 = loadAssetImageData(named: "sample_wine_1")
+        let wineImg2 = loadAssetImageData(named: "sample_wine_2")
+        let sakeImg1 = loadAssetImageData(named: "sample_sake_1")
+        let sakeImg2 = loadAssetImageData(named: "sample_sake_2")
+        let beerImg  = loadAssetImageData(named: "sample_beer_1")
 
         // ==========================================
         // 1. ワイン 1本目: Château Margaux 2015
@@ -84,6 +103,7 @@ public enum PreviewSampleLoader {
             storageLocation: cellarLocationName,
             gridRow: 1,
             gridColumn: 1,
+            imageDatas: wineImg1 != nil ? [wineImg1!] : nil, // 💡 取得した画像データを設定
             specificMetadataJSON: wineMeta1JSON
         )
         let wineLog1 = TastingLog(
@@ -133,6 +153,7 @@ public enum PreviewSampleLoader {
             storageLocation: cellarLocationName,
             gridRow: 1,
             gridColumn: 2,
+            imageDatas: wineImg2 != nil ? [wineImg2!] : nil,
             specificMetadataJSON: wineMeta2JSON
         )
         let wineLog2 = TastingLog(
@@ -180,6 +201,7 @@ public enum PreviewSampleLoader {
             storageLocation: fridgeLocationName,
             gridRow: 1,
             gridColumn: 1,
+            imageDatas: sakeImg1 != nil ? [sakeImg1!] : nil,
             specificMetadataJSON: sakeMeta1JSON
         )
         let sakeLog1 = TastingLog(
@@ -227,6 +249,7 @@ public enum PreviewSampleLoader {
             storageLocation: fridgeLocationName,
             gridRow: 1,
             gridColumn: 2,
+            imageDatas: sakeImg2 != nil ? [sakeImg2!] : nil,
             specificMetadataJSON: sakeMeta2JSON
         )
         let sakeLog2 = TastingLog(
@@ -272,6 +295,7 @@ public enum PreviewSampleLoader {
             storageLocation: roomLocationName,
             gridRow: 1,
             gridColumn: 1,
+            imageDatas: beerImg != nil ? [beerImg!] : nil,
             specificMetadataJSON: beerMetaJSON
         )
         let beerLog = TastingLog(

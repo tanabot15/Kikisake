@@ -14,6 +14,9 @@ public struct SettingsView: View {
     @State private var showLoadedAlert: Bool = false
     @State private var showPaywall: Bool = false
 
+    // MARK: - データ削除確認用 State
+    @State private var showDeleteConfirmation: Bool = false
+
     // MARK: - バックアップ/リストア用 State
     @State private var isExporting: Bool = false
     @State private var exportDocument: BackupFileDocument? = nil
@@ -128,6 +131,13 @@ public struct SettingsView: View {
                         Text("データを復元する")
                             .foregroundStyle(.orange)
                     }
+
+                    // 💡 すべてのデータを削除するボタン
+                    Button(role: .destructive) {
+                        showDeleteConfirmation = true
+                    } label: {
+                        Text("すべてのデータを削除する")
+                    }
                 }
 
                 // MARK: - 3. アプリ情報
@@ -216,6 +226,16 @@ public struct SettingsView: View {
                 }
             } message: {
                 Text("「上書き復元」を選択すると、現在のアプリ内の全データが上書きされます。この操作は取り消せません。")
+            }
+            // 💡 すべてのデータ削除を確認するアラート（ポップアップ）
+            .alert("すべてのデータを削除", isPresented: $showDeleteConfirmation) {
+                Button("削除する", role: .destructive) {
+                    viewModel.deleteAllData(using: modelContext)
+                    presentAlert(title: "完了", message: "すべてのデータが削除されました。")
+                }
+                Button("キャンセル", role: .cancel) {}
+            } message: {
+                Text("登録したすべての銘柄、テイスティング記録、保管場所が完全に削除されます。この操作は取り消せません。")
             }
             .sheet(isPresented: $showOnboarding) {
                 BoardingView(isPresented: $showOnboarding)
