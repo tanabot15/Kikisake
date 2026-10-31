@@ -20,7 +20,7 @@ public struct TastingCardShareView: View {
         if scanner.scanHexInt64(&rgbValue) {
             let red = Double((rgbValue & 0xFF0000) >> 16) / 255.0
             let green = Double((rgbValue & 0x00FF00) >> 8) / 255.0
-            let blue = Double(rgbValue & 0x0000FF) / 255.0
+            let blue = Double(rgbValue & 0x0000FF) / 255.0 // 💡 修正箇所：正しい閉じ括弧の位置に修正
             return Color(red: red, green: green, blue: blue)
         }
         return .gray
@@ -55,8 +55,8 @@ public struct TastingCardShareView: View {
 
                             if !item.producer.isEmpty {
                                 Text(item.producer)
-                                    .font(.system(size: 9))
-                                    .foregroundStyle(.secondary)
+                                    .font(.system(size: 9, weight: .medium))
+                                    .foregroundStyle(.primary.opacity(0.75))
                                     .lineLimit(1)
                             }
                         }
@@ -122,13 +122,14 @@ public struct TastingCardShareView: View {
                             HStack(spacing: 3) {
                                 Text("評価")
                                     .font(.system(size: 8, weight: .bold))
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(.primary.opacity(0.75))
                                     .frame(width: 32, alignment: .leading)
                                 Image(systemName: "star.fill")
                                     .font(.system(size: 8))
                                     .foregroundStyle(.yellow)
                                 Text(String(format: "%.1f", log.rating))
                                     .font(.system(size: 9, weight: .bold))
+                                    .foregroundStyle(.primary)
                             }
                             
                             // 外観
@@ -136,13 +137,13 @@ public struct TastingCardShareView: View {
                                 HStack(spacing: 4) {
                                     Text("外観")
                                         .font(.system(size: 8, weight: .bold))
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(.primary.opacity(0.75))
                                         .frame(width: 32, alignment: .leading)
                                     
                                     Circle()
                                         .fill(colorFromHex(log.appearanceColorHex))
                                         .frame(width: 8, height: 8)
-                                        .overlay(Circle().stroke(Color.primary.opacity(0.2), lineWidth: 0.5))
+                                        .overlay(Circle().stroke(Color.primary.opacity(0.3), lineWidth: 0.5))
                                     
                                     Text(log.appearanceNotes)
                                         .font(.system(size: 8, weight: .medium))
@@ -156,7 +157,7 @@ public struct TastingCardShareView: View {
                                 HStack(alignment: .top, spacing: 4) {
                                     Text("香り")
                                         .font(.system(size: 8, weight: .bold))
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(.primary.opacity(0.75))
                                         .frame(width: 32, alignment: .leading)
                                         .padding(.top, 2)
                                     
@@ -166,7 +167,7 @@ public struct TastingCardShareView: View {
                                                 .font(.system(size: 7, weight: .medium))
                                                 .padding(.horizontal, 4)
                                                 .padding(.vertical, 1)
-                                                .background(Color(.systemBackground).opacity(0.7))
+                                                .background(Color(.systemBackground).opacity(0.9))
                                                 .foregroundStyle(Color.primary)
                                                 .cornerRadius(3)
                                         }
@@ -179,35 +180,35 @@ public struct TastingCardShareView: View {
                                 HStack(alignment: .top, spacing: 4) {
                                     Text("特徴")
                                         .font(.system(size: 8, weight: .bold))
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(.primary.opacity(0.75))
                                         .frame(width: 32, alignment: .leading)
                                         .padding(.top, 2)
                                     
                                     FlowLayout(spacing: 3) {
                                         if log.isCostEffective {
                                             Text("コスパ")
-                                                .font(.system(size: 7, weight: .medium))
+                                                .font(.system(size: 7, weight: .semibold))
                                                 .padding(.horizontal, 4)
                                                 .padding(.vertical, 1)
-                                                .background(Color.green.opacity(0.15))
+                                                .background(Color.green.opacity(0.2))
                                                 .foregroundStyle(.green)
                                                 .cornerRadius(3)
                                         }
                                         if log.isWillingToRepeat {
                                             Text("リピート")
-                                                .font(.system(size: 7, weight: .medium))
+                                                .font(.system(size: 7, weight: .semibold))
                                                 .padding(.horizontal, 4)
                                                 .padding(.vertical, 1)
-                                                .background(Color.orange.opacity(0.15))
+                                                .background(Color.orange.opacity(0.2))
                                                 .foregroundStyle(.orange)
                                                 .cornerRadius(3)
                                         }
                                         if log.hasAgingPotential {
                                             Text("熟成")
-                                                .font(.system(size: 7, weight: .medium))
+                                                .font(.system(size: 7, weight: .semibold))
                                                 .padding(.horizontal, 4)
                                                 .padding(.vertical, 1)
-                                                .background(Color.purple.opacity(0.15))
+                                                .background(Color.purple.opacity(0.2))
                                                 .foregroundStyle(.purple)
                                                 .cornerRadius(3)
                                         }
@@ -216,8 +217,12 @@ public struct TastingCardShareView: View {
                             }
                         }
                         .padding(6)
-                        .background(Color(.systemBackground).opacity(0.5))
+                        .background(Color(.systemBackground).opacity(0.85))
                         .cornerRadius(6)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 6)
+                                .stroke(Color.primary.opacity(0.08), lineWidth: 0.5)
+                        )
                         .padding(.top, 2)
                     }
                 }
@@ -280,7 +285,7 @@ public struct TastingCardShareView: View {
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+                        .stroke(Color.primary.opacity(0.12), lineWidth: 1)
                 )
             }
             .padding(.horizontal, 12)
@@ -302,7 +307,7 @@ public struct TastingCardShareView: View {
             // MARK: - 3. コメント ＆ フッター
             if !log.memo.isEmpty {
                 Text(log.memo)
-                    .font(.system(size: 10))
+                    .font(.system(size: 10, weight: .medium))
                     .foregroundStyle(.primary)
                     .lineLimit(2)
                     .padding(.horizontal, 12)
@@ -311,11 +316,11 @@ public struct TastingCardShareView: View {
             HStack {
                 Text("Kikisake - Professional Tasting Log")
                     .font(.system(size: 8, weight: .bold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary.opacity(0.75))
                 Spacer()
                 Text(log.date.toFormattedString())
-                    .font(.system(size: 8))
-                    .foregroundStyle(.secondary)
+                    .font(.system(size: 8, weight: .medium))
+                    .foregroundStyle(.primary.opacity(0.75))
             }
             .padding(.horizontal, 12)
             .padding(.bottom, 10)
@@ -323,6 +328,8 @@ public struct TastingCardShareView: View {
         .frame(width: 380)
         .background(
             ZStack {
+                Color(.systemBackground).opacity(0.4)
+                
                 LinearGradient(
                     colors: [themeColors.primary, themeColors.secondary, Color(.systemBackground)],
                     startPoint: .topLeading,
@@ -330,13 +337,13 @@ public struct TastingCardShareView: View {
                 )
                 Rectangle()
                     .fill(.ultraThinMaterial)
-                    .opacity(0.65)
+                    .opacity(0.6)
             }
         )
         .cornerRadius(16)
         .overlay(
             RoundedRectangle(cornerRadius: 16)
-                .stroke(colorFromHex(log.appearanceColorHex).opacity(0.25), lineWidth: 1.2)
+                .stroke(colorFromHex(log.appearanceColorHex).opacity(0.35), lineWidth: 1.2)
         )
         .shadow(color: colorFromHex(log.appearanceColorHex).opacity(0.2), radius: 10, x: 0, y: 4)
     }
@@ -345,7 +352,7 @@ public struct TastingCardShareView: View {
         HStack(spacing: 4) {
             Text(title)
                 .font(.system(size: 8, weight: .bold))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary.opacity(0.75))
                 .frame(width: 38, alignment: .leading)
             
             Text(value)
@@ -411,7 +418,7 @@ private func generateBackSampleImage() -> Data? {
         vintage: "2018",
         alcoholByVolume: 14.0,
         imageDatas: [generateVerticalSampleImage() ?? Data()],
-        backImageDatas: [generateBackSampleImage() ?? Data()], // ✨ プレビュー用に裏面ラベルデータを付与
+        backImageDatas: [generateBackSampleImage() ?? Data()],
         specificMetadataJSON: metaJSON
     )
 

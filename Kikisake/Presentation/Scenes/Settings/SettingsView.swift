@@ -129,10 +129,9 @@ public struct SettingsView: View {
                         isImporting = true
                     } label: {
                         Text("データを復元する")
-                            .foregroundStyle(.orange)
                     }
 
-                    // 💡 すべてのデータを削除するボタン
+                    // すべてのデータを削除するボタン
                     Button(role: .destructive) {
                         showDeleteConfirmation = true
                     } label: {
