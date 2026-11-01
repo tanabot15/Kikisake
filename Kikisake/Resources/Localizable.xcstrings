@@ -201,12 +201,12 @@
         }
       }
     },
-    "%@の色調を選択してください" : {
+    "%@の色調" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please select the color tone for %@"
+            "value" : "%@ Color"
           }
         }
       }
@@ -339,6 +339,16 @@
         }
       }
     },
+    "Analytics - 自らの「味覚の好み」を深く知る" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analytics — Discover Your Taste Preferences"
+          }
+        }
+      }
+    },
     "IBU" : {
       "localizations" : {
         "en" : {
@@ -365,6 +375,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "IBU (Bitterness)"
+          }
+        }
+      }
+    },
+    "Inventory - 自宅のセラーや冷蔵庫をマップ化" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inventory — Map Your Cellar & Fridge"
           }
         }
       }
@@ -419,6 +439,16 @@
         }
       }
     },
+    "Log - 印象的な味わいをそのまま残す" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log — Capture Unforgettable Flavors"
+          }
+        }
+      }
+    },
     "No Image" : {
       "localizations" : {
         "en" : {
@@ -439,12 +469,12 @@
         }
       }
     },
-    "Pro" : {
+    "PRO" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pro"
+            "value" : "PRO"
           }
         }
       }
@@ -505,6 +535,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Acacia"
+          }
+        }
+      }
+    },
+    "アザミ色" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thistle"
           }
         }
       }
@@ -609,6 +649,16 @@
         }
       }
     },
+    "ウィート（小麦色）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wheat"
+          }
+        }
+      }
+    },
     "ヴィンテージ / 年月" : {
       "localizations" : {
         "en" : {
@@ -669,6 +719,46 @@
         }
       }
     },
+    "オーカー（黄土）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ochre"
+          }
+        }
+      }
+    },
+    "オールド・ゴールド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Old Gold"
+          }
+        }
+      }
+    },
+    "オールド・ルビー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Old Ruby"
+          }
+        }
+      }
+    },
+    "オニオン・スキン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onion Skin"
+          }
+        }
+      }
+    },
     "オレンジ" : {
       "localizations" : {
         "en" : {
@@ -685,16 +775,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Orange Peel"
-          }
-        }
-      }
-    },
-    "お酒の感動を記録し、あなたの「好み」を深く知るためのテイスティング手帳" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A tasting journal to capture every sip and discover your personal preferences."
           }
         }
       }
@@ -725,6 +805,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cassis"
+          }
+        }
+      }
+    },
+    "カナリー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canary Yellow"
           }
         }
       }
@@ -805,6 +895,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Osmanthus"
+          }
+        }
+      }
+    },
+    "グラスを傾けて見える最も近い色をタップしてください。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the closest color seen when tilting the glass."
           }
         }
       }
@@ -915,6 +1015,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Coffee"
+          }
+        }
+      }
+    },
+    "コーラル・ピンク" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coral Pink"
           }
         }
       }
@@ -1129,6 +1239,16 @@
         }
       }
     },
+    "サフラン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saffron"
+          }
+        }
+      }
+    },
     "サポートされていないデータバージョンです (Version: %lld)" : {
       "localizations" : {
         "en" : {
@@ -1169,6 +1289,16 @@
         }
       }
     },
+    "サンプルデータの自動追加" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto-Add Sample Data"
+          }
+        }
+      }
+    },
     "サンプルデータの読み込み" : {
       "localizations" : {
         "en" : {
@@ -1185,6 +1315,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Load Sample Data"
+          }
+        }
+      }
+    },
+    "サンプルデータを追加する" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Sample Data"
           }
         }
       }
@@ -1215,6 +1355,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cinnamon"
+          }
+        }
+      }
+    },
+    "シャンパン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Champagne"
+          }
+        }
+      }
+    },
+    "シャンパン・ゴールド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Champagne Gold"
           }
         }
       }
@@ -1259,12 +1419,42 @@
         }
       }
     },
+    "スカーレット" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scarlet"
+          }
+        }
+      }
+    },
+    "スキップ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip"
+          }
+        }
+      }
+    },
     "スタイル" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Style"
+          }
+        }
+      }
+    },
+    "スタウト・ブラック" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stout Black"
           }
         }
       }
@@ -1305,6 +1495,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Strawberry"
+          }
+        }
+      }
+    },
+    "ストロベリー・ピンク" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strawberry Pink"
+          }
+        }
+      }
+    },
+    "ストロベリー・レッド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strawberry Red"
           }
         }
       }
@@ -1350,10 +1560,24 @@
       }
     },
     "すべてのデータを削除" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete All Data"
+          }
+        }
+      }
     },
     "すべてのデータを削除する" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete All Data"
+          }
+        }
+      }
     },
     "すべてのフィルターをリセット" : {
       "localizations" : {
@@ -1385,7 +1609,7 @@
         }
       }
     },
-    "スマートな在庫・セラー管理" : {
+    "スマート在庫管理" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1535,6 +1759,36 @@
         }
       }
     },
+    "ダーク・ゴールド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Gold"
+          }
+        }
+      }
+    },
+    "ダーク・チェスナット" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Chestnut"
+          }
+        }
+      }
+    },
+    "ダーク・チェリー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Cherry"
+          }
+        }
+      }
+    },
     "ダーク・ブラウン" : {
       "localizations" : {
         "en" : {
@@ -1625,6 +1879,16 @@
         }
       }
     },
+    "タンジェリン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tangerine"
+          }
+        }
+      }
+    },
     "タンニン (Tannin)" : {
       "localizations" : {
         "en" : {
@@ -1635,12 +1899,32 @@
         }
       }
     },
+    "チェスナット（栗色）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chestnut"
+          }
+        }
+      }
+    },
     "チェリー" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cherry"
+          }
+        }
+      }
+    },
+    "チェリー・ピンク" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cherry Pink"
           }
         }
       }
@@ -1755,12 +2039,32 @@
         }
       }
     },
+    "テラコッタ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terracotta"
+          }
+        }
+      }
+    },
     "トースト" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toast"
+          }
+        }
+      }
+    },
+    "トパーズ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Topaz"
           }
         }
       }
@@ -1895,6 +2199,16 @@
         }
       }
     },
+    "バーガンディ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Burgundy"
+          }
+        }
+      }
+    },
     "バージョン" : {
       "localizations" : {
         "en" : {
@@ -1931,6 +2245,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Purple"
+          }
+        }
+      }
+    },
+    "パール・ホワイト" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pearl White"
           }
         }
       }
@@ -1995,6 +2319,16 @@
         }
       }
     },
+    "ハニー・ゴールド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Honey Gold"
+          }
+        }
+      }
+    },
     "バラ" : {
       "localizations" : {
         "en" : {
@@ -2021,6 +2355,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pain de mie"
+          }
+        }
+      }
+    },
+    "ピーチ・アンバー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peach Amber"
           }
         }
       }
@@ -2205,6 +2549,26 @@
         }
       }
     },
+    "プラチナ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Platinum"
+          }
+        }
+      }
+    },
+    "プラチナ・ブロンド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Platinum Blonde"
+          }
+        }
+      }
+    },
     "ブラック" : {
       "localizations" : {
         "en" : {
@@ -2231,6 +2595,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Blackberry"
+          }
+        }
+      }
+    },
+    "プラム" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plum"
           }
         }
       }
@@ -2271,6 +2645,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bronze"
+          }
+        }
+      }
+    },
+    "ブロンズ・ホワイト" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bronze White"
           }
         }
       }
@@ -2366,7 +2750,14 @@
       }
     },
     "ボトル・ラベル写真" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bottle & Label Photos"
+          }
+        }
+      }
     },
     "ボトルの扱いを選択" : {
       "localizations" : {
@@ -2394,6 +2785,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open Bottle"
+          }
+        }
+      }
+    },
+    "ボルドー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bordeaux"
           }
         }
       }
@@ -2438,6 +2839,16 @@
         }
       }
     },
+    "マドラス" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Madras"
+          }
+        }
+      }
+    },
     "マトリクス" : {
       "localizations" : {
         "en" : {
@@ -2464,6 +2875,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mahogany"
+          }
+        }
+      }
+    },
+    "マホガニー・オレンジ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mahogany Orange"
+          }
+        }
+      }
+    },
+    "マホガニー古酒" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mahogany Aged Sake"
+          }
+        }
+      }
+    },
+    "マルーン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maroon"
           }
         }
       }
@@ -2588,6 +3029,16 @@
         }
       }
     },
+    "ライト・チェスナット" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light Chestnut"
+          }
+        }
+      }
+    },
     "ライトモード" : {
       "localizations" : {
         "en" : {
@@ -2604,6 +3055,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose from Library"
+          }
+        }
+      }
+    },
+    "ライム" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lime"
           }
         }
       }
@@ -2638,6 +3099,16 @@
         }
       }
     },
+    "ラベンダー・ローズ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lavender Rose"
+          }
+        }
+      }
+    },
     "ランシオ" : {
       "localizations" : {
         "en" : {
@@ -2664,16 +3135,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Failed to restore: %@"
-          }
-        }
-      }
-    },
-    "リッチな分析と好みの一覧" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rich Analytics & Insights"
           }
         }
       }
@@ -2728,6 +3189,16 @@
         }
       }
     },
+    "ルビー・エール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruby Ale"
+          }
+        }
+      }
+    },
     "ルビーレッド" : {
       "localizations" : {
         "en" : {
@@ -2738,12 +3209,32 @@
         }
       }
     },
+    "レーダーチャートや2軸マトリクスにより、蓄積されたログからあなた自身の好みやよく飲むジャンルを鮮やかにグラフ化" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualize your taste preferences and favorite categories using radar charts and a 2-axis matrix."
+          }
+        }
+      }
+    },
     "レモン・イエロー" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lemon Yellow"
+          }
+        }
+      }
+    },
+    "レモン・ピール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lemon Peel"
           }
         }
       }
@@ -2848,12 +3339,52 @@
         }
       }
     },
+    "ワイン・日本酒・ビールなどのテイスティングと在庫セラーをこれ一つで美しく管理" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beautifully manage tasting logs and cellar inventory for wine, sake, and beer—all in one app."
+          }
+        }
+      }
+    },
+    "ワイン、日本酒、ビールのサンプルデータをあらかじめ追加して、アプリの機能をすぐにお試しいただけます。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Load sample data for wine, sake, and beer to explore the app's features right away."
+          }
+        }
+      }
+    },
+    "ワイン2本・日本酒2本・ビール1本" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 Wines, 2 Sakes, 1 Beer"
+          }
+        }
+      }
+    },
     "ワインセラー" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wine Cellar"
+          }
+        }
+      }
+    },
+    "ワインセラーや冷蔵庫の位置をグラフィカルに再現し、保管場所ごとの在庫を一目で把握し、スムーズに開栓記録へ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graphically map your cellar or fridge to instantly check inventory and seamlessly start tasting logs."
           }
         }
       }
@@ -3428,6 +3959,16 @@
         }
       }
     },
+    "味わいの傾向を可視化" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualize Taste Profile"
+          }
+        }
+      }
+    },
     "味わいプロファイル" : {
       "localizations" : {
         "en" : {
@@ -3628,16 +4169,6 @@
         }
       }
     },
-    "外観・色調の選択" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select Appearance & Color"
-          }
-        }
-      }
-    },
     "外観・香り" : {
       "localizations" : {
         "en" : {
@@ -3648,22 +4179,22 @@
         }
       }
     },
-    "外観、香り、五味（甘味・酸味・苦味・旨味・塩味）を直感的に記録できます。" : {
+    "外観の色調、複雑な香り、味わいからタンニン・ボディ・余韻まで、直感的なUIで詳細にアプローチ" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Intuitively log appearance, aromas, and basic taste profiles."
+            "value" : "Intuitive UI to log color tones, complex aromas, taste parameters, tannins, body, and finish in rich detail."
           }
         }
       }
     },
-    "外観の補足 (例: 輝きがある、粘性高い)" : {
+    "外観の表現・補足メモ (例: 深みのあるルビーレッド。粘性が高く輝きがある)" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Appearance Notes (e.g., Clear, Viscous)"
+            "value" : "Appearance notes (e.g., Deep ruby red. High viscosity and brillant radiance)"
           }
         }
       }
@@ -3784,6 +4315,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pale Yellowish"
+          }
+        }
+      }
+    },
+    "愛好家のためのプロフェッショナル向け記録アプリ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A Professional Tasting App for Enthusiasts"
+          }
+        }
+      }
+    },
+    "感じられた香りの特徴をタップして選択してください。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to select the aroma characteristics you detected."
           }
         }
       }
@@ -4024,6 +4575,16 @@
         }
       }
     },
+    "未選択" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Selected"
+          }
+        }
+      }
+    },
     "未配置で保存" : {
       "localizations" : {
         "en" : {
@@ -4040,6 +4601,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Set to Unassigned"
+          }
+        }
+      }
+    },
+    "本格的なテイスティング記録" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authentic Tasting Records"
           }
         }
       }
@@ -4244,6 +4815,16 @@
         }
       }
     },
+    "水明（青みクリア）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear with Blue"
+          }
+        }
+      }
+    },
     "洋ナシ" : {
       "localizations" : {
         "en" : {
@@ -4290,6 +4871,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tannin"
+          }
+        }
+      }
+    },
+    "準備が整いました" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All Set!"
+          }
+        }
+      }
+    },
+    "漆黒（オックスフォード）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jet Black"
           }
         }
       }
@@ -4380,6 +4981,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aged Cheese"
+          }
+        }
+      }
+    },
+    "熟成ブラウン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aged Brown"
           }
         }
       }
@@ -4575,7 +5186,14 @@
       }
     },
     "登録したすべての銘柄、テイスティング記録、保管場所が完全に削除されます。この操作は取り消せません。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All registered items, tasting logs, and storage locations will be permanently deleted. This action cannot be undone."
+          }
+        }
+      }
     },
     "登録日" : {
       "localizations" : {
@@ -4647,6 +5265,16 @@
         }
       }
     },
+    "白銀（プラチナ）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silver Platinum"
+          }
+        }
+      }
+    },
     "直近1ヶ月" : {
       "localizations" : {
         "en" : {
@@ -4673,6 +5301,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Past 3 Months"
+          }
+        }
+      }
+    },
+    "真鍮色（ブラス）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brass"
           }
         }
       }
@@ -4893,16 +5531,6 @@
         }
       }
     },
-    "自宅のセラーや冷蔵庫ごとの在庫を把握し、スムーズにテイスティングへ移行できます。" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Track stock in your cellar or fridge, and transition seamlessly to tasting."
-          }
-        }
-      }
-    },
     "花・植物" : {
       "localizations" : {
         "en" : {
@@ -4929,6 +5557,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quince"
+          }
+        }
+      }
+    },
+    "若草・微緑" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pale Green"
           }
         }
       }
@@ -5024,10 +5662,24 @@
       }
     },
     "表面の写真を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Front Photo"
+          }
+        }
+      }
     },
     "裏面の写真を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Back Photo"
+          }
+        }
+      }
     },
     "補足メモ (任意)" : {
       "localizations" : {
@@ -5149,26 +5801,6 @@
         }
       }
     },
-    "詳細なテイスティング記録" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Detailed Tasting Logs"
-          }
-        }
-      }
-    },
-    "詳細メモ・自由記述" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Detailed Notes"
-          }
-        }
-      }
-    },
     "詳細を確認する" : {
       "localizations" : {
         "en" : {
@@ -5229,6 +5861,26 @@
         }
       }
     },
+    "赤褐色" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reddish Brown"
+          }
+        }
+      }
+    },
+    "赤金色（オレンジゴールド）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orange Gold"
+          }
+        }
+      }
+    },
     "追加" : {
       "localizations" : {
         "en" : {
@@ -5249,6 +5901,16 @@
         }
       }
     },
+    "選択された外観・詳細メモ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected Appearance & Notes"
+          }
+        }
+      }
+    },
     "選択中: 第 %lld 段 - %lld 列目" : {
       "localizations" : {
         "en" : {
@@ -5261,6 +5923,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "選択中: 第 %1$lld 段 - %2$lld 列目"
+          }
+        }
+      }
+    },
+    "選択中の色名:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected Color:"
           }
         }
       }
@@ -5281,16 +5953,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Category"
-          }
-        }
-      }
-    },
-    "酒種ごとの比率や、あなた自身の味覚プロファイル、お気に入り銘柄を可視化します。" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Visualize category ratios, flavor profiles, and favorite bottles."
           }
         }
       }
@@ -5535,6 +6197,16 @@
         }
       }
     },
+    "香りを選択" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Aroma"
+          }
+        }
+      }
+    },
     "香木" : {
       "localizations" : {
         "en" : {
@@ -5551,6 +6223,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Musk"
+          }
+        }
+      }
+    },
+    "麦わら色" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Straw"
+          }
+        }
+      }
+    },
+    "麦わら金色" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Straw Gold"
           }
         }
       }
@@ -5601,6 +6293,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Black Pepper"
+          }
+        }
+      }
+    },
+    "黒赤色（ノワール）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blackish Red (Noir)"
           }
         }
       }

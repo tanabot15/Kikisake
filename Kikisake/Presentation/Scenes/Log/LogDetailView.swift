@@ -91,28 +91,28 @@ public struct LogDetailView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 16) {
-                    Button {
-                        let vm = AppState.shared.addFlowViewModel
-                        vm.configureWithLog(log)
-                        isShowingEditSheet = true
-                    } label: {
-                        Image(systemName: "square.and.pencil")
-                    }
-
-                    if log.isEvaluated {
-                        if #available(iOS 16.0, *) {
-                            let shareImage = renderShareImage()
-                            let previewTitle = String(localized: "\(log.item?.name ?? "テイスティング") の記録")
-                            ShareLink(
-                                item: shareImage,
-                                preview: SharePreview(
-                                    previewTitle,
-                                    image: shareImage
-                                )
-                            ) {
-                                Image(systemName: "square.and.arrow.up")
-                            }
+                Button {
+                    let vm = AppState.shared.addFlowViewModel
+                    vm.configureWithLog(log)
+                    isShowingEditSheet = true
+                } label: {
+                    Image(systemName: "square.and.pencil")
+                }
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                if log.isEvaluated {
+                    if #available(iOS 16.0, *) {
+                        let shareImage = renderShareImage()
+                        let previewTitle = String(localized: "\(log.item?.name ?? "テイスティング") の記録")
+                        ShareLink(
+                            item: shareImage,
+                            preview: SharePreview(
+                                previewTitle,
+                                image: shareImage
+                            )
+                        ) {
+                            Image(systemName: "square.and.arrow.up")
                         }
                     }
                 }

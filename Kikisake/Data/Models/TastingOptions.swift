@@ -77,7 +77,7 @@ public enum TastingOptions {
         String(localized: "ねっとりした")
     ]
     
-    /// 酒種・タイプに応じた外観カラーオプションを取得
+    /// 酒種・タイプに応じた外観カラーオプションを取得（薄い色〜濃い色の順にグラデーションソート）
     public static func colorOptions(for category: BeverageCategory?, wineType: String = "赤") -> [ColorOption] {
         guard let category = category else {
             var allOptions: [ColorOption] = []
@@ -103,73 +103,131 @@ public enum TastingOptions {
         switch category {
         case .wine:
             if wineType == "白" || wineType == "スパークリング" {
+                // 白ワイン：20個（薄いプラチナ・ペール系 → 濃いアンバー・ゴールド系）
                 return [
+                    ColorOption(name: String(localized: "プラチナ"), color: Color(red: 0.95, green: 0.95, blue: 0.90), hex: "#F2F2E6", isPro: true),
                     ColorOption(name: String(localized: "ペール・イエロー"), color: Color(red: 0.98, green: 0.96, blue: 0.75), hex: "#FAF5BF", isPro: false),
-                    ColorOption(name: String(localized: "レモン・イエロー"), color: Color(red: 0.95, green: 0.93, blue: 0.6), hex: "#F3ED99", isPro: true),
-                    ColorOption(name: String(localized: "グリーン・イエロー"), color: Color(red: 0.85, green: 0.92, blue: 0.6), hex: "#D9EB99", isPro: true),
+                    ColorOption(name: String(localized: "シャンパン"), color: Color(red: 0.96, green: 0.92, blue: 0.78), hex: "#F4EBC7", isPro: false),
+                    ColorOption(name: String(localized: "レモン・イエロー"), color: Color(red: 0.95, green: 0.93, blue: 0.6), hex: "#F3ED99", isPro: false),
                     ColorOption(name: String(localized: "ストロー・イエロー"), color: Color(red: 0.95, green: 0.90, blue: 0.5), hex: "#F3E680", isPro: false),
+                    ColorOption(name: String(localized: "カナリー"), color: Color(red: 0.98, green: 0.92, blue: 0.40), hex: "#FAEB66", isPro: true),
+                    ColorOption(name: String(localized: "グリーン・イエロー"), color: Color(red: 0.85, green: 0.92, blue: 0.6), hex: "#D9EB99", isPro: true),
+                    ColorOption(name: String(localized: "ライム"), color: Color(red: 0.90, green: 0.95, blue: 0.70), hex: "#E6F2B3", isPro: true),
                     ColorOption(name: String(localized: "ペール・ゴールド"), color: Color(red: 0.92, green: 0.88, blue: 0.6), hex: "#EBE099", isPro: true),
-                    ColorOption(name: String(localized: "ストロー"), color: Color(red: 0.90, green: 0.85, blue: 0.55), hex: "#E6D98C", isPro: true),
+                    ColorOption(name: String(localized: "ストロー"), color: Color(red: 0.90, green: 0.85, blue: 0.55), hex: "#E6D98C", isPro: false),
+                    ColorOption(name: String(localized: "麦わら金色"), color: Color(red: 0.86, green: 0.78, blue: 0.45), hex: "#DBC773", isPro: false),
                     ColorOption(name: String(localized: "ゴールデン・イエロー"), color: Color(red: 0.92, green: 0.82, blue: 0.3), hex: "#EBD14D", isPro: true),
+                    ColorOption(name: String(localized: "マドラス"), color: Color(red: 0.88, green: 0.72, blue: 0.35), hex: "#E0B859", isPro: true),
                     ColorOption(name: String(localized: "ゴールド"), color: Color(red: 0.88, green: 0.75, blue: 0.2), hex: "#E0BF33", isPro: false),
+                    ColorOption(name: String(localized: "トパーズ"), color: Color(red: 0.82, green: 0.65, blue: 0.25), hex: "#D1A640", isPro: true),
                     ColorOption(name: String(localized: "ハニー"), color: Color(red: 0.85, green: 0.70, blue: 0.3), hex: "#D9B34D", isPro: true),
-                    ColorOption(name: String(localized: "アンバー"), color: Color(red: 0.80, green: 0.62, blue: 0.2), hex: "#CC9E33", isPro: true)
+                    ColorOption(name: String(localized: "オールド・ゴールド"), color: Color(red: 0.75, green: 0.60, blue: 0.20), hex: "#BF9933", isPro: true),
+                    ColorOption(name: String(localized: "ブロンズ・ホワイト"), color: Color(red: 0.70, green: 0.55, blue: 0.25), hex: "#B38C40", isPro: true),
+                    ColorOption(name: String(localized: "アンバー"), color: Color(red: 0.80, green: 0.62, blue: 0.2), hex: "#CC9E33", isPro: false),
+                    ColorOption(name: String(localized: "ダーク・ゴールド"), color: Color(red: 0.65, green: 0.48, blue: 0.15), hex: "#A67A26", isPro: true)
                 ]
             } else if wineType == "ロゼ" {
+                // ロゼワイン：10個（淡いチェリー・ブロッサム・ピーチ等 → 深いアザミ・チェリーピンク）
                 return [
                     ColorOption(name: String(localized: "チェリー・ブロッサム"), color: Color(red: 0.98, green: 0.80, blue: 0.82), hex: "#FACDD1", isPro: false),
                     ColorOption(name: String(localized: "ピーチ・スキン"), color: Color(red: 0.96, green: 0.80, blue: 0.70), hex: "#F5CCB3", isPro: true),
                     ColorOption(name: String(localized: "サーモン・ピンク"), color: Color(red: 0.96, green: 0.72, blue: 0.65), hex: "#F5B8A6", isPro: false),
-                    ColorOption(name: String(localized: "ラズベリー・ピンク"), color: Color(red: 0.95, green: 0.70, blue: 0.75), hex: "#F2B3BF", isPro: true)
+                    ColorOption(name: String(localized: "ラズベリー・ピンク"), color: Color(red: 0.95, green: 0.70, blue: 0.75), hex: "#F2B3BF", isPro: true),
+                    ColorOption(name: String(localized: "コーラル・ピンク"), color: Color(red: 0.95, green: 0.65, blue: 0.60), hex: "#F3A699", isPro: false),
+                    ColorOption(name: String(localized: "ストロベリー・ピンク"), color: Color(red: 0.92, green: 0.58, blue: 0.62), hex: "#EB949E", isPro: true),
+                    ColorOption(name: String(localized: "オニオン・スキン"), color: Color(red: 0.88, green: 0.68, blue: 0.55), hex: "#E0AD8C", isPro: true),
+                    ColorOption(name: String(localized: "ラベンダー・ローズ"), color: Color(red: 0.85, green: 0.60, blue: 0.65), hex: "#D999A6", isPro: true),
+                    ColorOption(name: String(localized: "アザミ色"), color: Color(red: 0.80, green: 0.50, blue: 0.55), hex: "#CC808C", isPro: false),
+                    ColorOption(name: String(localized: "チェリー・ピンク"), color: Color(red: 0.85, green: 0.45, blue: 0.50), hex: "#D97380", isPro: true)
                 ]
             } else if wineType == "オレンジ" {
+                // オレンジワイン：10個（明るいアプリコット・タンジェリン等 → 深いマホガニー・テラコッタ等）
                 return [
-                    ColorOption(name: String(localized: "アプリコット"), color: Color(red: 0.95, green: 0.65, blue: 0.35), hex: "#F3A659", isPro: true),
+                    ColorOption(name: String(localized: "アプリコット"), color: Color(red: 0.95, green: 0.65, blue: 0.35), hex: "#F3A659", isPro: false),
+                    ColorOption(name: String(localized: "タンジェリン"), color: Color(red: 0.96, green: 0.60, blue: 0.25), hex: "#F59940", isPro: false),
+                    ColorOption(name: String(localized: "ピーチ・アンバー"), color: Color(red: 0.88, green: 0.60, blue: 0.35), hex: "#E09959", isPro: true),
                     ColorOption(name: String(localized: "アンバー・オレンジ"), color: Color(red: 0.92, green: 0.55, blue: 0.2), hex: "#EB8C33", isPro: false),
+                    ColorOption(name: String(localized: "サフラン"), color: Color(red: 0.90, green: 0.68, blue: 0.20), hex: "#E6AD33", isPro: true),
                     ColorOption(name: String(localized: "コッパー"), color: Color(red: 0.85, green: 0.48, blue: 0.25), hex: "#D97A40", isPro: true),
-                    ColorOption(name: String(localized: "ブロンズ"), color: Color(red: 0.80, green: 0.50, blue: 0.3), hex: "#CC804D", isPro: true)
+                    ColorOption(name: String(localized: "オーカー（黄土）"), color: Color(red: 0.82, green: 0.52, blue: 0.25), hex: "#D18540", isPro: true),
+                    ColorOption(name: String(localized: "ブロンズ"), color: Color(red: 0.80, green: 0.50, blue: 0.3), hex: "#CC804D", isPro: true),
+                    ColorOption(name: String(localized: "テラコッタ"), color: Color(red: 0.78, green: 0.42, blue: 0.22), hex: "#C76B38", isPro: false),
+                    ColorOption(name: String(localized: "マホガニー・オレンジ"), color: Color(red: 0.70, green: 0.35, blue: 0.18), hex: "#B3592E", isPro: true)
                 ]
             } else {
+                // 赤ワイン：20個（明るいストロベリー・ラズベリー等 → 漆黒に近いノワール等）
                 return [
+                    ColorOption(name: String(localized: "ストロベリー・レッド"), color: Color(red: 0.85, green: 0.25, blue: 0.35), hex: "#D94059", isPro: true),
+                    ColorOption(name: String(localized: "スカーレット"), color: Color(red: 0.88, green: 0.15, blue: 0.20), hex: "#E02633", isPro: true),
                     ColorOption(name: String(localized: "ラズベリーレッド"), color: Color(red: 0.8, green: 0.2, blue: 0.3), hex: "#CC334D", isPro: false),
-                    ColorOption(name: String(localized: "チェリーレッド"), color: Color(red: 0.7, green: 0.15, blue: 0.25), hex: "#B32640", isPro: true),
+                    ColorOption(name: String(localized: "チェリーレッド"), color: Color(red: 0.7, green: 0.15, blue: 0.25), hex: "#B32640", isPro: false),
                     ColorOption(name: String(localized: "クリムゾン"), color: Color(red: 0.65, green: 0.08, blue: 0.2), hex: "#A61433", isPro: true),
                     ColorOption(name: String(localized: "ルビーレッド"), color: Color(red: 0.6, green: 0.1, blue: 0.2), hex: "#991A33", isPro: false),
                     ColorOption(name: String(localized: "レンガ/ブリック"), color: Color(red: 0.6, green: 0.25, blue: 0.2), hex: "#994033", isPro: true),
+                    ColorOption(name: String(localized: "オールド・ルビー"), color: Color(red: 0.55, green: 0.22, blue: 0.25), hex: "#8C3840", isPro: true),
+                    ColorOption(name: String(localized: "赤褐色"), color: Color(red: 0.52, green: 0.20, blue: 0.15), hex: "#853326", isPro: false),
                     ColorOption(name: String(localized: "ガーネット"), color: Color(red: 0.5, green: 0.15, blue: 0.2), hex: "#802633", isPro: false),
+                    ColorOption(name: String(localized: "ボルドー"), color: Color(red: 0.50, green: 0.08, blue: 0.18), hex: "#80142E", isPro: false),
+                    ColorOption(name: String(localized: "プラム"), color: Color(red: 0.48, green: 0.12, blue: 0.28), hex: "#7A1F47", isPro: true),
                     ColorOption(name: String(localized: "パープル"), color: Color(red: 0.45, green: 0.1, blue: 0.3), hex: "#731A4D", isPro: true),
                     ColorOption(name: String(localized: "ダーク・ルビー"), color: Color(red: 0.45, green: 0.05, blue: 0.15), hex: "#730D26", isPro: true),
                     ColorOption(name: String(localized: "ダーク・ガーネット"), color: Color(red: 0.45, green: 0.2, blue: 0.2), hex: "#733333", isPro: true),
-                    ColorOption(name: String(localized: "マホガニー"), color: Color(red: 0.4, green: 0.15, blue: 0.1), hex: "#66261A", isPro: true)
+                    ColorOption(name: String(localized: "バーガンディ"), color: Color(red: 0.42, green: 0.06, blue: 0.15), hex: "#6B0F26", isPro: true),
+                    ColorOption(name: String(localized: "マホガニー"), color: Color(red: 0.4, green: 0.15, blue: 0.1), hex: "#66261A", isPro: true),
+                    ColorOption(name: String(localized: "マルーン"), color: Color(red: 0.40, green: 0.10, blue: 0.18), hex: "#661A2E", isPro: true),
+                    ColorOption(name: String(localized: "ダーク・チェリー"), color: Color(red: 0.38, green: 0.08, blue: 0.15), hex: "#611426", isPro: true),
+                    ColorOption(name: String(localized: "黒赤色（ノワール）"), color: Color(red: 0.25, green: 0.05, blue: 0.08), hex: "#400D14", isPro: true)
                 ]
             }
 
         case .sake:
+            // 日本酒：20個（無色透明・にごり・白銀 等 → 熟成ブラウン・マホガニー古酒）
             return [
                 ColorOption(name: String(localized: "無色透明"), color: Color(.systemGray6), hex: "#F2F2F7", isPro: false),
-                ColorOption(name: String(localized: "クリスタル・クリア"), color: Color(red: 0.97, green: 0.98, blue: 0.98), hex: "#F7FAFA", isPro: true),
-                ColorOption(name: String(localized: "にごり（濃い乳白色）"), color: Color.white, hex: "#FFFFFF", isPro: true),
+                ColorOption(name: String(localized: "クリスタル・クリア"), color: Color(red: 0.97, green: 0.98, blue: 0.98), hex: "#F7FAFA", isPro: false),
+                ColorOption(name: String(localized: "にごり（濃い乳白色）"), color: Color.white, hex: "#FFFFFF", isPro: false),
+                ColorOption(name: String(localized: "パール・ホワイト"), color: Color(red: 0.98, green: 0.98, blue: 0.96), hex: "#FAFAF5", isPro: true),
                 ColorOption(name: String(localized: "にごり（白濁・薄い）"), color: Color(red: 0.95, green: 0.95, blue: 0.95), hex: "#F2F2F2", isPro: true),
+                ColorOption(name: String(localized: "白銀（プラチナ）"), color: Color(red: 0.94, green: 0.95, blue: 0.94), hex: "#F0F2F0", isPro: true),
                 ColorOption(name: String(localized: "うすにごり（ささにごり）"), color: Color(red: 0.92, green: 0.93, blue: 0.90), hex: "#EBEBE6", isPro: false),
+                ColorOption(name: String(localized: "水明（青みクリア）"), color: Color(red: 0.90, green: 0.96, blue: 0.96), hex: "#E6F5F5", isPro: true),
+                ColorOption(name: String(localized: "若草・微緑"), color: Color(red: 0.90, green: 0.95, blue: 0.85), hex: "#E6F2D9", isPro: true),
                 ColorOption(name: String(localized: "微黄色"), color: Color(red: 0.98, green: 0.96, blue: 0.85), hex: "#FAF5D9", isPro: false),
-                ColorOption(name: String(localized: "淡金色"), color: Color(red: 0.95, green: 0.90, blue: 0.7), hex: "#F3E6B3", isPro: true),
+                ColorOption(name: String(localized: "シャンパン・ゴールド"), color: Color(red: 0.96, green: 0.92, blue: 0.75), hex: "#F4EBBF", isPro: true),
+                ColorOption(name: String(localized: "淡金色"), color: Color(red: 0.95, green: 0.90, blue: 0.7), hex: "#F3E6B3", isPro: false),
+                ColorOption(name: String(localized: "麦わら色"), color: Color(red: 0.92, green: 0.86, blue: 0.60), hex: "#EBDC99", isPro: true),
                 ColorOption(name: String(localized: "黄金色"), color: Color(red: 0.90, green: 0.78, blue: 0.4), hex: "#E6C766", isPro: true),
+                ColorOption(name: String(localized: "赤金色（オレンジゴールド）"), color: Color(red: 0.85, green: 0.62, blue: 0.25), hex: "#D99E40", isPro: true),
+                ColorOption(name: String(localized: "真鍮色（ブラス）"), color: Color(red: 0.82, green: 0.70, blue: 0.35), hex: "#D1B359", isPro: true),
                 ColorOption(name: String(localized: "琥珀色（古酒）"), color: Color(red: 0.78, green: 0.55, blue: 0.2), hex: "#C78C33", isPro: false),
-                ColorOption(name: String(localized: "ダーク・アンバー"), color: Color(red: 0.6, green: 0.38, blue: 0.1), hex: "#99611A", isPro: true)
+                ColorOption(name: String(localized: "ダーク・アンバー"), color: Color(red: 0.6, green: 0.38, blue: 0.1), hex: "#99611A", isPro: true),
+                ColorOption(name: String(localized: "熟成ブラウン"), color: Color(red: 0.50, green: 0.30, blue: 0.12), hex: "#804D1F", isPro: true),
+                ColorOption(name: String(localized: "マホガニー古酒"), color: Color(red: 0.38, green: 0.20, blue: 0.08), hex: "#613314", isPro: true)
             ]
 
         case .beer:
+            // ビール：20個（ペール・ストロー等の明るい麦わら・ゴールド → 漆黒のオックスフォード等）
             return [
+                ColorOption(name: String(localized: "プラチナ・ブロンド"), color: Color(red: 0.98, green: 0.96, blue: 0.70), hex: "#FAF5B3", isPro: true),
                 ColorOption(name: String(localized: "ペール・ストロー"), color: Color(red: 0.98, green: 0.94, blue: 0.5), hex: "#FAF080", isPro: false),
-                ColorOption(name: String(localized: "ストロー/麦わら色"), color: Color(red: 0.96, green: 0.90, blue: 0.35), hex: "#F5E659", isPro: true),
+                ColorOption(name: String(localized: "レモン・ピール"), color: Color(red: 0.96, green: 0.92, blue: 0.30), hex: "#F4EB4D", isPro: true),
+                ColorOption(name: String(localized: "ストロー/麦わら色"), color: Color(red: 0.96, green: 0.90, blue: 0.35), hex: "#F5E659", isPro: false),
+                ColorOption(name: String(localized: "ウィート（小麦色）"), color: Color(red: 0.95, green: 0.85, blue: 0.40), hex: "#F2D966", isPro: false),
                 ColorOption(name: String(localized: "ゴールデン"), color: Color(red: 0.92, green: 0.78, blue: 0.2), hex: "#EBC733", isPro: false),
+                ColorOption(name: String(localized: "ハニー・ゴールド"), color: Color(red: 0.90, green: 0.72, blue: 0.22), hex: "#E6B838", isPro: true),
                 ColorOption(name: String(localized: "ディープ・ゴールデン"), color: Color(red: 0.88, green: 0.68, blue: 0.15), hex: "#E0AD26", isPro: true),
                 ColorOption(name: String(localized: "ペール・アンバー"), color: Color(red: 0.80, green: 0.52, blue: 0.18), hex: "#CC852E", isPro: true),
+                ColorOption(name: String(localized: "ライト・チェスナット"), color: Color(red: 0.75, green: 0.45, blue: 0.20), hex: "#BF7333", isPro: true),
                 ColorOption(name: String(localized: "アンバー"), color: Color(red: 0.70, green: 0.38, blue: 0.12), hex: "#B3611F", isPro: false),
                 ColorOption(name: String(localized: "コッパー"), color: Color(red: 0.60, green: 0.30, blue: 0.1), hex: "#994D1A", isPro: true),
+                ColorOption(name: String(localized: "ルビー・エール"), color: Color(red: 0.55, green: 0.18, blue: 0.12), hex: "#8C2E1F", isPro: true),
+                ColorOption(name: String(localized: "チェスナット（栗色）"), color: Color(red: 0.50, green: 0.25, blue: 0.10), hex: "#80401A", isPro: true),
                 ColorOption(name: String(localized: "ブラウン"), color: Color(red: 0.42, green: 0.20, blue: 0.08), hex: "#6B3314", isPro: false),
+                ColorOption(name: String(localized: "ダーク・チェスナット"), color: Color(red: 0.35, green: 0.16, blue: 0.06), hex: "#59290F", isPro: true),
                 ColorOption(name: String(localized: "ダーク・ブラウン"), color: Color(red: 0.25, green: 0.12, blue: 0.05), hex: "#401F0D", isPro: true),
-                ColorOption(name: String(localized: "ブラック"), color: Color(red: 0.12, green: 0.08, blue: 0.06), hex: "#1F140F", isPro: false)
+                ColorOption(name: String(localized: "スタウト・ブラック"), color: Color(red: 0.18, green: 0.10, blue: 0.07), hex: "#2E1A12", isPro: true),
+                ColorOption(name: String(localized: "ブラック"), color: Color(red: 0.12, green: 0.08, blue: 0.06), hex: "#1F140F", isPro: false),
+                ColorOption(name: String(localized: "漆黒（オックスフォード）"), color: Color(red: 0.08, green: 0.06, blue: 0.05), hex: "#140F0D", isPro: true)
             ]
         }
     }
@@ -208,7 +266,7 @@ public enum TastingOptions {
                             AromaTag(String(localized: "洋梨"), isPro: false),
                             AromaTag(String(localized: "マスカット"), isPro: true),
                             AromaTag(String(localized: "花梨"), isPro: true),
-                            AromaTag(String(localized: "パッションフルーツ"), isPro: true),
+                            AromaTag(String(localized: "パッションフルーツ"), isPro: false),
                             AromaTag(String(localized: "白桃"), isPro: false),
                             AromaTag(String(localized: "アプリコット"), isPro: true),
                             AromaTag(String(localized: "パイナップル"), isPro: true),
@@ -220,14 +278,14 @@ public enum TastingOptions {
                     AromaCategory(
                         title: String(localized: "花・植物"),
                         tags: [
-                            AromaTag(String(localized: "スイカズラ"), isPro: true),
+                            AromaTag(String(localized: "スイカズラ"), isPro: false),
                             AromaTag(String(localized: "アカシア"), isPro: false),
                             AromaTag(String(localized: "白バラ"), isPro: true),
                             AromaTag(String(localized: "キンモクセイ"), isPro: true),
                             AromaTag(String(localized: "菩提樹"), isPro: true),
                             AromaTag(String(localized: "ミント"), isPro: false),
                             AromaTag(String(localized: "アニス"), isPro: true),
-                            AromaTag(String(localized: "ヴェルヴェーヌ"), isPro: true),
+                            AromaTag(String(localized: "ヴェルヴェーヌ"), isPro: false),
                             AromaTag(String(localized: "草"), isPro: false),
                             AromaTag(String(localized: "タイム"), isPro: true),
                             AromaTag(String(localized: "フレッシュアーモンド"), isPro: true),
@@ -237,7 +295,7 @@ public enum TastingOptions {
                     AromaCategory(
                         title: String(localized: "その他"),
                         tags: [
-                            AromaTag(String(localized: "石灰"), isPro: true),
+                            AromaTag(String(localized: "石灰"), isPro: false),
                             AromaTag(String(localized: "火打石"), isPro: true),
                             AromaTag(String(localized: "貝殻"), isPro: true),
                             AromaTag(String(localized: "鉱物"), isPro: true),
@@ -248,7 +306,7 @@ public enum TastingOptions {
                             AromaTag(String(localized: "シナモン"), isPro: true),
                             AromaTag(String(localized: "白胡椒"), isPro: false),
                             AromaTag(String(localized: "コリアンダー"), isPro: true),
-                            AromaTag(String(localized: "丁字"), isPro: true),
+                            AromaTag(String(localized: "丁字"), isPro: false),
                             AromaTag(String(localized: "香木"), isPro: true),
                             AromaTag(String(localized: "ジンジャーブレッド"), isPro: true),
                             AromaTag(String(localized: "ペトロール"), isPro: true),

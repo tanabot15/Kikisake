@@ -306,7 +306,7 @@ public struct BoardingView: View {
     /// オンボーディング終了ハンドラ
     private func finishOnboarding() {
         if shouldLoadSampleData {
-            PreviewSampleLoader.insertSamples(into: modelContext)
+            PreviewSampleLoader.insertSamplesIfNeeded(into: modelContext)
         }
         isPresented = false
     }

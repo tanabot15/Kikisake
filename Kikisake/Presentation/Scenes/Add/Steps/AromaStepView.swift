@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-/// [Step 3] 酒種・タイプに応じた「果実」「花・植物」「その他」の3分類による香り選択ビュー
+/// [Step 3] 酒種・タイプに応じた「果実」「花・植物」「その他」の3分類による香り選択ビュー（FlowLayout対応版）
 public struct AromaStepView: View {
     @Bindable var viewModel: AddFlowViewModel
     @State private var showPaywall: Bool = false
@@ -39,70 +39,97 @@ public struct AromaStepView: View {
     }
 
     public var body: some View {
-        Form {
-            ForEach(aromaCategories) { category in
-                Section(header: Text(category.title)) {
-                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 10)], spacing: 10) {
-                        ForEach(category.tags, id: \.self) { tag in
-                            // ✨ tag.name を使用して String 同士で比較
-                            let isSelected = viewModel.selectedAromaTags.contains(tag.name)
-                            let isFree = TastingOptions.isFreeAromaTag(tag.name, in: category)
-                            let isLocked = !AppState.shared.isProVersion && !isFree
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                // 上部ヘッダー（説明文）
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(String(localized: "香りを選択"))
+                        .font(.headline)
+                        .fontWeight(.bold)
+                    Text(String(localized: "感じられた香りの特徴をタップして選択してください。"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.horizontal, 4)
 
-                            Button {
-                                if isLocked {
-                                    showPaywall = true
-                                } else {
-                                    if isSelected {
-                                        viewModel.selectedAromaTags.removeAll { $0 == tag.name }
-                                    } else {
-                                        viewModel.selectedAromaTags.append(tag.name)
-                                    }
-                                }
-                            } label: {
-                                HStack(spacing: 12) {
-                                    Image(systemName: isSelected ? "checkmark.circle.fill" : (isLocked ? "lock.fill" : "circle"))
-                                        .font(.subheadline)
-                                        .foregroundStyle(isSelected ? Color.accentColor : (isLocked ? .secondary : .secondary))
-                                    
-                                    // ✨ tag.name をテキストとして表示
-                                    Text(tag.name)
-                                        .font(.subheadline)
-                                        .fontWeight(isSelected ? .bold : .regular)
-                                        .foregroundStyle(isLocked ? .secondary : .primary)
-                                    
-                                    Spacer()
-                                    
-                                    if isLocked {
-                                        HStack(spacing: 4) {
-                                            Image(systemName: "lock.fill")
-                                                .font(.caption2)
-                                            Text("Pro")
-                                                .font(.caption2)
-                                                .fontWeight(.bold)
-                                        }
-                                        .padding(.horizontal, 6)
-                                        .padding(.vertical, 2)
-                                        .background(Color.accentColor.opacity(0.15))
-                                        .foregroundStyle(Color.accentColor)
-                                        .cornerRadius(6)
-                                    }
-                                }
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 10)
-                                .background(isSelected ? Color.accentColor.opacity(0.1) : Color(.systemGray6))
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
-                                )
-                            }
-                            .buttonStyle(.plain)
+                // 各カテゴリごとにセクションを生成
+                ForEach(aromaCategories) { category in
+                    VStack(alignment: .leading, spacing: 10) {
+                        // カテゴリタイトル ＆ プロ限定表示の案内
+                        HStack {
+                            Text(category.title)
+                                .font(.subheadline)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.primary)
+                            
+                            Spacer()
                         }
+
+                        // ✨ FlowLayout によるコンパクトかつ網羅的なタグクラウド配置
+                        FlowLayout(spacing: 8) {
+                            ForEach(category.tags, id: \.self) { tag in
+                                let isSelected = viewModel.selectedAromaTags.contains(tag.name)
+                                let isFree = TastingOptions.isFreeAromaTag(tag.name, in: category)
+                                let isLocked = !AppState.shared.isProVersion && !isFree
+
+                                Button {
+                                    if isLocked {
+                                        showPaywall = true
+                                    } else {
+                                        if isSelected {
+                                            viewModel.selectedAromaTags.removeAll { $0 == tag.name }
+                                        } else {
+                                            viewModel.selectedAromaTags.append(tag.name)
+                                        }
+                                    }
+                                } label: {
+                                    HStack(spacing: 6) {
+                                        if isLocked {
+                                            Image(systemName: "lock.fill")
+                                                .font(.system(size: 10, weight: .bold))
+                                                .foregroundStyle(.orange)
+                                        } else if isSelected {
+                                            Image(systemName: "checkmark")
+                                                .font(.system(size: 10, weight: .bold))
+                                                .foregroundStyle(Color.accentColor)
+                                        }
+
+                                        Text(tag.name)
+                                            .font(.subheadline)
+                                            .fontWeight(isSelected ? .semibold : .medium)
+
+                                        if isLocked {
+                                            Text("PRO")
+                                                .font(.system(size: 8, weight: .heavy))
+                                                .padding(.horizontal, 4)
+                                                .padding(.vertical, 1)
+                                                .background(Color.orange.opacity(0.2))
+                                                .foregroundStyle(.orange)
+                                                .cornerRadius(4)
+                                        }
+                                    }
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 8)
+                                    .background(
+                                        isSelected ? Color.accentColor.opacity(0.15) : (isLocked ? Color(.systemGray6).opacity(0.7) : Color(.systemGray6))
+                                    )
+                                    .foregroundStyle(isLocked ? .secondary : (isSelected ? Color.accentColor : .primary))
+                                    .cornerRadius(12)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(isSelected ? Color.accentColor : (isLocked ? Color.orange.opacity(0.3) : Color.clear), lineWidth: isSelected ? 1.5 : 1)
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        .padding(12)
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .cornerRadius(16)
                     }
-                    .padding(.vertical, 4)
                 }
             }
+            .padding(16)
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
