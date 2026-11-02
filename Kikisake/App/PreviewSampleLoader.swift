@@ -49,7 +49,6 @@ public enum PreviewSampleLoader {
 
     /// 💡 Assetsから画像を安全にロードして Data 型に変換するヘルパー関数
     private static func loadAssetImageData(named name: String) -> Data? {
-        // UIKitの UIImage を経由して Assets から読み込み、JPEGデータに変換する
         if let uiImage = UIImage(named: name) {
             return uiImage.jpegData(compressionQuality: 0.8)
         }
@@ -69,8 +68,6 @@ public enum PreviewSampleLoader {
         let fridgeLocationName = isEn ? "Refrigerator" : "冷蔵庫"
         let roomLocationName = isEn ? "Room Temp" : "常温"
 
-        // 💡 Assets に登録した画像の名称を指定して Data を取得
-        // ※ 実際のAssetsカタログに登録した名前に書き換えてください
         let wineImg1 = loadAssetImageData(named: "sample_wine_1")
         let wineImg2 = loadAssetImageData(named: "sample_wine_2")
         let sakeImg1 = loadAssetImageData(named: "sample_sake_1")
@@ -103,15 +100,15 @@ public enum PreviewSampleLoader {
             storageLocation: cellarLocationName,
             gridRow: 1,
             gridColumn: 1,
-            imageDatas: wineImg1 != nil ? [wineImg1!] : nil, // 💡 取得した画像データを設定
+            imageDatas: wineImg1 != nil ? [wineImg1!] : nil,
             specificMetadataJSON: wineMeta1JSON
         )
         let wineLog1 = TastingLog(
             date: Date().addingTimeInterval(-86400 * 3),
             rating: 4.9,
-            appearanceNotes: isEn ? "Deep Ruby Red" : "深みのあるルビーレッド",
-            appearanceColorHex: "#991A33",
-            aromaTags: isEn ? ["Cassis", "Vanilla", "Cedar", "Toast"] : ["カシス", "ヴァニラ", "杉", "トースト"],
+            appearanceNotes: isEn ? "Raspberry Red" : "ラズベリーレッド", // isPro: false の色
+            appearanceColorHex: "#CC334D",
+            aromaTags: isEn ? ["Strawberry", "Raspberry", "Blackberry", "Tea"] : ["イチゴ", "ラズベリー", "ブラックベリー", "紅茶"], // すべて isPro: false
             sweetness: 2.0,
             saltiness: 0.0,
             acidity: 4.2,
@@ -124,7 +121,7 @@ public enum PreviewSampleLoader {
             isCostEffective: false,
             isWillingToRepeat: true,
             hasAgingPotential: true,
-            memo: isEn ? "Overwhelming elegance and complexity. Rich cassis fruit seamlessly integrated with oak nuances." : "圧倒的な気品と複雑味。カシスの芳醇な香りに樽のニュアンスが完璧に溶け込んでいる。",
+            memo: isEn ? "Overwhelming elegance and complexity. Rich fruit gracefully integrated." : "圧倒的な気品と複雑味。豊かな果実味が美しく溶け込んでいる。",
             isEvaluated: true,
             item: wineItem1
         )
@@ -159,9 +156,9 @@ public enum PreviewSampleLoader {
         let wineLog2 = TastingLog(
             date: Date().addingTimeInterval(-86400 * 5),
             rating: 4.7,
-            appearanceNotes: isEn ? "Beautiful Straw Yellow" : "美しいストロー・イエロー",
-            appearanceColorHex: "#F3E680",
-            aromaTags: isEn ? ["Lemon", "Pear", "Vanilla", "Almond", "Butter"] : ["レモン", "洋梨", "ヴァニラ", "アーモンド", "バター"],
+            appearanceNotes: isEn ? "Champagne" : "シャンパン", // isPro: false の色
+            appearanceColorHex: "#F4EBC7",
+            aromaTags: isEn ? ["Citrus", "Green Apple", "Apple", "Pear"] : ["柑橘類", "青リンゴ", "リンゴ", "洋梨"], // すべて isPro: false
             sweetness: 2.0,
             saltiness: 0.0,
             acidity: 4.0,
@@ -174,7 +171,7 @@ public enum PreviewSampleLoader {
             isCostEffective: false,
             isWillingToRepeat: true,
             hasAgingPotential: true,
-            memo: isEn ? "Exquisite balance between creamy texture and crisp minerals. Toasted nutty finish." : "クリーミーな質感と引き締まったミネラルのバランスが絶妙。ナッツの芳ばしい余韻。",
+            memo: isEn ? "Exquisite balance between texture and crisp minerals. Elegant finish." : "質感と引き締まったミネラルのバランスが絶妙。エレガントな余韻。",
             isEvaluated: true,
             item: wineItem2
         )
@@ -207,9 +204,9 @@ public enum PreviewSampleLoader {
         let sakeLog1 = TastingLog(
             date: Date().addingTimeInterval(-86400 * 1),
             rating: 4.7,
-            appearanceNotes: isEn ? "Clear with slight effervescence" : "微発泡が感じられる透明な輝き",
-            appearanceColorHex: "#F7FAFA",
-            aromaTags: isEn ? ["Ginjo Aroma", "Green Apple", "Pear", "Fresh"] : ["吟醸香", "青りんご", "洋梨", "フレッシュ"],
+            appearanceNotes: isEn ? "Colorless & Transparent" : "無色透明", // isPro: false の色
+            appearanceColorHex: "#F2F2F7",
+            aromaTags: isEn ? ["Yellow Apple", "Pear", "White Peach", "Banana"] : ["黄色いリンゴ", "洋ナシ", "白桃", "バナナ"], // すべて isPro: false
             sweetness: 3.2,
             saltiness: 0.0,
             acidity: 3.8,
@@ -228,24 +225,24 @@ public enum PreviewSampleLoader {
         )
 
         // ==========================================
-        // 4. 日本酒 2本目: 黒龍 吟十八号
+        // 4. 日本酒 2本目: 十四代 純米大吟醸
         // ==========================================
         let sakeMeta2 = SakeSpecificMetadata(
-            specificName: isEn ? "Junmai Ginjo" : "純米吟醸",
-            riceVariety: "Gohyakumangoku",
-            polishingRate: "55%",
-            sakeMeterValue: "+4.0"
+            specificName: isEn ? "Junmai Daiginjo" : "純米大吟醸",
+            riceVariety: "山田錦",
+            polishingRate: "50%",
+            sakeMeterValue: "+2.0"
         )
         let sakeMeta2JSON = String(data: try! encoder.encode(sakeMeta2), encoding: .utf8)
 
         let sakeItem2 = BeverageItem(
-            name: "Kokuryu Gin 18",
-            producer: "Kokuryu Sake Brewery",
+            name: "Juyondai Junmai Daiginjo",
+            producer: "Takagi Shuzo",
             category: .sake,
-            region: isEn ? "Fukui, Japan" : "福井県",
+            region: isEn ? "Yamagata, Japan" : "山形県",
             vintage: "2026/02",
-            alcoholByVolume: 15.5,
-            price: 3300,
+            alcoholByVolume: 15.0,
+            price: 5500,
             storageLocation: fridgeLocationName,
             gridRow: 1,
             gridColumn: 2,
@@ -254,23 +251,23 @@ public enum PreviewSampleLoader {
         )
         let sakeLog2 = TastingLog(
             date: Date().addingTimeInterval(-86400 * 4),
-            rating: 4.6,
-            appearanceNotes: isEn ? "Clear and crystal" : "クリアで美しい無色透明",
-            appearanceColorHex: "#F2F2F7",
-            aromaTags: isEn ? ["Peach", "Melon", "Steamed Rice", "Almond"] : ["白桃", "メロン", "炊いた米", "アーモンド"],
-            sweetness: 2.5,
+            rating: 4.9,
+            appearanceNotes: isEn ? "Pale Yellow" : "微黄色", // isPro: false の色
+            appearanceColorHex: "#FAF5D9",
+            aromaTags: isEn ? ["Melon", "Burdock", "Almond", "Cooked Rice"] : ["メロン", "ゴボウ", "アーモンド", "炊いた米"], // すべて isPro: false
+            sweetness: 3.5,
             saltiness: 0.0,
-            acidity: 3.0,
-            bitterness: 1.2,
-            umami: 3.8,
+            acidity: 2.8,
+            bitterness: 1.0,
+            umami: 4.0,
             tannin: nil,
-            body: 3.2,
-            balanceTags: isEn ? ["Smooth", "Crisp"] : ["スムーズな", "引き締まった"],
-            finishLength: 4.4,
+            body: 3.5,
+            balanceTags: isEn ? ["Smooth", "Rich"] : ["スムーズな", "豊潤な"],
+            finishLength: 4.8,
             isCostEffective: true,
             isWillingToRepeat: true,
             hasAgingPotential: false,
-            memo: isEn ? "Elegant aroma with a refined, smooth palate. Perfect companion for dining." : "上品な香りと透明感のある口当たり。食事を引き立てる洗練された純米吟醸。",
+            memo: isEn ? "Exquisite fruity aroma with a luxurious, smooth texture. Exceptional depth." : "芳醇な果実香と圧倒的なめらかさ。気品に満ちた極上の味わい。",
             isEvaluated: true,
             item: sakeItem2
         )
@@ -301,9 +298,9 @@ public enum PreviewSampleLoader {
         let beerLog = TastingLog(
             date: Date().addingTimeInterval(-86400 * 6),
             rating: 4.3,
-            appearanceNotes: isEn ? "Hazy Pale Gold" : "白濁したペールゴールド",
+            appearanceNotes: isEn ? "Golden" : "ゴールデン", // isPro: false の色
             appearanceColorHex: "#EBC733",
-            aromaTags: isEn ? ["Citrus", "Coriander", "Spice", "Hops"] : ["シトラス", "コリアンダー", "スパイス", "ホップ"],
+            aromaTags: isEn ? ["Citrus", "Grapefruit", "Tropical Fruit", "Green Apple"] : ["シトラス", "グレープフルーツ", "トロピカルフルーツ", "青りんご"], // すべて isPro: false
             sweetness: 2.5,
             saltiness: 0.0,
             acidity: 3.0,
