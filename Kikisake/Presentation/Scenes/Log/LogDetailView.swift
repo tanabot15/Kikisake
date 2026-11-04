@@ -229,7 +229,7 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
-    // ✨ ペアリング表示用カード
+    // ペアリング表示用カード
     private func pairingCard(pairing: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("ペアリング")

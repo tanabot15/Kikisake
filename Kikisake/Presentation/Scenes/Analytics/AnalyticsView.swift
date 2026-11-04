@@ -20,6 +20,7 @@ public struct AnalyticsView: View {
                         .background(Color(.systemBackground))
                 }
                 
+                // セグメントピッカー（タブ選択と連動）
                 Picker(String(localized: "分析カテゴリ"), selection: $viewModel.selectedSection) {
                     ForEach(AnalyticsSection.allCases) { section in
                         Text(section.displayName).tag(section)
@@ -30,29 +31,27 @@ public struct AnalyticsView: View {
                 .padding(.vertical, 10)
                 .background(Color(.systemGroupedBackground))
 
-                ScrollView {
-                    VStack(spacing: 20) {
+                // 左右スワイプで切り替え可能なタブビュー
+                TabView(selection: $viewModel.selectedSection) {
+                    // 1. 飲酒量・ログタブ
+                    ScrollView {
                         let targetLogs = viewModel.filteredLogs(from: logs)
-
-                        if logs.isEmpty || targetLogs.isEmpty {
-                            ContentUnavailableView(
-                                String(localized: "該当する分析データがありません"),
-                                systemImage: "chart.bar.xaxis",
-                                description: Text(viewModel.hasActiveFilters ? String(localized: "フィルター条件を変更してみてください。") : String(localized: "「追加」タブからお酒を記録すると、ここに分析が表示されます。"))
-                            )
-                            .padding(.top, 40)
-                        } else {
-                            switch viewModel.selectedSection {
-                            case .consumption:
-                                ConsumptionAnalyticsView(viewModel: viewModel, targetLogs: targetLogs, allLogs: logs)
-                            case .evaluation:
-                                EvaluationAnalyticsView(viewModel: viewModel, targetLogs: targetLogs)
-                            }
-                        }
+                        contentView(targetLogs: targetLogs, for: .consumption)
+                            .padding()
                     }
-                    .padding()
+                    .background(Color(.systemGroupedBackground))
+                    .tag(AnalyticsSection.consumption)
+
+                    // 2. 評価・好みタブ
+                    ScrollView {
+                        let targetLogs = viewModel.filteredLogs(from: logs)
+                        contentView(targetLogs: targetLogs, for: .evaluation)
+                            .padding()
+                    }
+                    .background(Color(.systemGroupedBackground))
+                    .tag(AnalyticsSection.evaluation)
                 }
-                .background(Color(.systemGroupedBackground))
+                .tabViewStyle(.page(indexDisplayMode: .never)) // ページインジケーターを非表示にし、スワイプ操作を有効化
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -74,6 +73,25 @@ public struct AnalyticsView: View {
             }
             .sheet(isPresented: $isShowingFilterSheet) {
                 AnalyticsFilterSheet(viewModel: viewModel, allLogs: logs)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func contentView(targetLogs: [TastingLog], for section: AnalyticsSection) -> some View {
+        if logs.isEmpty || targetLogs.isEmpty {
+            ContentUnavailableView(
+                String(localized: "該当する分析データがありません"),
+                systemImage: "chart.bar.xaxis",
+                description: Text(viewModel.hasActiveFilters ? String(localized: "フィルター条件を変更してみてください。") : String(localized: "「追加」タブからお酒を記録すると、ここに分析が表示されます。"))
+            )
+            .padding(.top, 40)
+        } else {
+            switch section {
+            case .consumption:
+                ConsumptionAnalyticsView(viewModel: viewModel, targetLogs: targetLogs, allLogs: logs)
+            case .evaluation:
+                EvaluationAnalyticsView(viewModel: viewModel, targetLogs: targetLogs)
             }
         }
     }
