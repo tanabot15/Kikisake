@@ -25,7 +25,7 @@ public struct FinalizeStepView: View {
                 .padding(.vertical, 4)
             }
 
-            // 特徴・印象（評価フラグ）セクションを追加
+            // 特徴・印象（評価フラグ）セクション
             Section("特徴・評価フラグ") {
                 Toggle(isOn: $viewModel.isCostEffective) {
                     HStack {
@@ -71,6 +71,12 @@ public struct FinalizeStepView: View {
                         }
                     }
                 }
+            }
+
+            // ✨ ペアリングセクション（特徴・評価フラグ と 総合コメント の間に配置）
+            Section("ペアリング") {
+                TextField("合わせるべき料理や食材 (例: ローストビーフ, カマンベールチーズ)", text: $viewModel.pairing, axis: .vertical)
+                    .lineLimit(2...3)
             }
 
             Section("総合コメント") {

@@ -14,9 +14,11 @@ public struct AnalyticsView: View {
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                ConditionalAdMobBannerView()
-                    .frame(height: 50)
-                    .background(Color(.systemBackground))
+                if !AppState.shared.isProVersion {
+                    ConditionalAdMobBannerView()
+                        .frame(height: 50)
+                        .background(Color(.systemBackground))
+                }
                 
                 Picker(String(localized: "分析カテゴリ"), selection: $viewModel.selectedSection) {
                     ForEach(AnalyticsSection.allCases) { section in

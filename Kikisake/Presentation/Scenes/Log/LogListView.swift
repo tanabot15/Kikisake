@@ -22,9 +22,11 @@ public struct LogListView: View {
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                ConditionalAdMobBannerView()
-                    .frame(height: 50)
-                    .background(Color(.systemBackground))
+                if !AppState.shared.isProVersion {
+                    ConditionalAdMobBannerView()
+                        .frame(height: 50)
+                        .background(Color(.systemBackground))
+                }
 
                 Group {
                     if filteredLogs.isEmpty {

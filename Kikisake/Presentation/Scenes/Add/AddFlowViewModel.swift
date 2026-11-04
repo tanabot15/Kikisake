@@ -12,7 +12,6 @@ public final class AddFlowViewModel {
     public var showAlreadyFilledAlert: Bool = false
     public var pendingOpeningItem: BeverageItem? = nil
 
-    // 在庫画面の「このボトルを開ける」から直接遷移してきたかどうかのフラグ
     public var isOpeningExistingItem: Bool = false
 
     // Step 1: 一般的な情報
@@ -26,11 +25,9 @@ public final class AddFlowViewModel {
     public var priceString: String = ""
     public var storageLocation: String = "未設定"
     
-    // ✨ 表面と裏面の写真を完全に独立したプロパティとして保持
     public var selectedImageData: Data? = nil
     public var selectedBackImageData: Data? = nil
 
-    // 削除アクションを明示的に分離（相互干渉を完全に防ぐため）
     public func clearFrontImage() {
         self.selectedImageData = nil
     }
@@ -39,23 +36,19 @@ public final class AddFlowViewModel {
         self.selectedBackImageData = nil
     }
 
-    // セラー内グリッド位置指定用プロパティ
     public var selectedGridRow: Int? = nil
     public var selectedGridColumn: Int? = nil
 
-    // - ワイン用
     public var wineType: String = "赤"
     public var grapeVarieties: String = ""
     public var blendComponents: [BlendComponent] = [BlendComponent(variety: "", percentage: nil)]
     public var appellation: String = ""
     
-    // - 日本酒用
     public var sakeSpecificName: String = "純米大吟醸"
     public var riceVariety: String = ""
     public var polishingRate: String = ""
     public var sakeMeterValue: String = ""
     
-    // - ビール用
     public var beerStyle: String = ""
     public var ibu: String = ""
 
@@ -78,15 +71,15 @@ public final class AddFlowViewModel {
     public var selectedBalanceTags: [String] = []
     public var finishLength: Double = 2.5
 
-    // Step 5: 総合評価・フラグ・メモ
+    // Step 5: 総合評価・フラグ・ペアリング・メモ
     public var rating: Double = 4.0
     public var isCostEffective: Bool = false
     public var isWillingToRepeat: Bool = false
     public var hasAgingPotential: Bool = false
+    public var pairing: String = "" // ✨ ペアリング入力欄
     public var memo: String = ""
     public var tastingDate: Date = Date()
 
-    // 編集モード用の保持プロパティ
     public var editingLog: TastingLog? = nil
     public var editingItem: BeverageItem? = nil
 
@@ -158,6 +151,7 @@ public final class AddFlowViewModel {
         self.isCostEffective = false
         self.isWillingToRepeat = false
         self.hasAgingPotential = false
+        self.pairing = "" // ✨ 初期化
         self.memo = ""
         self.tastingDate = Date()
         self.editingLog = nil
@@ -181,7 +175,6 @@ public final class AddFlowViewModel {
         self.selectedGridRow = item.gridRow
         self.selectedGridColumn = item.gridColumn
         
-        // 表面写真と裏面写真を完全に分けて安全にロード
         self.selectedImageData = item.imageDatas?.first
         self.selectedBackImageData = item.backImageDatas?.first
     }
@@ -237,6 +230,7 @@ public final class AddFlowViewModel {
         self.isCostEffective = log.isCostEffective
         self.isWillingToRepeat = log.isWillingToRepeat
         self.hasAgingPotential = log.hasAgingPotential
+        self.pairing = log.pairing ?? "" // ✨ 読み込み
         self.memo = log.memo
     }
 
@@ -364,6 +358,7 @@ public final class AddFlowViewModel {
             isCostEffective: isCostEffective,
             isWillingToRepeat: isWillingToRepeat,
             hasAgingPotential: hasAgingPotential,
+            pairing: pairing.isEmpty ? nil : pairing, // ✨ 保存
             memo: memo,
             isEvaluated: true,
             item: targetItem
@@ -427,6 +422,7 @@ public final class AddFlowViewModel {
             isCostEffective: isCostEffective,
             isWillingToRepeat: isWillingToRepeat,
             hasAgingPotential: hasAgingPotential,
+            pairing: pairing.isEmpty ? nil : pairing, // ✨ 保存
             memo: memo,
             isEvaluated: true,
             item: targetItem
@@ -487,6 +483,7 @@ public final class AddFlowViewModel {
         targetLog.isCostEffective = isCostEffective
         targetLog.isWillingToRepeat = isWillingToRepeat
         targetLog.hasAgingPotential = hasAgingPotential
+        targetLog.pairing = pairing.isEmpty ? nil : pairing // ✨ 更新
         targetLog.memo = memo
         targetLog.isEvaluated = true
 

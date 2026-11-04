@@ -31,9 +31,11 @@ public struct LogDetailView: View {
     public var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                ConditionalAdMobBannerView()
-                    .frame(height: 50)
-                    .background(Color(.systemBackground))
+                if !AppState.shared.isProVersion {
+                    ConditionalAdMobBannerView()
+                        .frame(height: 50)
+                        .background(Color(.systemBackground))
+                }
                 
                 heroHeaderView
                     .padding(.horizontal)
@@ -53,6 +55,11 @@ public struct LogDetailView: View {
 
                         if log.isCostEffective || log.isWillingToRepeat || log.hasAgingPotential {
                             flagsCard
+                        }
+
+                        // ペアリングカード（ペアリング情報が存在する場合に表示）
+                        if let pairing = log.pairing, !pairing.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            pairingCard(pairing: pairing)
                         }
 
                         if !log.memo.isEmpty {
@@ -222,19 +229,33 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
+    // ✨ ペアリング表示用カード
+    private func pairingCard(pairing: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("ペアリング")
+                .font(.headline)
+
+            Text(pairing)
+                .font(.subheadline)
+                .foregroundStyle(.primary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+    }
+
     private var heroHeaderView: some View {
         ZStack(alignment: .bottom) {
             if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
                 Button {
                     isShowingImageModal = true
                 } label: {
-                    // 💡 GeometryReaderを用いて親コンテナの横幅を厳格に取得し、はみ出しを完全に根絶
                     GeometryReader { geometry in
                         ZStack(alignment: .bottomTrailing) {
                             ZStack {
                                 Color.black
                                 
-                                // 背景ぼかし画像
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .scaledToFill()
@@ -242,7 +263,6 @@ public struct LogDetailView: View {
                                     .blur(radius: 20)
                                     .opacity(0.4)
 
-                                // メイン画像：親の幅(geometry.size.width)を上限としてアスペクト比を維持
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .scaledToFit()
@@ -631,6 +651,7 @@ private func generateHorizontalSampleImage() -> Data? {
 
     let sampleLog = TastingLog(
         rating: 4.8,
+        pairing: "和牛のローストビーフ、パルミジャーノ・レッジャーノ", // ✨ ペアリングサンプルを追加
         memo: "縦長画像のレイアウト確認用サンプルです。",
         isEvaluated: true,
         item: sampleItem
@@ -659,6 +680,7 @@ private func generateHorizontalSampleImage() -> Data? {
 
     let sampleLog = TastingLog(
         rating: 4.5,
+        pairing: "白身魚のグリル ハーブバターソース",
         memo: "横長画像が画面からはみ出さないか確認するためのサンプルです。",
         isEvaluated: true,
         item: sampleItem

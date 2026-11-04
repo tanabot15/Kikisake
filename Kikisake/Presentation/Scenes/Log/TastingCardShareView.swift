@@ -20,13 +20,12 @@ public struct TastingCardShareView: View {
         if scanner.scanHexInt64(&rgbValue) {
             let red = Double((rgbValue & 0xFF0000) >> 16) / 255.0
             let green = Double((rgbValue & 0x00FF00) >> 8) / 255.0
-            let blue = Double(rgbValue & 0x0000FF) / 255.0 // 💡 修正箇所：正しい閉じ括弧の位置に修正
+            let blue = Double(rgbValue & 0x0000FF) / 255.0
             return Color(red: red, green: green, blue: blue)
         }
         return .gray
     }
 
-    /// 外観カラーコードや酒種に応じたシグネチャーカラー（グラデーション用）を算出
     private var cardThemeColors: (primary: Color, secondary: Color) {
         let baseColor = colorFromHex(log.appearanceColorHex)
         
@@ -41,12 +40,11 @@ public struct TastingCardShareView: View {
 
         VStack(alignment: .leading, spacing: 10) {
             
-            // MARK: - 1. 上部セクション（左: 基本情報 ＋ スペック ＋ 評価/外観/香り / 右: ダイナミック・ボトルアプローチャ）
+            // MARK: - 1. 上部セクション
             HStack(alignment: .top, spacing: 12) {
                 // --- 左側コンテンツエリア ---
                 VStack(alignment: .leading, spacing: 6) {
                     if let item = log.item {
-                        // カテゴリバッジ ＆ 銘柄名 ＆ 生産者
                         VStack(alignment: .leading, spacing: 2) {
                             Text(item.name)
                                 .font(.system(size: 14, weight: .bold))
@@ -64,7 +62,6 @@ public struct TastingCardShareView: View {
                         Divider()
                             .padding(.vertical, 1)
 
-                        // 詳細スペック (生産地, ヴィンテージ, 度数, 固有メタデータ)
                         VStack(alignment: .leading, spacing: 2) {
                             if !item.region.isEmpty {
                                 specRow(title: String(localized: "生産地"), value: item.region)
@@ -76,7 +73,6 @@ public struct TastingCardShareView: View {
                                 specRow(title: String(localized: "度数"), value: String(format: "%.1f%%", abv))
                             }
 
-                            // 酒種固有のメタデータ
                             if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
                                 switch item.category {
                                 case .wine:
@@ -116,9 +112,7 @@ public struct TastingCardShareView: View {
                             }
                         }
 
-                        // 基本情報 & スペックの下に入る「評価・外観・香り・特徴フラグ」サブセクション
                         VStack(alignment: .leading, spacing: 4) {
-                            // 評価
                             HStack(spacing: 3) {
                                 Text("評価")
                                     .font(.system(size: 8, weight: .bold))
@@ -132,7 +126,6 @@ public struct TastingCardShareView: View {
                                     .foregroundStyle(.primary)
                             }
                             
-                            // 外観
                             if !log.appearanceNotes.isEmpty {
                                 HStack(spacing: 4) {
                                     Text("外観")
@@ -152,7 +145,6 @@ public struct TastingCardShareView: View {
                                 }
                             }
 
-                            // 香りタグ
                             if !log.aromaTags.isEmpty {
                                 HStack(alignment: .top, spacing: 4) {
                                     Text("香り")
@@ -175,7 +167,6 @@ public struct TastingCardShareView: View {
                                 }
                             }
 
-                            // 特徴フラグ
                             if log.isCostEffective || log.isWillingToRepeat || log.hasAgingPotential {
                                 HStack(alignment: .top, spacing: 4) {
                                     Text("特徴")
@@ -228,10 +219,9 @@ public struct TastingCardShareView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                // --- 右側：【ダイナミック・ボトルアプローチャ】透過・エッジ抽出フォトフレーム ＋ 裏面ラベルオーバーレイ ---
+                // --- 右側ボトル表示 ---
                 ZStack(alignment: .bottomTrailing) {
                     ZStack {
-                        // 背景グラデーションポディウム
                         LinearGradient(
                             colors: [Color(.tertiarySystemGroupedBackground), Color(.systemBackground)],
                             startPoint: .top,
@@ -268,7 +258,6 @@ public struct TastingCardShareView: View {
                     }
                     .frame(width: 150, height: 190)
 
-                    // ✨ 右下に洗練されたサイズで重ねる裏面ラベルのミニサムネイル
                     if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
                         Image(uiImage: backUiImage)
                             .resizable()
@@ -304,7 +293,24 @@ public struct TastingCardShareView: View {
             }
             .padding(.horizontal, 12)
 
-            // MARK: - 3. コメント ＆ フッター
+            // MARK: - 3. ペアリング ＆ コメント ＆ フッター
+            if let pairing = log.pairing, !pairing.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                HStack(spacing: 4) {
+                    Image(systemName: "fork.knife")
+                        .font(.system(size: 8, weight: .bold))
+                        .foregroundStyle(Color.accentColor)
+                    Text(pairing)
+                        .font(.system(size: 9, weight: .semibold))
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color.accentColor.opacity(0.1))
+                .cornerRadius(6)
+                .padding(.horizontal, 12)
+            }
+
             if !log.memo.isEmpty {
                 Text(log.memo)
                     .font(.system(size: 10, weight: .medium))
@@ -440,6 +446,7 @@ private func generateBackSampleImage() -> Data? {
         isCostEffective: true,
         isWillingToRepeat: true,
         hasAgingPotential: true,
+        pairing: "牛ほぐし肉の赤ワイン煮込み、ハード系チーズ", // ✨ ペアリングサンプルを追加
         memo: "圧倒的な気品と複雑味。長期熟成のポテンシャルを感じさせる素晴らしいバランス。",
         item: sampleItem
     )

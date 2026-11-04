@@ -1,9 +1,5 @@
-//
 //  TastingLog.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import Foundation
 import SwiftData
@@ -41,9 +37,12 @@ public final class TastingLog {
     public var alcoholByVolume: Double?      // アルコール度数
     public var specificDataJSON: String?     // 日本酒度・酸度・IBU等の酒種特有メタデータ（JSON形式）
 
-    public var memo: String                  // 総合コメント・ペアリングメモ
+    // ✨ アップデート追加項目（オプショナル）
+    public var pairing: String?              // 料理・ペアリングメモ
 
-    // ✨ 評価がユーザーによって入力されたかどうか
+    public var memo: String                  // 総合コメント
+
+    // 評価がユーザーによって入力されたかどうか
     public var isEvaluated: Bool
 
     // リレーション
@@ -70,6 +69,7 @@ public final class TastingLog {
         hasAgingPotential: Bool = false,
         alcoholByVolume: Double? = nil,
         specificDataJSON: String? = nil,
+        pairing: String? = nil,
         memo: String = "",
         isEvaluated: Bool = false,
         item: BeverageItem? = nil
@@ -94,6 +94,7 @@ public final class TastingLog {
         self.hasAgingPotential = hasAgingPotential
         self.alcoholByVolume = alcoholByVolume
         self.specificDataJSON = specificDataJSON
+        self.pairing = pairing
         self.memo = memo
         self.isEvaluated = isEvaluated
         self.item = item
