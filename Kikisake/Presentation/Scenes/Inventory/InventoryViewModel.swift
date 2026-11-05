@@ -145,6 +145,58 @@ public final class InventoryViewModel {
         try consumeUseCase.executeConsumption(for: item)
     }
     
+    /// すでに詳細なログが存在するアイテムについて、「今日飲んだ」として新しい飲酒記録を本日付で追加する
+    public func recordDrinkingFromExistingLog(item: BeverageItem, modelContext: ModelContext) throws {
+        let latestLog = item.tastingLogs?
+            .filter { $0.isEvaluated }
+            .sorted(by: { $0.date > $1.date })
+            .first
+
+        let newLog: TastingLog
+
+        if let baseLog = latestLog {
+            newLog = TastingLog(
+                date: Date(),
+                rating: baseLog.rating,
+                appearanceNotes: baseLog.appearanceNotes,
+                appearanceColorHex: baseLog.appearanceColorHex,
+                aromaTags: baseLog.aromaTags,
+                sweetness: baseLog.sweetness,
+                saltiness: baseLog.saltiness,
+                acidity: baseLog.acidity,
+                bitterness: baseLog.bitterness,
+                umami: baseLog.umami,
+                tannin: baseLog.tannin,
+                body: baseLog.body,
+                balanceTags: baseLog.balanceTags,
+                finishLength: baseLog.finishLength,
+                isCostEffective: baseLog.isCostEffective,
+                isWillingToRepeat: baseLog.isWillingToRepeat,
+                hasAgingPotential: baseLog.hasAgingPotential,
+                alcoholByVolume: baseLog.alcoholByVolume,
+                specificDataJSON: baseLog.specificDataJSON,
+                pairing: baseLog.pairing,
+                memo: baseLog.memo,
+                isEvaluated: true,
+                item: item
+            )
+        } else {
+            newLog = TastingLog(
+                date: Date(),
+                rating: 0.0,
+                appearanceNotes: "",
+                appearanceColorHex: "#802633",
+                aromaTags: [],
+                memo: String(localized: "飲酒記録"),
+                isEvaluated: false,
+                item: item
+            )
+        }
+
+        modelContext.insert(newLog)
+        try modelContext.save()
+    }
+    
     public func moveItem(_ item: BeverageItem, to newLocationName: String, modelContext: ModelContext) {
         item.storageLocation = newLocationName
         try? modelContext.save()

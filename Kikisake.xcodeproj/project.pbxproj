@@ -70,6 +70,7 @@
 		D95082573090D95D0045BF8E /* BackupDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082563090D95D0045BF8E /* BackupDTOs.swift */; };
 		D95082593090D9720045BF8E /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082583090D9720045BF8E /* BackupManager.swift */; };
 		D950825B309228190045BF8E /* BottleMattingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950825A309228190045BF8E /* BottleMattingHelper.swift */; };
+		D950825D309C39C80045BF8E /* BeveragePresetOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -138,6 +139,7 @@
 		D95082563090D95D0045BF8E /* BackupDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDTOs.swift; sourceTree = "<group>"; };
 		D95082583090D9720045BF8E /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		D950825A309228190045BF8E /* BottleMattingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottleMattingHelper.swift; sourceTree = "<group>"; };
+		D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeveragePresetOptions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +292,7 @@
 				D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */,
 				D9044258308366C300EF4807 /* StorageLocation.swift */,
 				D9044272308AFE0100EF4807 /* TastingOptions.swift */,
+				D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -582,6 +585,7 @@
 				D9044237307E85DB00EF4807 /* AddFlowView.swift in Sources */,
 				D9044221307E854100EF4807 /* ConsumeBeverageUseCase.swift in Sources */,
 				D9044244307E863000EF4807 /* InventoryView.swift in Sources */,
+				D950825D309C39C80045BF8E /* BeveragePresetOptions.swift in Sources */,
 				D9044217307E850500EF4807 /* TastingLog.swift in Sources */,
 				D904427B308C9C8000EF4807 /* ConsumptionAnalyticsView.swift in Sources */,
 				D904422B307E859300EF4807 /* BeverageCardView.swift in Sources */,
@@ -720,7 +724,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -740,7 +744,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.15;
+				MARKETING_VERSION = 1.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -763,7 +767,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -783,7 +787,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.15;
+				MARKETING_VERSION = 1.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

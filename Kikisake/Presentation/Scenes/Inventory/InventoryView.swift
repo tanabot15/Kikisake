@@ -183,10 +183,21 @@ public struct InventoryView: View {
             } message: {
                 Text("このボトルに対して行う操作を選択してください。")
             }
+            // ✨ ダイアログが閉じられた際に selectedItemForAction をクリアしてリセット不全を防止
+            .onChange(of: isShowingActionSheet) { _, isShowing in
+                if !isShowing {
+                    selectedItemForAction = nil
+                }
+            }
             .confirmationDialog(String(localized: "移動先の選択"), isPresented: $isShowingMoveDialog, titleVisibility: .visible) {
                 moveDialogButtons
             } message: {
                 moveDialogMessage
+            }
+            .onChange(of: isShowingMoveDialog) { _, isShowing in
+                if !isShowing {
+                    targetItemForMove = nil
+                }
             }
             .alert(String(localized: "エラー"), isPresented: $showErrorAlert) {
                 Button(role: .cancel) {
@@ -435,13 +446,26 @@ public struct InventoryView: View {
                 isNavigatingToDetail = true
             }
 
-            Button(String(localized: "ボトルを開ける")) {
-                do {
-                    try viewModel.consumeBottle(item: item)
-                    AppState.shared.openingItem = item
-                } catch {
-                    errorMessage = error.localizedDescription
-                    showErrorAlert = true
+            let hasEvaluatedLog = (item.tastingLogs?.contains(where: { $0.isEvaluated }) ?? false)
+
+            if hasEvaluatedLog {
+                Button(String(localized: "今日飲む")) {
+                    do {
+                        try viewModel.recordDrinkingFromExistingLog(item: item, modelContext: modelContext)
+                    } catch {
+                        errorMessage = error.localizedDescription
+                        showErrorAlert = true
+                    }
+                }
+            } else {
+                Button(String(localized: "ボトルを開ける")) {
+                    do {
+                        try viewModel.consumeBottle(item: item)
+                        AppState.shared.openingItem = item
+                    } catch {
+                        errorMessage = error.localizedDescription
+                        showErrorAlert = true
+                    }
                 }
             }
 
@@ -456,6 +480,7 @@ public struct InventoryView: View {
         }
 
         Button(String(localized: "キャンセル"), role: .cancel) {
+            // モーダル側からも明示的にクリア
             selectedItemForAction = nil
         }
     }

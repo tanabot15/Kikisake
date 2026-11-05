@@ -50,7 +50,6 @@ public struct GeneralInfoStepView: View {
             categorySection
             basicInfoSection
         }
-        // ── 全体のルート階層にモダールを一本化し、二重提示エラーを完全に防止 ──
         .confirmationDialog("表面の写真を選択", isPresented: $isShowingFrontActionDialog, titleVisibility: .visible) {
             Button("写真を撮る") {
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -89,7 +88,6 @@ public struct GeneralInfoStepView: View {
             }
             Button("キャンセル", role: .cancel) {}
         }
-        // ── 表面のシート・ピッカーモダール ──
         .sheet(isPresented: $isShowingFrontCamera) {
             ImagePickerView(sourceType: .camera) { image in
                 if let data = image.jpegData(compressionQuality: 0.8) {
@@ -111,7 +109,6 @@ public struct GeneralInfoStepView: View {
                 }
             }
         }
-        // ── 裏面のシート・ピッカーモダール ──
         .sheet(isPresented: $isShowingBackCamera) {
             ImagePickerView(sourceType: .camera) { image in
                 if let data = image.jpegData(compressionQuality: 0.8) {
@@ -150,9 +147,7 @@ public struct GeneralInfoStepView: View {
                 }
                 .padding(.top, 4)
 
-                // 2カラムの洗練されたフォトカード配置
                 HStack(spacing: 12) {
-                    // 1. 表面ラベルカード
                     photoCard(
                         title: "表面",
                         subtitle: "メイン写真",
@@ -167,7 +162,6 @@ public struct GeneralInfoStepView: View {
                         }
                     )
 
-                    // 2. 裏面ラベルカード
                     photoCard(
                         title: "裏面",
                         subtitle: "詳細・スペック",
@@ -187,7 +181,6 @@ public struct GeneralInfoStepView: View {
         }
     }
 
-    /// 縦横の大きさが完全に固定された洗練されたフォトカード
     @ViewBuilder
     private func photoCard(
         title: String,
@@ -201,7 +194,6 @@ public struct GeneralInfoStepView: View {
 
         VStack(alignment: .center, spacing: 10) {
             ZStack {
-                // 固定背景枠（正方形）
                 RoundedRectangle(cornerRadius: 14)
                     .fill(Color(.systemGray6))
                     .frame(width: cardSize, height: cardSize)
@@ -211,7 +203,6 @@ public struct GeneralInfoStepView: View {
                     )
 
                 if let data = imageData, let uiImage = UIImage(data: data) {
-                    // 写真表示（縦横固定・フレーム内でクロップ）
                     Image(uiImage: uiImage)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -219,7 +210,6 @@ public struct GeneralInfoStepView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 14))
                         .clipped()
 
-                    // 右上の削除バッジボタン
                     VStack {
                         HStack {
                             Spacer()
@@ -234,7 +224,6 @@ public struct GeneralInfoStepView: View {
                         Spacer()
                     }
                 } else {
-                    // 未選択時プレースホルダー
                     VStack(spacing: 6) {
                         Image(systemName: title == "表面" ? "camera.viewfinder" : "text.document")
                             .font(.system(size: 28))
@@ -247,7 +236,6 @@ public struct GeneralInfoStepView: View {
             }
             .frame(width: cardSize, height: cardSize)
 
-            // 下部アクションボタン
             Button(action: action) {
                 HStack(spacing: 4) {
                     Image(systemName: hasImage ? "ellipsis.circle.fill" : "plus.circle.fill")
@@ -322,13 +310,26 @@ public struct GeneralInfoStepView: View {
             
             Group {
                 ForEach($viewModel.blendComponents) { $component in
-                    HStack(spacing: 12) {
+                    HStack(spacing: 8) {
                         TextField("品種 (例: カベルネ・ソーヴィニヨン)", text: $component.variety)
                             .focused($focusedField, equals: .extra)
                         
+                        // ✨ プリセット一覧から選択できるMenuボタンを追加
+                        Menu {
+                            ForEach(BeveragePresetOptions.grapeVarieties, id: \.self) { variety in
+                                Button(variety) {
+                                    component.variety = variety
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "chevron.down.circle.fill")
+                                .font(.title3)
+                                .foregroundStyle(Color.accentColor)
+                        }
+                        
                         TextField("割合", value: $component.percentage, format: .number)
                             .keyboardType(.numberPad)
-                            .frame(width: 60)
+                            .frame(width: 50)
                             .multilineTextAlignment(.trailing)
                         
                         Text("%")
@@ -360,14 +361,46 @@ public struct GeneralInfoStepView: View {
                 Text("その他").tag("その他")
             }
             
-            TextField("使用米 (例: 山田錦)", text: $viewModel.riceVariety)
-                .focused($focusedField, equals: .extra)
+            HStack(spacing: 8) {
+                TextField("使用米 (例: 山田錦)", text: $viewModel.riceVariety)
+                    .focused($focusedField, equals: .extra)
+                
+                // ✨ 使用米のプリセット選択Menu
+                Menu {
+                    ForEach(BeveragePresetOptions.riceVarieties, id: \.self) { rice in
+                        Button(rice) {
+                            viewModel.riceVariety = rice
+                        }
+                    }
+                } label: {
+                    Image(systemName: "chevron.down.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(Color.accentColor)
+                }
+            }
+            
             TextField("精米歩合 (例: 50%)", text: $viewModel.polishingRate)
             TextField("日本酒度 (例: +3.0)", text: $viewModel.sakeMeterValue)
             
         case .beer:
-            TextField("ビアスタイル (例: IPA, Stout)", text: $viewModel.beerStyle)
-                .focused($focusedField, equals: .extra)
+            HStack(spacing: 8) {
+                TextField("ビアスタイル (例: IPA, Stout)", text: $viewModel.beerStyle)
+                    .focused($focusedField, equals: .extra)
+                
+                // ✨ ビアスタイルのプリセット選択Menu
+                Menu {
+                    ForEach(BeveragePresetOptions.beerStyles, id: \.self) { style in
+                        Button(style) {
+                            viewModel.beerStyle = style
+                        }
+                    }
+                } label: {
+                    Image(systemName: "chevron.down.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(Color.accentColor)
+                }
+            }
+            
             TextField("IBU (国際苦味単位)", text: $viewModel.ibu)
                 .keyboardType(.numberPad)
         }
