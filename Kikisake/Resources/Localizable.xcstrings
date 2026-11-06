@@ -339,9 +339,6 @@
         }
       }
     },
-    "Amber Ale (アンバーエール)" : {
-
-    },
     "Analytics - 自らの「味覚の好み」を深く知る" : {
       "localizations" : {
         "en" : {
@@ -351,33 +348,6 @@
           }
         }
       }
-    },
-    "Barleywine (バーレイワイン)" : {
-
-    },
-    "Bock (ボック)" : {
-
-    },
-    "Brown Ale (ブラウンエール)" : {
-
-    },
-    "Doppelbock (ドッペルボック)" : {
-
-    },
-    "Double IPA (ダブルIPA)" : {
-
-    },
-    "Dunkel (ダンケル)" : {
-
-    },
-    "Fruit Beer (フルーツビール)" : {
-
-    },
-    "Gose (ゴーゼ)" : {
-
-    },
-    "Hazy IPA (ヘイジーIPA)" : {
-
     },
     "IBU" : {
       "localizations" : {
@@ -409,9 +379,6 @@
         }
       }
     },
-    "Imperial Stout (インペリアルスタウト)" : {
-
-    },
     "Inventory - 自宅のセラーや冷蔵庫をマップ化" : {
       "localizations" : {
         "en" : {
@@ -422,8 +389,15 @@
         }
       }
     },
-    "IPA (インディア・ペールエール)" : {
-
+    "IPA" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IPA"
+          }
+        }
+      }
     },
     "Kikisake - Professional Tasting Log" : {
       "localizations" : {
@@ -475,12 +449,6 @@
         }
       }
     },
-    "Kölsch (ケルシュ)" : {
-
-    },
-    "Lager (ラガー)" : {
-
-    },
     "Log - 印象的な味わいをそのまま残す" : {
       "localizations" : {
         "en" : {
@@ -510,15 +478,6 @@
           }
         }
       }
-    },
-    "Pale Ale (ペールエール)" : {
-
-    },
-    "Pilsner (ピルスナー)" : {
-
-    },
-    "Porter (ポーター)" : {
-
     },
     "PRO" : {
       "localizations" : {
@@ -550,21 +509,6 @@
         }
       }
     },
-    "Saison (セゾン)" : {
-
-    },
-    "Schwarzbier (シュヴァルツ)" : {
-
-    },
-    "Session IPA (セッションIPA)" : {
-
-    },
-    "Sour Ale (サワーエール)" : {
-
-    },
-    "Stout (スタウト)" : {
-
-    },
     "Upgrade to Kikisake Pro" : {
       "localizations" : {
         "en" : {
@@ -584,12 +528,6 @@
           }
         }
       }
-    },
-    "Weizen (ヴァイツェン)" : {
-
-    },
-    "Witbier (ベルジャンホワイト)" : {
-
     },
     "アーモンド" : {
       "localizations" : {
@@ -662,7 +600,14 @@
       }
     },
     "アリアニコ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aglianico"
+          }
+        }
+      }
     },
     "アルコール度数" : {
       "localizations" : {
@@ -685,7 +630,14 @@
       }
     },
     "アルバリーニョ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albariño"
+          }
+        }
+      }
     },
     "アンバー" : {
       "localizations" : {
@@ -707,12 +659,42 @@
         }
       }
     },
+    "アンバーエール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amber Ale"
+          }
+        }
+      }
+    },
     "イチゴ" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Strawberry"
+          }
+        }
+      }
+    },
+    "インペリアルスタウト" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imperial Stout"
+          }
+        }
+      }
+    },
+    "ヴァイツェン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weizen"
           }
         }
       }
@@ -738,7 +720,14 @@
       }
     },
     "ヴィオニエ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viognier"
+          }
+        }
+      }
     },
     "ヴィンテージ / 年月" : {
       "localizations" : {
@@ -911,13 +900,34 @@
       }
     },
     "カベルネ・ソーヴィニヨン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cabernet Sauvignon"
+          }
+        }
+      }
     },
     "カベルネ・フラン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cabernet Franc"
+          }
+        }
+      }
     },
     "ガメイ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gamay"
+          }
+        }
+      }
     },
     "カモミール" : {
       "localizations" : {
@@ -940,10 +950,24 @@
       }
     },
     "カルメネール" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carménère"
+          }
+        }
+      }
     },
     "きたしずく" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kitashizuku"
+          }
+        }
+      }
     },
     "キノコ" : {
       "localizations" : {
@@ -986,7 +1010,14 @@
       }
     },
     "キャンベル・アーリー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Campbell Early"
+          }
+        }
+      }
     },
     "キンモクセイ" : {
       "localizations" : {
@@ -1109,10 +1140,44 @@
       }
     },
     "グレナッシュ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grenache"
+          }
+        }
+      }
     },
     "ゲヴュルツトラミネール" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewürztraminer"
+          }
+        }
+      }
+    },
+    "ケルシュ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kölsch"
+          }
+        }
+      }
+    },
+    "ゴーゼ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gose"
+          }
+        }
+      }
     },
     "コーヒー" : {
       "localizations" : {
@@ -1175,7 +1240,14 @@
       }
     },
     "コシヒカリ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koshihikari"
+          }
+        }
+      }
     },
     "コスパ" : {
       "localizations" : {
@@ -1298,7 +1370,14 @@
       }
     },
     "コルヴィーナ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corvina"
+          }
+        }
+      }
     },
     "コンパクトな" : {
       "localizations" : {
@@ -1380,6 +1459,16 @@
         }
       }
     },
+    "サワーエール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sour Ale"
+          }
+        }
+      }
+    },
     "サワークリーム" : {
       "localizations" : {
         "en" : {
@@ -1391,10 +1480,24 @@
       }
     },
     "サンジョヴェーゼ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sangiovese"
+          }
+        }
+      }
     },
     "サンジョヴェーゼ・グロッソ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sangiovese Grosso"
+          }
+        }
+      }
     },
     "サンプルデータが追加されました。" : {
       "localizations" : {
@@ -1477,7 +1580,14 @@
       }
     },
     "シャルドネ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chardonnay"
+          }
+        }
+      }
     },
     "シャンパン" : {
       "localizations" : {
@@ -1509,11 +1619,35 @@
         }
       }
     },
+    "シュヴァルツ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwarzbier"
+          }
+        }
+      }
+    },
     "シュナン・ブラン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chenin Blanc"
+          }
+        }
+      }
     },
     "シラー / シラーズ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syrah / Shiraz"
+          }
+        }
+      }
     },
     "ジンジャーブレッド" : {
       "localizations" : {
@@ -1571,6 +1705,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Style"
+          }
+        }
+      }
+    },
+    "スタウト" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stout"
           }
         }
       }
@@ -1815,11 +1959,45 @@
         }
       }
     },
+    "セゾン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saison"
+          }
+        }
+      }
+    },
+    "セッションIPA" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session IPA"
+          }
+        }
+      }
+    },
     "ゼニト" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zénit"
+          }
+        }
+      }
     },
     "セミヨン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sémillon"
+          }
+        }
+      }
     },
     "セラーの構造設定" : {
       "localizations" : {
@@ -1862,7 +2040,14 @@
       }
     },
     "ソーヴィニヨン・ブラン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sauvignon Blanc"
+          }
+        }
+      }
     },
     "その他" : {
       "localizations" : {
@@ -2004,12 +2189,32 @@
         }
       }
     },
+    "ダブルIPA" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Double IPA"
+          }
+        }
+      }
+    },
     "タマネギ" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Onion"
+          }
+        }
+      }
+    },
+    "ダンケル" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dunkel"
           }
         }
       }
@@ -2154,6 +2359,9 @@
         }
       }
     },
+    "テイスティングせずにセラーへストック" : {
+
+    },
     "テイスティングを記録する" : {
       "localizations" : {
         "en" : {
@@ -2175,7 +2383,14 @@
       }
     },
     "デラウェア" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delaware"
+          }
+        }
+      }
     },
     "テラコッタ" : {
       "localizations" : {
@@ -2188,7 +2403,14 @@
       }
     },
     "テンプラニーリョ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempranillo"
+          }
+        }
+      }
     },
     "トースト" : {
       "localizations" : {
@@ -2196,6 +2418,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toast"
+          }
+        }
+      }
+    },
+    "ドッペルボック" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doppelbock"
           }
         }
       }
@@ -2281,7 +2513,14 @@
       }
     },
     "ナイアガラ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niagara"
+          }
+        }
+      }
     },
     "ナッツ" : {
       "localizations" : {
@@ -2334,7 +2573,14 @@
       }
     },
     "ネグロアマーロ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Negroamaro"
+          }
+        }
+      }
     },
     "ねっとりした" : {
       "localizations" : {
@@ -2347,7 +2593,14 @@
       }
     },
     "ネッビオーロ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nebbiolo"
+          }
+        }
+      }
     },
     "バーガンディ" : {
       "localizations" : {
@@ -2399,15 +2652,22 @@
         }
       }
     },
-    "バーベラ" : {
-
-    },
     "パール・ホワイト" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pearl White"
+          }
+        }
+      }
+    },
+    "バーレイワイン" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barleywine"
           }
         }
       }
@@ -2498,6 +2758,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Balance Expressions (Multiple selection allowed)"
+          }
+        }
+      }
+    },
+    "バルベラ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barbera"
           }
         }
       }
@@ -2613,13 +2883,34 @@
       }
     },
     "ひだほまれ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hidahomare"
+          }
+        }
+      }
     },
     "ピノ・グリ / ピノ-グリージョ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pinot Gris / Pinot Grigio"
+          }
+        }
+      }
     },
     "ピノ・ノワール" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pinot Noir"
+          }
+        }
+      }
     },
     "ヒノキ" : {
       "localizations" : {
@@ -2632,7 +2923,24 @@
       }
     },
     "ヒノヒカリ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hinohikari"
+          }
+        }
+      }
+    },
+    "ピルスナー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pilsner"
+          }
+        }
+      }
     },
     "フィルターと並び替え" : {
       "localizations" : {
@@ -2685,7 +2993,14 @@
       }
     },
     "プティ・ヴェルド" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Petit Verdot"
+          }
+        }
+      }
     },
     "ブドウ品種" : {
       "localizations" : {
@@ -2713,6 +3028,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brown"
+          }
+        }
+      }
+    },
+    "ブラウンエール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brown Ale"
           }
         }
       }
@@ -2773,6 +3098,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plum"
+          }
+        }
+      }
+    },
+    "フルーツビール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fruit Beer"
           }
         }
       }
@@ -2877,8 +3212,35 @@
         }
       }
     },
+    "ペールエール" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pale Ale"
+          }
+        }
+      }
+    },
     "ペアリング" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pairing"
+          }
+        }
+      }
+    },
+    "ヘイジーIPA" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazy IPA"
+          }
+        }
+      }
     },
     "ペトロール" : {
       "localizations" : {
@@ -2886,6 +3248,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Petrol / Kerosene"
+          }
+        }
+      }
+    },
+    "ベルジャンホワイト" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Witbier"
+          }
+        }
+      }
+    },
+    "ポーター" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porter"
+          }
+        }
+      }
+    },
+    "ボック" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bock"
           }
         }
       }
@@ -3001,10 +3393,24 @@
       }
     },
     "マスカット・ベーリーA" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muscat Bailey A"
+          }
+        }
+      }
     },
     "まっしぐら" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masshigura"
+          }
+        }
+      }
     },
     "マッシュルーム" : {
       "localizations" : {
@@ -3087,7 +3493,14 @@
       }
     },
     "マルベック" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Malbec"
+          }
+        }
+      }
     },
     "まろやかな" : {
       "localizations" : {
@@ -3130,10 +3543,24 @@
       }
     },
     "ムールヴェードル" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mourvèdre"
+          }
+        }
+      }
     },
     "メルロ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merlot"
+          }
+        }
+      }
     },
     "メロン" : {
       "localizations" : {
@@ -3255,6 +3682,16 @@
         }
       }
     },
+    "ラガー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lager"
+          }
+        }
+      }
+    },
     "ラズベリー" : {
       "localizations" : {
         "en" : {
@@ -3306,7 +3743,14 @@
       }
     },
     "リースリング" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riesling"
+          }
+        }
+      }
     },
     "リスト" : {
       "localizations" : {
@@ -3699,7 +4143,14 @@
       }
     },
     "九頭竜" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuzuryu"
+          }
+        }
+      }
     },
     "乳製品" : {
       "localizations" : {
@@ -3732,13 +4183,34 @@
       }
     },
     "亀の尾" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamenoo"
+          }
+        }
+      }
     },
     "五百万石" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gohyakumangoku"
+          }
+        }
+      }
     },
     "今日飲む" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drink Today"
+          }
+        }
+      }
     },
     "件数" : {
       "localizations" : {
@@ -3870,6 +4342,9 @@
         }
       }
     },
+    "保存に失敗しました: %@" : {
+
+    },
     "保存場所を移動する" : {
       "localizations" : {
         "en" : {
@@ -3921,6 +4396,7 @@
       }
     },
     "保管場所を選択して保存" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3951,7 +4427,14 @@
       }
     },
     "八反錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hattannishiki"
+          }
+        }
+      }
     },
     "円" : {
       "localizations" : {
@@ -4034,7 +4517,14 @@
       }
     },
     "出羽燦々" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dewasansan"
+          }
+        }
+      }
     },
     "分析" : {
       "localizations" : {
@@ -4117,7 +4607,14 @@
       }
     },
     "千本錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senbonnishiki"
+          }
+        }
+      }
     },
     "厚みのある" : {
       "localizations" : {
@@ -4160,16 +4657,44 @@
       }
     },
     "合わせるべき料理や食材 (例: ローストビーフ, カマンベールチーズ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recommended pairings (e.g. Roast beef, Camembert cheese)"
+          }
+        }
+      }
     },
     "吟のいろは" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ginnoiroha"
+          }
+        }
+      }
     },
     "吟の夢" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ginnoyume"
+          }
+        }
+      }
     },
     "吟吹雪" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ginhubuki"
+          }
+        }
+      }
     },
     "味わい・バランス表現" : {
       "localizations" : {
@@ -4291,6 +4816,12 @@
         }
       }
     },
+    "在庫の保存に失敗しました: %@" : {
+
+    },
+    "在庫の保管場所を選択" : {
+
+    },
     "在庫フィルター" : {
       "localizations" : {
         "en" : {
@@ -4302,6 +4833,7 @@
       }
     },
     "在庫へ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4442,7 +4974,14 @@
       }
     },
     "夢の香" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yumenokaori"
+          }
+        }
+      }
     },
     "大吟醸" : {
       "localizations" : {
@@ -4475,7 +5014,14 @@
       }
     },
     "山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yamadanishiki"
+          }
+        }
+      }
     },
     "常温" : {
       "localizations" : {
@@ -4538,10 +5084,24 @@
       }
     },
     "強力" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gouriki"
+          }
+        }
+      }
     },
     "彗星" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suisei"
+          }
+        }
+      }
     },
     "微黄色" : {
       "localizations" : {
@@ -4564,7 +5124,14 @@
       }
     },
     "愛山" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aiyama"
+          }
+        }
+      }
     },
     "感じられた香りの特徴をタップして選択してください。" : {
       "localizations" : {
@@ -4782,6 +5349,9 @@
         }
       }
     },
+    "未設定" : {
+
+    },
     "未設定 (デフォルト)" : {
       "localizations" : {
         "en" : {
@@ -4841,6 +5411,12 @@
           }
         }
       }
+    },
+    "未開栓として在庫に登録する" : {
+
+    },
+    "未開栓のボトルとして登録する保管場所を選択してください。" : {
+
     },
     "本格的なテイスティング記録" : {
       "localizations" : {
@@ -5313,7 +5889,14 @@
       }
     },
     "玉栄" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamanae"
+          }
+        }
+      }
     },
     "琥珀色（古酒）" : {
       "localizations" : {
@@ -5416,7 +5999,14 @@
       }
     },
     "甲州" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koshu"
+          }
+        }
+      }
     },
     "発酵バター" : {
       "localizations" : {
@@ -5589,10 +6179,24 @@
       }
     },
     "神力" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shinriki"
+          }
+        }
+      }
     },
-    "秋田酒コマチ" : {
-
+    "秋田酒こまち" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akita Sake Komachi"
+          }
+        }
+      }
     },
     "移動先の選択" : {
       "localizations" : {
@@ -5771,7 +6375,14 @@
       }
     },
     "美山錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Miyamanishiki"
+          }
+        }
+      }
     },
     "腐葉土" : {
       "localizations" : {
@@ -5864,10 +6475,24 @@
       }
     },
     "華厳" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kegon"
+          }
+        }
+      }
     },
     "華吹雪" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanahubuki"
+          }
+        }
+      }
     },
     "蜂蜜" : {
       "localizations" : {
@@ -6140,7 +6765,14 @@
       }
     },
     "越淡麗" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koshitanrei"
+          }
+        }
+      }
     },
     "追加" : {
       "localizations" : {
@@ -6152,7 +6784,11 @@
         }
       }
     },
+    "追加 (%d/5)" : {
+
+    },
     "追加 (ステップ %lld/5)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6348,8 +6984,18 @@
         }
       }
     },
-    "雄町" : {
+    "銘柄名は必須項目です。" : {
 
+    },
+    "雄町" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omachi"
+          }
+        }
+      }
     },
     "青りんご" : {
       "localizations" : {
@@ -6422,7 +7068,14 @@
       }
     },
     "飲酒記録" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drinking Record"
+          }
+        }
+      }
     },
     "飲酒量・ログ" : {
       "localizations" : {

@@ -14,11 +14,11 @@ public struct AddFlowView: View {
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     @State private var isShowingSaveOptions: Bool = false
+    @State private var isShowingInventoryMenu: Bool = false
     
     // スロット選択シート用 State
     @State private var pendingTargetLocation: StorageLocation? = nil
     @State private var isInventoryOnlyFlow: Bool = false
-    @State private var isShowingSlotSelectionSheet: Bool = false
 
     @FocusState private var focusedField: GeneralInfoField?
 
@@ -43,12 +43,20 @@ public struct AddFlowView: View {
                 Group {
                     switch viewModel.currentStep {
                     case 1:
-                        GeneralInfoStepView(
-                            viewModel: viewModel,
-                            focusedField: $focusedField
-                        ) { message in
-                            alertMessage = message
-                            showAlert = true
+                        VStack(spacing: 0) {
+                            // ✨ ステップ1の最上部に「在庫へ直接登録する」洗練されたクイックアクションバナーを配置
+                            inventoryQuickActionBanner
+                                .padding(.horizontal)
+                                .padding(.top, 4)
+                                .padding(.bottom, 8)
+
+                            GeneralInfoStepView(
+                                viewModel: viewModel,
+                                focusedField: $focusedField
+                            ) { message in
+                                alertMessage = message
+                                showAlert = true
+                            }
                         }
                     case 2:
                         AppearanceStepView(viewModel: viewModel)
@@ -69,36 +77,17 @@ public struct AddFlowView: View {
                     }
                 }
             }
-            .navigationTitle("追加 (ステップ \(viewModel.currentStep)/5)")
+            .navigationTitle(String(format: String(localized: "追加 (%d/5)"), viewModel.currentStep))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // 左上：ステップ1のときは「在庫へ」メニューボタン、ステップ2以降は「戻る」
+                // 左上：ステップ1のときは「キャンセル」、ステップ2以降は「戻る」
                 ToolbarItem(placement: .topBarLeading) {
                     if viewModel.currentStep == 1 {
-                        Menu {
-                            Text("保管場所を選択して保存").font(.caption)
-                            Divider()
-                            if locations.isEmpty {
-                                Button("未設定 (デフォルト)") {
-                                    handleLocationSelection(locationName: "未設定", isInventoryOnly: true)
-                                }
-                            } else {
-                                ForEach(locations, id: \.name) { loc in
-                                    Button(loc.name) {
-                                        handleLocationSelection(locationName: loc.name, isInventoryOnly: true)
-                                    }
-                                }
-                            }
-                        } label: {
-                            HStack(spacing: 4) {
-                                Text("在庫へ")
-                                Image(systemName: "chevron.down")
-                                    .font(.caption2)
-                            }
-                            .fontWeight(.semibold)
-                            .foregroundColor(isNameEmpty ? .gray : .accentColor)
+                        Button(String(localized: "キャンセル")) {
+                            viewModel.reset()
+                            AppState.shared.selectedTab = 0 // ログ一覧などへ戻る
                         }
-                        .disabled(isNameEmpty)
+                        .foregroundColor(.primary)
                     } else {
                         Button {
                             if viewModel.currentStep == 2 && viewModel.isOpeningExistingItem {
@@ -110,7 +99,7 @@ public struct AddFlowView: View {
                         } label: {
                             HStack(spacing: 4) {
                                 Image(systemName: "chevron.left")
-                                Text("戻る")
+                                Text(String(localized: "戻る"))
                             }
                         }
                     }
@@ -119,9 +108,9 @@ public struct AddFlowView: View {
                 // 右上：ステップ1〜4は「次へ」、ステップ5は「保存」
                 ToolbarItem(placement: .topBarTrailing) {
                     if viewModel.currentStep < 5 {
-                        Button("次へ") {
+                        Button(String(localized: "次へ")) {
                             if isNameEmpty {
-                                alertMessage = "銘柄名は必須項目です。"
+                                alertMessage = String(localized: "銘柄名は必須項目です。")
                                 showAlert = true
                                 return
                             }
@@ -130,9 +119,9 @@ public struct AddFlowView: View {
                         .fontWeight(.semibold)
                         .foregroundColor(isNameEmpty ? .gray : .accentColor)
                     } else {
-                        Button("保存") {
+                        Button(String(localized: "保存")) {
                             if isNameEmpty {
-                                alertMessage = "銘柄名は必須項目です。"
+                                alertMessage = String(localized: "銘柄名は必須項目です。")
                                 showAlert = true
                                 return
                             }
@@ -143,31 +132,47 @@ public struct AddFlowView: View {
                 }
             }
             // テイスティングログ書き切り後の保存先選択ダイアログ
-            .confirmationDialog("ボトルの扱いを選択", isPresented: $isShowingSaveOptions, titleVisibility: .visible) {
-                Button("飲みきった（ログのみ記録・在庫なし）") {
-                    executeFullSave(storageLocation: "未設定", targetTab: 0)
+            .confirmationDialog(String(localized: "ボトルの扱いを選択"), isPresented: $isShowingSaveOptions, titleVisibility: .visible) {
+                Button(String(localized: "飲みきった（ログのみ記録・在庫なし）")) {
+                    executeFullSave(storageLocation: String(localized: "未設定"), targetTab: 0)
                 }
                 
                 if locations.isEmpty {
-                    Button("未設定の場所にストック") {
-                        executeFullSave(storageLocation: "未設定", targetTab: 3)
+                    Button(String(localized: "未設定の場所にストック")) {
+                        executeFullSave(storageLocation: String(localized: "未設定"), targetTab: 3)
                     }
                 } else {
                     ForEach(locations, id: \.name) { loc in
-                        Button("\(loc.name)にストック") {
+                        Button(String(format: String(localized: "%@にストック"), loc.name)) {
                             handleLocationSelection(locationName: loc.name, isInventoryOnly: false)
                         }
                     }
                 }
 
-                Button("キャンセル", role: .cancel) {}
+                Button(String(localized: "キャンセル"), role: .cancel) {}
             } message: {
-                Text("このテイスティング記録とともに、在庫をどのように登録しますか？")
+                Text(String(localized: "このテイスティング記録とともに、在庫をどのように登録しますか？"))
+            }
+            // 在庫へ直接登録するときの保管場所選択メニュー（クイックアクション用）
+            .confirmationDialog(String(localized: "在庫の保管場所を選択"), isPresented: $isShowingInventoryMenu, titleVisibility: .visible) {
+                if locations.isEmpty {
+                    Button(String(localized: "未設定 (デフォルト)")) {
+                        handleLocationSelection(locationName: String(localized: "未設定"), isInventoryOnly: true)
+                    }
+                } else {
+                    ForEach(locations, id: \.name) { loc in
+                        Button(loc.name) {
+                            handleLocationSelection(locationName: loc.name, isInventoryOnly: true)
+                        }
+                    }
+                }
+                Button(String(localized: "キャンセル"), role: .cancel) {}
+            } message: {
+                Text(String(localized: "未開栓のボトルとして登録する保管場所を選択してください。"))
             }
             // 棚・スロット位置選択シート
             .sheet(item: $pendingTargetLocation) { targetLoc in
                 LocationSlotSelectionSheet(location: targetLoc, viewModel: viewModel) {
-                    // 選択完了時の保存実行
                     if isInventoryOnlyFlow {
                         saveToInventory(locationName: targetLoc.name)
                     } else {
@@ -175,8 +180,8 @@ public struct AddFlowView: View {
                     }
                 }
             }
-            .alert("確認", isPresented: $showAlert) {
-                Button("OK", role: .cancel) {
+            .alert(String(localized: "確認"), isPresented: $showAlert) {
+                Button(String(localized: "OK"), role: .cancel) {
                     if isNameEmpty {
                         focusedField = .name
                     }
@@ -184,14 +189,61 @@ public struct AddFlowView: View {
             } message: {
                 Text(alertMessage)
             }
-            // ✨ 誤動作して写真データを消去する原因となっていた .onAppear の自動リセット処理を完全に削除
         }
+    }
+
+    /// ✨ ステップ1上部に配置する洗練された「在庫へ直接登録」バナー
+    @ViewBuilder
+    private var inventoryQuickActionBanner: some View {
+        Button {
+            if isNameEmpty {
+                alertMessage = String(localized: "銘柄名は必須項目です。")
+                showAlert = true
+                return
+            }
+            isShowingInventoryMenu = true
+        } label: {
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(Color.accentColor.opacity(0.15))
+                        .frame(width: 36, height: 36)
+                    Image(systemName: "refrigerator")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.accentColor)
+                }
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(String(localized: "未開栓として在庫に登録する"))
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.primary)
+                    Text(String(localized: "テイスティングせずにセラーへストック"))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .background(Color(.secondarySystemGroupedBackground))
+            .cornerRadius(12)
+            .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
+        }
+        .buttonStyle(.plain)
+        .opacity(isNameEmpty ? 0.6 : 1.0)
     }
 
     /// 保管場所選択時のハンドラ
     private func handleLocationSelection(locationName: String, isInventoryOnly: Bool) {
         if isNameEmpty {
-            alertMessage = "銘柄名は必須項目です。"
+            alertMessage = String(localized: "銘柄名は必須項目です。")
             showAlert = true
             return
         }
@@ -222,7 +274,7 @@ public struct AddFlowView: View {
             try viewModel.saveAsInventoryOnly(modelContext: modelContext)
             AppState.shared.selectedTab = 3
         } catch {
-            alertMessage = "在庫の保存に失敗しました: \(error.localizedDescription)"
+            alertMessage = String(format: String(localized: "在庫の保存に失敗しました: %@"), error.localizedDescription)
             showAlert = true
         }
     }
@@ -231,12 +283,10 @@ public struct AddFlowView: View {
     private func executeFullSave(storageLocation: String, targetTab: Int) {
         do {
             viewModel.storageLocation = storageLocation
-            
             try viewModel.saveWithStock(modelContext: modelContext)
-            
             AppState.shared.selectedTab = targetTab
         } catch {
-            alertMessage = "保存に失敗しました: \(error.localizedDescription)"
+            alertMessage = String(format: String(localized: "保存に失敗しました: %@"), error.localizedDescription)
             showAlert = true
         }
     }
