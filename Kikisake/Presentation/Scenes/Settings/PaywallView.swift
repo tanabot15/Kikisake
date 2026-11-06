@@ -66,7 +66,7 @@ public struct PaywallView: View {
                             subtitle: "複数セラー・サブ冷蔵庫など無制限に追加可能"
                         )
                         
-                        // ✨ マトリクス分析の訴求を追加
+                        // マトリクス分析の訴求を追加
                         FeatureRow(
                             icon: "chart.dots.scatter",
                             title: "プロ用マトリクス分析",
@@ -77,6 +77,12 @@ public struct PaywallView: View {
                             icon: "sparkles",
                             title: "プロ仕様のテイスティングタグ",
                             subtitle: "マニアックな色や香りの表現要素を全オープン"
+                        )
+                        
+                        FeatureRow(
+                            icon: "slider.horizontal.3",
+                            title: "テイスティング要素のカスタム",
+                            subtitle: "オリジナルの香り・色・味わい表現の編集する"
                         )
 
                         FeatureRow(

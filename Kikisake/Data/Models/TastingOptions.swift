@@ -62,22 +62,25 @@ public enum TastingOptions {
 
     // MARK: - マスター選択肢一覧
     
-    /// 味わいのバランス表現のマスター選択肢一覧
-    public static let balanceOptions: [String] = [
-        String(localized: "スムーズな"),
-        String(localized: "コンパクトな"),
-        String(localized: "スリムな"),
-        String(localized: "ドライな"),
-        String(localized: "引き締まった"),
-        String(localized: "ジューシーな"),
-        String(localized: "豊潤な"),
-        String(localized: "厚みのある"),
-        String(localized: "まろやかな"),
-        String(localized: "ふくよかな"),
-        String(localized: "ねっとりした")
-    ]
+    /// 味わいのバランス表現のマスター選択肢一覧（カスタム要素を統合）
+    public static var balanceOptions: [String] {
+        let defaults = [
+            String(localized: "スムーズな"),
+            String(localized: "コンパクトな"),
+            String(localized: "スリムな"),
+            String(localized: "ドライな"),
+            String(localized: "引き締まった"),
+            String(localized: "ジューシーな"),
+            String(localized: "豊潤な"),
+            String(localized: "厚みのある"),
+            String(localized: "まろやかな"),
+            String(localized: "ふくよかな"),
+            String(localized: "ねっとりした")
+        ]
+        return defaults + TastingCustomizationManager.shared.customBalances
+    }
     
-    /// 酒種・タイプに応じた外観カラーオプションを取得（薄い色〜濃い色の順にグラデーションソート）
+    /// 酒種・タイプに応じた外観カラーオプションを取得（薄い色〜濃い色の順にグラデーションソート、カスタム要素を統合）
     public static func colorOptions(for category: BeverageCategory?, wineType: String = "赤") -> [ColorOption] {
         guard let category = category else {
             var allOptions: [ColorOption] = []
@@ -100,11 +103,13 @@ public enum TastingOptions {
             return allOptions
         }
 
+        var baseOptions: [ColorOption] = []
+
         switch category {
         case .wine:
             if wineType == "白" || wineType == "スパークリング" {
                 // 白ワイン：20個（薄いプラチナ・ペール系 → 濃いアンバー・ゴールド系）
-                return [
+                baseOptions = [
                     ColorOption(name: String(localized: "プラチナ"), color: Color(red: 0.95, green: 0.95, blue: 0.90), hex: "#F2F2E6", isPro: true),
                     ColorOption(name: String(localized: "ペール・イエロー"), color: Color(red: 0.98, green: 0.96, blue: 0.75), hex: "#FAF5BF", isPro: false),
                     ColorOption(name: String(localized: "シャンパン"), color: Color(red: 0.96, green: 0.92, blue: 0.78), hex: "#F4EBC7", isPro: false),
@@ -128,7 +133,7 @@ public enum TastingOptions {
                 ]
             } else if wineType == "ロゼ" {
                 // ロゼワイン：10個（淡いチェリー・ブロッサム・ピーチ等 → 深いアザミ・チェリーピンク）
-                return [
+                baseOptions = [
                     ColorOption(name: String(localized: "チェリー・ブロッサム"), color: Color(red: 0.98, green: 0.80, blue: 0.82), hex: "#FACDD1", isPro: false),
                     ColorOption(name: String(localized: "ピーチ・スキン"), color: Color(red: 0.96, green: 0.80, blue: 0.70), hex: "#F5CCB3", isPro: true),
                     ColorOption(name: String(localized: "サーモン・ピンク"), color: Color(red: 0.96, green: 0.72, blue: 0.65), hex: "#F5B8A6", isPro: false),
@@ -142,7 +147,7 @@ public enum TastingOptions {
                 ]
             } else if wineType == "オレンジ" {
                 // オレンジワイン：10個（明るいアプリコット・タンジェリン等 → 深いマホガニー・テラコッタ等）
-                return [
+                baseOptions = [
                     ColorOption(name: String(localized: "アプリコット"), color: Color(red: 0.95, green: 0.65, blue: 0.35), hex: "#F3A659", isPro: false),
                     ColorOption(name: String(localized: "タンジェリン"), color: Color(red: 0.96, green: 0.60, blue: 0.25), hex: "#F59940", isPro: false),
                     ColorOption(name: String(localized: "ピーチ・アンバー"), color: Color(red: 0.88, green: 0.60, blue: 0.35), hex: "#E09959", isPro: true),
@@ -156,7 +161,7 @@ public enum TastingOptions {
                 ]
             } else {
                 // 赤ワイン：20個（明るいストロベリー・ラズベリー等 → 漆黒に近いノワール等）
-                return [
+                baseOptions = [
                     ColorOption(name: String(localized: "ストロベリー・レッド"), color: Color(red: 0.85, green: 0.25, blue: 0.35), hex: "#D94059", isPro: true),
                     ColorOption(name: String(localized: "スカーレット"), color: Color(red: 0.88, green: 0.15, blue: 0.20), hex: "#E02633", isPro: true),
                     ColorOption(name: String(localized: "ラズベリーレッド"), color: Color(red: 0.8, green: 0.2, blue: 0.3), hex: "#CC334D", isPro: false),
@@ -182,7 +187,7 @@ public enum TastingOptions {
 
         case .sake:
             // 日本酒：20個（無色透明・にごり・白銀 等 → 熟成ブラウン・マホガニー古酒）
-            return [
+            baseOptions = [
                 ColorOption(name: String(localized: "無色透明"), color: Color(.systemGray6), hex: "#F2F2F7", isPro: false),
                 ColorOption(name: String(localized: "クリスタル・クリア"), color: Color(red: 0.97, green: 0.98, blue: 0.98), hex: "#F7FAFA", isPro: false),
                 ColorOption(name: String(localized: "にごり（濃い乳白色）"), color: Color.white, hex: "#FFFFFF", isPro: false),
@@ -207,7 +212,7 @@ public enum TastingOptions {
 
         case .beer:
             // ビール：20個（ペール・ストロー等の明るい麦わら・ゴールド → 漆黒のオックスフォード等）
-            return [
+            baseOptions = [
                 ColorOption(name: String(localized: "プラチナ・ブロンド"), color: Color(red: 0.98, green: 0.96, blue: 0.70), hex: "#FAF5B3", isPro: true),
                 ColorOption(name: String(localized: "ペール・ストロー"), color: Color(red: 0.98, green: 0.94, blue: 0.5), hex: "#FAF080", isPro: false),
                 ColorOption(name: String(localized: "レモン・ピール"), color: Color(red: 0.96, green: 0.92, blue: 0.30), hex: "#F4EB4D", isPro: true),
@@ -230,9 +235,16 @@ public enum TastingOptions {
                 ColorOption(name: String(localized: "漆黒（オックスフォード）"), color: Color(red: 0.08, green: 0.06, blue: 0.05), hex: "#140F0D", isPro: true)
             ]
         }
+
+        // カスタムカラー要素を統合
+        let customColorsMapped = TastingCustomizationManager.shared.customColors.map { custom in
+            ColorOption(name: custom.name, color: Color(hex: custom.hex) ?? .gray, hex: custom.hex, isPro: custom.isPro)
+        }
+
+        return baseOptions + customColorsMapped
     }
 
-    /// 香りカテゴリ一覧を取得
+    /// 香りカテゴリ一覧を取得（カスタム香りタグを統合）
     public static func aromaCategories(for category: BeverageCategory?, wineType: String = "赤") -> [AromaCategory] {
         guard let category = category else {
             var tagSet = Set<String>()
@@ -253,10 +265,12 @@ public enum TastingOptions {
             return [AromaCategory(title: String(localized: "すべての香り要素"), tags: combinedTags)]
         }
 
+        var categories: [AromaCategory] = []
+
         switch category {
         case .wine:
             if wineType == "白" || wineType == "スパークリング" {
-                return [
+                categories = [
                     AromaCategory(
                         title: String(localized: "果実"),
                         tags: [
@@ -323,7 +337,7 @@ public enum TastingOptions {
                     )
                 ]
             } else if wineType == "ロゼ" {
-                return [
+                categories = [
                     AromaCategory(
                         title: String(localized: "果実"),
                         tags: [
@@ -355,7 +369,7 @@ public enum TastingOptions {
                     )
                 ]
             } else if wineType == "オレンジ" {
-                return [
+                categories = [
                     AromaCategory(
                         title: String(localized: "果実"),
                         tags: [
@@ -388,7 +402,7 @@ public enum TastingOptions {
                     )
                 ]
             } else {
-                return [
+                categories = [
                     AromaCategory(
                         title: String(localized: "果実"),
                         tags: [
@@ -454,7 +468,7 @@ public enum TastingOptions {
             }
 
         case .sake:
-            return [
+            categories = [
                 AromaCategory(
                     title: String(localized: "果実"),
                     tags: [
@@ -525,7 +539,7 @@ public enum TastingOptions {
             ]
 
         case .beer:
-            return [
+            categories = [
                 AromaCategory(
                     title: String(localized: "果実"),
                     tags: [
@@ -560,5 +574,21 @@ public enum TastingOptions {
                 )
             ]
         }
+
+        // カスタム香りタグを対応するカテゴリに統合
+        let customAromas = TastingCustomizationManager.shared.customAromas
+        if !customAromas.isEmpty {
+            categories = categories.map { cat in
+                let matchingCustoms = customAromas.filter { $0.categoryTitle == cat.title }
+                if matchingCustoms.isEmpty {
+                    return cat
+                } else {
+                    let newTags = cat.tags + matchingCustoms.map { AromaTag($0.name, isPro: true) }
+                    return AromaCategory(title: cat.title, tags: newTags)
+                }
+            }
+        }
+
+        return categories
     }
 }

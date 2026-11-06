@@ -71,6 +71,8 @@
 		D95082593090D9720045BF8E /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082583090D9720045BF8E /* BackupManager.swift */; };
 		D950825B309228190045BF8E /* BottleMattingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950825A309228190045BF8E /* BottleMattingHelper.swift */; };
 		D950825D309C39C80045BF8E /* BeveragePresetOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */; };
+		D9508261309D8B530045BF8E /* TastingCustomizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9508260309D8B530045BF8E /* TastingCustomizationManager.swift */; };
+		D9508263309D8BB40045BF8E /* TastingCustomizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9508262309D8BB40045BF8E /* TastingCustomizationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -140,6 +142,8 @@
 		D95082583090D9720045BF8E /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		D950825A309228190045BF8E /* BottleMattingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottleMattingHelper.swift; sourceTree = "<group>"; };
 		D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeveragePresetOptions.swift; sourceTree = "<group>"; };
+		D9508260309D8B530045BF8E /* TastingCustomizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCustomizationManager.swift; sourceTree = "<group>"; };
+		D9508262309D8BB40045BF8E /* TastingCustomizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCustomizationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,8 +295,9 @@
 				D9044216307E850500EF4807 /* TastingLog.swift */,
 				D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */,
 				D9044258308366C300EF4807 /* StorageLocation.swift */,
-				D9044272308AFE0100EF4807 /* TastingOptions.swift */,
 				D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */,
+				D9044272308AFE0100EF4807 /* TastingOptions.swift */,
+				D9508260309D8B530045BF8E /* TastingCustomizationManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -362,6 +367,7 @@
 				D9044247307E864800EF4807 /* SettingsView.swift */,
 				D9044249307E865300EF4807 /* SettingsViewModel.swift */,
 				D9044288308F136400EF4807 /* PaywallView.swift */,
+				D9508262309D8BB40045BF8E /* TastingCustomizationView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -552,6 +558,7 @@
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
 				D95082593090D9720045BF8E /* BackupManager.swift in Sources */,
 				D9044271308AFA4E00EF4807 /* LogFilterSheet.swift in Sources */,
+				D9508261309D8B530045BF8E /* TastingCustomizationManager.swift in Sources */,
 				D904426D3088A3D000EF4807 /* AdMobBannerView.swift in Sources */,
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
 				D904427D308C9C9B00EF4807 /* EvaluationAnalyticsView.swift in Sources */,
@@ -566,6 +573,7 @@
 				D9044242307E862600EF4807 /* FinalizeStepView.swift in Sources */,
 				D9044219307E851200EF4807 /* BeverageRepository.swift in Sources */,
 				D9044273308AFE0100EF4807 /* TastingOptions.swift in Sources */,
+				D9508263309D8BB40045BF8E /* TastingCustomizationView.swift in Sources */,
 				D90442543081A46800EF4807 /* TasteStepView.swift in Sources */,
 				D9044275308B18EE00EF4807 /* AnalyticsFilterSheet.swift in Sources */,
 				D9044246307E863A00EF4807 /* InventoryViewModel.swift in Sources */,

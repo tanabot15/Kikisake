@@ -13,6 +13,7 @@ public struct SettingsView: View {
     @State private var showOnboarding: Bool = false
     @State private var showLoadedAlert: Bool = false
     @State private var showPaywall: Bool = false
+    @State private var showCustomizationSheet: Bool = false // ✨ カスタマイズ画面用シートの状態
 
     // MARK: - データ削除確認用 State
     @State private var showDeleteConfirmation: Bool = false
@@ -97,6 +98,30 @@ public struct SettingsView: View {
                             Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundStyle(.tertiary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
+
+                    // ✨ Pro限定：テイスティング選択肢のカスタマイズメニュー
+                    Button {
+                        if appState.isProVersion {
+                            showCustomizationSheet = true
+                        } else {
+                            showPaywall = true
+                        }
+                    } label: {
+                        HStack {
+                            Label("テイスティング選択肢のカスタマイズ", systemImage: "slider.horizontal.3")
+                            Spacer()
+                            if !appState.isProVersion {
+                                Image(systemName: "lock.fill")
+                                    .font(.caption)
+                                    .foregroundStyle(.orange)
+                            } else {
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundStyle(.tertiary)
+                            }
                         }
                     }
                     .foregroundStyle(.primary)
@@ -241,6 +266,9 @@ public struct SettingsView: View {
             }
             .sheet(isPresented: $showPaywall) {
                 PaywallView()
+            }
+            .sheet(isPresented: $showCustomizationSheet) {
+                TastingCustomizationView()
             }
             .alert("サンプルデータの読み込み", isPresented: $showLoadedAlert) {
                 Button("OK", role: .cancel) {}
