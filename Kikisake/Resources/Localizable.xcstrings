@@ -222,7 +222,14 @@
       }
     },
     "%d 列目" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Column %d"
+          }
+        }
+      }
     },
     "%d件" : {
       "localizations" : {
@@ -240,17 +247,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld"
-          }
-        }
-      }
-    },
-    "%lld 列目" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld 列目"
           }
         }
       }
@@ -884,7 +880,14 @@
       }
     },
     "カテゴリ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
     },
     "カナリー" : {
       "localizations" : {
@@ -942,6 +945,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chamomile"
+          }
+        }
+      }
+    },
+    "カラーを選択" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Color"
           }
         }
       }
@@ -1337,7 +1350,14 @@
       }
     },
     "このデバイスではカメラを利用できません。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera is not available on this device."
+          }
+        }
+      }
     },
     "このボトルに対して行う操作を選択してください。" : {
       "localizations" : {
@@ -2370,7 +2390,14 @@
       }
     },
     "テイスティングせずにセラーへストック" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stock to Cellar Without Tasting"
+          }
+        }
+      }
     },
     "テイスティングを記録する" : {
       "localizations" : {
@@ -2393,7 +2420,14 @@
       }
     },
     "テイスティング選択肢のカスタマイズ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customize Tasting Options"
+          }
+        }
+      }
     },
     "デラウェア" : {
       "localizations" : {
@@ -3566,7 +3600,14 @@
       }
     },
     "メイン写真" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Main Photo"
+          }
+        }
+      }
     },
     "メルロ" : {
       "localizations" : {
@@ -4359,7 +4400,14 @@
       }
     },
     "保存に失敗しました: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to save: %@"
+          }
+        }
+      }
     },
     "保存場所を移動する" : {
       "localizations" : {
@@ -4407,17 +4455,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add Location"
-          }
-        }
-      }
-    },
-    "保管場所を選択して保存" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select Storage Location and Save"
           }
         }
       }
@@ -4732,9 +4769,6 @@
         }
       }
     },
-    "味わいバランス表現 (追加)" : {
-
-    },
     "味わいプロファイル" : {
       "localizations" : {
         "en" : {
@@ -4751,6 +4785,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Taste Structure Profile"
+          }
+        }
+      }
+    },
+    "味わい表現の編集" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Flavor Profile"
+          }
+        }
+      }
+    },
+    "味わい表現一覧" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma Profiles"
           }
         }
       }
@@ -4836,10 +4890,24 @@
       }
     },
     "在庫の保存に失敗しました: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to save inventory: %@"
+          }
+        }
+      }
     },
     "在庫の保管場所を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Storage Location"
+          }
+        }
+      }
     },
     "在庫フィルター" : {
       "localizations" : {
@@ -4847,17 +4915,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inventory Filter"
-          }
-        }
-      }
-    },
-    "在庫へ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To Inventory"
           }
         }
       }
@@ -4952,6 +5009,16 @@
         }
       }
     },
+    "外観カラーの編集" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Appearance Color"
+          }
+        }
+      }
+    },
     "外観の色調、複雑な香り、味わいからタンニン・ボディ・余韻まで、直感的なUIで詳細にアプローチ" : {
       "localizations" : {
         "en" : {
@@ -5018,6 +5085,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Done"
+          }
+        }
+      }
+    },
+    "対象: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Target: %@"
+          }
+        }
+      }
+    },
+    "対象の項目" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Target Item"
           }
         }
       }
@@ -5198,11 +5285,77 @@
         }
       }
     },
-    "新しい表現を入力" : {
-
+    "新しいカラーを追加 (%@%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add New Color (%1$@%2$@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "新しいカラーを追加 (%1$@%2$@)"
+          }
+        }
+      }
     },
-    "新しい香りタグを入力" : {
-
+    "新しいタグ名を入力してください。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please enter a new tag name."
+          }
+        }
+      }
+    },
+    "新しい味わい表現を追加" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add New Flavor Profile"
+          }
+        }
+      }
+    },
+    "新しい表現名を入力してください。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please enter a new profile name."
+          }
+        }
+      }
+    },
+    "新しい香りタグを追加 (%@%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add New Aroma Tag (%1$@%2$@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "新しい香りタグを追加 (%1$@%2$@)"
+          }
+        }
+      }
+    },
+    "新しい香り名 (例: 白桃缶詰)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New aroma name (e.g., Canned white peach)"
+          }
+        }
+      }
     },
     "新緑" : {
       "localizations" : {
@@ -5375,7 +5528,14 @@
       }
     },
     "未設定" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Set"
+          }
+        }
+      }
     },
     "未設定 (デフォルト)" : {
       "localizations" : {
@@ -5438,10 +5598,24 @@
       }
     },
     "未開栓として在庫に登録する" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Register as Unopened Stoc"
+          }
+        }
+      }
     },
     "未開栓のボトルとして登録する保管場所を選択してください。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select a storage location to register as an unopened bottle."
+          }
+        }
+      }
     },
     "本格的なテイスティング記録" : {
       "localizations" : {
@@ -6263,17 +6437,6 @@
         }
       }
     },
-    "第 %lld 段" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Row %lld"
-          }
-        }
-      }
-    },
     "粘土" : {
       "localizations" : {
         "en" : {
@@ -6401,7 +6564,14 @@
       }
     },
     "編集・削除" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit & Delete"
+          }
+        }
+      }
     },
     "美山錦" : {
       "localizations" : {
@@ -6419,6 +6589,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Leaf Mold / Humus"
+          }
+        }
+      }
+    },
+    "色の名前 (例: ローズピンク)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color name (e.g., Rose Pink)"
+          }
+        }
+      }
+    },
+    "色の変更" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Color"
+          }
+        }
+      }
+    },
+    "色を選択" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Color"
+          }
+        }
+      }
+    },
+    "色名" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color Name"
           }
         }
       }
@@ -6543,6 +6753,26 @@
         }
       }
     },
+    "表現を入力 (例: リッチな)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter expression (e.g., Rich)"
+          }
+        }
+      }
+    },
+    "表現名" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile Name"
+          }
+        }
+      }
+    },
     "表示形式" : {
       "localizations" : {
         "en" : {
@@ -6563,6 +6793,22 @@
         }
       }
     },
+    "表示色一覧 (%@%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color Palette (%1$@%2$@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "表示色一覧 (%1$@%2$@)"
+          }
+        }
+      }
+    },
     "表示順序" : {
       "localizations" : {
         "en" : {
@@ -6574,7 +6820,14 @@
       }
     },
     "表面" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Front"
+          }
+        }
+      }
     },
     "表面の写真を選択" : {
       "localizations" : {
@@ -6587,7 +6840,14 @@
       }
     },
     "裏面" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
     },
     "裏面の写真を選択" : {
       "localizations" : {
@@ -6720,7 +6980,14 @@
       }
     },
     "詳細・スペック" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details & Specs"
+          }
+        }
+      }
     },
     "詳細を確認する" : {
       "localizations" : {
@@ -6823,15 +7090,71 @@
       }
     },
     "追加 (%d/5)" : {
-
-    },
-    "追加 (ステップ %lld/5)" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add (Step %lld/5)"
+            "value" : "Add (%d/5)"
+          }
+        }
+      }
+    },
+    "追加されたカスタムカラーはありません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No custom colors added"
+          }
+        }
+      }
+    },
+    "追加されたカスタム表現はありません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No custom profiles added"
+          }
+        }
+      }
+    },
+    "追加された香りタグはありません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No custom aroma tags added"
+          }
+        }
+      }
+    },
+    "追加済みのカスタムカラー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom Colors"
+          }
+        }
+      }
+    },
+    "追加済みのカスタム表現" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom Profiles"
+          }
+        }
+      }
+    },
+    "追加済みのカスタム香りタグ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom Aroma Tags"
           }
         }
       }
@@ -6873,7 +7196,14 @@
       }
     },
     "選択肢のカスタマイズ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customize Options"
+          }
+        }
+      }
     },
     "酒種" : {
       "localizations" : {
@@ -6891,6 +7221,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Category"
+          }
+        }
+      }
+    },
+    "酒種: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category: %@"
           }
         }
       }
@@ -7026,7 +7366,14 @@
       }
     },
     "銘柄名は必須項目です。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand name is required."
+          }
+        }
+      }
     },
     "雄町" : {
       "localizations" : {
@@ -7148,8 +7495,41 @@
         }
       }
     },
-    "香りタグの追加" : {
-
+    "香りタグの編集" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Aroma Tag"
+          }
+        }
+      }
+    },
+    "香りタグ一覧 (%@%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma Tags (%1$@%2$@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "香りタグ一覧 (%1$@%2$@)"
+          }
+        }
+      }
+    },
+    "香りタグ名" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma Tag Name"
+          }
+        }
+      }
     },
     "香りの記録データがありません" : {
       "localizations" : {

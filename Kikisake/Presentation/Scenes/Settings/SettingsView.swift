@@ -111,12 +111,10 @@ public struct SettingsView: View {
                         }
                     } label: {
                         HStack {
-                            Label("テイスティング選択肢のカスタマイズ", systemImage: "slider.horizontal.3")
+                            Text("テイスティング選択肢のカスタマイズ")
                             Spacer()
                             if !appState.isProVersion {
-                                Image(systemName: "lock.fill")
-                                    .font(.caption)
-                                    .foregroundStyle(.orange)
+                                proBadge
                             } else {
                                 Image(systemName: "chevron.right")
                                     .font(.caption)
@@ -331,6 +329,30 @@ public struct SettingsView: View {
         alertTitle = title
         alertMessage = message
         showAlert = true
+    }
+    
+    // MARK: - UI Components for Pro Status
+    
+    private var proBadge: some View {
+        HStack(spacing: 3) {
+            Image(systemName: "lock.fill")
+                .font(.system(size: 9, weight: .bold))
+            Text("PRO")
+                .font(.system(size: 10, weight: .black))
+        }
+        .foregroundStyle(.white)
+        .padding(.horizontal, 7)
+        .padding(.vertical, 3.5)
+        .background(
+            Capsule()
+                .fill(
+                    LinearGradient(
+                        colors: [Color.orange, Color(red: 0.95, green: 0.35, blue: 0.1)],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+        )
     }
 }
 

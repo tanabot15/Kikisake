@@ -19,6 +19,10 @@ public struct TastingCustomizationView: View {
     // ピッカー用 State
     @State private var selectedTarget: CustomizationTarget = .color
 
+    // 共通の酒種・ワインタイプ選択 State (デフォルト参照および追加用)
+    @State private var selectedCategory: BeverageCategory = .wine
+    @State private var selectedWineType: String = "赤"
+
     // MARK: - 1. 色追加用 State
     @State private var selectedColor: Color = Color(hex: "#991A33") ?? .red
     @State private var newColorName: String = ""
@@ -56,6 +60,32 @@ public struct TastingCustomizationView: View {
                 .pickerStyle(.segmented)
                 .padding()
                 .background(Color(.systemGroupedBackground))
+
+                // MARK: - 酒種・タイプの切り替えセレクター（色と香りの場合のみ表示）
+                if selectedTarget != .balance {
+                    VStack(spacing: 8) {
+                        Picker("酒種", selection: $selectedCategory) {
+                            ForEach(BeverageCategory.allCases, id: \.self) { cat in
+                                Text(cat.displayName).tag(cat)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+
+                        if selectedCategory == .wine {
+                            Picker("ワインタイプ", selection: $selectedWineType) {
+                                Text("赤").tag("赤")
+                                Text("白").tag("白")
+                                Text("ロゼ").tag("ロゼ")
+                                Text("オレンジ").tag("オレンジ")
+                                Text("スパークリング").tag("スパークリング")
+                            }
+                            .pickerStyle(.segmented)
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+                    .background(Color(.systemGroupedBackground))
+                }
 
                 Form {
                     switch selectedTarget {
@@ -149,7 +179,7 @@ public struct TastingCustomizationView: View {
     // MARK: - 1. 外観カラーのカスタマイズビュー
     private var colorCustomizationSection: some View {
         Group {
-            Section("新しいカラーを追加") {
+            Section("新しいカラーを追加 (\(selectedCategory.displayName)\(selectedCategory == .wine ? " / \(selectedWineType)" : ""))") {
                 ColorPicker("色を選択", selection: $selectedColor, supportsOpacity: false)
 
                 HStack {
@@ -158,7 +188,8 @@ public struct TastingCustomizationView: View {
                         let trimmed = newColorName.trimmingCharacters(in: .whitespaces)
                         if !trimmed.isEmpty {
                             let hex = selectedColor.toHex() ?? "#991A33"
-                            let newItem = CustomColorItem(name: trimmed, hex: hex, categoryRaw: "custom", isPro: true)
+                            let categoryKey = selectedCategory == .wine ? "wine-\(selectedWineType)" : selectedCategory.rawValue
+                            let newItem = CustomColorItem(name: trimmed, hex: hex, categoryRaw: categoryKey, isPro: true)
                             manager.customColors.append(newItem)
                             newColorName = ""
                         }
@@ -180,8 +211,13 @@ public struct TastingCustomizationView: View {
                                 .frame(width: 20, height: 20)
                                 .overlay(Circle().stroke(Color.primary.opacity(0.2), lineWidth: 1))
 
-                            Text(item.name)
-                                .font(.body)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(item.name)
+                                    .font(.body)
+                                Text("対象: \(item.categoryRaw)")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
 
                             Spacer()
 
@@ -203,9 +239,9 @@ public struct TastingCustomizationView: View {
                 }
             }
 
-            Section("デフォルトの表示色マスター (参照)") {
-                let defaultColors = TastingOptions.colorOptions(for: .wine, wineType: "赤")
-                ForEach(defaultColors.prefix(8)) { option in
+            Section("表示色一覧 (\(selectedCategory.displayName)\(selectedCategory == .wine ? " / \(selectedWineType)" : ""))") {
+                let defaultColors = TastingOptions.colorOptions(for: selectedCategory, wineType: selectedWineType)
+                ForEach(defaultColors) { option in
                     HStack(spacing: 12) {
                         Circle()
                             .fill(option.color)
@@ -223,7 +259,7 @@ public struct TastingCustomizationView: View {
     // MARK: - 2. 香りタグのカスタマイズビュー
     private var aromaCustomizationSection: some View {
         Group {
-            Section("新しい香りタグを追加") {
+            Section("新しい香りタグを追加 (\(selectedCategory.displayName)\(selectedCategory == .wine ? " / \(selectedWineType)" : ""))") {
                 Picker("カテゴリ", selection: $selectedAromaCategory) {
                     Text("果実").tag("果実")
                     Text("花・植物").tag("花・植物")
@@ -235,7 +271,7 @@ public struct TastingCustomizationView: View {
                     Button("追加") {
                         let trimmed = newAromaName.trimmingCharacters(in: .whitespaces)
                         if !trimmed.isEmpty {
-                            let item = CustomAromaItem(categoryTitle: selectedAromaCategory, name: trimmed, beverageCategoryRaw: "wine")
+                            let item = CustomAromaItem(categoryTitle: selectedAromaCategory, name: trimmed, beverageCategoryRaw: selectedCategory.rawValue)
                             manager.customAromas.append(item)
                             newAromaName = ""
                         }
@@ -252,8 +288,13 @@ public struct TastingCustomizationView: View {
                 } else {
                     ForEach(manager.customAromas) { aroma in
                         HStack {
-                            Text(aroma.name)
-                                .font(.body)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(aroma.name)
+                                    .font(.body)
+                                Text("酒種: \(aroma.beverageCategoryRaw)")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
                             Spacer()
                             Text(aroma.categoryTitle)
                                 .font(.caption)
@@ -281,8 +322,8 @@ public struct TastingCustomizationView: View {
                 }
             }
 
-            Section("デフォルトの香りタグ一覧 (参照)") {
-                let defaultCategories = TastingOptions.aromaCategories(for: .wine, wineType: "赤")
+            Section("香りタグ一覧 (\(selectedCategory.displayName)\(selectedCategory == .wine ? " / \(selectedWineType)" : ""))") {
+                let defaultCategories = TastingOptions.aromaCategories(for: selectedCategory, wineType: selectedWineType)
                 ForEach(defaultCategories) { category in
                     VStack(alignment: .leading, spacing: 6) {
                         Text(category.title)
@@ -291,7 +332,7 @@ public struct TastingCustomizationView: View {
                             .foregroundStyle(.secondary)
 
                         FlowLayout(spacing: 6) {
-                            ForEach(category.tags.prefix(6)) { tag in
+                            ForEach(category.tags) { tag in
                                 Text(tag.name)
                                     .font(.caption2)
                                     .padding(.horizontal, 8)
@@ -352,10 +393,8 @@ public struct TastingCustomizationView: View {
                 }
             }
 
-            Section("デフォルトの味わい表現マスター (参照)") {
-                let defaultOptions = [
-                    "スムーズな", "コンパクトな", "スリムな", "ドライな", "引き締まった", "ジューシーな", "豊潤な", "厚みのある"
-                ]
+            Section("味わい表現一覧") {
+                let defaultOptions = TastingOptions.balanceOptions
                 FlowLayout(spacing: 6) {
                     ForEach(defaultOptions, id: \.self) { opt in
                         Text(opt)
