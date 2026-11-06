@@ -73,8 +73,10 @@ public struct EditLogFlowView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("キャンセル") {
-                        dismiss()
+                    if viewModel.currentStep == 1 {
+                        Button("キャンセル") {
+                            dismiss()
+                        }
                     }
                 }
 
