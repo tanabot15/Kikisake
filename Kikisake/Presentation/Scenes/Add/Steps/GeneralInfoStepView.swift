@@ -50,48 +50,55 @@ public struct GeneralInfoStepView: View {
             categorySection
             basicInfoSection
         }
-        .confirmationDialog("表面の写真を選択", isPresented: $isShowingFrontActionDialog, titleVisibility: .visible) {
-            Button("写真を撮る") {
+        .confirmationDialog(String(localized: "表面の写真を選択"), isPresented: $isShowingFrontActionDialog, titleVisibility: .visible) {
+            Button(String(localized: "写真を撮る")) {
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
                     isShowingFrontCamera = true
                 } else {
-                    showAlert("このデバイスではカメラを利用できません。")
+                    showAlert(String(localized: "このデバイスではカメラを利用できません。"))
                 }
             }
-            Button("ライブラリから選ぶ") {
+            Button(String(localized: "ライブラリから選ぶ")) {
                 isShowingFrontLibrary = true
             }
             if viewModel.selectedImageData != nil {
-                Button("写真を削除", role: .destructive) {
+                Button(String(localized: "写真を削除"), role: .destructive) {
                     viewModel.selectedImageData = nil
                     frontPhotoItem = nil
                 }
             }
-            Button("キャンセル", role: .cancel) {}
+            Button(String(localized: "キャンセル"), role: .cancel) {}
         }
-        .confirmationDialog("裏面の写真を選択", isPresented: $isShowingBackActionDialog, titleVisibility: .visible) {
-            Button("写真を撮る") {
+        .confirmationDialog(String(localized: "裏面の写真を選択"), isPresented: $isShowingBackActionDialog, titleVisibility: .visible) {
+            Button(String(localized: "写真を撮る")) {
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
                     isShowingBackCamera = true
                 } else {
-                    showAlert("このデバイスではカメラを利用できません。")
+                    showAlert(String(localized: "このデバイスではカメラを利用できません。"))
                 }
             }
-            Button("ライブラリから選ぶ") {
+            Button(String(localized: "ライブラリから選ぶ")) {
                 isShowingBackLibrary = true
             }
             if viewModel.selectedBackImageData != nil {
-                Button("写真を削除", role: .destructive) {
+                Button(String(localized: "写真を削除"), role: .destructive) {
                     viewModel.selectedBackImageData = nil
                     backPhotoItem = nil
                 }
             }
-            Button("キャンセル", role: .cancel) {}
+            Button(String(localized: "キャンセル"), role: .cancel) {}
         }
+        // ── 表面のシート・ピッカーモダール ──
         .sheet(isPresented: $isShowingFrontCamera) {
             ImagePickerView(sourceType: .camera) { image in
-                if let data = image.jpegData(compressionQuality: 0.8) {
-                    viewModel.selectedImageData = data
+                Task {
+                    // ✨ 撮影した画像からボトル背景を自動切り抜き
+                    let processedImage = await BottleMattingHelper.removeBackground(from: image)
+                    if let data = processedImage.jpegData(compressionQuality: 0.8) {
+                        await MainActor.run {
+                            viewModel.selectedImageData = data
+                        }
+                    }
                 }
             }
         }
@@ -99,9 +106,14 @@ public struct GeneralInfoStepView: View {
         .onChange(of: frontPhotoItem) { _, newValue in
             guard let newItem = newValue else { return }
             Task {
-                if let data = try? await newItem.loadTransferable(type: Data.self) {
-                    await MainActor.run {
-                        viewModel.selectedImageData = data
+                if let data = try? await newItem.loadTransferable(type: Data.self),
+                   let uiImage = UIImage(data: data) {
+                    // ✨ ライブラリから選んだ画像からボトル背景を自動切り抜き
+                    let processedImage = await BottleMattingHelper.removeBackground(from: uiImage)
+                    if let processedData = processedImage.jpegData(compressionQuality: 0.8) {
+                        await MainActor.run {
+                            viewModel.selectedImageData = processedData
+                        }
                     }
                 }
                 await MainActor.run {
@@ -109,6 +121,7 @@ public struct GeneralInfoStepView: View {
                 }
             }
         }
+        // ── 裏面のシート・ピッカーモダール（裏面は通常のまま、または同様に適用可能） ──
         .sheet(isPresented: $isShowingBackCamera) {
             ImagePickerView(sourceType: .camera) { image in
                 if let data = image.jpegData(compressionQuality: 0.8) {
@@ -136,10 +149,10 @@ public struct GeneralInfoStepView: View {
 
     @ViewBuilder
     private var labelPhotoSection: some View {
-        Section("写真") {
+        Section(String(localized: "写真")) {
             VStack(spacing: 16) {
                 HStack {
-                    Label("ボトル・ラベル写真", systemImage: "camera.viewfinder")
+                    Label(String(localized: "ボトル・ラベル写真"), systemImage: "camera.viewfinder")
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(.secondary)
@@ -149,8 +162,8 @@ public struct GeneralInfoStepView: View {
 
                 HStack(spacing: 12) {
                     photoCard(
-                        title: "表面",
-                        subtitle: "メイン写真",
+                        title: String(localized: "表面"),
+                        subtitle: String(localized: "メイン写真"),
                         imageData: viewModel.selectedImageData,
                         hasImage: viewModel.selectedImageData != nil,
                         action: {
@@ -163,8 +176,8 @@ public struct GeneralInfoStepView: View {
                     )
 
                     photoCard(
-                        title: "裏面",
-                        subtitle: "詳細・スペック",
+                        title: String(localized: "裏面"),
+                        subtitle: String(localized: "詳細・スペック"),
                         imageData: viewModel.selectedBackImageData,
                         hasImage: viewModel.selectedBackImageData != nil,
                         action: {
@@ -240,7 +253,7 @@ public struct GeneralInfoStepView: View {
                 HStack(spacing: 4) {
                     Image(systemName: hasImage ? "ellipsis.circle.fill" : "plus.circle.fill")
                         .font(.caption)
-                    Text(hasImage ? "編集・削除" : title)
+                    Text(hasImage ? String(localized: "編集・削除") : title)
                         .font(.subheadline)
                         .fontWeight(.medium)
                 }
@@ -257,8 +270,8 @@ public struct GeneralInfoStepView: View {
 
     @ViewBuilder
     private var categorySection: some View {
-        Section("酒種") {
-            Picker("酒種", selection: $viewModel.selectedCategory) {
+        Section(String(localized: "酒種")) {
+            Picker(String(localized: "酒種"), selection: $viewModel.selectedCategory) {
                 ForEach(BeverageCategory.allCases, id: \.self) { category in
                     Text(category.displayName).tag(category)
                 }
@@ -270,26 +283,26 @@ public struct GeneralInfoStepView: View {
 
     @ViewBuilder
     private var basicInfoSection: some View {
-        Section("基本情報") {
-            TextField("銘柄名 (必須)", text: $viewModel.name)
+        Section(String(localized: "基本情報")) {
+            TextField(String(localized: "銘柄名 (必須)"), text: $viewModel.name)
                 .focused($focusedField, equals: .name)
             
-            TextField("生産者 / 蔵元 / ブルワリー", text: $viewModel.producer)
+            TextField(String(localized: "生産者 / 蔵元 / ブルワリー"), text: $viewModel.producer)
                 .focused($focusedField, equals: .producer)
 
             categorySpecificFields
 
-            TextField("生産地 (例: ボルドー, 新潟、チェコ)", text: $viewModel.region)
+            TextField(String(localized: "生産地 (例: ボルドー, 新潟、チェコ)"), text: $viewModel.region)
                 .focused($focusedField, equals: .region)
             
-            TextField("ヴィンテージ / 製造年月 (例: 2020)", text: $viewModel.vintage)
+            TextField(String(localized: "ヴィンテージ / 製造年月 (例: 2020)"), text: $viewModel.vintage)
                 .focused($focusedField, equals: .vintage)
             
-            TextField("アルコール度数 (例: 14.5 または 5)", text: $viewModel.abvString)
+            TextField(String(localized: "アルコール度数 (例: 14.5 または 5)"), text: $viewModel.abvString)
                 .keyboardType(.decimalPad)
                 .focused($focusedField, equals: .abv)
             
-            TextField("価格 (円)", text: $viewModel.priceString)
+            TextField(String(localized: "価格 (円)"), text: $viewModel.priceString)
                 .keyboardType(.numberPad)
                 .focused($focusedField, equals: .price)
         }
@@ -299,22 +312,21 @@ public struct GeneralInfoStepView: View {
     private var categorySpecificFields: some View {
         switch viewModel.selectedCategory {
         case .wine:
-            Picker("ワインタイプ", selection: $viewModel.wineType) {
-                Text("赤").tag("赤")
-                Text("白").tag("白")
-                Text("ロゼ").tag("ロゼ")
-                Text("オレンジ").tag("オレンジ")
-                Text("スパークリング").tag("スパークリング")
+            Picker(String(localized: "ワインタイプ"), selection: $viewModel.wineType) {
+                Text(String(localized: "赤")).tag("赤")
+                Text(String(localized: "白")).tag("白")
+                Text(String(localized: "ロゼ")).tag("ロゼ")
+                Text(String(localized: "オレンジ")).tag("オレンジ")
+                Text(String(localized: "スパークリング")).tag("スパークリング")
             }
             .padding(.vertical, 4)
             
             Group {
                 ForEach($viewModel.blendComponents) { $component in
                     HStack(spacing: 8) {
-                        TextField("品種 (例: カベルネ・ソーヴィニヨン)", text: $component.variety)
+                        TextField(String(localized: "品種 (例: カベルネ・ソーヴィニヨン)"), text: $component.variety)
                             .focused($focusedField, equals: .extra)
                         
-                        // ✨ プリセット一覧から選択できるMenuボタンを追加
                         Menu {
                             ForEach(BeveragePresetOptions.grapeVarieties, id: \.self) { variety in
                                 Button(variety) {
@@ -327,7 +339,7 @@ public struct GeneralInfoStepView: View {
                                 .foregroundStyle(Color.accentColor)
                         }
                         
-                        TextField("割合", value: $component.percentage, format: .number)
+                        TextField(String(localized: "割合"), value: $component.percentage, format: .number)
                             .keyboardType(.numberPad)
                             .frame(width: 50)
                             .multilineTextAlignment(.trailing)
@@ -341,31 +353,30 @@ public struct GeneralInfoStepView: View {
                 Button {
                     viewModel.addBlendComponent()
                 } label: {
-                    Label("品種を追加", systemImage: "plus.circle.fill")
+                    Label(String(localized: "品種を追加"), systemImage: "plus.circle.fill")
                         .font(.subheadline)
                         .fontWeight(.semibold)
                 }
             }
             
-            TextField("原産地呼称 (例: AOC ボルドー / DOCG バローロ)", text: $viewModel.appellation)
+            TextField(String(localized: "原産地呼称 (例: AOC ボルドー / DOCG バローロ)"), text: $viewModel.appellation)
                 .focused($focusedField, equals: .extra)
             
         case .sake:
-            Picker("特定名称", selection: $viewModel.sakeSpecificName) {
-                Text("純米大吟醸").tag("純米大吟醸")
-                Text("純米吟醸").tag("純米吟醸")
-                Text("大吟醸").tag("大吟醸")
-                Text("特別純米").tag("特別純米")
-                Text("純米酒").tag("純米")
-                Text("本醸造").tag("本醸造")
-                Text("その他").tag("その他")
+            Picker(String(localized: "特定名称"), selection: $viewModel.sakeSpecificName) {
+                Text(String(localized: "純米大吟醸")).tag("純米大吟醸")
+                Text(String(localized: "純米吟醸")).tag("純米吟醸")
+                Text(String(localized: "大吟醸")).tag("大吟醸")
+                Text(String(localized: "特別純米")).tag("特別純米")
+                Text(String(localized: "純米酒")).tag("純米")
+                Text(String(localized: "本醸造")).tag("本醸造")
+                Text(String(localized: "その他")).tag("その他")
             }
             
             HStack(spacing: 8) {
-                TextField("使用米 (例: 山田錦)", text: $viewModel.riceVariety)
+                TextField(String(localized: "使用米 (例: 山田錦)"), text: $viewModel.riceVariety)
                     .focused($focusedField, equals: .extra)
                 
-                // ✨ 使用米のプリセット選択Menu
                 Menu {
                     ForEach(BeveragePresetOptions.riceVarieties, id: \.self) { rice in
                         Button(rice) {
@@ -379,15 +390,14 @@ public struct GeneralInfoStepView: View {
                 }
             }
             
-            TextField("精米歩合 (例: 50%)", text: $viewModel.polishingRate)
-            TextField("日本酒度 (例: +3.0)", text: $viewModel.sakeMeterValue)
+            TextField(String(localized: "精米歩合 (例: 50%)"), text: $viewModel.polishingRate)
+            TextField(String(localized: "日本酒度 (例: +3.0)"), text: $viewModel.sakeMeterValue)
             
         case .beer:
             HStack(spacing: 8) {
-                TextField("ビアスタイル (例: IPA, Stout)", text: $viewModel.beerStyle)
+                TextField(String(localized: "ビアスタイル (例: IPA, Stout)"), text: $viewModel.beerStyle)
                     .focused($focusedField, equals: .extra)
                 
-                // ✨ ビアスタイルのプリセット選択Menu
                 Menu {
                     ForEach(BeveragePresetOptions.beerStyles, id: \.self) { style in
                         Button(style) {
@@ -401,7 +411,7 @@ public struct GeneralInfoStepView: View {
                 }
             }
             
-            TextField("IBU (国際苦味単位)", text: $viewModel.ibu)
+            TextField(String(localized: "IBU (国際苦味単位)"), text: $viewModel.ibu)
                 .keyboardType(.numberPad)
         }
     }
@@ -419,9 +429,9 @@ public struct StoragePickerWithGridMappingView: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Picker("保管場所", selection: $viewModel.storageLocation) {
+            Picker(String(localized: "保管場所"), selection: $viewModel.storageLocation) {
                 if locations.isEmpty {
-                    Text("未設定 (自動作成)").tag("未設定")
+                    Text(String(localized: "未設定 (自動作成)")).tag("未設定")
                 } else {
                     ForEach(locations, id: \.name) { loc in
                         Text(loc.name).tag(loc.name)
@@ -442,28 +452,28 @@ public struct StoragePickerWithGridMappingView: View {
                     HStack {
                         Image(systemName: "square.grid.3x3.fill")
                             .foregroundStyle(Color.accentColor)
-                        Text("棚・スロット位置の指定 (任意)")
+                        Text(String(localized: "棚・スロット位置の指定 (任意)"))
                             .font(.subheadline)
                             .fontWeight(.semibold)
                     }
 
                     HStack(spacing: 12) {
-                        Picker("段 (Row)", selection: Binding(
+                        Picker(String(localized: "段 (Row)"), selection: Binding(
                             get: { viewModel.selectedGridRow ?? 1 },
                             set: { viewModel.selectedGridRow = $0 }
                         )) {
                             ForEach(1...currentLocation.gridRows, id: \.self) { row in
-                                Text("第 \(row) 段").tag(row)
+                                Text(String(format: String(localized: "第 %d 段"), row)).tag(row)
                             }
                         }
                         .pickerStyle(.menu)
 
-                        Picker("列 (Column)", selection: Binding(
+                        Picker(String(localized: "列 (Column)"), selection: Binding(
                             get: { viewModel.selectedGridColumn ?? 1 },
                             set: { viewModel.selectedGridColumn = $0 }
                         )) {
                             ForEach(1...currentLocation.gridColumns, id: \.self) { col in
-                                Text("\(col) 列目").tag(col)
+                                Text(String(format: String(localized: "%d 列目"), col)).tag(col)
                             }
                         }
                         .pickerStyle(.menu)
@@ -479,11 +489,11 @@ public struct StoragePickerWithGridMappingView: View {
                         }
 
                         if isOccupied {
-                            Label("このスロットにはすでに別のボトルが配置されています", systemImage: "exclamationmark.triangle.fill")
+                            Label(String(localized: "このスロットにはすでに別のボトルが配置されています"), systemImage: "exclamationmark.triangle.fill")
                                 .font(.caption2)
                                 .foregroundStyle(.orange)
                         } else {
-                            Label("このスロットは空いています", systemImage: "checkmark.circle.fill")
+                            Label(String(localized: "このスロットは空いています"), systemImage: "checkmark.circle.fill")
                                 .font(.caption2)
                                 .foregroundStyle(.green)
                         }
