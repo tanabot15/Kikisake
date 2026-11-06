@@ -71,11 +71,6 @@ public struct LogListView: View {
                             }
                             .listStyle(.plain)
                             .environment(\.editMode, $editMode)
-                            .searchable(
-                                text: $viewModel.searchText,
-                                placement: .navigationBarDrawer(displayMode: .always),
-                                prompt: "銘柄名、生産者、メモで検索"
-                            )
 
                         case .timeline:
                             ScrollView {
@@ -97,15 +92,16 @@ public struct LogListView: View {
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 12)
                             }
-                            .searchable(
-                                text: $viewModel.searchText,
-                                placement: .navigationBarDrawer(displayMode: .always),
-                                prompt: "銘柄名、生産者、メモで検索"
-                            )
                         }
                     }
                 }
             }
+            // ✨ searchableを画面全体の最外層（VStack）に付与することで結果0件時にも検索バーを維持
+            .searchable(
+                text: $viewModel.searchText,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "銘柄名、生産者、メモで検索"
+            )
             .navigationTitle("ログ")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -160,7 +156,7 @@ public struct LogListView: View {
                     AppState.shared.pendingLogFilter = nil
                 }
 
-                // ✨ 香りタグフィルター処理
+                // 香りタグフィルター処理
                 if let pendingAroma = AppState.shared.pendingAromaTagFilter {
                     viewModel.resetFilters()
                     viewModel.aromaTagFilter = pendingAroma
@@ -220,7 +216,7 @@ private struct LogCompactRowView: View {
     }
 }
 
-/// ✨ タイムライン表示用のカスタム行コンポーネント
+/// タイムライン表示用のカスタム行コンポーネント
 private struct LogTimelineRowView: View {
     let log: TastingLog
     let item: BeverageItem
@@ -326,7 +322,7 @@ private struct LogTimelineRowView: View {
         producer: "Château Margaux",
         category: .wine,
         region: "ボルドー, フランス",
-        vintage: "2015",
+        vintage: "2015"
     )
     let wineLog = TastingLog(
         date: Date(),
