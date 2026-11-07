@@ -11,14 +11,15 @@ public enum BottleMattingHelper {
     /// 与えられたUIImageからVisionを用いて背景を抽出し、ボトル等の前景のみを切り抜いたUIImageを返す（非同期）
     @MainActor
     public static func removeBackground(from sourceImage: UIImage) async -> UIImage {
-        guard let cgImage = sourceImage.cgImage else { return sourceImage }
+        // 画像の向き（imageOrientation）による90度回転などのズレを防ぐため、一度正立（.up）に正規化する
+        let normalizedImage = sourceImage.normalized()
+        guard let cgImage = normalizedImage.cgImage else { return sourceImage }
         
         #if os(iOS)
         if #available(iOS 17.0, *) {
             let request = VNGenerateForegroundInstanceMaskRequest()
-            // 向き情報を渡すために CGImagePropertyOrientation に変換
-            let orientation = CGImagePropertyOrientation(sourceImage.imageOrientation)
-            let handler = VNImageRequestHandler(cgImage: cgImage, orientation: orientation, options: [:])
+            // 正規化済みのCGImageを使用するため、方向は .up としてハンドラーを初期化
+            let handler = VNImageRequestHandler(cgImage: cgImage, orientation: .up, options: [:])
             
             do {
                 try handler.perform([request])
@@ -42,7 +43,7 @@ public enum BottleMattingHelper {
                 let context = CIContext(options: nil)
                 guard let outputCGImage = context.createCGImage(outputCIImage, from: outputCIImage.extent) else { return sourceImage }
                 
-                return UIImage(cgImage: outputCGImage, scale: sourceImage.scale, orientation: sourceImage.imageOrientation)
+                return UIImage(cgImage: outputCGImage, scale: normalizedImage.scale, orientation: .up)
             } catch {
                 // 失敗時はフォールバックとして元の画像を返す
                 return sourceImage
@@ -54,7 +55,22 @@ public enum BottleMattingHelper {
     }
 }
 
-// MARK: - UIImage.Orientation と CGImagePropertyOrientation の変換ヘルパー
+// MARK: - UIImage の向き正規化拡張
+fileprivate extension UIImage {
+    /// 画像の向きを .up に正規化し、ピクセルデータを正しい向きに描き直す
+    func normalized() -> UIImage {
+        if imageOrientation == .up { return self }
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(in: CGRect(origin: .zero, size: size))
+        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return normalizedImage ?? self
+    }
+}
+
+// MARK: - UIImage.Orientation と CGImagePropertyOrientation の変換ヘルパー（必要に応じて保持）
 @available(iOS 14.0, *)
 fileprivate extension CGImagePropertyOrientation {
     init(_ orientation: UIImage.Orientation) {

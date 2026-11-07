@@ -40,6 +40,10 @@ public struct LogDetailView: View {
                 heroHeaderView
                     .padding(.horizontal)
 
+                // ✨ 「もう一度飲む」クイックアクションバナー
+                reDrinkQuickActionBanner
+                    .padding(.horizontal)
+
                 VStack(spacing: 16) {
                     if let item = log.item {
                         basicInfoCard(for: item)
@@ -128,6 +132,96 @@ public struct LogDetailView: View {
         .sheet(isPresented: $isShowingEditSheet) {
             EditLogFlowView(log: log)
         }
+    }
+
+    /// ✨ 「もう一度飲む」クイックアクションバナー
+    @ViewBuilder
+    private var reDrinkQuickActionBanner: some View {
+        Button {
+            let vm = AppState.shared.addFlowViewModel
+            vm.reset()
+            if let item = log.item {
+                // 写真データ（imageDatas, backImageDatas）は含めず、基本情報やメタデータをコピーしてステップ1から開始
+                vm.selectedCategory = item.category
+                vm.name = item.name
+                vm.producer = item.producer
+                vm.region = item.region
+                vm.vintage = item.vintage ?? ""
+                if let abv = item.alcoholByVolume {
+                    vm.abvString = "\(abv)"
+                }
+                if let price = item.price {
+                    vm.priceString = "\(price)"
+                }
+                vm.storageLocation = item.storageLocation
+                vm.selectedGridRow = item.gridRow
+                vm.selectedGridColumn = item.gridColumn
+                
+                // 特定メタデータの復元
+                if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
+                    let decoder = JSONDecoder()
+                    switch item.category {
+                    case .wine:
+                        if let meta = try? decoder.decode(WineSpecificMetadata.self, from: data) {
+                            vm.wineType = meta.wineType
+                            vm.grapeVarieties = meta.grapeVarieties
+                            if !meta.blendComponents.isEmpty {
+                                vm.blendComponents = meta.blendComponents
+                            }
+                            vm.appellation = meta.appellation ?? ""
+                        }
+                    case .sake:
+                        if let meta = try? decoder.decode(SakeSpecificMetadata.self, from: data) {
+                            vm.sakeSpecificName = meta.specificName
+                            vm.riceVariety = meta.riceVariety
+                            vm.polishingRate = meta.polishingRate
+                            vm.sakeMeterValue = meta.sakeMeterValue
+                        }
+                    case .beer:
+                        if let meta = try? decoder.decode(BeerSpecificMetadata.self, from: data) {
+                            vm.beerStyle = meta.beerStyle
+                            vm.ibu = meta.ibu
+                        }
+                    }
+                }
+            }
+            // ステップ1からスタート（currentStep = 1 はデフォルト）
+            AppState.shared.selectedTab = 2 // 「追加」タブへ遷移
+        } label: {
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(Color.accentColor.opacity(0.15))
+                        .frame(width: 36, height: 36)
+                    Image(systemName: "arrow.clockwise.circle.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.accentColor)
+                }
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(String(localized: "もう一度同じものを飲む"))
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.primary)
+                    Text(String(localized: "基本情報をコピーして新しい記録を作成します"))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .background(Color(.secondarySystemGroupedBackground))
+            .cornerRadius(12)
+            .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
+        }
+        .buttonStyle(.plain)
     }
 
     private var unEvaluatedPlaceholderCard: some View {
