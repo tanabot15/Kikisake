@@ -50,8 +50,16 @@ public struct AnalyticsView: View {
                     }
                     .background(Color(.systemGroupedBackground))
                     .tag(AnalyticsSection.evaluation)
+
+                    // 3. ログ比較タブ ✨ 追加
+                    ScrollView {
+                        LogComparisonAnalyticsView(viewModel: viewModel, allLogs: logs)
+                            .padding()
+                    }
+                    .background(Color(.systemGroupedBackground))
+                    .tag(AnalyticsSection.comparison)
                 }
-                .tabViewStyle(.page(indexDisplayMode: .never)) // ページインジケーターを非表示にし、スワイプ操作を有効化
+                .tabViewStyle(.page(indexDisplayMode: .never))
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -71,10 +79,14 @@ public struct AnalyticsView: View {
                     .accessibilityLabel(String(localized: "分析フィルター"))
                 }
             }
-            .sheet(isPresented: $isShowingFilterSheet) {
+            .sheet(isPresented: isBindingFilterSheet) {
                 AnalyticsFilterSheet(viewModel: viewModel, allLogs: logs)
             }
         }
+    }
+
+    private var isBindingFilterSheet: Binding<Bool> {
+        $isShowingFilterSheet
     }
 
     @ViewBuilder
@@ -92,6 +104,8 @@ public struct AnalyticsView: View {
                 ConsumptionAnalyticsView(viewModel: viewModel, targetLogs: targetLogs, allLogs: logs)
             case .evaluation:
                 EvaluationAnalyticsView(viewModel: viewModel, targetLogs: targetLogs)
+            case .comparison:
+                EmptyView() // TabView内で直接ハンドリング
             }
         }
     }

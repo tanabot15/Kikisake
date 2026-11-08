@@ -531,7 +531,8 @@ public struct InventoryView: View {
                 region: item.region,
                 vintage: item.vintage,
                 rating: averageRating,
-                imageData: item.imageDatas?.first
+                imageData: item.imageDatas?.first,
+                isBackgroundRemoved: item.isBackgroundRemoved
             )
         }
         .buttonStyle(.plain)

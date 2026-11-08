@@ -1,9 +1,5 @@
-//
 //  BeverageCardView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/10/14.
-//
 
 import SwiftUI
 
@@ -16,6 +12,7 @@ public struct BeverageCardView: View {
     let vintage: String?
     let rating: Double?
     let imageData: Data?
+    let isBackgroundRemoved: Bool
     let appearanceColorHex: String?
 
     public init(
@@ -26,6 +23,7 @@ public struct BeverageCardView: View {
         vintage: String?,
         rating: Double?,
         imageData: Data? = nil,
+        isBackgroundRemoved: Bool = true,
         appearanceColorHex: String? = nil
     ) {
         self.name = name
@@ -35,10 +33,10 @@ public struct BeverageCardView: View {
         self.vintage = vintage
         self.rating = rating
         self.imageData = imageData
+        self.isBackgroundRemoved = isBackgroundRemoved
         self.appearanceColorHex = appearanceColorHex
     }
 
-    /// HEX文字列からSwiftUIのColorを生成するヘルパー
     private var appearanceColor: Color? {
         guard let hex = appearanceColorHex, !hex.isEmpty else { return nil }
         let scanner = Scanner(string: hex.replacingOccurrences(of: "#", with: ""))
@@ -55,10 +53,12 @@ public struct BeverageCardView: View {
     public var body: some View {
         HStack(spacing: 12) {
             if let imageData, let uiImage = UIImage(data: imageData) {
+                // ✨ くり抜き有無（isBackgroundRemoved）に応じて表示方法を切り替え
                 Image(uiImage: uiImage)
                     .resizable()
-                    .scaledToFill()
+                    .aspectRatio(contentMode: isBackgroundRemoved ? .fit : .fill)
                     .frame(width: 60, height: 60)
+                    .background(isBackgroundRemoved ? Color(.systemGray6) : Color.clear)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             } else {
                 RoundedRectangle(cornerRadius: 8)

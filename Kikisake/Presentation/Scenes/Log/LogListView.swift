@@ -59,6 +59,7 @@ public struct LogListView: View {
                                                         vintage: item.vintage,
                                                         rating: log.rating,
                                                         imageData: item.imageDatas?.first,
+                                                        isBackgroundRemoved: item.isBackgroundRemoved,
                                                         appearanceColorHex: log.appearanceColorHex
                                                     )
                                                 }

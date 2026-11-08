@@ -27,9 +27,11 @@ public final class AddFlowViewModel {
     
     public var selectedImageData: Data? = nil
     public var selectedBackImageData: Data? = nil
+    public var isBackgroundRemoved: Bool = true // ✨ くり抜きフラグ
 
     public func clearFrontImage() {
         self.selectedImageData = nil
+        self.isBackgroundRemoved = true
     }
 
     public func clearBackImage() {
@@ -76,7 +78,7 @@ public final class AddFlowViewModel {
     public var isCostEffective: Bool = false
     public var isWillingToRepeat: Bool = false
     public var hasAgingPotential: Bool = false
-    public var pairing: String = "" // ✨ ペアリング入力欄
+    public var pairing: String = ""
     public var memo: String = ""
     public var tastingDate: Date = Date()
 
@@ -123,6 +125,7 @@ public final class AddFlowViewModel {
         self.selectedGridColumn = nil
         self.selectedImageData = nil
         self.selectedBackImageData = nil
+        self.isBackgroundRemoved = true
         
         self.wineType = "赤"
         self.grapeVarieties = ""
@@ -151,7 +154,7 @@ public final class AddFlowViewModel {
         self.isCostEffective = false
         self.isWillingToRepeat = false
         self.hasAgingPotential = false
-        self.pairing = "" // ✨ 初期化
+        self.pairing = ""
         self.memo = ""
         self.tastingDate = Date()
         self.editingLog = nil
@@ -177,6 +180,7 @@ public final class AddFlowViewModel {
         
         self.selectedImageData = item.imageDatas?.first
         self.selectedBackImageData = item.backImageDatas?.first
+        self.isBackgroundRemoved = item.isBackgroundRemoved
     }
 
     public func configureWithLog(_ log: TastingLog) {
@@ -230,7 +234,7 @@ public final class AddFlowViewModel {
         self.isCostEffective = log.isCostEffective
         self.isWillingToRepeat = log.isWillingToRepeat
         self.hasAgingPotential = log.hasAgingPotential
-        self.pairing = log.pairing ?? "" // ✨ 読み込み
+        self.pairing = log.pairing ?? ""
         self.memo = log.memo
     }
 
@@ -292,6 +296,7 @@ public final class AddFlowViewModel {
             gridColumn: selectedGridColumn,
             imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
             backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
+            isBackgroundRemoved: isBackgroundRemoved,
             specificMetadataJSON: metadataJSON
         )
 
@@ -321,6 +326,7 @@ public final class AddFlowViewModel {
             existingItem.gridColumn = selectedGridColumn
             existingItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
             existingItem.backImageDatas = selectedBackImageData != nil ? [selectedBackImageData!] : nil
+            existingItem.isBackgroundRemoved = isBackgroundRemoved
         } else {
             targetItem = BeverageItem(
                 name: name,
@@ -335,6 +341,7 @@ public final class AddFlowViewModel {
                 gridColumn: selectedGridColumn,
                 imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
                 backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
+                isBackgroundRemoved: isBackgroundRemoved,
                 specificMetadataJSON: metadataJSON
             )
             modelContext.insert(targetItem)
@@ -358,7 +365,7 @@ public final class AddFlowViewModel {
             isCostEffective: isCostEffective,
             isWillingToRepeat: isWillingToRepeat,
             hasAgingPotential: hasAgingPotential,
-            pairing: pairing.isEmpty ? nil : pairing, // ✨ 保存
+            pairing: pairing.isEmpty ? nil : pairing,
             memo: memo,
             isEvaluated: true,
             item: targetItem
@@ -399,6 +406,7 @@ public final class AddFlowViewModel {
                 gridColumn: selectedGridColumn,
                 imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
                 backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
+                isBackgroundRemoved: isBackgroundRemoved,
                 specificMetadataJSON: metadataJSON
             )
             modelContext.insert(targetItem)
@@ -422,7 +430,7 @@ public final class AddFlowViewModel {
             isCostEffective: isCostEffective,
             isWillingToRepeat: isWillingToRepeat,
             hasAgingPotential: hasAgingPotential,
-            pairing: pairing.isEmpty ? nil : pairing, // ✨ 保存
+            pairing: pairing.isEmpty ? nil : pairing,
             memo: memo,
             isEvaluated: true,
             item: targetItem
@@ -463,6 +471,7 @@ public final class AddFlowViewModel {
             targetItem.gridColumn = selectedGridColumn
             targetItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
             targetItem.backImageDatas = selectedBackImageData != nil ? [selectedBackImageData!] : nil
+            targetItem.isBackgroundRemoved = isBackgroundRemoved
             targetItem.specificMetadataJSON = metadataJSON
         }
 
@@ -483,7 +492,7 @@ public final class AddFlowViewModel {
         targetLog.isCostEffective = isCostEffective
         targetLog.isWillingToRepeat = isWillingToRepeat
         targetLog.hasAgingPotential = hasAgingPotential
-        targetLog.pairing = pairing.isEmpty ? nil : pairing // ✨ 更新
+        targetLog.pairing = pairing.isEmpty ? nil : pairing
         targetLog.memo = memo
         targetLog.isEvaluated = true
 

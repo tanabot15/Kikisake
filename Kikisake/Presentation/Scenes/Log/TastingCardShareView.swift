@@ -219,7 +219,7 @@ public struct TastingCardShareView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                // --- 右側ボトル表示 ---
+                // --- 右側ボトル表示部分 ---
                 ZStack(alignment: .bottomTrailing) {
                     ZStack {
                         LinearGradient(
@@ -229,22 +229,34 @@ public struct TastingCardShareView: View {
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                        if let uiImage = processedBottleImage {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFit()
-                                .shadow(color: Color.black.opacity(0.25), radius: 6, x: 2, y: 4)
-                                .padding(6)
-                        } else if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFit()
-                                .cornerRadius(8)
-                                .padding(4)
-                                .task {
-                                    let backgroundRemoved = await BottleMattingHelper.removeBackground(from: uiImage)
-                                    self.processedBottleImage = backgroundRemoved
+                        if let item = log.item, let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
+                            if item.isBackgroundRemoved {
+                                // くり抜き済みの場合：切り抜き済み画像または処理済み画像を表示
+                                if let processed = processedBottleImage {
+                                    Image(uiImage: processed)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .shadow(color: Color.black.opacity(0.25), radius: 6, x: 2, y: 4)
+                                        .padding(6)
+                                } else {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .shadow(color: Color.black.opacity(0.25), radius: 6, x: 2, y: 4)
+                                        .padding(6)
+                                        .task {
+                                            let backgroundRemoved = await BottleMattingHelper.removeBackground(from: uiImage)
+                                            self.processedBottleImage = backgroundRemoved
+                                        }
                                 }
+                            } else {
+                                // そのままの写真を使用する場合：背景処理を行わず、全体を綺麗にクロップ/フィット表示
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 150, height: 190)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                            }
                         } else {
                             VStack(spacing: 4) {
                                 Image(systemName: "wineglass")

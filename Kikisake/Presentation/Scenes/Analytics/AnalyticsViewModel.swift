@@ -4,24 +4,6 @@
 import Foundation
 import SwiftData
 
-/// 分析画面の表示セクション種類
-public enum AnalyticsSection: String, CaseIterable, Identifiable {
-    case consumption
-    case evaluation
-
-    public var id: String { rawValue }
-
-    /// ✨ Localizable.xcstrings が自動検出し、英訳を行えるように直接文字列リテラルを指定
-    public var displayName: String {
-        switch self {
-        case .consumption:
-            return String(localized: "飲酒量・ログ")
-        case .evaluation:
-            return String(localized: "評価・好み")
-        }
-    }
-}
-
 /// 期間フィルターの種類
 public enum AnalyticsTimeFilter: String, CaseIterable, Identifiable {
     case all

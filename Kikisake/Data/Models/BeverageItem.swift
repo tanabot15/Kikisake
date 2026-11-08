@@ -30,6 +30,9 @@ public final class BeverageItem {
     // 裏面ラベル写真データ
     @Attribute(.externalStorage) public var backImageDatas: [Data]?
 
+    // 背景をくり抜いたかどうか（デフォルトは true）
+    public var isBackgroundRemoved: Bool = true
+
     // 酒種ごとの固有メタデータをJSON形式で保持
     public var specificMetadataJSON: String?
 
@@ -59,6 +62,7 @@ public final class BeverageItem {
         gridColumn: Int? = nil,
         imageDatas: [Data]? = nil,
         backImageDatas: [Data]? = nil,
+        isBackgroundRemoved: Bool = true,
         specificMetadataJSON: String? = nil,
         createdAt: Date = Date()
     ) {
@@ -76,6 +80,7 @@ public final class BeverageItem {
         self.gridColumn = gridColumn
         self.imageDatas = imageDatas
         self.backImageDatas = backImageDatas
+        self.isBackgroundRemoved = isBackgroundRemoved
         self.specificMetadataJSON = specificMetadataJSON
         self.tastingLogs = []
         self.createdAt = createdAt

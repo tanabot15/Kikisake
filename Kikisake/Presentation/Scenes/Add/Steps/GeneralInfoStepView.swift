@@ -28,6 +28,10 @@ public struct GeneralInfoStepView: View {
     @State private var isShowingFrontActionDialog: Bool = false
     @State private var frontPhotoItem: PhotosPickerItem? = nil
 
+    // ✨ 撮影または選択した直後の一時保持用（切り抜き選択ダイアログ用）
+    @State private var pendingPickedImage: UIImage? = nil
+    @State private var isShowingMattingChoiceDialog: Bool = false
+
     // ── 裏面ラベル用の状態 ──
     @State private var isShowingBackCamera: Bool = false
     @State private var isShowingBackLibrary: Bool = false
@@ -64,10 +68,42 @@ public struct GeneralInfoStepView: View {
             if viewModel.selectedImageData != nil {
                 Button(String(localized: "写真を削除"), role: .destructive) {
                     viewModel.selectedImageData = nil
+                    viewModel.isBackgroundRemoved = true
                     frontPhotoItem = nil
                 }
             }
             Button(String(localized: "キャンセル"), role: .cancel) {}
+        }
+        // ✨ 写真の背景処理（くり抜き）を選択する確認ダイアログ
+        .confirmationDialog(String(localized: "写真の処理方法を選択"), isPresented: $isShowingMattingChoiceDialog, titleVisibility: .visible) {
+            Button(String(localized: "ボトルのみ自動で切り抜く")) {
+                guard let image = pendingPickedImage else { return }
+                Task {
+                    let processedImage = await BottleMattingHelper.removeBackground(from: image)
+                    if let data = processedImage.jpegData(compressionQuality: 0.8) {
+                        await MainActor.run {
+                            viewModel.selectedImageData = data
+                            viewModel.isBackgroundRemoved = true
+                            pendingPickedImage = nil
+                        }
+                    }
+                }
+            }
+            Button(String(localized: "そのままの写真を使用する")) {
+                guard let image = pendingPickedImage else { return }
+                // 向き正規化（normalized）を行ってから保存
+                let normalized = image.normalized()
+                if let data = normalized.jpegData(compressionQuality: 0.8) {
+                    viewModel.selectedImageData = data
+                    viewModel.isBackgroundRemoved = false
+                }
+                pendingPickedImage = nil
+            }
+            Button(String(localized: "キャンセル"), role: .cancel) {
+                pendingPickedImage = nil
+            }
+        } message: {
+            Text(String(localized: "ワインや料理と一緒に撮影した写真の場合、「そのままの写真を使用する」を選択すると背景が維持されます。"))
         }
         .confirmationDialog(String(localized: "裏面の写真を選択"), isPresented: $isShowingBackActionDialog, titleVisibility: .visible) {
             Button(String(localized: "写真を撮る")) {
@@ -91,15 +127,8 @@ public struct GeneralInfoStepView: View {
         // ── 表面のシート・ピッカーモダール ──
         .sheet(isPresented: $isShowingFrontCamera) {
             ImagePickerView(sourceType: .camera) { image in
-                Task {
-                    // ✨ 撮影した画像からボトル背景を自動切り抜き
-                    let processedImage = await BottleMattingHelper.removeBackground(from: image)
-                    if let data = processedImage.jpegData(compressionQuality: 0.8) {
-                        await MainActor.run {
-                            viewModel.selectedImageData = data
-                        }
-                    }
-                }
+                pendingPickedImage = image
+                isShowingMattingChoiceDialog = true
             }
         }
         .photosPicker(isPresented: $isShowingFrontLibrary, selection: $frontPhotoItem, matching: .images)
@@ -108,20 +137,19 @@ public struct GeneralInfoStepView: View {
             Task {
                 if let data = try? await newItem.loadTransferable(type: Data.self),
                    let uiImage = UIImage(data: data) {
-                    // ✨ ライブラリから選んだ画像からボトル背景を自動切り抜き
-                    let processedImage = await BottleMattingHelper.removeBackground(from: uiImage)
-                    if let processedData = processedImage.jpegData(compressionQuality: 0.8) {
-                        await MainActor.run {
-                            viewModel.selectedImageData = processedData
-                        }
+                    await MainActor.run {
+                        pendingPickedImage = uiImage
+                        frontPhotoItem = nil
+                        isShowingMattingChoiceDialog = true
                     }
-                }
-                await MainActor.run {
-                    frontPhotoItem = nil
+                } else {
+                    await MainActor.run {
+                        frontPhotoItem = nil
+                    }
                 }
             }
         }
-        // ── 裏面のシート・ピッカーモダール（裏面は通常のまま、または同様に適用可能） ──
+        // ── 裏面のシート・ピッカーモダール ──
         .sheet(isPresented: $isShowingBackCamera) {
             ImagePickerView(sourceType: .camera) { image in
                 if let data = image.jpegData(compressionQuality: 0.8) {
@@ -168,10 +196,6 @@ public struct GeneralInfoStepView: View {
                         hasImage: viewModel.selectedImageData != nil,
                         action: {
                             isShowingFrontActionDialog = true
-                        },
-                        onDelete: {
-                            viewModel.selectedImageData = nil
-                            frontPhotoItem = nil
                         }
                     )
 
@@ -182,10 +206,6 @@ public struct GeneralInfoStepView: View {
                         hasImage: viewModel.selectedBackImageData != nil,
                         action: {
                             isShowingBackActionDialog = true
-                        },
-                        onDelete: {
-                            viewModel.selectedBackImageData = nil
-                            backPhotoItem = nil
                         }
                     )
                 }
@@ -200,8 +220,7 @@ public struct GeneralInfoStepView: View {
         subtitle: String,
         imageData: Data?,
         hasImage: Bool,
-        action: @escaping () -> Void,
-        onDelete: @escaping () -> Void
+        action: @escaping () -> Void
     ) -> some View {
         let cardSize: CGFloat = 140
 
@@ -222,20 +241,6 @@ public struct GeneralInfoStepView: View {
                         .frame(width: cardSize, height: cardSize)
                         .clipShape(RoundedRectangle(cornerRadius: 14))
                         .clipped()
-
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button(action: onDelete) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .font(.title3)
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundStyle(.white, Color.black.opacity(0.65))
-                            }
-                            .padding(6)
-                        }
-                        Spacer()
-                    }
                 } else {
                     VStack(spacing: 6) {
                         Image(systemName: title == "表面" ? "camera.viewfinder" : "text.document")
@@ -417,7 +422,19 @@ public struct GeneralInfoStepView: View {
     }
 }
 
-/// 保管場所選択に加え、選択したセラーがグリッド有効な場合に棚番（段・列）を選択できる専用コンポーネント
+// 補助的なUIImage正規化拡張
+fileprivate extension UIImage {
+    func normalized() -> UIImage {
+        if imageOrientation == .up { return self }
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(in: CGRect(origin: .zero, size: size))
+        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return normalizedImage ?? self
+    }
+}
+
+/// 保管場所選択ビューなど
 public struct StoragePickerWithGridMappingView: View {
     @Bindable var viewModel: AddFlowViewModel
     @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
