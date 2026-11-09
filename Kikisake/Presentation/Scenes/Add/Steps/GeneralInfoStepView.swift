@@ -65,18 +65,44 @@ public struct GeneralInfoStepView: View {
             Button(String(localized: "ライブラリから選ぶ")) {
                 isShowingFrontLibrary = true
             }
+            
+            // ✨ 写真が存在する場合の追加アクション（背景透過の切り替え・削除）
             if viewModel.selectedImageData != nil {
+                if viewModel.isBackgroundRemoved {
+                    // 現在透過されている場合は「そのままの写真に戻す」オプションを表示
+                    Button(String(localized: "背景ありの写真に戻す")) {
+                        if viewModel.selectedImageData != nil {
+                            viewModel.isBackgroundRemoved = false
+                        }
+                    }
+                } else {
+                    // 現在背景ありの場合は「背景を自動で透過にする」オプションを表示
+                    Button(String(localized: "背景を自動で透過にする")) {
+                        guard let data = viewModel.selectedImageData, let uiImage = UIImage(data: data) else { return }
+                        Task {
+                            let processedImage = await BottleMattingHelper.removeBackground(from: uiImage)
+                            if let newData = processedImage.jpegData(compressionQuality: 0.8) {
+                                await MainActor.run {
+                                    viewModel.selectedImageData = newData
+                                    viewModel.isBackgroundRemoved = true
+                                }
+                            }
+                        }
+                    }
+                }
+
                 Button(String(localized: "写真を削除"), role: .destructive) {
                     viewModel.selectedImageData = nil
                     viewModel.isBackgroundRemoved = true
                     frontPhotoItem = nil
                 }
             }
+            
             Button(String(localized: "キャンセル"), role: .cancel) {}
         }
         // ✨ 写真の背景処理（くり抜き）を選択する確認ダイアログ
         .confirmationDialog(String(localized: "写真の処理方法を選択"), isPresented: $isShowingMattingChoiceDialog, titleVisibility: .visible) {
-            Button(String(localized: "ボトルのみ自動で切り抜く")) {
+            Button {
                 guard let image = pendingPickedImage else { return }
                 Task {
                     let processedImage = await BottleMattingHelper.removeBackground(from: image)
@@ -88,8 +114,15 @@ public struct GeneralInfoStepView: View {
                         }
                     }
                 }
+            } label: {
+                HStack {
+                    Text(String(localized: "ボトルのみ自動で切り抜く"))
+                    Image(systemName: "wand.and.stars")
+                }
             }
-            Button(String(localized: "そのままの写真を使用する")) {
+            .foregroundColor(Color.accentColor)
+
+            Button {
                 guard let image = pendingPickedImage else { return }
                 // 向き正規化（normalized）を行ってから保存
                 let normalized = image.normalized()
@@ -98,31 +131,19 @@ public struct GeneralInfoStepView: View {
                     viewModel.isBackgroundRemoved = false
                 }
                 pendingPickedImage = nil
+            } label: {
+                HStack {
+                    Text(String(localized: "そのままの写真を使用する"))
+                    Image(systemName: "photo")
+                }
             }
+            .foregroundColor(Color.accentColor)
+
             Button(String(localized: "キャンセル"), role: .cancel) {
                 pendingPickedImage = nil
             }
         } message: {
             Text(String(localized: "ワインや料理と一緒に撮影した写真の場合、「そのままの写真を使用する」を選択すると背景が維持されます。"))
-        }
-        .confirmationDialog(String(localized: "裏面の写真を選択"), isPresented: $isShowingBackActionDialog, titleVisibility: .visible) {
-            Button(String(localized: "写真を撮る")) {
-                if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    isShowingBackCamera = true
-                } else {
-                    showAlert(String(localized: "このデバイスではカメラを利用できません。"))
-                }
-            }
-            Button(String(localized: "ライブラリから選ぶ")) {
-                isShowingBackLibrary = true
-            }
-            if viewModel.selectedBackImageData != nil {
-                Button(String(localized: "写真を削除"), role: .destructive) {
-                    viewModel.selectedBackImageData = nil
-                    backPhotoItem = nil
-                }
-            }
-            Button(String(localized: "キャンセル"), role: .cancel) {}
         }
         // ── 表面のシート・ピッカーモダール ──
         .sheet(isPresented: $isShowingFrontCamera) {

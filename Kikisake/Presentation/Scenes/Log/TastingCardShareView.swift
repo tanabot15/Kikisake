@@ -227,23 +227,24 @@ public struct TastingCardShareView: View {
                             startPoint: .top,
                             endPoint: .bottom
                         )
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
 
                         if let item = log.item, let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
                             if item.isBackgroundRemoved {
-                                // くり抜き済みの場合：切り抜き済み画像または処理済み画像を表示
+                                // くり抜き済みの場合：切り抜き済み画像または処理済み画像を中央配置で綺麗にフィット
                                 if let processed = processedBottleImage {
                                     Image(uiImage: processed)
                                         .resizable()
                                         .scaledToFit()
-                                        .shadow(color: Color.black.opacity(0.25), radius: 6, x: 2, y: 4)
-                                        .padding(6)
+                                        .frame(maxWidth: 130, maxHeight: 175)
+                                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 1, y: 3)
+                                        .padding(4)
                                 } else {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .scaledToFit()
-                                        .shadow(color: Color.black.opacity(0.25), radius: 6, x: 2, y: 4)
-                                        .padding(6)
+                                        .frame(maxWidth: 130, maxHeight: 175)
+                                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 1, y: 3)
+                                        .padding(4)
                                         .task {
                                             let backgroundRemoved = await BottleMattingHelper.removeBackground(from: uiImage)
                                             self.processedBottleImage = backgroundRemoved
@@ -255,7 +256,6 @@ public struct TastingCardShareView: View {
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: 150, height: 190)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
                         } else {
                             VStack(spacing: 4) {
@@ -269,6 +269,7 @@ public struct TastingCardShareView: View {
                         }
                     }
                     .frame(width: 150, height: 190)
+                    .clipShape(RoundedRectangle(cornerRadius: 12)) // ✨ ここでコンテナ全体を角丸で確実にクリッピング
 
                     if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
                         Image(uiImage: backUiImage)
@@ -414,52 +415,28 @@ private func generateBackSampleImage() -> Data? {
     return image.jpegData(compressionQuality: 0.8)
 }
 
-#Preview {
+// MARK: - プレビュー (背景透過あり)
+#Preview("背景透過") {
     let schema = Schema([BeverageItem.self, TastingLog.self])
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: schema, configurations: [config])
 
-    let wineMeta = WineSpecificMetadata(
-        wineType: "赤",
-        grapeVarieties: "ネッビオーロ",
-        blendComponents: [BlendComponent(variety: "ネッビオーロ", percentage: 100)],
-        appellation: "Barolo DOCG"
-    )
-    let encoder = JSONEncoder()
-    let metaJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
-
     let sampleItem = BeverageItem(
-        name: "Barolo DOCG 2018",
+        name: "Barolo DOCG 2018 (背景透過)",
         producer: "Prunotto",
         category: .wine,
         region: "ピエモンテ, イタリア",
         vintage: "2018",
         alcoholByVolume: 14.0,
         imageDatas: [generateVerticalSampleImage() ?? Data()],
-        backImageDatas: [generateBackSampleImage() ?? Data()],
-        specificMetadataJSON: metaJSON
+        isBackgroundRemoved: true
     )
 
     let sampleLog = TastingLog(
-        date: Date(),
         rating: 4.8,
-        appearanceNotes: "ガーネット",
-        appearanceColorHex: "#802633",
-        aromaTags: ["スミレ", "樽香", "チェリー", "タバコ", "スパイス"],
-        sweetness: 2.0,
-        saltiness: 0.0,
-        acidity: 4.2,
-        bitterness: 2.0,
-        umami: 2.5,
-        tannin: 4.5,
-        body: 4.5,
-        balanceTags: ["豊潤な"],
-        finishLength: 4.8,
-        isCostEffective: true,
-        isWillingToRepeat: true,
-        hasAgingPotential: true,
-        pairing: "牛ほぐし肉の赤ワイン煮込み、ハード系チーズ", // ✨ ペアリングサンプルを追加
-        memo: "圧倒的な気品と複雑味。長期熟成のポテンシャルを感じさせる素晴らしいバランス。",
+        pairing: "和牛のローストビーフ",
+        memo: "背景が透過され、ボトルがすっきりと美しく表示されます。",
+        isEvaluated: true,
         item: sampleItem
     )
 
@@ -467,11 +444,43 @@ private func generateBackSampleImage() -> Data? {
     container.mainContext.insert(sampleLog)
 
     return ZStack {
-        Color(.systemGroupedBackground)
-            .ignoresSafeArea()
-        
-        TastingCardShareView(log: sampleLog)
-            .padding()
+        Color(.systemGroupedBackground).ignoresSafeArea()
+        TastingCardShareView(log: sampleLog).padding()
+    }
+    .modelContainer(container)
+}
+
+// MARK: - プレビュー (背景透過なし)
+#Preview("通常") {
+    let schema = Schema([BeverageItem.self, TastingLog.self])
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: schema, configurations: [config])
+
+    let sampleItem = BeverageItem(
+        name: "Barolo DOCG 2018 (そのまま使用)",
+        producer: "Prunotto",
+        category: .wine,
+        region: "ピエモンテ, イタリア",
+        vintage: "2018",
+        alcoholByVolume: 14.0,
+        imageDatas: [generateVerticalSampleImage() ?? Data()],
+        isBackgroundRemoved: false
+    )
+
+    let sampleLog = TastingLog(
+        rating: 4.8,
+        pairing: "和牛のローストビーフ",
+        memo: "そのままの写真として全体がフィット/クロップ表示されます。",
+        isEvaluated: true,
+        item: sampleItem
+    )
+
+    container.mainContext.insert(sampleItem)
+    container.mainContext.insert(sampleLog)
+
+    return ZStack {
+        Color(.systemGroupedBackground).ignoresSafeArea()
+        TastingCardShareView(log: sampleLog).padding()
     }
     .modelContainer(container)
 }

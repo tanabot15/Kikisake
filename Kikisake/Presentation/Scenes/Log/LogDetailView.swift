@@ -341,29 +341,37 @@ public struct LogDetailView: View {
 
     private var heroHeaderView: some View {
         ZStack(alignment: .bottom) {
-            if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
+            if let item = log.item, let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
                 Button {
                     isShowingImageModal = true
                 } label: {
                     GeometryReader { geometry in
-                        ZStack(alignment: .bottomTrailing) {
-                            ZStack {
-                                Color.black
-                                
+                        ZStack(alignment: .center) {
+                            // 背景のぼかし効果（存在感を引き立てるため）
+                            Color.black
+                            
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: geometry.size.width, height: 260)
+                                .blur(radius: 20)
+                                .opacity(0.3)
+
+                            // ── 切り抜き状態に応じた表示の切り分け ──
+                            if item.isBackgroundRemoved {
+                                // 透過・切り抜き済み：ボトルが中央に美しく収まるようにする
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 230)
+                                    .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+                            } else {
+                                // そのままの写真：全体をフィット/クロップ表示
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: geometry.size.width, height: 260)
-                                    .blur(radius: 20)
-                                    .opacity(0.4)
-
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: geometry.size.width, height: 260)
                             }
-                            .frame(width: geometry.size.width, height: 260)
-                            .clipped()
 
                             LinearGradient(
                                 colors: [.clear, .black.opacity(0.75)],
