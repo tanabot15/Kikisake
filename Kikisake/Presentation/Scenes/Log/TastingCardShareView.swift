@@ -222,11 +222,16 @@ public struct TastingCardShareView: View {
                 // --- 右側ボトル表示部分 ---
                 ZStack(alignment: .bottomTrailing) {
                     ZStack {
-                        LinearGradient(
-                            colors: [Color(.tertiarySystemGroupedBackground), Color(.systemBackground)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
+                        // ✨ 背景透過時はグラデーションを敷かずクリア、またはカードに馴染む背景にする
+                        if let item = log.item, item.isBackgroundRemoved {
+                            Color.clear
+                        } else {
+                            LinearGradient(
+                                colors: [Color(.tertiarySystemGroupedBackground), Color(.systemBackground)],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        }
 
                         if let item = log.item, let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
                             if item.isBackgroundRemoved {
@@ -235,15 +240,13 @@ public struct TastingCardShareView: View {
                                     Image(uiImage: processed)
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(maxWidth: 130, maxHeight: 175)
-                                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 1, y: 3)
+                                        .frame(maxWidth: 150, maxHeight: 190)
                                         .padding(4)
                                 } else {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(maxWidth: 130, maxHeight: 175)
-                                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 1, y: 3)
+                                        .frame(maxWidth: 150, maxHeight: 190)
                                         .padding(4)
                                         .task {
                                             let backgroundRemoved = await BottleMattingHelper.removeBackground(from: uiImage)
@@ -269,7 +272,7 @@ public struct TastingCardShareView: View {
                         }
                     }
                     .frame(width: 150, height: 190)
-                    .clipShape(RoundedRectangle(cornerRadius: 12)) // ✨ ここでコンテナ全体を角丸で確実にクリッピング
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
 
                     if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
                         Image(uiImage: backUiImage)

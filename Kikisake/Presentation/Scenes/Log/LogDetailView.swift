@@ -347,37 +347,40 @@ public struct LogDetailView: View {
                 } label: {
                     GeometryReader { geometry in
                         ZStack(alignment: .center) {
-                            // 背景のぼかし効果（存在感を引き立てるため）
-                            Color.black
-                            
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: geometry.size.width, height: 260)
-                                .blur(radius: 20)
-                                .opacity(0.3)
+                            // ── 共通の背景レイヤー ──
+                            Color(.secondarySystemGroupedBackground)
 
-                            // ── 切り抜き状態に応じた表示の切り分け ──
+                            // ── 切り抜き状態に応じた表示の切り分け（サイズを統一） ──
                             if item.isBackgroundRemoved {
-                                // 透過・切り抜き済み：ボトルが中央に美しく収まるようにする
+                                // 透過済み：指定された共通フレーム（高さ260）の中で綺麗に収まるようにscaledToFitで表示
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(height: 230)
-                                    .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+                                    .frame(width: geometry.size.width, height: 260)
+                                    .shadow(color: Color.black.opacity(0.15), radius: 6, x: 0, y: 3)
+                                    .padding(.vertical, 12) // 上下に適度な余白を持たせる
                             } else {
-                                // そのままの写真：全体をフィット/クロップ表示
+                                // そのままの写真：従来のぼかし背景 ＋ 全体フィット表示
+                                Color.black
+                                
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: geometry.size.width, height: 260)
-                            }
+                                    .blur(radius: 20)
+                                    .opacity(0.3)
 
-                            LinearGradient(
-                                colors: [.clear, .black.opacity(0.75)],
-                                startPoint: .center,
-                                endPoint: .bottom
-                            )
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: geometry.size.width, height: 260)
+                                
+                                LinearGradient(
+                                    colors: [.clear, .black.opacity(0.75)],
+                                    startPoint: .center,
+                                    endPoint: .bottom
+                                )
+                            }
                         }
                     }
                     .frame(height: 260)
@@ -431,13 +434,14 @@ public struct LogDetailView: View {
                     Text(item.name)
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundStyle(item.imageDatas?.first != nil ? .white : .primary)
+                        // ✨ 背景透過時は文字色をダーク（primary）にし、そのままの写真時は白文字にするなど調整可能
+                        .foregroundStyle(item.imageDatas?.first != nil && !item.isBackgroundRemoved ? .white : .primary)
                         .lineLimit(2)
 
                     if !item.producer.isEmpty {
                         Text(item.producer)
                             .font(.subheadline)
-                            .foregroundStyle(item.imageDatas?.first != nil ? .white.opacity(0.8) : .primary)
+                            .foregroundStyle(item.imageDatas?.first != nil && !item.isBackgroundRemoved ? .white.opacity(0.8) : .secondary)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -445,6 +449,7 @@ public struct LogDetailView: View {
             }
         }
         .frame(maxWidth: .infinity)
+        .background(Color(.secondarySystemGroupedBackground)) // ✨ 背景透過時はカード背景色に馴染ませる
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .fullScreenCover(isPresented: $isShowingBackImageModal) {
             if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
