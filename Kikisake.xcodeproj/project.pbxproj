@@ -75,6 +75,7 @@
 		D9508263309D8BB40045BF8E /* TastingCustomizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9508262309D8BB40045BF8E /* TastingCustomizationView.swift */; };
 		D950826530A0304F0045BF8E /* AnalyticsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950826430A0304F0045BF8E /* AnalyticsSection.swift */; };
 		D950826730A030760045BF8E /* LogComparisonAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950826630A030760045BF8E /* LogComparisonAnalyticsView.swift */; };
+		D950826930A1E7AD0045BF8E /* RegionPresetOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950826830A1E7AD0045BF8E /* RegionPresetOptions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -148,6 +149,7 @@
 		D9508262309D8BB40045BF8E /* TastingCustomizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCustomizationView.swift; sourceTree = "<group>"; };
 		D950826430A0304F0045BF8E /* AnalyticsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSection.swift; sourceTree = "<group>"; };
 		D950826630A030760045BF8E /* LogComparisonAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogComparisonAnalyticsView.swift; sourceTree = "<group>"; };
+		D950826830A1E7AD0045BF8E /* RegionPresetOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPresetOptions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -301,6 +303,7 @@
 				D9044258308366C300EF4807 /* StorageLocation.swift */,
 				D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */,
 				D9044272308AFE0100EF4807 /* TastingOptions.swift */,
+				D950826830A1E7AD0045BF8E /* RegionPresetOptions.swift */,
 				D9508260309D8B530045BF8E /* TastingCustomizationManager.swift */,
 			);
 			path = Models;
@@ -597,6 +600,7 @@
 				D9044215307E84F600EF4807 /* BeverageItem.swift in Sources */,
 				D90442563081E26F00EF4807 /* BeverageSpecificMetadata.swift in Sources */,
 				D904420F307E84D800EF4807 /* Logger.swift in Sources */,
+				D950826930A1E7AD0045BF8E /* RegionPresetOptions.swift in Sources */,
 				D9044259308366C300EF4807 /* StorageLocation.swift in Sources */,
 				D9044237307E85DB00EF4807 /* AddFlowView.swift in Sources */,
 				D9044221307E854100EF4807 /* ConsumeBeverageUseCase.swift in Sources */,

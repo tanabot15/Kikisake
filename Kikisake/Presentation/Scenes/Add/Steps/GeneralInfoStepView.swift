@@ -343,8 +343,38 @@ public struct GeneralInfoStepView: View {
 
             categorySpecificFields
 
-            TextField(String(localized: "生産地 (例: ボルドー, 新潟、チェコ)"), text: $viewModel.region)
-                .focused($focusedField, equals: .region)
+            HStack(spacing: 8) {
+                TextField(String(localized: "生産地 (例: ボルドー, 新潟)"), text: $viewModel.region)
+                    .focused($focusedField, equals: .region)
+
+                Menu {
+                    ForEach(RegionPresetOptions.regions(for: viewModel.selectedCategory)) { hierarchy in
+                        if hierarchy.children.isEmpty {
+                            Button(hierarchy.parent) {
+                                viewModel.region = hierarchy.parent
+                            }
+                        } else {
+                            Menu(hierarchy.parent) {
+                                // 「国/都道府県」のみを選択する場合のオプション
+                                Button(String(format: String(localized: "%@ (全体)"), hierarchy.parent)) {
+                                    viewModel.region = hierarchy.parent
+                                }
+                                Divider()
+                                // 子エリア（地区・詳細産地）の選択
+                                ForEach(hierarchy.children, id: \.self) { child in
+                                    Button(child) {
+                                        viewModel.region = "\(hierarchy.parent), \(child)"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    Image(systemName: "mappin.and.ellipse.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(Color.accentColor)
+                }
+            }
             
             TextField(String(localized: "ヴィンテージ / 製造年月 (例: 2020)"), text: $viewModel.vintage)
                 .focused($focusedField, equals: .vintage)
