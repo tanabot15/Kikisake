@@ -66,19 +66,23 @@ public struct GeneralInfoStepView: View {
                 isShowingFrontLibrary = true
             }
             
-            // ✨ 写真が存在する場合の追加アクション（背景透過の切り替え・削除）
+            // 写真が存在する場合の追加アクション（背景透過の切り替え・削除）
             if viewModel.selectedImageData != nil {
                 if viewModel.isBackgroundRemoved {
-                    // 現在透過されている場合は「そのままの写真に戻す」オプションを表示
+                    // 現在透過されている場合は「背景ありの写真に戻す」オプションを表示
                     Button(String(localized: "背景ありの写真に戻す")) {
-                        if viewModel.selectedImageData != nil {
+                        // 保持していたオリジナル画像に戻す
+                        if let original = viewModel.originalImageData {
+                            viewModel.selectedImageData = original
                             viewModel.isBackgroundRemoved = false
                         }
                     }
+                    .foregroundColor(Color.accentColor)
                 } else {
                     // 現在背景ありの場合は「背景を自動で透過にする」オプションを表示
                     Button(String(localized: "背景を自動で透過にする")) {
-                        guard let data = viewModel.selectedImageData, let uiImage = UIImage(data: data) else { return }
+                        guard let data = viewModel.originalImageData ?? viewModel.selectedImageData,
+                              let uiImage = UIImage(data: data) else { return }
                         Task {
                             let processedImage = await BottleMattingHelper.removeBackground(from: uiImage)
                             if let newData = processedImage.jpegData(compressionQuality: 0.8) {
@@ -89,10 +93,12 @@ public struct GeneralInfoStepView: View {
                             }
                         }
                     }
+                    .foregroundColor(Color.accentColor)
                 }
 
                 Button(String(localized: "写真を削除"), role: .destructive) {
                     viewModel.selectedImageData = nil
+                    viewModel.originalImageData = nil // ✨ オリジナルもクリア
                     viewModel.isBackgroundRemoved = true
                     frontPhotoItem = nil
                 }
@@ -100,12 +106,18 @@ public struct GeneralInfoStepView: View {
             
             Button(String(localized: "キャンセル"), role: .cancel) {}
         }
-        // ✨ 写真の背景処理（くり抜き）を選択する確認ダイアログ
+        // 写真の背景処理（くり抜き）を選択する確認ダイアログ
         .confirmationDialog(String(localized: "写真の処理方法を選択"), isPresented: $isShowingMattingChoiceDialog, titleVisibility: .visible) {
             Button {
                 guard let image = pendingPickedImage else { return }
+                let normalized = image.normalized()
+                guard let originalData = normalized.jpegData(compressionQuality: 0.8) else { return }
+                
+                // ✨ オリジナルデータを保持した上で背景をくり抜く
+                viewModel.originalImageData = originalData
+                
                 Task {
-                    let processedImage = await BottleMattingHelper.removeBackground(from: image)
+                    let processedImage = await BottleMattingHelper.removeBackground(from: normalized)
                     if let data = processedImage.jpegData(compressionQuality: 0.8) {
                         await MainActor.run {
                             viewModel.selectedImageData = data
@@ -124,9 +136,9 @@ public struct GeneralInfoStepView: View {
 
             Button {
                 guard let image = pendingPickedImage else { return }
-                // 向き正規化（normalized）を行ってから保存
                 let normalized = image.normalized()
                 if let data = normalized.jpegData(compressionQuality: 0.8) {
+                    viewModel.originalImageData = data // ✨ オリジナルとしても保存
                     viewModel.selectedImageData = data
                     viewModel.isBackgroundRemoved = false
                 }
@@ -158,10 +170,23 @@ public struct GeneralInfoStepView: View {
             Task {
                 if let data = try? await newItem.loadTransferable(type: Data.self),
                    let uiImage = UIImage(data: data) {
-                    await MainActor.run {
-                        pendingPickedImage = uiImage
-                        frontPhotoItem = nil
-                        isShowingMattingChoiceDialog = true
+                    
+                    let normalizedImage = uiImage.normalized()
+                    
+                    if let normalizedData = normalizedImage.jpegData(compressionQuality: 0.8) {
+                        await MainActor.run {
+                            // 1. ユーザーがいつでも「背景あり」に戻せるよう、オリジナルデータを保持
+                            viewModel.originalImageData = normalizedData
+                            
+                            // 2. 処理前の画像を一時保持して、ダイアログを表示
+                            pendingPickedImage = normalizedImage
+                            frontPhotoItem = nil
+                            isShowingMattingChoiceDialog = true
+                        }
+                    } else {
+                        await MainActor.run {
+                            frontPhotoItem = nil
+                        }
                     }
                 } else {
                     await MainActor.run {

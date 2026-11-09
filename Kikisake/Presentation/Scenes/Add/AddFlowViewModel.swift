@@ -26,8 +26,9 @@ public final class AddFlowViewModel {
     public var storageLocation: String = "未設定"
     
     public var selectedImageData: Data? = nil
+    public var originalImageData: Data? = nil
     public var selectedBackImageData: Data? = nil
-    public var isBackgroundRemoved: Bool = true // ✨ くり抜きフラグ
+    public var isBackgroundRemoved: Bool = true
 
     public func clearFrontImage() {
         self.selectedImageData = nil
@@ -124,6 +125,7 @@ public final class AddFlowViewModel {
         self.selectedGridRow = nil
         self.selectedGridColumn = nil
         self.selectedImageData = nil
+        self.originalImageData = nil
         self.selectedBackImageData = nil
         self.isBackgroundRemoved = true
         
@@ -179,6 +181,7 @@ public final class AddFlowViewModel {
         self.selectedGridColumn = item.gridColumn
         
         self.selectedImageData = item.imageDatas?.first
+        self.originalImageData = item.imageDatas?.first
         self.selectedBackImageData = item.backImageDatas?.first
         self.isBackgroundRemoved = item.isBackgroundRemoved
     }
