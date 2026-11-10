@@ -28,7 +28,7 @@ public struct GeneralInfoStepView: View {
     @State private var isShowingFrontActionDialog: Bool = false
     @State private var frontPhotoItem: PhotosPickerItem? = nil
 
-    // ✨ 撮影または選択した直後の一時保持用（切り抜き選択ダイアログ用）
+    // 撮影または選択した直後の一時保持用（切り抜き選択ダイアログ用）
     @State private var pendingPickedImage: UIImage? = nil
     @State private var isShowingMattingChoiceDialog: Bool = false
 
@@ -376,16 +376,61 @@ public struct GeneralInfoStepView: View {
                 }
             }
             
-            TextField(String(localized: "ヴィンテージ / 製造年月 (例: 2020)"), text: $viewModel.vintage)
-                .focused($focusedField, equals: .vintage)
+            // ✨ ＋／− ステップアップボタン付きヴィンテージ入力
+            SteppedNumberField(
+                title: String(localized: "ヴィンテージ / 製造年月 (例: 2024)"),
+                text: $viewModel.vintage,
+                step: 1.0,
+                range: 1950...2030,
+                defaultValue: 2024.0,
+                isInteger: true,
+                focusedField: $focusedField,
+                fieldTag: .vintage,
+                keyboardType: .numberPad
+            )
+            .onAppear {
+                if viewModel.vintage.isEmpty {
+                    viewModel.vintage = "2024"
+                }
+            }
             
-            TextField(String(localized: "アルコール度数 (例: 14.5 または 5)"), text: $viewModel.abvString)
-                .keyboardType(.decimalPad)
-                .focused($focusedField, equals: .abv)
+            // ✨ ＋／− ステップアップボタン付きアルコール度数入力（酒種ごとのデフォルト値連動）
+            SteppedNumberField(
+                title: String(localized: "アルコール度数 (例: 14.5)"),
+                text: $viewModel.abvString,
+                step: 0.5,
+                range: 0.0...70.0,
+                defaultValue: defaultABV(for: viewModel.selectedCategory),
+                isInteger: false,
+                focusedField: $focusedField,
+                fieldTag: .abv,
+                keyboardType: .decimalPad
+            )
+            .onAppear {
+                if viewModel.abvString.isEmpty {
+                    viewModel.abvString = String(format: "%.1f", defaultABV(for: viewModel.selectedCategory))
+                }
+            }
+            .onChange(of: viewModel.selectedCategory) { _, newCategory in
+                // 酒種が変更された際、まだカスタム入力されていなければデフォルト値を自動切り替え
+                let current = Double(viewModel.abvString)
+                if current == nil || current == 13.5 || current == 15.0 || current == 5.0 {
+                    viewModel.abvString = String(format: "%.1f", defaultABV(for: newCategory))
+                }
+            }
             
             TextField(String(localized: "価格 (円)"), text: $viewModel.priceString)
                 .keyboardType(.numberPad)
                 .focused($focusedField, equals: .price)
+        }
+    }
+    
+    /// 酒種ごとの標準的なデフォルトアルコール度数
+    private func defaultABV(for category: BeverageCategory) -> Double {
+        switch category {
+        case .wine: return 13.5
+        case .sake: return 15.0
+        case .beer: return 5.0
         }
     }
 

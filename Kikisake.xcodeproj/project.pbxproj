@@ -67,6 +67,7 @@
 		D9044281308CF53B00EF4807 /* LocationSlotSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044280308CF53B00EF4807 /* LocationSlotSelectionSheet.swift */; };
 		D9044286308F113D00EF4807 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9044285308F113D00EF4807 /* StoreKit.framework */; };
 		D9044289308F136400EF4807 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044288308F136400EF4807 /* PaywallView.swift */; };
+		D904F0A730A2AF820046D409 /* SteppedNumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0A630A2AF820046D409 /* SteppedNumberField.swift */; };
 		D95082573090D95D0045BF8E /* BackupDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082563090D95D0045BF8E /* BackupDTOs.swift */; };
 		D95082593090D9720045BF8E /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082583090D9720045BF8E /* BackupManager.swift */; };
 		D950825B309228190045BF8E /* BottleMattingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950825A309228190045BF8E /* BottleMattingHelper.swift */; };
@@ -141,6 +142,7 @@
 		D9044285308F113D00EF4807 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		D9044287308F116A00EF4807 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 		D9044288308F136400EF4807 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		D904F0A630A2AF820046D409 /* SteppedNumberField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SteppedNumberField.swift; sourceTree = "<group>"; };
 		D95082563090D95D0045BF8E /* BackupDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDTOs.swift; sourceTree = "<group>"; };
 		D95082583090D9720045BF8E /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		D950825A309228190045BF8E /* BottleMattingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottleMattingHelper.swift; sourceTree = "<group>"; };
@@ -357,8 +359,9 @@
 		D90441FE307E846400EF4807 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				D9044222307E856F00EF4807 /* CustomSlider.swift */,
 				D904422A307E859300EF4807 /* BeverageCardView.swift */,
+				D9044222307E856F00EF4807 /* CustomSlider.swift */,
+				D904F0A630A2AF820046D409 /* SteppedNumberField.swift */,
 				D904425E308602FD00EF4807 /* TasteRadarCardView.swift */,
 				D90442603086031D00EF4807 /* MatrixAnalysisCardView.swift */,
 				D904426C3088A3D000EF4807 /* AdMobBannerView.swift */,
@@ -552,6 +555,7 @@
 				D904425B308368BF00EF4807 /* AddLocationSheetView.swift in Sources */,
 				D9044211307E84E100EF4807 /* AppConstants.swift in Sources */,
 				D904427F308CF04500EF4807 /* CellarGridView.swift in Sources */,
+				D904F0A730A2AF820046D409 /* SteppedNumberField.swift in Sources */,
 				D904422F307E85AB00EF4807 /* LogListViewModel.swift in Sources */,
 				D950826530A0304F0045BF8E /* AnalyticsSection.swift in Sources */,
 				D9044231307E85B600EF4807 /* LogDetailView.swift in Sources */,
@@ -744,7 +748,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -765,7 +769,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21;
+				MARKETING_VERSION = 1.22;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -788,7 +792,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -809,7 +813,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21;
+				MARKETING_VERSION = 1.22;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

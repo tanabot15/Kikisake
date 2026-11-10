@@ -5,9 +5,56 @@ import Foundation
 import SwiftData
 import SwiftUI
 
+/// 下書き保存用のCodableデータ構造体
+private struct AddFlowDraftData: Codable {
+    var currentStep: Int
+    var selectedCategoryRaw: String
+    var name: String
+    var producer: String
+    var region: String
+    var vintage: String
+    var abvString: String
+    var priceString: String
+    var storageLocation: String
+    
+    var wineType: String
+    var blendComponents: [BlendComponent]
+    var appellation: String
+    
+    var sakeSpecificName: String
+    var riceVariety: String
+    var polishingRate: String
+    var sakeMeterValue: String
+    
+    var beerStyle: String
+    var ibu: String
+    
+    var appearanceNotes: String
+    var appearanceColorHex: String
+    var selectedAromaTags: [String]
+    
+    var sweetness: Double
+    var saltiness: Double
+    var acidity: Double
+    var bitterness: Double
+    var umami: Double
+    var tannin: Double
+    var body: Double
+    var selectedBalanceTags: [String]
+    var finishLength: Double
+    
+    var rating: Double
+    var isCostEffective: Bool
+    var isWillingToRepeat: Bool
+    var hasAgingPotential: Bool
+    var pairing: String
+    var memo: String
+    var tastingDate: Date
+}
+
 @Observable
 public final class AddFlowViewModel {
-    public var currentStep: Int = 1
+    public var currentStep: Int = 1 { didSet { saveDraft() } }
     
     public var showAlreadyFilledAlert: Bool = false
     public var pendingOpeningItem: BeverageItem? = nil
@@ -15,81 +62,217 @@ public final class AddFlowViewModel {
     public var isOpeningExistingItem: Bool = false
 
     // Step 1: 一般的な情報
-    public var selectedCategory: BeverageCategory = .wine
+    public var selectedCategory: BeverageCategory = .wine { didSet { saveDraft() } }
     public var sourceItem: BeverageItem? = nil
-    public var name: String = ""
-    public var producer: String = ""
-    public var region: String = ""
-    public var vintage: String = ""
-    public var abvString: String = ""
-    public var priceString: String = ""
-    public var storageLocation: String = "未設定"
+    public var name: String = "" { didSet { saveDraft() } }
+    public var producer: String = "" { didSet { saveDraft() } }
+    public var region: String = "" { didSet { saveDraft() } }
+    public var vintage: String = "" { didSet { saveDraft() } }
+    public var abvString: String = "" { didSet { saveDraft() } }
+    public var priceString: String = "" { didSet { saveDraft() } }
+    public var storageLocation: String = "未設定" { didSet { saveDraft() } }
     
-    public var selectedImageData: Data? = nil
+    public var selectedImageData: Data? = nil { didSet { saveDraft() } }
     public var originalImageData: Data? = nil
-    public var selectedBackImageData: Data? = nil
-    public var isBackgroundRemoved: Bool = true
+    public var selectedBackImageData: Data? = nil { didSet { saveDraft() } }
+    public var isBackgroundRemoved: Bool = true { didSet { saveDraft() } }
 
     public func clearFrontImage() {
         self.selectedImageData = nil
         self.isBackgroundRemoved = true
+        saveDraft()
     }
 
     public func clearBackImage() {
         self.selectedBackImageData = nil
+        saveDraft()
     }
 
     public var selectedGridRow: Int? = nil
     public var selectedGridColumn: Int? = nil
 
-    public var wineType: String = "赤"
+    public var wineType: String = "赤" { didSet { saveDraft() } }
     public var grapeVarieties: String = ""
-    public var blendComponents: [BlendComponent] = [BlendComponent(variety: "", percentage: nil)]
-    public var appellation: String = ""
+    public var blendComponents: [BlendComponent] = [BlendComponent(variety: "", percentage: nil)] { didSet { saveDraft() } }
+    public var appellation: String = "" { didSet { saveDraft() } }
     
-    public var sakeSpecificName: String = "純米大吟醸"
-    public var riceVariety: String = ""
-    public var polishingRate: String = ""
-    public var sakeMeterValue: String = ""
+    public var sakeSpecificName: String = "純米大吟醸" { didSet { saveDraft() } }
+    public var riceVariety: String = "" { didSet { saveDraft() } }
+    public var polishingRate: String = "" { didSet { saveDraft() } }
+    public var sakeMeterValue: String = "" { didSet { saveDraft() } }
     
-    public var beerStyle: String = ""
-    public var ibu: String = ""
+    public var beerStyle: String = "" { didSet { saveDraft() } }
+    public var ibu: String = "" { didSet { saveDraft() } }
 
     // Step 2: 色・外観
-    public var appearanceNotes: String = "ルビーレッド"
-    public var appearanceColorHex: String = "#991A33"
+    public var appearanceNotes: String = "ルビーレッド" { didSet { saveDraft() } }
+    public var appearanceColorHex: String = "#991A33" { didSet { saveDraft() } }
 
     // Step 3: 香り
-    public var selectedAromaTags: [String] = []
+    public var selectedAromaTags: [String] = [] { didSet { saveDraft() } }
 
     // Step 4: 味わい
-    public var sweetness: Double = 2.5
-    public var saltiness: Double = 2.5
-    public var acidity: Double = 2.5
-    public var bitterness: Double = 2.5
-    public var umami: Double = 2.5
+    public var sweetness: Double = 2.5 { didSet { saveDraft() } }
+    public var saltiness: Double = 2.5 { didSet { saveDraft() } }
+    public var acidity: Double = 2.5 { didSet { saveDraft() } }
+    public var bitterness: Double = 2.5 { didSet { saveDraft() } }
+    public var umami: Double = 2.5 { didSet { saveDraft() } }
 
-    public var tannin: Double = 2.5
-    public var body: Double = 2.5
-    public var selectedBalanceTags: [String] = []
-    public var finishLength: Double = 2.5
+    public var tannin: Double = 2.5 { didSet { saveDraft() } }
+    public var body: Double = 2.5 { didSet { saveDraft() } }
+    public var selectedBalanceTags: [String] = [] { didSet { saveDraft() } }
+    public var finishLength: Double = 2.5 { didSet { saveDraft() } }
 
     // Step 5: 総合評価・フラグ・ペアリング・メモ
-    public var rating: Double = 4.0
-    public var isCostEffective: Bool = false
-    public var isWillingToRepeat: Bool = false
-    public var hasAgingPotential: Bool = false
-    public var pairing: String = ""
-    public var memo: String = ""
-    public var tastingDate: Date = Date()
+    public var rating: Double = 4.0 { didSet { saveDraft() } }
+    public var isCostEffective: Bool = false { didSet { saveDraft() } }
+    public var isWillingToRepeat: Bool = false { didSet { saveDraft() } }
+    public var hasAgingPotential: Bool = false { didSet { saveDraft() } }
+    public var pairing: String = "" { didSet { saveDraft() } }
+    public var memo: String = "" { didSet { saveDraft() } }
+    public var tastingDate: Date = Date() { didSet { saveDraft() } }
 
     public var editingLog: TastingLog? = nil
     public var editingItem: BeverageItem? = nil
 
     private let consumeUseCase = ConsumeBeverageUseCase()
+    private let draftKey = "Kikisake_AddFlow_DraftData_v1"
+    private let frontImageDraftKey = "Kikisake_AddFlow_FrontImage_v1"
+    private let backImageDraftKey = "Kikisake_AddFlow_BackImage_v1"
 
     public init() {}
     
+    // MARK: - 下書き自動保存・復元機能
+    
+    /// 現在の入力をローカル（UserDefaultsおよび一時ファイル）に自動保存
+    public func saveDraft() {
+        // 編集モード（既存ログの編集など）のときは下書き対象外とする
+        if editingLog != nil || isOpeningExistingItem { return }
+        
+        // 全く入力されていない初期状態であれば保存しない
+        guard !name.isEmpty || !producer.isEmpty || !memo.isEmpty || selectedImageData != nil else { return }
+        
+        let draft = AddFlowDraftData(
+            currentStep: currentStep,
+            selectedCategoryRaw: selectedCategory.rawValue,
+            name: name,
+            producer: producer,
+            region: region,
+            vintage: vintage,
+            abvString: abvString,
+            priceString: priceString,
+            storageLocation: storageLocation,
+            wineType: wineType,
+            blendComponents: blendComponents,
+            appellation: appellation,
+            sakeSpecificName: sakeSpecificName,
+            riceVariety: riceVariety,
+            polishingRate: polishingRate,
+            sakeMeterValue: sakeMeterValue,
+            beerStyle: beerStyle,
+            ibu: ibu,
+            appearanceNotes: appearanceNotes,
+            appearanceColorHex: appearanceColorHex,
+            selectedAromaTags: selectedAromaTags,
+            sweetness: sweetness,
+            saltiness: saltiness,
+            acidity: acidity,
+            bitterness: bitterness,
+            umami: umami,
+            tannin: tannin,
+            body: body,
+            selectedBalanceTags: selectedBalanceTags,
+            finishLength: finishLength,
+            rating: rating,
+            isCostEffective: isCostEffective,
+            isWillingToRepeat: isWillingToRepeat,
+            hasAgingPotential: hasAgingPotential,
+            pairing: pairing,
+            memo: memo,
+            tastingDate: tastingDate
+        )
+        
+        if let encoded = try? JSONEncoder().encode(draft) {
+            UserDefaults.standard.set(encoded, forKey: draftKey)
+        }
+        if let frontImg = selectedImageData {
+            UserDefaults.standard.set(frontImg, forKey: frontImageDraftKey)
+        }
+        if let backImg = selectedBackImageData {
+            UserDefaults.standard.set(backImg, forKey: backImageDraftKey)
+        }
+    }
+    
+    /// 保存されている下書きが存在するかどうか
+    public var hasDraft: Bool {
+        return UserDefaults.standard.data(forKey: draftKey) != nil
+    }
+    
+    /// 下書きデータをViewModelに復元する
+    public func restoreDraft() {
+        guard let data = UserDefaults.standard.data(forKey: draftKey),
+              let draft = try? JSONDecoder().decode(AddFlowDraftData.self, from: data) else { return }
+        
+        self.currentStep = draft.currentStep
+        self.selectedCategory = BeverageCategory(rawValue: draft.selectedCategoryRaw) ?? .wine
+        self.name = draft.name
+        self.producer = draft.producer
+        self.region = draft.region
+        self.vintage = draft.vintage
+        self.abvString = draft.abvString
+        self.priceString = draft.priceString
+        self.storageLocation = draft.storageLocation
+        
+        self.wineType = draft.wineType
+        self.blendComponents = draft.blendComponents
+        self.appellation = draft.appellation
+        
+        self.sakeSpecificName = draft.sakeSpecificName
+        self.riceVariety = draft.riceVariety
+        self.polishingRate = draft.polishingRate
+        self.sakeMeterValue = draft.sakeMeterValue
+        
+        self.beerStyle = draft.beerStyle
+        self.ibu = draft.ibu
+        
+        self.appearanceNotes = draft.appearanceNotes
+        self.appearanceColorHex = draft.appearanceColorHex
+        self.selectedAromaTags = draft.selectedAromaTags
+        
+        self.sweetness = draft.sweetness
+        self.saltiness = draft.saltiness
+        self.acidity = draft.acidity
+        self.bitterness = draft.bitterness
+        self.umami = draft.umami
+        self.tannin = draft.tannin
+        self.body = draft.body
+        self.selectedBalanceTags = draft.selectedBalanceTags
+        self.finishLength = draft.finishLength
+        
+        self.rating = draft.rating
+        self.isCostEffective = draft.isCostEffective
+        self.isWillingToRepeat = draft.isWillingToRepeat
+        self.hasAgingPotential = draft.hasAgingPotential
+        self.pairing = draft.pairing
+        self.memo = draft.memo
+        self.tastingDate = draft.tastingDate
+        
+        if let frontImg = UserDefaults.standard.data(forKey: frontImageDraftKey) {
+            self.selectedImageData = frontImg
+            self.originalImageData = frontImg
+        }
+        if let backImg = UserDefaults.standard.data(forKey: backImageDraftKey) {
+            self.selectedBackImageData = backImg
+        }
+    }
+    
+    /// 下書きデータを完全に消去する（保存完了時や明示的キャンセル時）
+    public func clearDraft() {
+        UserDefaults.standard.removeObject(forKey: draftKey)
+        UserDefaults.standard.removeObject(forKey: frontImageDraftKey)
+        UserDefaults.standard.removeObject(forKey: backImageDraftKey)
+    }
+
     public func handleOpeningItem(_ item: BeverageItem) {
         configureWithItem(item)
         self.isOpeningExistingItem = true
@@ -111,6 +294,7 @@ public final class AddFlowViewModel {
     }
 
     public func reset() {
+        clearDraft() // ✨ リセット時に下書きもクリア
         self.currentStep = 1
         self.isOpeningExistingItem = false
         self.selectedCategory = .wine
@@ -306,7 +490,7 @@ public final class AddFlowViewModel {
         modelContext.insert(newItem)
         try modelContext.save()
 
-        reset()
+        reset() // 保存成功時に自動リセット ＆ 下書き消去
     }
     
     public func saveWithStock(modelContext: ModelContext) throws {
@@ -377,7 +561,7 @@ public final class AddFlowViewModel {
         modelContext.insert(newLog)
         try modelContext.save()
 
-        reset()
+        reset() // 保存成功時に自動リセット ＆ 下書き消去
     }
 
     public func save(modelContext: ModelContext) throws {

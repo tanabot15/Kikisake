@@ -16,6 +16,9 @@ public struct AddFlowView: View {
     @State private var isShowingSaveOptions: Bool = false
     @State private var isShowingInventoryMenu: Bool = false
     
+    // ✨ 下書き復元確認ダイアログ用 State
+    @State private var isShowingDraftRestoreAlert: Bool = false
+    
     // スロット選択シート用 State
     @State private var pendingTargetLocation: StorageLocation? = nil
     @State private var isInventoryOnlyFlow: Bool = false
@@ -188,6 +191,24 @@ public struct AddFlowView: View {
                 }
             } message: {
                 Text(alertMessage)
+            }
+            // ✨ 下書き復元確認ダイアログ
+            .alert(String(localized: "前回の続きから入力しますか？"), isPresented: $isShowingDraftRestoreAlert) {
+                Button(String(localized: "続きから復元する")) {
+                    viewModel.restoreDraft()
+                }
+                Button(String(localized: "破棄して新しく始める"), role: .destructive) {
+                    viewModel.clearDraft()
+                    viewModel.reset()
+                }
+            } message: {
+                Text(String(localized: "入力途中の下書きデータが保存されています。"))
+            }
+            .onAppear {
+                // 新規入力フローかつ下書きが存在する場合に復元確認を行う
+                if !viewModel.isOpeningExistingItem && viewModel.editingLog == nil && viewModel.hasDraft && viewModel.name.isEmpty {
+                    isShowingDraftRestoreAlert = true
+                }
             }
         }
     }
