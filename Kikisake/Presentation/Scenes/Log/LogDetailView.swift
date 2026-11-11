@@ -347,20 +347,42 @@ public struct LogDetailView: View {
                 } label: {
                     GeometryReader { geometry in
                         ZStack(alignment: .center) {
-                            // ── 共通の背景レイヤー ──
-                            Color(.secondarySystemGroupedBackground)
-
-                            // ── 切り抜き状態に応じた表示の切り分け（サイズを統一） ──
                             if item.isBackgroundRemoved {
-                                // 透過済み：指定された共通フレーム（高さ260）の中で綺麗に収まるようにscaledToFitで表示
+                                // ✨【改善】背景透過時の洗練された演出
+                                // 1. ベースのシックな深みのあるダークグラデーション
+                                LinearGradient(
+                                    colors: [
+                                        Color(hex: "#1A1A1E") ?? .black,
+                                        Color(hex: "#2C2C30") ?? .gray
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+
+                                // 2. お酒の外観カラー（appearanceColorHex）を利用したアンビエント光沢（Glow）演出
+                                Circle()
+                                    .fill(colorFromHex(log.appearanceColorHex))
+                                    .frame(width: 180, height: 180)
+                                    .blur(radius: 50)
+                                    .opacity(0.45)
+                                    .offset(y: -10)
+
+                                // 3. 透過されたボトル本体（ドロップシャドウで立体感を強調）
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: geometry.size.width, height: 260)
-                                    .shadow(color: Color.black.opacity(0.15), radius: 6, x: 0, y: 3)
-                                    .padding(.vertical, 12) // 上下に適度な余白を持たせる
+                                    .frame(width: geometry.size.width, height: 250)
+                                    .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 6)
+                                    .padding(.vertical, 8)
+                                
+                                // 4. 下部テキスト用の読みやすさ向上グラデーション保護膜
+                                LinearGradient(
+                                    colors: [.clear, .black.opacity(0.85)],
+                                    startPoint: .center,
+                                    endPoint: .bottom
+                                )
                             } else {
-                                // そのままの写真：従来のぼかし背景 ＋ 全体フィット表示
+                                // そのままの写真（非透過）
                                 Color.black
                                 
                                 Image(uiImage: uiImage)
@@ -376,7 +398,7 @@ public struct LogDetailView: View {
                                     .frame(width: geometry.size.width, height: 260)
                                 
                                 LinearGradient(
-                                    colors: [.clear, .black.opacity(0.75)],
+                                    colors: [.clear, .black.opacity(0.85)],
                                     startPoint: .center,
                                     endPoint: .bottom
                                 )
@@ -402,6 +424,7 @@ public struct LogDetailView: View {
                 .frame(height: 200)
             }
 
+            // 裏面ラベルサムネイル
             if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
                 VStack {
                     Spacer()
@@ -413,35 +436,37 @@ public struct LogDetailView: View {
                             Image(uiImage: backUiImage)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: 72, height: 72)
-                                .clipShape(RoundedRectangle(cornerRadius: 6))
+                                .frame(width: 64, height: 64)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 6)
+                                    RoundedRectangle(cornerRadius: 8)
                                         .stroke(.white.opacity(0.8), lineWidth: 1)
                                 )
-                                .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
+                                .shadow(color: .black.opacity(0.4), radius: 4, x: 0, y: 2)
                         }
                         .buttonStyle(.plain)
                         .padding(12)
                     }
                     Spacer()
-                        .frame(height: 36)
+                        .frame(height: 48)
                 }
             }
 
+            // ボトル情報テキスト（白文字固定にしてグラデーション保護膜の上で100%の可読性を保持）
             if let item = log.item {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(item.name)
                         .font(.title2)
                         .fontWeight(.bold)
-                        // ✨ 背景透過時は文字色をダーク（primary）にし、そのままの写真時は白文字にするなど調整可能
-                        .foregroundStyle(item.imageDatas?.first != nil && !item.isBackgroundRemoved ? .white : .primary)
+                        .foregroundStyle(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
                         .lineLimit(2)
 
                     if !item.producer.isEmpty {
                         Text(item.producer)
                             .font(.subheadline)
-                            .foregroundStyle(item.imageDatas?.first != nil && !item.isBackgroundRemoved ? .white.opacity(0.8) : .secondary)
+                            .foregroundStyle(.white.opacity(0.85))
+                            .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -449,28 +474,9 @@ public struct LogDetailView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .background(Color(.secondarySystemGroupedBackground)) // ✨ 背景透過時はカード背景色に馴染ませる
+        .background(Color.black)
         .clipShape(RoundedRectangle(cornerRadius: 16))
-        .fullScreenCover(isPresented: $isShowingBackImageModal) {
-            if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
-                ZStack(alignment: .topTrailing) {
-                    Color.black.ignoresSafeArea()
-                    Image(uiImage: backUiImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                    Button {
-                        isShowingBackImageModal = false
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 28))
-                            .foregroundStyle(.white.opacity(0.8))
-                            .padding()
-                    }
-                }
-            }
-        }
+        .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
     }
     
     @MainActor

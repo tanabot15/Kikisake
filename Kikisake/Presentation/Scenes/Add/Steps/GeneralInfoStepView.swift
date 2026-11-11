@@ -54,6 +54,7 @@ public struct GeneralInfoStepView: View {
             categorySection
             basicInfoSection
         }
+        // ── 表面の写真選択・編集アクションダイアログ ──
         .confirmationDialog(String(localized: "表面の写真を選択"), isPresented: $isShowingFrontActionDialog, titleVisibility: .visible) {
             Button(String(localized: "写真を撮る")) {
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -71,7 +72,6 @@ public struct GeneralInfoStepView: View {
                 if viewModel.isBackgroundRemoved {
                     // 現在透過されている場合は「背景ありの写真に戻す」オプションを表示
                     Button(String(localized: "背景ありの写真に戻す")) {
-                        // 保持していたオリジナル画像に戻す
                         if let original = viewModel.originalImageData {
                             viewModel.selectedImageData = original
                             viewModel.isBackgroundRemoved = false
@@ -98,9 +98,31 @@ public struct GeneralInfoStepView: View {
 
                 Button(String(localized: "写真を削除"), role: .destructive) {
                     viewModel.selectedImageData = nil
-                    viewModel.originalImageData = nil // ✨ オリジナルもクリア
+                    viewModel.originalImageData = nil
                     viewModel.isBackgroundRemoved = true
                     frontPhotoItem = nil
+                }
+            }
+            
+            Button(String(localized: "キャンセル"), role: .cancel) {}
+        }
+        // ── 裏面の写真選択・編集アクションダイアログ ──
+        .confirmationDialog(String(localized: "裏面の写真を選択"), isPresented: $isShowingBackActionDialog, titleVisibility: .visible) {
+            Button(String(localized: "写真を撮る")) {
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    isShowingBackCamera = true
+                } else {
+                    showAlert(String(localized: "このデバイスではカメラを利用できません。"))
+                }
+            }
+            Button(String(localized: "ライブラリから選ぶ")) {
+                isShowingBackLibrary = true
+            }
+            
+            if viewModel.selectedBackImageData != nil {
+                Button(String(localized: "写真を削除"), role: .destructive) {
+                    viewModel.clearBackImage()
+                    backPhotoItem = nil
                 }
             }
             
@@ -113,7 +135,6 @@ public struct GeneralInfoStepView: View {
                 let normalized = image.normalized()
                 guard let originalData = normalized.jpegData(compressionQuality: 0.8) else { return }
                 
-                // ✨ オリジナルデータを保持した上で背景をくり抜く
                 viewModel.originalImageData = originalData
                 
                 Task {
@@ -138,7 +159,7 @@ public struct GeneralInfoStepView: View {
                 guard let image = pendingPickedImage else { return }
                 let normalized = image.normalized()
                 if let data = normalized.jpegData(compressionQuality: 0.8) {
-                    viewModel.originalImageData = data // ✨ オリジナルとしても保存
+                    viewModel.originalImageData = data
                     viewModel.selectedImageData = data
                     viewModel.isBackgroundRemoved = false
                 }
@@ -175,10 +196,7 @@ public struct GeneralInfoStepView: View {
                     
                     if let normalizedData = normalizedImage.jpegData(compressionQuality: 0.8) {
                         await MainActor.run {
-                            // 1. ユーザーがいつでも「背景あり」に戻せるよう、オリジナルデータを保持
                             viewModel.originalImageData = normalizedData
-                            
-                            // 2. 処理前の画像を一時保持して、ダイアログを表示
                             pendingPickedImage = normalizedImage
                             frontPhotoItem = nil
                             isShowingMattingChoiceDialog = true
@@ -198,7 +216,8 @@ public struct GeneralInfoStepView: View {
         // ── 裏面のシート・ピッカーモダール ──
         .sheet(isPresented: $isShowingBackCamera) {
             ImagePickerView(sourceType: .camera) { image in
-                if let data = image.jpegData(compressionQuality: 0.8) {
+                let normalized = image.normalized()
+                if let data = normalized.jpegData(compressionQuality: 0.8) {
                     viewModel.selectedBackImageData = data
                 }
             }
@@ -207,13 +226,23 @@ public struct GeneralInfoStepView: View {
         .onChange(of: backPhotoItem) { _, newValue in
             guard let newItem = newValue else { return }
             Task {
-                if let data = try? await newItem.loadTransferable(type: Data.self) {
-                    await MainActor.run {
-                        viewModel.selectedBackImageData = data
+                if let data = try? await newItem.loadTransferable(type: Data.self),
+                   let uiImage = UIImage(data: data) {
+                    let normalized = uiImage.normalized()
+                    if let normalizedData = normalized.jpegData(compressionQuality: 0.8) {
+                        await MainActor.run {
+                            viewModel.selectedBackImageData = normalizedData
+                            backPhotoItem = nil
+                        }
+                    } else {
+                        await MainActor.run {
+                            backPhotoItem = nil
+                        }
                     }
-                }
-                await MainActor.run {
-                    backPhotoItem = nil
+                } else {
+                    await MainActor.run {
+                        backPhotoItem = nil
+                    }
                 }
             }
         }
@@ -355,12 +384,10 @@ public struct GeneralInfoStepView: View {
                             }
                         } else {
                             Menu(hierarchy.parent) {
-                                // 「国/都道府県」のみを選択する場合のオプション
                                 Button(String(format: String(localized: "%@ (全体)"), hierarchy.parent)) {
                                     viewModel.region = hierarchy.parent
                                 }
                                 Divider()
-                                // 子エリア（地区・詳細産地）の選択
                                 ForEach(hierarchy.children, id: \.self) { child in
                                     Button(child) {
                                         viewModel.region = "\(hierarchy.parent), \(child)"
@@ -376,7 +403,6 @@ public struct GeneralInfoStepView: View {
                 }
             }
             
-            // ✨ ＋／− ステップアップボタン付きヴィンテージ入力
             SteppedNumberField(
                 title: String(localized: "ヴィンテージ / 製造年月 (例: 2024)"),
                 text: $viewModel.vintage,
@@ -394,7 +420,6 @@ public struct GeneralInfoStepView: View {
                 }
             }
             
-            // ✨ ＋／− ステップアップボタン付きアルコール度数入力（酒種ごとのデフォルト値連動）
             SteppedNumberField(
                 title: String(localized: "アルコール度数 (例: 14.5)"),
                 text: $viewModel.abvString,
@@ -412,7 +437,6 @@ public struct GeneralInfoStepView: View {
                 }
             }
             .onChange(of: viewModel.selectedCategory) { _, newCategory in
-                // 酒種が変更された際、まだカスタム入力されていなければデフォルト値を自動切り替え
                 let current = Double(viewModel.abvString)
                 if current == nil || current == 13.5 || current == 15.0 || current == 5.0 {
                     viewModel.abvString = String(format: "%.1f", defaultABV(for: newCategory))
@@ -425,7 +449,6 @@ public struct GeneralInfoStepView: View {
         }
     }
     
-    /// 酒種ごとの標準的なデフォルトアルコール度数
     private func defaultABV(for category: BeverageCategory) -> Double {
         switch category {
         case .wine: return 13.5

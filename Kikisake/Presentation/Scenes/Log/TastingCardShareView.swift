@@ -222,9 +222,18 @@ public struct TastingCardShareView: View {
                 // --- 右側ボトル表示部分 ---
                 ZStack(alignment: .bottomTrailing) {
                     ZStack {
-                        // ✨ 背景透過時はグラデーションを敷かずクリア、またはカードに馴染む背景にする
                         if let item = log.item, item.isBackgroundRemoved {
-                            Color.clear
+                            // ✨【改善】透過ボトル背景に優しく浮かび上がるスポットライトグラデーション
+                            RadialGradient(
+                                colors: [
+                                    colorFromHex(log.appearanceColorHex).opacity(0.25),
+                                    Color.primary.opacity(0.04),
+                                    Color.clear
+                                ],
+                                center: .center,
+                                startRadius: 10,
+                                endRadius: 90
+                            )
                         } else {
                             LinearGradient(
                                 colors: [Color(.tertiarySystemGroupedBackground), Color(.systemBackground)],
@@ -235,18 +244,19 @@ public struct TastingCardShareView: View {
 
                         if let item = log.item, let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
                             if item.isBackgroundRemoved {
-                                // くり抜き済みの場合：切り抜き済み画像または処理済み画像を中央配置で綺麗にフィット
                                 if let processed = processedBottleImage {
                                     Image(uiImage: processed)
                                         .resizable()
                                         .scaledToFit()
                                         .frame(maxWidth: 150, maxHeight: 190)
+                                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 3) // ソフトな影で立体感
                                         .padding(4)
                                 } else {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .scaledToFit()
                                         .frame(maxWidth: 150, maxHeight: 190)
+                                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 3)
                                         .padding(4)
                                         .task {
                                             let backgroundRemoved = await BottleMattingHelper.removeBackground(from: uiImage)
@@ -254,7 +264,6 @@ public struct TastingCardShareView: View {
                                         }
                                 }
                             } else {
-                                // そのままの写真を使用する場合：背景処理を行わず、全体を綺麗にクロップ/フィット表示
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .scaledToFill()

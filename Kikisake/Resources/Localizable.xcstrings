@@ -659,19 +659,15 @@
         }
       }
     },
-    "アルコール度数 (例: 14.5 または 5)" : {
-      "extractionState" : "stale",
+    "アルコール度数 (例: 14.5)" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ABV (e.g., 14.5 or 5)"
+            "value" : "ABV (e.g. 14.5)"
           }
         }
       }
-    },
-    "アルコール度数 (例: 14.5)" : {
-
     },
     "アルザス" : {
       "localizations" : {
@@ -844,7 +840,14 @@
       }
     },
     "ヴィンテージ / 製造年月 (例: 2024)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vintage / Production Date (e.g. 2024)"
+          }
+        }
+      }
     },
     "ヴェネト" : {
       "localizations" : {
@@ -5306,6 +5309,16 @@
         }
       }
     },
+    "入力途中の下書きデータが保存されています。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have an unsaved draft from your previous session."
+          }
+        }
+      }
+    },
     "全期間" : {
       "localizations" : {
         "en" : {
@@ -5492,6 +5505,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete"
+          }
+        }
+      }
+    },
+    "前回の続きから入力しますか？" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Would you like to resume where you left off?"
           }
         }
       }
@@ -7494,6 +7517,16 @@
         }
       }
     },
+    "破棄して新しく始める" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard & Start New"
+          }
+        }
+      }
+    },
     "硫黄" : {
       "localizations" : {
         "en" : {
@@ -7676,6 +7709,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Junmai"
+          }
+        }
+      }
+    },
+    "続きから復元する" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resume Draft"
           }
         }
       }
@@ -8045,6 +8088,9 @@
           }
         }
       }
+    },
+    "裏面の写真を選択" : {
+
     },
     "補足メモ (任意)" : {
       "localizations" : {

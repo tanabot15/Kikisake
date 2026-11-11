@@ -365,6 +365,7 @@ public final class AddFlowViewModel {
         self.selectedGridColumn = item.gridColumn
         
         self.selectedImageData = item.imageDatas?.first
+        // ✨ 既存アイテムの読み込み時にもオリジナルデータを保持させることで、背景ありへの切り戻しを可能にする
         self.originalImageData = item.imageDatas?.first
         self.selectedBackImageData = item.backImageDatas?.first
         self.isBackgroundRemoved = item.isBackgroundRemoved
