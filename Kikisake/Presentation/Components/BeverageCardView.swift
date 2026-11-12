@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-/// 飲んだ酒のリストや在庫一覧で使用する共通カードビュー
+/// 飲んだ酒のリストや在庫一覧で使用する共通カードビュー（和風名刺デザイン・サイドパネル拡張）
 public struct BeverageCardView: View {
     let name: String
     let producer: String
@@ -37,8 +37,8 @@ public struct BeverageCardView: View {
         self.appearanceColorHex = appearanceColorHex
     }
 
-    private var appearanceColor: Color? {
-        guard let hex = appearanceColorHex, !hex.isEmpty else { return nil }
+    private var appearanceColor: Color {
+        guard let hex = appearanceColorHex, !hex.isEmpty else { return Color.accentColor }
         let scanner = Scanner(string: hex.replacingOccurrences(of: "#", with: ""))
         var rgbValue: UInt64 = 0
         if scanner.scanHexInt64(&rgbValue) {
@@ -47,141 +47,198 @@ public struct BeverageCardView: View {
             let blue = Double(rgbValue & 0x0000FF) / 255.0
             return Color(red: red, green: green, blue: blue)
         }
-        return nil
+        return Color.accentColor
     }
 
     public var body: some View {
-        HStack(spacing: 12) {
-            if let imageData, let uiImage = UIImage(data: imageData) {
-                // ✨ くり抜き有無（isBackgroundRemoved）に応じて表示方法を切り替え
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: isBackgroundRemoved ? .fit : .fill)
-                    .frame(width: 60, height: 60)
-                    .background(isBackgroundRemoved ? Color(.systemGray6) : Color.clear)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-            } else {
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color(.systemGray5))
-                    .frame(width: 60, height: 60)
-                    .overlay {
-                        Image(systemName: "wineglass")
+        HStack(spacing: 0) {
+            // ✨ 1. 左側エリア：カードの上・左・下の端（ぎりぎり）まで完全に密着させるパネル
+            ZStack {
+                // 背景：外観カラーを薄く敷いたプレート（上・左・下がカード外縁に直結）
+                LinearGradient(
+                    colors: [
+                        appearanceColor.opacity(0.18),
+                        appearanceColor.opacity(0.06)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+
+                if let imageData, let uiImage = UIImage(data: imageData) {
+                    if isBackgroundRemoved {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding(8)
+                            .shadow(color: Color.black.opacity(0.12), radius: 3, x: 0, y: 2)
+                    } else {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    }
+                } else {
+                    Image(systemName: "wineglass")
+                        .font(.system(size: 22))
+                        .foregroundStyle(appearanceColor)
+                }
+            }
+            .frame(width: 80, height: 110)
+            // 左側の角だけにカード自体の角丸を合わせる
+            .clipShape(
+                UnevenRoundedRectangle(
+                    topLeadingRadius: 12,
+                    bottomLeadingRadius: 12,
+                    bottomTrailingRadius: 0,
+                    topTrailingRadius: 0
+                )
+            )
+            // 右側の境界にだけ微かなセパレーター線を引く
+            .overlay(
+                Rectangle()
+                    .fill(appearanceColor.opacity(0.2))
+                    .frame(width: 1),
+                alignment: .trailing
+            )
+
+            // ✨ 2. 右側エリア：テキスト情報をゆったり配置
+            VStack(alignment: .leading, spacing: 5) {
+                // 最上段：組織名・会社名ポジション（生産者 / 蔵元）
+                Text(producer.isEmpty ? " " : producer)
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+
+                // 中央メイン：氏名ポジション（銘柄名）
+                Text(name)
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+
+                // 肩書・種別ポジション（酒種タグ ＋ ヴィンテージ ＋ 外観色）
+                HStack(spacing: 6) {
+                    Text(category.displayName)
+                        .font(.system(size: 10, weight: .bold))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2.5)
+                        .background(appearanceColor.opacity(0.15))
+                        .foregroundStyle(appearanceColor)
+                        .cornerRadius(4)
+
+                    if let vintage, !vintage.isEmpty {
+                        Text(vintage)
+                            .font(.caption2)
+                            .fontWeight(.medium)
                             .foregroundStyle(.secondary)
                     }
-            }
 
-            VStack(alignment: .leading, spacing: 6) {
-                HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack(spacing: 6) {
-                            Text(category.displayName)
+                    Circle()
+                        .fill(appearanceColor)
+                        .frame(width: 10, height: 10)
+                        .overlay(
+                            Circle()
+                                .stroke(Color.primary.opacity(0.15), lineWidth: 0.5)
+                        )
+                }
+
+                Spacer(minLength: 0)
+
+                // 最下段：所在地 ＆ 右下の評価
+                HStack(alignment: .bottom) {
+                    if !region.isEmpty {
+                        HStack(spacing: 3) {
+                            Image(systemName: "mappin.and.ellipse")
+                                .font(.system(size: 10))
+                            Text(region)
                                 .font(.caption2)
-                                .fontWeight(.bold)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .background(Color.accentColor.opacity(0.15))
-                                .foregroundStyle(Color.accentColor)
-                                .cornerRadius(4)
-                            
-                            if let vintage, !vintage.isEmpty {
-                                Text(vintage)
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                            
-                            if let color = appearanceColor {
-                                Circle()
-                                    .fill(color)
-                                    .frame(width: 12, height: 12)
-                                    .overlay(
-                                        Circle()
-                                            .stroke(Color.primary.opacity(0.15), lineWidth: 1)
-                                    )
-                            }
                         }
-
-                        Text(name)
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.primary)
-                            .lineLimit(1)
-
-                        Text(producer)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
+                        .foregroundStyle(.secondary)
                     }
 
                     Spacer()
 
                     if let rating {
-                        HStack(spacing: 4) {
+                        HStack(spacing: 3) {
                             Image(systemName: "star.fill")
-                                .font(.caption)
+                                .font(.system(size: 11))
                                 .foregroundStyle(.yellow)
                             Text(String(format: "%.1f", rating))
-                                .font(.subheadline)
+                                .font(.caption)
                                 .fontWeight(.bold)
+                                .foregroundStyle(.primary)
                         }
                     }
                 }
-
-                if !region.isEmpty {
-                    HStack(spacing: 4) {
-                        Image(systemName: "mappin.and.ellipse")
-                            .font(.caption2)
-                        Text(region)
-                            .font(.caption)
-                    }
-                    .foregroundStyle(.secondary)
-                }
             }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .frame(height: 110)
+            
+            Spacer(minLength: 0)
         }
-        .padding()
         .background(Color(.secondarySystemGroupedBackground))
-        .cornerRadius(12)
+        .cornerRadius(12) // カード全体の角丸
         .shadow(color: Color.black.opacity(0.04), radius: 6, x: 0, y: 2)
     }
 }
 
-#Preview {
-    VStack(spacing: 12) {
-        // パターン1: ワイン（ルビーレッドのカラーサークル表示）
-        BeverageCardView(
-            name: "Château Margaux 2015",
-            producer: "Château Margaux",
-            category: .wine,
-            region: "ボルドー, フランス",
-            vintage: "2015",
-            rating: 4.8,
-            imageData: nil,
-            appearanceColorHex: "#991A33" // ルビーレッド
-        )
-
-        // パターン2: 日本酒（淡金色のカラーサークル表示）
-        BeverageCardView(
-            name: "久保田 萬壽",
-            producer: "朝日酒造",
-            category: .sake,
-            region: "新潟県",
-            vintage: "2026",
-            rating: 4.5,
-            imageData: nil,
-            appearanceColorHex: "#F3E6B3" // 淡金色
-        )
-
-        // パターン3: ビール（ゴールデンのカラーサークル表示）
-        BeverageCardView(
-            name: "Inedit Damm",
-            producer: "Damm",
-            category: .beer,
-            region: "バルセロナ, スペイン",
-            vintage: "2026",
-            rating: 4.2,
-            imageData: nil,
-            appearanceColorHex: "#EBC733" // ゴールデン
-        )
+// MARK: - Preview Supporting Helper
+fileprivate extension UIImage {
+    static func sampleBottleData(systemName: String, tintColor: UIColor) -> Data? {
+        let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .regular)
+        guard let image = UIImage(systemName: systemName, withConfiguration: config)?.withTintColor(tintColor, renderingMode: .alwaysOriginal) else {
+            return nil
+        }
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 2.0
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 80, height: 110), format: format)
+        let renderedImage = renderer.image { _ in
+            let rect = CGRect(x: 20, y: 35, width: 40, height: 40)
+            image.draw(in: rect)
+        }
+        return renderedImage.pngData()
     }
-    .padding()
+}
+
+#Preview {
+    let dummyWineData = UIImage.sampleBottleData(systemName: "wineglass.fill", tintColor: .purple)
+    let dummySakeData = UIImage.sampleBottleData(systemName: "drop.fill", tintColor: .systemTeal)
+
+    return ScrollView {
+        VStack(spacing: 16) {
+            Text("【名刺風フルブリード】左パネルが上下左端に密着")
+                .font(.caption)
+                .fontWeight(.bold)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            BeverageCardView(
+                name: "Château Margaux 2015",
+                producer: "Château Margaux",
+                category: .wine,
+                region: "ボルドー, フランス",
+                vintage: "2015",
+                rating: 4.8,
+                imageData: dummyWineData,
+                isBackgroundRemoved: true,
+                appearanceColorHex: "#991A33"
+            )
+
+            BeverageCardView(
+                name: "久保田 萬壽",
+                producer: "朝日酒造",
+                category: .sake,
+                region: "新潟県",
+                vintage: "2026",
+                rating: 4.5,
+                imageData: dummySakeData,
+                isBackgroundRemoved: true,
+                appearanceColorHex: "#D4AF37"
+            )
+        }
+        .padding()
+    }
     .background(Color(.systemGroupedBackground))
 }

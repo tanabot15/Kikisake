@@ -35,68 +35,74 @@ public struct LogListView: View {
                             systemImage: "wineglass",
                             description: Text(viewModel.hasActiveFilters ? "フィルター条件を変更してみてください。" : "「追加」タブから新しい記録を作成しましょう。")
                         )
+                        .transition(.opacity)
                     } else {
-                        // モードに応じたビューの出し分け
-                        switch viewModel.viewMode {
-                        case .card, .compact:
-                            List {
-                                ForEach(filteredLogs) { log in
-                                    NavigationLink(destination: LogDetailView(log: log)) {
-                                        if let item = log.item {
-                                            if viewModel.viewMode == .compact {
-                                                // シンプル・コンパクトなリスト行
-                                                LogCompactRowView(log: log, item: item)
-                                                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                                    .listRowSeparator(.automatic)
-                                            } else {
-                                                // 従来のリッチなカード表示
-                                                VStack(spacing: 0) {
-                                                    BeverageCardView(
-                                                        name: item.name,
-                                                        producer: item.producer,
-                                                        category: item.category,
-                                                        region: item.region,
-                                                        vintage: item.vintage,
-                                                        rating: log.rating,
-                                                        imageData: item.imageDatas?.first,
-                                                        isBackgroundRemoved: item.isBackgroundRemoved,
-                                                        appearanceColorHex: log.appearanceColorHex
-                                                    )
+                        // ✨ switch 全体を Group で囲むことで修飾子を正しく適用
+                        Group {
+                            switch viewModel.viewMode {
+                            case .card, .compact:
+                                List {
+                                    ForEach(filteredLogs) { log in
+                                        NavigationLink(destination: LogDetailView(log: log)) {
+                                            if let item = log.item {
+                                                if viewModel.viewMode == .compact {
+                                                    // シンプル・コンパクトなリスト行
+                                                    LogCompactRowView(log: log, item: item)
+                                                        .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                                                        .listRowSeparator(.automatic)
+                                                } else {
+                                                    // 従来のリッチなカード表示
+                                                    VStack(spacing: 0) {
+                                                        BeverageCardView(
+                                                            name: item.name,
+                                                            producer: item.producer,
+                                                            category: item.category,
+                                                            region: item.region,
+                                                            vintage: item.vintage,
+                                                            rating: log.rating,
+                                                            imageData: item.imageDatas?.first,
+                                                            isBackgroundRemoved: item.isBackgroundRemoved,
+                                                            appearanceColorHex: log.appearanceColorHex
+                                                        )
+                                                    }
                                                 }
                                             }
                                         }
                                     }
+                                    .onDelete(perform: deleteLogs)
+                                    .onMove(perform: moveLogs)
                                 }
-                                .onDelete(perform: deleteLogs)
-                                .onMove(perform: moveLogs)
-                            }
-                            .listStyle(.plain)
-                            .environment(\.editMode, $editMode)
+                                .listStyle(.plain)
+                                .environment(\.editMode, $editMode)
 
-                        case .timeline:
-                            ScrollView {
-                                LazyVStack(alignment: .leading, spacing: 0) {
-                                    ForEach(Array(filteredLogs.enumerated()), id: \.element.id) { index, log in
-                                        if let item = log.item {
-                                            NavigationLink(destination: LogDetailView(log: log)) {
-                                                LogTimelineRowView(
-                                                    log: log,
-                                                    item: item,
-                                                    isFirst: index == 0,
-                                                    isLast: index == filteredLogs.count - 1
-                                                )
+                            case .timeline:
+                                ScrollView {
+                                    LazyVStack(alignment: .leading, spacing: 0) {
+                                        ForEach(Array(filteredLogs.enumerated()), id: \.element.id) { index, log in
+                                            if let item = log.item {
+                                                NavigationLink(destination: LogDetailView(log: log)) {
+                                                    LogTimelineRowView(
+                                                        log: log,
+                                                        item: item,
+                                                        isFirst: index == 0,
+                                                        isLast: index == filteredLogs.count - 1
+                                                    )
+                                                }
+                                                .buttonStyle(.plain)
                                             }
-                                            .buttonStyle(.plain)
                                         }
                                     }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 12)
                                 }
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 12)
                             }
                         }
+                        .transition(.opacity)
                     }
                 }
             }
+            // ✨ viewMode の変更に伴うアニメーションを明示的に同期
+            .animation(.easeInOut(duration: 0.2), value: viewModel.viewMode)
             // ✨ searchableを画面全体の最外層（VStack）に付与することで結果0件時にも検索バーを維持
             .searchable(
                 text: $viewModel.searchText,
