@@ -40,32 +40,47 @@ public struct LogListView: View {
                         // ✨ switch 全体を Group で囲むことで修飾子を正しく適用
                         Group {
                             switch viewModel.viewMode {
-                            case .card, .compact:
+                            case .card:
+                                // ✨ ドラムロール風スナップスクロール（縦方向）
+                                ScrollView(.vertical, showsIndicators: false) {
+                                    LazyVStack(spacing: 16) {
+                                        ForEach(filteredLogs) { log in
+                                            if let item = log.item {
+                                                NavigationLink(destination: LogDetailView(log: log)) {
+                                                    BeverageCardView(
+                                                        name: item.name,
+                                                        producer: item.producer,
+                                                        category: item.category,
+                                                        region: item.region,
+                                                        vintage: item.vintage,
+                                                        rating: log.rating,
+                                                        imageData: item.imageDatas?.first,
+                                                        isBackgroundRemoved: item.isBackgroundRemoved,
+                                                        appearanceColorHex: log.appearanceColorHex
+                                                    )
+                                                    .padding(.horizontal, 16)
+                                                    // スナップターゲットを指定
+                                                    .scrollTargetLayout()
+                                                }
+                                                .buttonStyle(.plain)
+                                                // スワイプ削除などを組み込みたい場合のコンテナ調整
+                                            }
+                                        }
+                                    }
+                                    .padding(.vertical, 16)
+                                }
+                                .scrollTargetBehavior(.viewAligned) // ドラッグ後にカード単位でピタッとスナップ
+                                .environment(\.editMode, $editMode)
+
+                            case .compact:
+                                // 従来通りのコンパクトリスト
                                 List {
                                     ForEach(filteredLogs) { log in
                                         NavigationLink(destination: LogDetailView(log: log)) {
                                             if let item = log.item {
-                                                if viewModel.viewMode == .compact {
-                                                    // シンプル・コンパクトなリスト行
-                                                    LogCompactRowView(log: log, item: item)
-                                                        .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                                        .listRowSeparator(.automatic)
-                                                } else {
-                                                    // 従来のリッチなカード表示
-                                                    VStack(spacing: 0) {
-                                                        BeverageCardView(
-                                                            name: item.name,
-                                                            producer: item.producer,
-                                                            category: item.category,
-                                                            region: item.region,
-                                                            vintage: item.vintage,
-                                                            rating: log.rating,
-                                                            imageData: item.imageDatas?.first,
-                                                            isBackgroundRemoved: item.isBackgroundRemoved,
-                                                            appearanceColorHex: log.appearanceColorHex
-                                                        )
-                                                    }
-                                                }
+                                                LogCompactRowView(log: log, item: item)
+                                                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                                                    .listRowSeparator(.automatic)
                                             }
                                         }
                                     }

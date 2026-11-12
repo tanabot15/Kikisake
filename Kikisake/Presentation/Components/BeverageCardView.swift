@@ -180,7 +180,7 @@ public struct BeverageCardView: View {
         }
         .background(Color(.secondarySystemGroupedBackground))
         .cornerRadius(12) // カード全体の角丸
-        .shadow(color: Color.black.opacity(0.04), radius: 6, x: 0, y: 2)
+        .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 3)
     }
 }
 

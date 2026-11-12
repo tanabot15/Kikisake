@@ -205,9 +205,12 @@ public struct AddFlowView: View {
                 Text(String(localized: "入力途中の下書きデータが保存されています。"))
             }
             .onAppear {
-                // 新規入力フローかつ下書きが存在する場合に復元確認を行う
-                if !viewModel.isOpeningExistingItem && viewModel.editingLog == nil && viewModel.hasDraft && viewModel.name.isEmpty {
-                    isShowingDraftRestoreAlert = true
+                // 既存アイテムの編集・オープン中でない場合
+                if !viewModel.isOpeningExistingItem && viewModel.editingLog == nil {
+                    // ✨ 下書きデータが残っていれば復元確認ダイアログを出す
+                    if viewModel.hasDraft {
+                        isShowingDraftRestoreAlert = true
+                    }
                 }
             }
         }

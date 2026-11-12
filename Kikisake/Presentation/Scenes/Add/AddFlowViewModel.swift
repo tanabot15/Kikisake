@@ -294,7 +294,7 @@ public final class AddFlowViewModel {
     }
 
     public func reset() {
-        clearDraft() // ✨ リセット時に下書きもクリア
+        clearDraft() // 下書き（UserDefaults）を確実に削除
         self.currentStep = 1
         self.isOpeningExistingItem = false
         self.selectedCategory = .wine
@@ -491,7 +491,7 @@ public final class AddFlowViewModel {
         modelContext.insert(newItem)
         try modelContext.save()
 
-        reset() // 保存成功時に自動リセット ＆ 下書き消去
+        reset() // 内部で clearDraft() が呼ばれ、UserDefaults の下書きが完全に消去されます
     }
     
     public func saveWithStock(modelContext: ModelContext) throws {
