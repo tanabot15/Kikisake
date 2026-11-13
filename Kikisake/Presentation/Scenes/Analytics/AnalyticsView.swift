@@ -51,13 +51,21 @@ public struct AnalyticsView: View {
                     .background(Color(.systemGroupedBackground))
                     .tag(AnalyticsSection.evaluation)
 
-                    // 3. ログ比較タブ ✨ 追加
+                    // 3. ログ比較タブ
                     ScrollView {
                         LogComparisonAnalyticsView(viewModel: viewModel, allLogs: logs)
                             .padding()
                     }
                     .background(Color(.systemGroupedBackground))
                     .tag(AnalyticsSection.comparison)
+                    
+                    // 4. コンプリート図鑑タブ
+                    ScrollView {
+                        CollectionBookAnalyticsView(allLogs: logs)
+                            .padding()
+                    }
+                    .background(Color(.systemGroupedBackground))
+                    .tag(AnalyticsSection.collectionBook)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
@@ -105,7 +113,9 @@ public struct AnalyticsView: View {
             case .evaluation:
                 EvaluationAnalyticsView(viewModel: viewModel, targetLogs: targetLogs)
             case .comparison:
-                EmptyView() // TabView内で直接ハンドリング
+                EmptyView()
+            case .collectionBook:
+                EmptyView()
             }
         }
     }

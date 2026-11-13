@@ -283,7 +283,7 @@ public struct BoardingView: View {
                                 .fontWeight(.bold)
                         }
                     }
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
                     .background(

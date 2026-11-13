@@ -24,8 +24,11 @@ public final class BeverageItem {
     public var gridRow: Int?
     public var gridColumn: Int?
 
-    // 写真データ（表面・ラベル等）
+    // 写真データ（表示用：切り抜き済み or オリジナル）
     @Attribute(.externalStorage) public var imageDatas: [Data]?
+
+    // ✨ 追加：切り抜き前のオリジナル写真データ（背景透過の復元・再適用用）
+    @Attribute(.externalStorage) public var originalImageDatas: [Data]?
     
     // 裏面ラベル写真データ
     @Attribute(.externalStorage) public var backImageDatas: [Data]?
@@ -61,6 +64,7 @@ public final class BeverageItem {
         gridRow: Int? = nil,
         gridColumn: Int? = nil,
         imageDatas: [Data]? = nil,
+        originalImageDatas: [Data]? = nil,
         backImageDatas: [Data]? = nil,
         isBackgroundRemoved: Bool = true,
         specificMetadataJSON: String? = nil,
@@ -79,6 +83,7 @@ public final class BeverageItem {
         self.gridRow = gridRow
         self.gridColumn = gridColumn
         self.imageDatas = imageDatas
+        self.originalImageDatas = originalImageDatas
         self.backImageDatas = backImageDatas
         self.isBackgroundRemoved = isBackgroundRemoved
         self.specificMetadataJSON = specificMetadataJSON

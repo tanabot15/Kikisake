@@ -16,6 +16,7 @@ private struct AddFlowDraftData: Codable {
     var abvString: String
     var priceString: String
     var storageLocation: String
+    var isBackgroundRemoved: Bool // ✨ 下書きにも透過状態を保存
     
     var wineType: String
     var blendComponents: [BlendComponent]
@@ -73,12 +74,13 @@ public final class AddFlowViewModel {
     public var storageLocation: String = "未設定" { didSet { saveDraft() } }
     
     public var selectedImageData: Data? = nil { didSet { saveDraft() } }
-    public var originalImageData: Data? = nil
+    public var originalImageData: Data? = nil { didSet { saveDraft() } }
     public var selectedBackImageData: Data? = nil { didSet { saveDraft() } }
     public var isBackgroundRemoved: Bool = true { didSet { saveDraft() } }
 
     public func clearFrontImage() {
         self.selectedImageData = nil
+        self.originalImageData = nil
         self.isBackgroundRemoved = true
         saveDraft()
     }
@@ -138,18 +140,16 @@ public final class AddFlowViewModel {
     private let consumeUseCase = ConsumeBeverageUseCase()
     private let draftKey = "Kikisake_AddFlow_DraftData_v1"
     private let frontImageDraftKey = "Kikisake_AddFlow_FrontImage_v1"
+    private let originalImageDraftKey = "Kikisake_AddFlow_OriginalImage_v1" // ✨ 追加
     private let backImageDraftKey = "Kikisake_AddFlow_BackImage_v1"
 
     public init() {}
     
     // MARK: - 下書き自動保存・復元機能
     
-    /// 現在の入力をローカル（UserDefaultsおよび一時ファイル）に自動保存
+    /// 現在の入力をローカル（UserDefaults）に自動保存
     public func saveDraft() {
-        // 編集モード（既存ログの編集など）のときは下書き対象外とする
         if editingLog != nil || isOpeningExistingItem { return }
-        
-        // 全く入力されていない初期状態であれば保存しない
         guard !name.isEmpty || !producer.isEmpty || !memo.isEmpty || selectedImageData != nil else { return }
         
         let draft = AddFlowDraftData(
@@ -162,6 +162,7 @@ public final class AddFlowViewModel {
             abvString: abvString,
             priceString: priceString,
             storageLocation: storageLocation,
+            isBackgroundRemoved: isBackgroundRemoved,
             wineType: wineType,
             blendComponents: blendComponents,
             appellation: appellation,
@@ -198,6 +199,9 @@ public final class AddFlowViewModel {
         if let frontImg = selectedImageData {
             UserDefaults.standard.set(frontImg, forKey: frontImageDraftKey)
         }
+        if let origImg = originalImageData {
+            UserDefaults.standard.set(origImg, forKey: originalImageDraftKey)
+        }
         if let backImg = selectedBackImageData {
             UserDefaults.standard.set(backImg, forKey: backImageDraftKey)
         }
@@ -222,6 +226,7 @@ public final class AddFlowViewModel {
         self.abvString = draft.abvString
         self.priceString = draft.priceString
         self.storageLocation = draft.storageLocation
+        self.isBackgroundRemoved = draft.isBackgroundRemoved
         
         self.wineType = draft.wineType
         self.blendComponents = draft.blendComponents
@@ -259,17 +264,22 @@ public final class AddFlowViewModel {
         
         if let frontImg = UserDefaults.standard.data(forKey: frontImageDraftKey) {
             self.selectedImageData = frontImg
-            self.originalImageData = frontImg
+        }
+        if let origImg = UserDefaults.standard.data(forKey: originalImageDraftKey) {
+            self.originalImageData = origImg
+        } else {
+            self.originalImageData = self.selectedImageData
         }
         if let backImg = UserDefaults.standard.data(forKey: backImageDraftKey) {
             self.selectedBackImageData = backImg
         }
     }
     
-    /// 下書きデータを完全に消去する（保存完了時や明示的キャンセル時）
+    /// 下書きデータを完全に消去する
     public func clearDraft() {
         UserDefaults.standard.removeObject(forKey: draftKey)
         UserDefaults.standard.removeObject(forKey: frontImageDraftKey)
+        UserDefaults.standard.removeObject(forKey: originalImageDraftKey)
         UserDefaults.standard.removeObject(forKey: backImageDraftKey)
     }
 
@@ -294,7 +304,7 @@ public final class AddFlowViewModel {
     }
 
     public func reset() {
-        clearDraft() // 下書き（UserDefaults）を確実に削除
+        clearDraft()
         self.currentStep = 1
         self.isOpeningExistingItem = false
         self.selectedCategory = .wine
@@ -365,8 +375,8 @@ public final class AddFlowViewModel {
         self.selectedGridColumn = item.gridColumn
         
         self.selectedImageData = item.imageDatas?.first
-        // ✨ 既存アイテムの読み込み時にもオリジナルデータを保持させることで、背景ありへの切り戻しを可能にする
-        self.originalImageData = item.imageDatas?.first
+        // ✨ DBに保存されている元画像を優先して読み込み、なければ表示用画像をフォールバックとする
+        self.originalImageData = item.originalImageDatas?.first ?? item.imageDatas?.first
         self.selectedBackImageData = item.backImageDatas?.first
         self.isBackgroundRemoved = item.isBackgroundRemoved
     }
@@ -483,6 +493,7 @@ public final class AddFlowViewModel {
             gridRow: selectedGridRow,
             gridColumn: selectedGridColumn,
             imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
+            originalImageDatas: originalImageData != nil ? [originalImageData!] : nil, // ✨ 保存
             backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
             isBackgroundRemoved: isBackgroundRemoved,
             specificMetadataJSON: metadataJSON
@@ -491,7 +502,7 @@ public final class AddFlowViewModel {
         modelContext.insert(newItem)
         try modelContext.save()
 
-        reset() // 内部で clearDraft() が呼ばれ、UserDefaults の下書きが完全に消去されます
+        reset()
     }
     
     public func saveWithStock(modelContext: ModelContext) throws {
@@ -513,6 +524,7 @@ public final class AddFlowViewModel {
             existingItem.gridRow = selectedGridRow
             existingItem.gridColumn = selectedGridColumn
             existingItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
+            existingItem.originalImageDatas = originalImageData != nil ? [originalImageData!] : nil // ✨ 保存
             existingItem.backImageDatas = selectedBackImageData != nil ? [selectedBackImageData!] : nil
             existingItem.isBackgroundRemoved = isBackgroundRemoved
         } else {
@@ -528,6 +540,7 @@ public final class AddFlowViewModel {
                 gridRow: selectedGridRow,
                 gridColumn: selectedGridColumn,
                 imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
+                originalImageDatas: originalImageData != nil ? [originalImageData!] : nil, // ✨ 保存
                 backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
                 isBackgroundRemoved: isBackgroundRemoved,
                 specificMetadataJSON: metadataJSON
@@ -562,7 +575,7 @@ public final class AddFlowViewModel {
         modelContext.insert(newLog)
         try modelContext.save()
 
-        reset() // 保存成功時に自動リセット ＆ 下書き消去
+        reset()
     }
 
     public func save(modelContext: ModelContext) throws {
@@ -593,6 +606,7 @@ public final class AddFlowViewModel {
                 gridRow: selectedGridRow,
                 gridColumn: selectedGridColumn,
                 imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
+                originalImageDatas: originalImageData != nil ? [originalImageData!] : nil, // ✨ 保存
                 backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
                 isBackgroundRemoved: isBackgroundRemoved,
                 specificMetadataJSON: metadataJSON
@@ -658,6 +672,7 @@ public final class AddFlowViewModel {
             targetItem.gridRow = selectedGridRow
             targetItem.gridColumn = selectedGridColumn
             targetItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
+            targetItem.originalImageDatas = originalImageData != nil ? [originalImageData!] : nil // ✨ 保存
             targetItem.backImageDatas = selectedBackImageData != nil ? [selectedBackImageData!] : nil
             targetItem.isBackgroundRemoved = isBackgroundRemoved
             targetItem.specificMetadataJSON = metadataJSON

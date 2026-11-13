@@ -70,22 +70,27 @@ public struct GeneralInfoStepView: View {
             // 写真が存在する場合の追加アクション（背景透過の切り替え・削除）
             if viewModel.selectedImageData != nil {
                 if viewModel.isBackgroundRemoved {
-                    // 現在透過されている場合は「背景ありの写真に戻す」オプションを表示
-                    Button(String(localized: "背景ありの写真に戻す")) {
-                        if let original = viewModel.originalImageData {
+                    // ✨ 元画像データが存在する場合のみ「背景ありの写真に戻す」を表示
+                    if let original = viewModel.originalImageData {
+                        Button(String(localized: "背景ありの写真に戻す")) {
                             viewModel.selectedImageData = original
                             viewModel.isBackgroundRemoved = false
                         }
+                        .tint(.accentColor)
                     }
-                    .foregroundColor(Color.accentColor)
                 } else {
                     // 現在背景ありの場合は「背景を自動で透過にする」オプションを表示
                     Button(String(localized: "背景を自動で透過にする")) {
                         guard let data = viewModel.originalImageData ?? viewModel.selectedImageData,
                               let uiImage = UIImage(data: data) else { return }
+                        // 元画像が未保存の場合は退避しておく
+                        if viewModel.originalImageData == nil {
+                            viewModel.originalImageData = data
+                        }
                         Task {
                             let processedImage = await BottleMattingHelper.removeBackground(from: uiImage)
-                            if let newData = processedImage.jpegData(compressionQuality: 0.8) {
+                            // ✨ 透過情報を保持するため pngData() を使用
+                            if let newData = processedImage.pngData() {
                                 await MainActor.run {
                                     viewModel.selectedImageData = newData
                                     viewModel.isBackgroundRemoved = true
@@ -93,13 +98,11 @@ public struct GeneralInfoStepView: View {
                             }
                         }
                     }
-                    .foregroundColor(Color.accentColor)
+                    .tint(.accentColor)
                 }
 
                 Button(String(localized: "写真を削除"), role: .destructive) {
-                    viewModel.selectedImageData = nil
-                    viewModel.originalImageData = nil
-                    viewModel.isBackgroundRemoved = true
+                    viewModel.clearFrontImage()
                     frontPhotoItem = nil
                 }
             }
@@ -139,7 +142,8 @@ public struct GeneralInfoStepView: View {
                 
                 Task {
                     let processedImage = await BottleMattingHelper.removeBackground(from: normalized)
-                    if let data = processedImage.jpegData(compressionQuality: 0.8) {
+                    // ✨ 透過情報を保持するため pngData() を使用
+                    if let data = processedImage.pngData() {
                         await MainActor.run {
                             viewModel.selectedImageData = data
                             viewModel.isBackgroundRemoved = true
@@ -148,12 +152,9 @@ public struct GeneralInfoStepView: View {
                     }
                 }
             } label: {
-                HStack {
-                    Text(String(localized: "ボトルのみ自動で切り抜く"))
-                    Image(systemName: "wand.and.stars")
-                }
+                Label(String(localized: "ボトルのみ自動で切り抜く"), systemImage: "wand.and.stars")
             }
-            .foregroundColor(Color.accentColor)
+            .tint(.accentColor)
 
             Button {
                 guard let image = pendingPickedImage else { return }
@@ -165,12 +166,9 @@ public struct GeneralInfoStepView: View {
                 }
                 pendingPickedImage = nil
             } label: {
-                HStack {
-                    Text(String(localized: "そのままの写真を使用する"))
-                    Image(systemName: "photo")
-                }
+                Label(String(localized: "そのままの写真を使用する"), systemImage: "photo")
             }
-            .foregroundColor(Color.accentColor)
+            .tint(.accentColor)
 
             Button(String(localized: "キャンセル"), role: .cancel) {
                 pendingPickedImage = nil
@@ -185,7 +183,7 @@ public struct GeneralInfoStepView: View {
                 isShowingMattingChoiceDialog = true
             }
         }
-        .photosPicker(isPresented: $isShowingFrontLibrary, selection: $frontPhotoItem, matching: .images)
+        .photosPicker(isPresented: $isShowingFrontLibrary, selection:$frontPhotoItem, matching: .images)
         .onChange(of: frontPhotoItem) { _, newValue in
             guard let newItem = newValue else { return }
             Task {
@@ -222,7 +220,7 @@ public struct GeneralInfoStepView: View {
                 }
             }
         }
-        .photosPicker(isPresented: $isShowingBackLibrary, selection: $backPhotoItem, matching: .images)
+        .photosPicker(isPresented: $isShowingBackLibrary, selection:$backPhotoItem, matching: .images)
         .onChange(of: backPhotoItem) { _, newValue in
             guard let newItem = newValue else { return }
             Task {
@@ -471,7 +469,7 @@ public struct GeneralInfoStepView: View {
             .padding(.vertical, 4)
             
             Group {
-                ForEach($viewModel.blendComponents) { $component in
+                ForEach($viewModel.blendComponents) {$component in
                     HStack(spacing: 8) {
                         TextField(String(localized: "品種 (例: カベルネ・ソーヴィニヨン)"), text: $component.variety)
                             .focused($focusedField, equals: .extra)

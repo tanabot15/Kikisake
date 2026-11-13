@@ -328,7 +328,7 @@ public struct InventoryView: View {
                     } label: {
                         Image(systemName: "slider.horizontal.3")
                             .fontWeight(.semibold)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
@@ -346,7 +346,7 @@ public struct InventoryView: View {
                     } label: {
                         Image(systemName: isLocEditing ? "checkmark.circle.fill" : "square.and.pencil")
                             .fontWeight(.semibold)
-                            .foregroundColor(isLocEditing ? .accentColor : .secondary)
+                            .foregroundStyle(isLocEditing ? Color.accentColor : .secondary)
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.small)

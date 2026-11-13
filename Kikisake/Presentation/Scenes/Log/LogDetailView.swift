@@ -347,62 +347,48 @@ public struct LogDetailView: View {
                 } label: {
                     GeometryReader { geometry in
                         ZStack(alignment: .center) {
-                            if item.isBackgroundRemoved {
-                                // ✨【改善】背景透過時の洗練された演出
-                                // 1. ベースのシックな深みのあるダークグラデーション
-                                LinearGradient(
-                                    colors: [
-                                        Color(hex: "#1A1A1E") ?? .black,
-                                        Color(hex: "#2C2C30") ?? .gray
-                                    ],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
+                            // 1. ベースのシックな深みのあるダークグラデーション
+                            LinearGradient(
+                                colors: [
+                                    Color(hex: "#1A1A1E") ?? .black,
+                                    Color(hex: "#2C2C30") ?? .gray
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
 
-                                // 2. お酒の外観カラー（appearanceColorHex）を利用したアンビエント光沢（Glow）演出
-                                Circle()
-                                    .fill(colorFromHex(log.appearanceColorHex))
-                                    .frame(width: 180, height: 180)
-                                    .blur(radius: 50)
-                                    .opacity(0.45)
-                                    .offset(y: -10)
+                            // 2. お酒の外観カラーを利用したアンビエント光沢（Glow）演出
+                            Circle()
+                                .fill(colorFromHex(log.appearanceColorHex))
+                                .frame(width: 180, height: 180)
+                                .blur(radius: 50)
+                                .opacity(0.45)
+                                .offset(y: -10)
 
-                                // 3. 透過されたボトル本体（ドロップシャドウで立体感を強調）
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: geometry.size.width, height: 250)
-                                    .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 6)
-                                    .padding(.vertical, 8)
-                                
-                                // 4. 下部テキスト用の読みやすさ向上グラデーション保護膜
-                                LinearGradient(
-                                    colors: [.clear, .black.opacity(0.85)],
-                                    startPoint: .center,
-                                    endPoint: .bottom
-                                )
-                            } else {
-                                // そのままの写真（非透過）
-                                Color.black
-                                
+                            // 3. 非透過（そのままの写真）の場合の背景ぼかし演出
+                            if !item.isBackgroundRemoved {
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: geometry.size.width, height: 260)
                                     .blur(radius: 20)
                                     .opacity(0.3)
-
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: geometry.size.width, height: 260)
-                                
-                                LinearGradient(
-                                    colors: [.clear, .black.opacity(0.85)],
-                                    startPoint: .center,
-                                    endPoint: .bottom
-                                )
                             }
+
+                            // 4. メイン画像（透過・非透過を問わず、一貫したサイズ枠に綺麗に収める）
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: geometry.size.width - 32, maxHeight: 220)
+                                .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 6)
+                                .padding(.vertical, 8)
+                            
+                            // 5. 下部テキスト用の読みやすさ向上グラデーション保護膜
+                            LinearGradient(
+                                colors: [.clear, .black.opacity(0.85)],
+                                startPoint: .center,
+                                endPoint: .bottom
+                            )
                         }
                     }
                     .frame(height: 260)
@@ -764,7 +750,7 @@ private func generateHorizontalSampleImage() -> Data? {
 
     let sampleLog = TastingLog(
         rating: 4.8,
-        pairing: "和牛のローストビーフ、パルミジャーノ・レッジャーノ", // ✨ ペアリングサンプルを追加
+        pairing: "和牛のローストビーフ、パルミジャーノ・レッジャーノ",
         memo: "縦長画像のレイアウト確認用サンプルです。",
         isEvaluated: true,
         item: sampleItem

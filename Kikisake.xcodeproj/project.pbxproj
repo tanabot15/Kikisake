@@ -68,6 +68,9 @@
 		D9044286308F113D00EF4807 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9044285308F113D00EF4807 /* StoreKit.framework */; };
 		D9044289308F136400EF4807 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044288308F136400EF4807 /* PaywallView.swift */; };
 		D904F0A730A2AF820046D409 /* SteppedNumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0A630A2AF820046D409 /* SteppedNumberField.swift */; };
+		D904F0A930A73FCC0046D409 /* CollectionMatrixModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0A830A73FCC0046D409 /* CollectionMatrixModel.swift */; };
+		D904F0AB30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AA30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift */; };
+		D904F0AD30A7400C0046D409 /* CollectionBookAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AC30A7400C0046D409 /* CollectionBookAnalyticsView.swift */; };
 		D95082573090D95D0045BF8E /* BackupDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082563090D95D0045BF8E /* BackupDTOs.swift */; };
 		D95082593090D9720045BF8E /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082583090D9720045BF8E /* BackupManager.swift */; };
 		D950825B309228190045BF8E /* BottleMattingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950825A309228190045BF8E /* BottleMattingHelper.swift */; };
@@ -143,6 +146,9 @@
 		D9044287308F116A00EF4807 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 		D9044288308F136400EF4807 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		D904F0A630A2AF820046D409 /* SteppedNumberField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SteppedNumberField.swift; sourceTree = "<group>"; };
+		D904F0A830A73FCC0046D409 /* CollectionMatrixModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionMatrixModel.swift; sourceTree = "<group>"; };
+		D904F0AA30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionAnalyticsViewModel.swift; sourceTree = "<group>"; };
+		D904F0AC30A7400C0046D409 /* CollectionBookAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionBookAnalyticsView.swift; sourceTree = "<group>"; };
 		D95082563090D95D0045BF8E /* BackupDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDTOs.swift; sourceTree = "<group>"; };
 		D95082583090D9720045BF8E /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		D950825A309228190045BF8E /* BottleMattingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottleMattingHelper.swift; sourceTree = "<group>"; };
@@ -307,6 +313,7 @@
 				D9044272308AFE0100EF4807 /* TastingOptions.swift */,
 				D950826830A1E7AD0045BF8E /* RegionPresetOptions.swift */,
 				D9508260309D8B530045BF8E /* TastingCustomizationManager.swift */,
+				D904F0A830A73FCC0046D409 /* CollectionMatrixModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -414,6 +421,8 @@
 				D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */,
 				D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */,
 				D950826630A030760045BF8E /* LogComparisonAnalyticsView.swift */,
+				D904F0AC30A7400C0046D409 /* CollectionBookAnalyticsView.swift */,
+				D904F0AA30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -568,6 +577,7 @@
 				D9044207307E84AC00EF4807 /* Date+Extension.swift in Sources */,
 				D9044281308CF53B00EF4807 /* LocationSlotSelectionSheet.swift in Sources */,
 				D9044277308B1ADF00EF4807 /* FlowLayout.swift in Sources */,
+				D904F0A930A73FCC0046D409 /* CollectionMatrixModel.swift in Sources */,
 				D90442503081A43B00EF4807 /* AppearanceStepView.swift in Sources */,
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
 				D95082593090D9720045BF8E /* BackupManager.swift in Sources */,
@@ -577,6 +587,7 @@
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
 				D904427D308C9C9B00EF4807 /* EvaluationAnalyticsView.swift in Sources */,
 				D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */,
+				D904F0AD30A7400C0046D409 /* CollectionBookAnalyticsView.swift in Sources */,
 				D904425D3085D33000EF4807 /* TastingCardShareView.swift in Sources */,
 				D9044233307E85C300EF4807 /* AnalyticsView.swift in Sources */,
 				D90442613086031D00EF4807 /* MatrixAnalysisCardView.swift in Sources */,
@@ -599,6 +610,7 @@
 				D9044239307E85E600EF4807 /* AddFlowViewModel.swift in Sources */,
 				D9044213307E84EB00EF4807 /* ModelContainerManager.swift in Sources */,
 				D9044264308638D500EF4807 /* BoardingView.swift in Sources */,
+				D904F0AB30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift in Sources */,
 				D904420D307E84CD00EF4807 /* Formatters.swift in Sources */,
 				D904424C307F3C8D00EF4807 /* PreviewSampleLoader.swift in Sources */,
 				D9044215307E84F600EF4807 /* BeverageItem.swift in Sources */,
@@ -748,7 +760,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -769,7 +781,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.24;
+				MARKETING_VERSION = 1.25;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -792,7 +804,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -813,7 +825,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.24;
+				MARKETING_VERSION = 1.25;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

@@ -90,7 +90,7 @@ public struct AddFlowView: View {
                             viewModel.reset()
                             AppState.shared.selectedTab = 0 // ログ一覧などへ戻る
                         }
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                     } else {
                         Button {
                             if viewModel.currentStep == 2 && viewModel.isOpeningExistingItem {
@@ -120,7 +120,7 @@ public struct AddFlowView: View {
                             viewModel.currentStep += 1
                         }
                         .fontWeight(.semibold)
-                        .foregroundColor(isNameEmpty ? .gray : .accentColor)
+                        .foregroundStyle(isNameEmpty ? .gray : Color.accentColor)
                     } else {
                         Button(String(localized: "保存")) {
                             if isNameEmpty {
