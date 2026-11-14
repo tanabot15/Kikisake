@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "ja",
   "strings" : {
+    "\n産地: %@\n銘柄: %@\n評価: %.1f ⭐\n飲んだ日: %@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "\n産地: %1$@\n銘柄: %2$@\n評価: %3$.1f ⭐\n飲んだ日: %4$@"
+          }
+        }
+      }
+    },
     " 点" : {
       "localizations" : {
         "en" : {
@@ -30,6 +40,9 @@
           }
         }
       }
+    },
+    "---" : {
+
     },
     "・ %@" : {
       "localizations" : {
@@ -93,6 +106,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Let's create a new record from the \"Add\" tab."
+          }
+        }
+      }
+    },
+    "【未踏破】\n産地: %@\n品種・スタイル: %@\n\nこの組み合わせの銘柄を飲んで記録すると図鑑が埋まります！" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "【未踏破】\n産地: %1$@\n品種・スタイル: %2$@\n\nこの組み合わせの銘柄を飲んで記録すると図鑑が埋まります！"
           }
         }
       }
@@ -277,6 +300,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld"
+          }
+        }
+      }
+    },
+    "%lld / %lld 種類" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld / %2$lld 種類"
           }
         }
       }
@@ -5789,6 +5822,12 @@
         }
       }
     },
+    "図鑑" : {
+
+    },
+    "図鑑コンプリート進捗" : {
+
+    },
     "固有詳細条件" : {
       "localizations" : {
         "en" : {
@@ -8637,6 +8676,9 @@
           }
         }
       }
+    },
+    "閉じる" : {
+
     },
     "雄町" : {
       "localizations" : {

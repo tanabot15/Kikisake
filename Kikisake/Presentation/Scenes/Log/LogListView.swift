@@ -41,35 +41,35 @@ public struct LogListView: View {
                         Group {
                             switch viewModel.viewMode {
                             case .card:
-                                // ✨ ドラムロール風スナップスクロール（縦方向）
-                                ScrollView(.vertical, showsIndicators: false) {
-                                    LazyVStack(spacing: 16) {
-                                        ForEach(filteredLogs) { log in
-                                            if let item = log.item {
-                                                NavigationLink(destination: LogDetailView(log: log)) {
-                                                    BeverageCardView(
-                                                        name: item.name,
-                                                        producer: item.producer,
-                                                        category: item.category,
-                                                        region: item.region,
-                                                        vintage: item.vintage,
-                                                        rating: log.rating,
-                                                        imageData: item.imageDatas?.first,
-                                                        isBackgroundRemoved: item.isBackgroundRemoved,
-                                                        appearanceColorHex: log.appearanceColorHex
-                                                    )
-                                                    .padding(.horizontal, 16)
-                                                    // スナップターゲットを指定
-                                                    .scrollTargetLayout()
-                                                }
-                                                .buttonStyle(.plain)
-                                                // スワイプ削除などを組み込みたい場合のコンテナ調整
+                                // ✨ Listに戻し、セパレータや背景を消すことでカード風リストを実現
+                                List {
+                                    ForEach(filteredLogs) { log in
+                                        if let item = log.item {
+                                            NavigationLink(destination: LogDetailView(log: log)) {
+                                                BeverageCardView(
+                                                    name: item.name,
+                                                    producer: item.producer,
+                                                    category: item.category,
+                                                    region: item.region,
+                                                    vintage: item.vintage,
+                                                    rating: log.rating,
+                                                    imageData: item.imageDatas?.first,
+                                                    isBackgroundRemoved: item.isBackgroundRemoved,
+                                                    appearanceColorHex: log.appearanceColorHex
+                                                )
                                             }
+                                            .buttonStyle(.plain)
+                                            // リスト固有の余白・区切り線をクリアしてカードを独立させる
+                                            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                                            .listRowSeparator(.hidden)
+                                            .listRowBackground(Color.clear)
                                         }
                                     }
-                                    .padding(.vertical, 16)
+                                    .onDelete(perform: deleteLogs)
+                                    .onMove(perform: moveLogs)
                                 }
-                                .scrollTargetBehavior(.viewAligned) // ドラッグ後にカード単位でピタッとスナップ
+                                .listStyle(.plain)
+                                .scrollContentBackground(.hidden) // 標準の背景色を隠す
                                 .environment(\.editMode, $editMode)
 
                             case .compact:
@@ -88,6 +88,7 @@ public struct LogListView: View {
                                     .onMove(perform: moveLogs)
                                 }
                                 .listStyle(.plain)
+                                .scrollContentBackground(.hidden)
                                 .environment(\.editMode, $editMode)
 
                             case .timeline:

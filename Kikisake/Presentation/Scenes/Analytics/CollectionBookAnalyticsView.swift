@@ -40,7 +40,7 @@ public struct CollectionBookAnalyticsView: View {
         } message: {
             if let cell = selectedCell {
                 if cell.isUnlocked, let log = cell.unlockedLog {
-                    Text(String(format: String(localized: "【発見済】\n産地: %@\n銘柄: %@\n評価: %.1f ⭐\n飲んだ日: %@"),
+                    Text(String(format: String(localized: "\n産地: %@\n銘柄: %@\n評価: %.1f \n飲んだ日: %@"),
                                 cell.definition.region,
                                 log.item?.name ?? "不明",
                                 log.rating,
@@ -68,7 +68,7 @@ public struct CollectionBookAnalyticsView: View {
                     .fontWeight(.semibold)
                     .foregroundStyle(.primary)
                 Spacer()
-                Text("\(unlockedCount) / \(results.count) 種類 (\(Int(rate * 100))%)")
+                Text("\(unlockedCount) / \(results.count)")
                     .font(.subheadline)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.accentColor)
@@ -146,7 +146,7 @@ public struct CollectionBookAnalyticsView: View {
                                 .foregroundStyle(.primary)
                                 .fontWeight(.medium)
                         } else {
-                            Text("---")
+                            Text("???")
                                 .font(.system(size: 10))
                                 .foregroundStyle(.tertiary)
                         }

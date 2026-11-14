@@ -38,6 +38,11 @@ public struct GeneralInfoStepView: View {
     @State private var isShowingBackActionDialog: Bool = false
     @State private var backPhotoItem: PhotosPickerItem? = nil
 
+    // ── 直接入力モード切り替え用State ──
+    @State private var isCustomRegionInput: Bool = false
+    @State private var isCustomRiceInput: Bool = false
+    @State private var isCustomBeerStyleInput: Bool = false
+
     public init(
         viewModel: AddFlowViewModel,
         focusedField: FocusState<GeneralInfoField?>.Binding,
@@ -54,6 +59,9 @@ public struct GeneralInfoStepView: View {
             categorySection
             basicInfoSection
         }
+        .onAppear {
+            syncCustomInputStates()
+        }
         // ── 表面の写真選択・編集アクションダイアログ ──
         .confirmationDialog(String(localized: "表面の写真を選択"), isPresented: $isShowingFrontActionDialog, titleVisibility: .visible) {
             Button(String(localized: "写真を撮る")) {
@@ -67,10 +75,8 @@ public struct GeneralInfoStepView: View {
                 isShowingFrontLibrary = true
             }
             
-            // 写真が存在する場合の追加アクション（背景透過の切り替え・削除）
             if viewModel.selectedImageData != nil {
                 if viewModel.isBackgroundRemoved {
-                    // ✨ 元画像データが存在する場合のみ「背景ありの写真に戻す」を表示
                     if let original = viewModel.originalImageData {
                         Button(String(localized: "背景ありの写真に戻す")) {
                             viewModel.selectedImageData = original
@@ -79,17 +85,14 @@ public struct GeneralInfoStepView: View {
                         .tint(.accentColor)
                     }
                 } else {
-                    // 現在背景ありの場合は「背景を自動で透過にする」オプションを表示
                     Button(String(localized: "背景を自動で透過にする")) {
                         guard let data = viewModel.originalImageData ?? viewModel.selectedImageData,
                               let uiImage = UIImage(data: data) else { return }
-                        // 元画像が未保存の場合は退避しておく
                         if viewModel.originalImageData == nil {
                             viewModel.originalImageData = data
                         }
                         Task {
                             let processedImage = await BottleMattingHelper.removeBackground(from: uiImage)
-                            // ✨ 透過情報を保持するため pngData() を使用
                             if let newData = processedImage.pngData() {
                                 await MainActor.run {
                                     viewModel.selectedImageData = newData
@@ -142,7 +145,6 @@ public struct GeneralInfoStepView: View {
                 
                 Task {
                     let processedImage = await BottleMattingHelper.removeBackground(from: normalized)
-                    // ✨ 透過情報を保持するため pngData() を使用
                     if let data = processedImage.pngData() {
                         await MainActor.run {
                             viewModel.selectedImageData = data
@@ -176,7 +178,6 @@ public struct GeneralInfoStepView: View {
         } message: {
             Text(String(localized: "ワインや料理と一緒に撮影した写真の場合、「そのままの写真を使用する」を選択すると背景が維持されます。"))
         }
-        // ── 表面のシート・ピッカーモダール ──
         .sheet(isPresented: $isShowingFrontCamera) {
             ImagePickerView(sourceType: .camera) { image in
                 pendingPickedImage = image
@@ -189,9 +190,7 @@ public struct GeneralInfoStepView: View {
             Task {
                 if let data = try? await newItem.loadTransferable(type: Data.self),
                    let uiImage = UIImage(data: data) {
-                    
                     let normalizedImage = uiImage.normalized()
-                    
                     if let normalizedData = normalizedImage.jpegData(compressionQuality: 0.8) {
                         await MainActor.run {
                             viewModel.originalImageData = normalizedData
@@ -200,18 +199,13 @@ public struct GeneralInfoStepView: View {
                             isShowingMattingChoiceDialog = true
                         }
                     } else {
-                        await MainActor.run {
-                            frontPhotoItem = nil
-                        }
+                        await MainActor.run { frontPhotoItem = nil }
                     }
                 } else {
-                    await MainActor.run {
-                        frontPhotoItem = nil
-                    }
+                    await MainActor.run { frontPhotoItem = nil }
                 }
             }
         }
-        // ── 裏面のシート・ピッカーモダール ──
         .sheet(isPresented: $isShowingBackCamera) {
             ImagePickerView(sourceType: .camera) { image in
                 let normalized = image.normalized()
@@ -233,16 +227,30 @@ public struct GeneralInfoStepView: View {
                             backPhotoItem = nil
                         }
                     } else {
-                        await MainActor.run {
-                            backPhotoItem = nil
-                        }
+                        await MainActor.run { backPhotoItem = nil }
                     }
                 } else {
-                    await MainActor.run {
-                        backPhotoItem = nil
-                    }
+                    await MainActor.run { backPhotoItem = nil }
                 }
             }
+        }
+    }
+
+    /// 既存データを読み込んだ際、プリセット外の値が入っていれば自動的に直接入力モードにする
+    private func syncCustomInputStates() {
+        if !viewModel.region.isEmpty {
+            let validRegions = RegionPresetOptions.regions(for: viewModel.selectedCategory).flatMap { hierarchy -> [String] in
+                [hierarchy.parent] + hierarchy.children.map { "\(hierarchy.parent), \($0)" }
+            }
+            if !validRegions.contains(viewModel.region) {
+                isCustomRegionInput = true
+            }
+        }
+        if !viewModel.riceVariety.isEmpty && !BeveragePresetOptions.riceVarieties.contains(viewModel.riceVariety) {
+            isCustomRiceInput = true
+        }
+        if !viewModel.beerStyle.isEmpty && !BeveragePresetOptions.beerStyles.contains(viewModel.beerStyle) {
+            isCustomBeerStyleInput = true
         }
     }
 
@@ -267,9 +275,7 @@ public struct GeneralInfoStepView: View {
                         subtitle: String(localized: "メイン写真"),
                         imageData: viewModel.selectedImageData,
                         hasImage: viewModel.selectedImageData != nil,
-                        action: {
-                            isShowingFrontActionDialog = true
-                        }
+                        action: { isShowingFrontActionDialog = true }
                     )
 
                     photoCard(
@@ -277,9 +283,7 @@ public struct GeneralInfoStepView: View {
                         subtitle: String(localized: "詳細・スペック"),
                         imageData: viewModel.selectedBackImageData,
                         hasImage: viewModel.selectedBackImageData != nil,
-                        action: {
-                            isShowingBackActionDialog = true
-                        }
+                        action: { isShowingBackActionDialog = true }
                     )
                 }
             }
@@ -370,36 +374,60 @@ public struct GeneralInfoStepView: View {
 
             categorySpecificFields
 
-            HStack(spacing: 8) {
-                TextField(String(localized: "生産地 (例: ボルドー, 新潟)"), text: $viewModel.region)
-                    .focused($focusedField, equals: .region)
+            // 生産地選択（プリセット選択メイン ＋ 切り替えで直接入力）
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text(String(localized: "生産地"))
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Button(isCustomRegionInput ? String(localized: "選択肢から選択する") : String(localized: "直接入力（その他）に切り替え")) {
+                        isCustomRegionInput.toggle()
+                    }
+                    .font(.caption)
+                }
 
-                Menu {
-                    ForEach(RegionPresetOptions.regions(for: viewModel.selectedCategory)) { hierarchy in
-                        if hierarchy.children.isEmpty {
-                            Button(hierarchy.parent) {
-                                viewModel.region = hierarchy.parent
-                            }
-                        } else {
-                            Menu(hierarchy.parent) {
-                                Button(String(format: String(localized: "%@ (全体)"), hierarchy.parent)) {
+                if isCustomRegionInput {
+                    TextField(String(localized: "生産地を自由入力 (例: スペイン, リオハ)"), text: $viewModel.region)
+                        .focused($focusedField, equals: .region)
+                        .textFieldStyle(.roundedBorder)
+                } else {
+                    Menu {
+                        ForEach(RegionPresetOptions.regions(for: viewModel.selectedCategory)) { hierarchy in
+                            if hierarchy.children.isEmpty {
+                                Button(hierarchy.parent) {
                                     viewModel.region = hierarchy.parent
                                 }
-                                Divider()
-                                ForEach(hierarchy.children, id: \.self) { child in
-                                    Button(child) {
-                                        viewModel.region = "\(hierarchy.parent), \(child)"
+                            } else {
+                                Menu(hierarchy.parent) {
+                                    Button(String(format: String(localized: "%@ (全体)"), hierarchy.parent)) {
+                                        viewModel.region = hierarchy.parent
+                                    }
+                                    Divider()
+                                    ForEach(hierarchy.children, id: \.self) { child in
+                                        Button(child) {
+                                            viewModel.region = "\(hierarchy.parent), \(child)"
+                                        }
                                     }
                                 }
                             }
                         }
+                    } label: {
+                        HStack {
+                            Text(viewModel.region.isEmpty ? String(localized: "タップして生産地を選択...") : viewModel.region)
+                                .foregroundStyle(viewModel.region.isEmpty ? .secondary : .primary)
+                            Spacer()
+                            Image(systemName: "chevron.up.chevron.down")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(10)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
                     }
-                } label: {
-                    Image(systemName: "mappin.and.ellipse.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(Color.accentColor)
                 }
             }
+            .padding(.vertical, 4)
             
             SteppedNumberField(
                 title: String(localized: "ヴィンテージ / 製造年月 (例: 2024)"),
@@ -468,32 +496,15 @@ public struct GeneralInfoStepView: View {
             }
             .padding(.vertical, 4)
             
+            // ✨ ワイン品種入力（生産地と同じUI/UXに統一）
             Group {
-                ForEach($viewModel.blendComponents) {$component in
-                    HStack(spacing: 8) {
-                        TextField(String(localized: "品種 (例: カベルネ・ソーヴィニヨン)"), text: $component.variety)
-                            .focused($focusedField, equals: .extra)
-                        
-                        Menu {
-                            ForEach(BeveragePresetOptions.grapeVarieties, id: \.self) { variety in
-                                Button(variety) {
-                                    component.variety = variety
-                                }
-                            }
-                        } label: {
-                            Image(systemName: "chevron.down.circle.fill")
-                                .font(.title3)
-                                .foregroundStyle(Color.accentColor)
-                        }
-                        
-                        TextField(String(localized: "割合"), value: $component.percentage, format: .number)
-                            .keyboardType(.numberPad)
-                            .frame(width: 50)
-                            .multilineTextAlignment(.trailing)
-                        
-                        Text("%")
-                            .foregroundStyle(.secondary)
-                    }
+                ForEach(Array(viewModel.blendComponents.enumerated()), id: \.element.id) { index, _ in
+                    WineBlendComponentRow(
+                        component: $viewModel.blendComponents[index],
+                        index: index,
+                        totalCount: viewModel.blendComponents.count,
+                        focusedField: $focusedField
+                    )
                 }
                 .onDelete(perform: viewModel.removeBlendComponent)
 
@@ -520,46 +531,181 @@ public struct GeneralInfoStepView: View {
                 Text(String(localized: "その他")).tag("その他")
             }
             
-            HStack(spacing: 8) {
-                TextField(String(localized: "使用米 (例: 山田錦)"), text: $viewModel.riceVariety)
-                    .focused($focusedField, equals: .extra)
-                
-                Menu {
-                    ForEach(BeveragePresetOptions.riceVarieties, id: \.self) { rice in
-                        Button(rice) {
-                            viewModel.riceVariety = rice
-                        }
+            // ✨ 日本酒使用米（生産地と同じUI/UXに統一）
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text(String(localized: "使用米"))
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Button(isCustomRiceInput ? String(localized: "選択肢から選択する") : String(localized: "直接入力（その他）に切り替え")) {
+                        isCustomRiceInput.toggle()
                     }
-                } label: {
-                    Image(systemName: "chevron.down.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(Color.accentColor)
+                    .font(.caption)
+                }
+                
+                if isCustomRiceInput {
+                    TextField(String(localized: "使用米を自由入力 (例: 山田錦)"), text: $viewModel.riceVariety)
+                        .focused($focusedField, equals: .extra)
+                        .textFieldStyle(.roundedBorder)
+                } else {
+                    Menu {
+                        ForEach(BeveragePresetOptions.riceVarieties, id: \.self) { rice in
+                            Button(rice) {
+                                if rice == String(localized: "その他") {
+                                    viewModel.riceVariety = ""
+                                    isCustomRiceInput = true
+                                } else {
+                                    viewModel.riceVariety = rice
+                                }
+                            }
+                        }
+                    } label: {
+                        HStack {
+                            Text(viewModel.riceVariety.isEmpty ? String(localized: "タップして使用米を選択...") : viewModel.riceVariety)
+                                .foregroundStyle(viewModel.riceVariety.isEmpty ? .secondary : .primary)
+                            Spacer()
+                            Image(systemName: "chevron.up.chevron.down")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(10)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                    }
                 }
             }
+            .padding(.vertical, 4)
             
             TextField(String(localized: "精米歩合 (例: 50%)"), text: $viewModel.polishingRate)
             TextField(String(localized: "日本酒度 (例: +3.0)"), text: $viewModel.sakeMeterValue)
             
         case .beer:
-            HStack(spacing: 8) {
-                TextField(String(localized: "ビアスタイル (例: IPA, Stout)"), text: $viewModel.beerStyle)
-                    .focused($focusedField, equals: .extra)
-                
-                Menu {
-                    ForEach(BeveragePresetOptions.beerStyles, id: \.self) { style in
-                        Button(style) {
-                            viewModel.beerStyle = style
-                        }
+            // ✨ ビアスタイル（生産地と同じUI/UXに統一）
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text(String(localized: "ビアスタイル"))
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Button(isCustomBeerStyleInput ? String(localized: "選択肢から選択する") : String(localized: "直接入力（その他）に切り替え")) {
+                        isCustomBeerStyleInput.toggle()
                     }
-                } label: {
-                    Image(systemName: "chevron.down.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(Color.accentColor)
+                    .font(.caption)
+                }
+                
+                if isCustomBeerStyleInput {
+                    TextField(String(localized: "ビアスタイルを自由入力 (例: IPA)"), text: $viewModel.beerStyle)
+                        .focused($focusedField, equals: .extra)
+                        .textFieldStyle(.roundedBorder)
+                } else {
+                    Menu {
+                        ForEach(BeveragePresetOptions.beerStyles, id: \.self) { style in
+                            Button(style) {
+                                if style == String(localized: "その他") {
+                                    viewModel.beerStyle = ""
+                                    isCustomBeerStyleInput = true
+                                } else {
+                                    viewModel.beerStyle = style
+                                }
+                            }
+                        }
+                    } label: {
+                        HStack {
+                            Text(viewModel.beerStyle.isEmpty ? String(localized: "タップしてビアスタイルを選択...") : viewModel.beerStyle)
+                                .foregroundStyle(viewModel.beerStyle.isEmpty ? .secondary : .primary)
+                            Spacer()
+                            Image(systemName: "chevron.up.chevron.down")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(10)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                    }
                 }
             }
+            .padding(.vertical, 4)
             
             TextField(String(localized: "IBU (国際苦味単位)"), text: $viewModel.ibu)
                 .keyboardType(.numberPad)
+        }
+    }
+}
+
+/// ワインの品種入力行コンポーネント（生産地と同じ「プリセット選択 / 直接入力切り替え」UIに統一）
+private struct WineBlendComponentRow: View {
+    @Binding var component: BlendComponent
+    let index: Int
+    let totalCount: Int
+    @FocusState<GeneralInfoField?>.Binding var focusedField: GeneralInfoField?
+    
+    @State private var isCustomInput: Bool = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(totalCount > 1 ? String(format: String(localized: "ブドウ品種 %d"), index + 1) : String(localized: "ブドウ品種"))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Button(isCustomInput ? String(localized: "選択肢から選択する") : String(localized: "直接入力（その他）に切り替え")) {
+                    isCustomInput.toggle()
+                }
+                .font(.caption)
+            }
+
+            HStack(spacing: 8) {
+                if isCustomInput {
+                    TextField(String(localized: "品種を自由入力 (例: カベルネ・ソーヴィニヨン)"), text: $component.variety)
+                        .focused($focusedField, equals: .extra)
+                        .textFieldStyle(.roundedBorder)
+                } else {
+                    Menu {
+                        ForEach(BeveragePresetOptions.grapeVarieties, id: \.self) { variety in
+                            Button(variety) {
+                                if variety == String(localized: "その他") {
+                                    component.variety = ""
+                                    isCustomInput = true
+                                } else {
+                                    component.variety = variety
+                                }
+                            }
+                        }
+                    } label: {
+                        HStack {
+                            Text(component.variety.isEmpty ? String(localized: "タップして品種を選択...") : component.variety)
+                                .foregroundStyle(component.variety.isEmpty ? .secondary : .primary)
+                                .lineLimit(1)
+                            Spacer()
+                            Image(systemName: "chevron.up.chevron.down")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(10)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                    }
+                }
+                
+                TextField(String(localized: "割合"), value: $component.percentage, format: .number)
+                    .keyboardType(.numberPad)
+                    .frame(width: 48)
+                    .multilineTextAlignment(.trailing)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 4)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                
+                Text("%")
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.vertical, 4)
+        .onAppear {
+            if !component.variety.isEmpty && !BeveragePresetOptions.grapeVarieties.contains(component.variety) {
+                isCustomInput = true
+            }
         }
     }
 }
