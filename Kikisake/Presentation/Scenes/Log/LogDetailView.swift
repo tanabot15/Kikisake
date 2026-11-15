@@ -11,6 +11,7 @@ public struct LogDetailView: View {
     @State private var isShowingImageModal: Bool = false
     @State private var isShowingEditSheet: Bool = false
     @State private var isShowingBackImageModal: Bool = false
+    @State private var processedBottleImage: UIImage? = nil
 
     public init(log: TastingLog) {
         self.log = log
@@ -141,7 +142,6 @@ public struct LogDetailView: View {
             let vm = AppState.shared.addFlowViewModel
             vm.reset()
             if let item = log.item {
-                // 写真データ（imageDatas, backImageDatas）は含めず、基本情報やメタデータをコピーしてステップ1から開始
                 vm.selectedCategory = item.category
                 vm.name = item.name
                 vm.producer = item.producer
@@ -157,7 +157,6 @@ public struct LogDetailView: View {
                 vm.selectedGridRow = item.gridRow
                 vm.selectedGridColumn = item.gridColumn
                 
-                // 特定メタデータの復元
                 if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
                     let decoder = JSONDecoder()
                     switch item.category {
@@ -185,8 +184,7 @@ public struct LogDetailView: View {
                     }
                 }
             }
-            // ステップ1からスタート（currentStep = 1 はデフォルト）
-            AppState.shared.selectedTab = 2 // 「追加」タブへ遷移
+            AppState.shared.selectedTab = 2
         } label: {
             HStack(spacing: 12) {
                 ZStack {
@@ -323,7 +321,6 @@ public struct LogDetailView: View {
         .cornerRadius(16)
     }
 
-    // ペアリング表示用カード
     private func pairingCard(pairing: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("ペアリング")
@@ -347,25 +344,30 @@ public struct LogDetailView: View {
                 } label: {
                     GeometryReader { geometry in
                         ZStack(alignment: .center) {
-                            // 1. ベースのシックな深みのあるダークグラデーション
-                            LinearGradient(
-                                colors: [
-                                    Color(hex: "#1A1A1E") ?? .black,
-                                    Color(hex: "#2C2C30") ?? .gray
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
+                            // ✨【改善】ワインボトルの色が濃い場合でも境界がはっきりわかる明るめのスポットライト背景
+                            if item.isBackgroundRemoved {
+                                RadialGradient(
+                                    colors: [
+                                        colorFromHex(log.appearanceColorHex).opacity(0.3),
+                                        Color(.systemBackground).opacity(0.8),
+                                        Color(.secondarySystemBackground)
+                                    ],
+                                    center: .center,
+                                    startRadius: 20,
+                                    endRadius: 180
+                                )
+                            } else {
+                                LinearGradient(
+                                    colors: [
+                                        Color(hex: "#1A1A1E") ?? .black,
+                                        Color(hex: "#2C2C30") ?? .gray
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            }
 
-                            // 2. お酒の外観カラーを利用したアンビエント光沢（Glow）演出
-                            Circle()
-                                .fill(colorFromHex(log.appearanceColorHex))
-                                .frame(width: 180, height: 180)
-                                .blur(radius: 50)
-                                .opacity(0.45)
-                                .offset(y: -10)
-
-                            // 3. 非透過（そのままの写真）の場合の背景ぼかし演出
+                            // 非透過（そのままの写真）の場合の背景ぼかし演出
                             if !item.isBackgroundRemoved {
                                 Image(uiImage: uiImage)
                                     .resizable()
@@ -375,20 +377,50 @@ public struct LogDetailView: View {
                                     .opacity(0.3)
                             }
 
-                            // 4. メイン画像（透過・非透過を問わず、一貫したサイズ枠に綺麗に収める）
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: geometry.size.width - 32, maxHeight: 220)
-                                .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 6)
-                                .padding(.vertical, 8)
+                            // メイン画像表示（背景透過処理対応）
+                            if item.isBackgroundRemoved {
+                                if let processed = processedBottleImage {
+                                    Image(uiImage: processed)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(maxWidth: geometry.size.width - 32, maxHeight: 220)
+                                        .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
+                                        .padding(.vertical, 8)
+                                } else {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(maxWidth: geometry.size.width - 32, maxHeight: 220)
+                                        .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
+                                        .padding(.vertical, 8)
+                                        .task {
+                                            let backgroundRemoved = await BottleMattingHelper.removeBackground(from: uiImage)
+                                            self.processedBottleImage = backgroundRemoved
+                                        }
+                                }
+                            } else {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxWidth: geometry.size.width - 32, maxHeight: 220)
+                                    .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 6)
+                                    .padding(.vertical, 8)
+                            }
                             
-                            // 5. 下部テキスト用の読みやすさ向上グラデーション保護膜
-                            LinearGradient(
-                                colors: [.clear, .black.opacity(0.85)],
-                                startPoint: .center,
-                                endPoint: .bottom
-                            )
+                            // 下部テキスト用の読みやすさ向上グラデーション保護膜（明るい背景の場合は薄めに調整）
+                            if !item.isBackgroundRemoved {
+                                LinearGradient(
+                                    colors: [.clear, .black.opacity(0.85)],
+                                    startPoint: .center,
+                                    endPoint: .bottom
+                                )
+                            } else {
+                                LinearGradient(
+                                    colors: [.clear, Color(.systemBackground).opacity(0.9)],
+                                    startPoint: .center,
+                                    endPoint: .bottom
+                                )
+                            }
                         }
                     }
                     .frame(height: 260)
@@ -438,21 +470,22 @@ public struct LogDetailView: View {
                 }
             }
 
-            // ボトル情報テキスト（白文字固定にしてグラデーション保護膜の上で100%の可読性を保持）
+            // ✨ ボトル情報テキスト（背景が明るい場合は適切な濃い色 .primary、透過なしは白文字）
             if let item = log.item {
+                let isRemoved = item.isBackgroundRemoved
                 VStack(alignment: .leading, spacing: 4) {
                     Text(item.name)
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundStyle(.white)
-                        .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
+                        .foregroundStyle(isRemoved ? .primary : Color.white)
+                        .shadow(color: isRemoved ? .clear : .black.opacity(0.5), radius: 2, x: 0, y: 1)
                         .lineLimit(2)
 
                     if !item.producer.isEmpty {
                         Text(item.producer)
                             .font(.subheadline)
-                            .foregroundStyle(.white.opacity(0.85))
-                            .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
+                            .foregroundStyle(isRemoved ? .secondary : Color.white.opacity(0.85))
+                            .shadow(color: isRemoved ? .clear : .black.opacity(0.5), radius: 2, x: 0, y: 1)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -460,8 +493,12 @@ public struct LogDetailView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .background(Color.black)
+        .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.primary.opacity(0.12), lineWidth: 1)
+        )
         .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
     }
     

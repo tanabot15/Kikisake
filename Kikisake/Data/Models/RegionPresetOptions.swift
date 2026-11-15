@@ -423,17 +423,17 @@ public enum RegionPresetOptions {
             ]),
             RegionHierarchy(parent: String(localized: "日本"), children: [
                 String(localized: "北海道"),
-                String(localized: "岩手"),
-                String(localized: "埼玉"),
-                String(localized: "東京"),
-                String(localized: "神奈川"),
-                String(localized: "長野"),
-                String(localized: "静岡"),
-                String(localized: "三重"),
-                String(localized: "京都"),
-                String(localized: "大阪"),
-                String(localized: "鳥取"),
-                String(localized: "沖縄")
+                String(localized: "岩手県"),
+                String(localized: "埼玉県"),
+                String(localized: "東京都"),
+                String(localized: "神奈川県"),
+                String(localized: "長野県"),
+                String(localized: "静岡県"),
+                String(localized: "三重県"),
+                String(localized: "京都県"),
+                String(localized: "大阪県"),
+                String(localized: "鳥取県"),
+                String(localized: "沖縄県")
             ]),
             // --- クラフトビール注目国・マイナー産地 ---
             RegionHierarchy(parent: String(localized: "デンマーク"), children: [

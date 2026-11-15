@@ -6857,16 +6857,6 @@
         }
       }
     },
-    "三重" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mie"
-          }
-        }
-      }
-    },
     "三重県" : {
       "localizations" : {
         "en" : {
@@ -7177,7 +7167,7 @@
         }
       }
     },
-    "京都" : {
+    "京都府" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7187,12 +7177,12 @@
         }
       }
     },
-    "京都府" : {
+    "京都県" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kyoto"
+            "value" : "Kyoto Prefecture"
           }
         }
       }
@@ -8417,16 +8407,6 @@
         }
       }
     },
-    "埼玉" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Saitama"
-          }
-        }
-      }
-    },
     "埼玉県" : {
       "localizations" : {
         "en" : {
@@ -8567,17 +8547,17 @@
         }
       }
     },
-    "大阪" : {
+    "大阪府" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Osaka"
+            "value" : "Osaka Prefecture"
           }
         }
       }
     },
-    "大阪府" : {
+    "大阪県" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9605,16 +9585,6 @@
         }
       }
     },
-    "東京" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tokyo"
-          }
-        }
-      }
-    },
     "東京都" : {
       "localizations" : {
         "en" : {
@@ -9851,16 +9821,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clear with Blue"
-          }
-        }
-      }
-    },
-    "沖縄" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Okinawa"
           }
         }
       }
@@ -10731,16 +10691,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shinriki"
-          }
-        }
-      }
-    },
-    "神奈川" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kanagawa"
           }
         }
       }
@@ -12193,16 +12143,6 @@
         }
       }
     },
-    "静岡" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shizuoka"
-          }
-        }
-      }
-    },
     "静岡県" : {
       "localizations" : {
         "en" : {
@@ -12395,16 +12335,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kochi"
-          }
-        }
-      }
-    },
-    "鳥取" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tottori"
           }
         }
       }
