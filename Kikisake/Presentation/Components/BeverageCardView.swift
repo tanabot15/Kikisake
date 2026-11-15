@@ -54,15 +54,27 @@ public struct BeverageCardView: View {
         HStack(spacing: 0) {
             // ✨ 1. 左側エリア：カードの上・左・下の端（ぎりぎり）まで完全に密着させるパネル
             ZStack {
-                // 背景：外観カラーを薄く敷いたプレート（上・左・下がカード外縁に直結）
-                LinearGradient(
-                    colors: [
-                        appearanceColor.opacity(0.18),
-                        appearanceColor.opacity(0.06)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
+                if isBackgroundRemoved {
+                    RadialGradient(
+                        colors: [
+                            appearanceColor.opacity(0.25),
+                            Color(.systemBackground).opacity(0.95),
+                            Color(.secondarySystemBackground)
+                        ],
+                        center: .center,
+                        startRadius: 5,
+                        endRadius: 60
+                    )
+                } else {
+                    LinearGradient(
+                        colors: [
+                            appearanceColor.opacity(0.18),
+                            appearanceColor.opacity(0.06)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                }
 
                 if let imageData, let uiImage = UIImage(data: imageData) {
                     if isBackgroundRemoved {
@@ -70,7 +82,7 @@ public struct BeverageCardView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .padding(8)
-                            .shadow(color: Color.black.opacity(0.12), radius: 3, x: 0, y: 2)
+                            .shadow(color: Color.black.opacity(0.18), radius: 4, x: 0, y: 2)
                     } else {
                         Image(uiImage: uiImage)
                             .resizable()
@@ -208,7 +220,7 @@ fileprivate extension UIImage {
 
     return ScrollView {
         VStack(spacing: 16) {
-            Text("【名刺風フルブリード】左パネルが上下左端に密着")
+            Text("【名刺風フルブリード】左パネルが明るいスポットライト背景に")
                 .font(.caption)
                 .fontWeight(.bold)
                 .foregroundStyle(.secondary)
