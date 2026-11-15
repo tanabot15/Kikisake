@@ -6,11 +6,13 @@ import SwiftData
 
 public struct CollectionBookAnalyticsView: View {
     @State private var viewModel = CollectionAnalyticsViewModel()
+    @Bindable private var appState = AppState.shared
     var allLogs: [TastingLog]
 
-    // ✨ 受け取るタプルラベルを unlockedLog に合わせる
     @State private var selectedCell: (definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLog: TastingLog?)? = nil
     @State private var isShowingDetailAlert: Bool = false
+    @State private var isShowingPaywall: Bool = false
+    @State private var isShowingRankSheet: Bool = false
 
     public init(allLogs: [TastingLog]) {
         self.allLogs = allLogs
@@ -18,8 +20,15 @@ public struct CollectionBookAnalyticsView: View {
 
     public var body: some View {
         @Bindable var viewModel = viewModel
+        let isPro = appState.isProVersion
+        let proExtraCount = viewModel.lockedProItemCount(for: viewModel.selectedCategory)
 
         return VStack(spacing: 16) {
+            // 0. 無料ユーザー向け Pro版アップグレード誘導バナー
+            if !isPro && proExtraCount > 0 {
+                proUpgradeBanner(extraCount: proExtraCount)
+            }
+
             // 1. 酒種切り替えピッカー
             Picker(String(localized: "酒種"), selection: $viewModel.selectedCategory) {
                 ForEach(BeverageCategory.allCases, id: \.self) { category in
@@ -29,11 +38,23 @@ public struct CollectionBookAnalyticsView: View {
             .pickerStyle(.segmented)
             .padding(.horizontal, 4)
 
-            // 2. 進捗サマリーカード
+            // 2. 進捗＆称号サマリーカード
             progressSummaryCard
             
             // 3. コレクション・マトリクス・グリッド
             collectionGridView
+        }
+        .sheet(isPresented: $isShowingPaywall) {
+            PaywallView()
+        }
+        .sheet(isPresented: $isShowingRankSheet) {
+            let results = viewModel.checkCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
+            let unlockedCount = results.filter { $0.isUnlocked }.count
+            RankShareSheetView(
+                category: viewModel.selectedCategory,
+                unlockedCount: unlockedCount,
+                totalCount: results.count
+            )
         }
         .alert(selectedCell?.definition.targetElement ?? "", isPresented: $isShowingDetailAlert) {
             Button(String(localized: "閉じる"), role: .cancel) {}
@@ -54,29 +75,118 @@ public struct CollectionBookAnalyticsView: View {
         }
     }
 
-    /// 進捗率プログレスバー
+    /// 進捗率プログレスバー＆現在の称号・シェアエリア
     @ViewBuilder
     private var progressSummaryCard: some View {
-        let rate = viewModel.completionRate(for: viewModel.selectedCategory, logs: allLogs)
-        let results = viewModel.checkCompletions(for: viewModel.selectedCategory, logs: allLogs)
+        let isPro = appState.isProVersion
+        let rate = viewModel.completionRate(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
+        let results = viewModel.checkCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
         let unlockedCount = results.filter { $0.isUnlocked }.count
+        let currentBadge = CollectionRankBadge.currentBadge(for: viewModel.selectedCategory, unlockedCount: unlockedCount)
+        let nextBadge = CollectionRankBadge.nextBadge(for: viewModel.selectedCategory, unlockedCount: unlockedCount)
 
-        VStack(spacing: 8) {
-            HStack {
-                Label(String(localized: "図鑑コンプリート進捗"), systemImage: "trophy.fill")
+        VStack(spacing: 12) {
+            // 上段：コンプリート進捗率
+            VStack(spacing: 8) {
+                HStack {
+                    Label(
+                        isPro ? String(localized: "図鑑コンプリート進捗 (Pro全開放)") : String(localized: "図鑑コンプリート進捗 (スタンダード)"),
+                        systemImage: "trophy.fill"
+                    )
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundStyle(.primary)
-                Spacer()
-                Text("\(unlockedCount) / \(results.count)")
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.accentColor)
+                    
+                    Spacer()
+                    
+                    Text("\(unlockedCount) / \(results.count)")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.accentColor)
+                }
+
+                ProgressView(value: rate)
+                    .tint(Color.accentColor)
+                    .scaleEffect(x: 1, y: 1.5, anchor: .center)
             }
 
-            ProgressView(value: rate)
-                .tint(Color.accentColor)
-                .scaleEffect(x: 1, y: 1.5, anchor: .center)
+            Divider()
+
+            // 下段：獲得済み称号バッジ＆SNSシェアボタン
+            HStack(spacing: 12) {
+                if let badge = currentBadge {
+                    ZStack {
+                        Circle()
+                            .fill(LinearGradient(
+                                colors: badge.tier.gradientColors,
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ))
+                            .frame(width: 40, height: 40)
+
+                        Image(systemName: badge.tier.iconName)
+                            .font(.subheadline)
+                            .foregroundStyle(.white)
+                    }
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: 4) {
+                            Text(badge.tier.tierName)
+                                .font(.caption2)
+                                .fontWeight(.bold)
+                                .foregroundStyle(badge.tier.accentColor)
+                            if let next = nextBadge {
+                                Text(String(format: String(localized: "(次: %d種で%@)"), next.requiredCount, next.tier.tierName))
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        Text(badge.title)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.primary)
+                    }
+                } else if let firstBadge = nextBadge {
+                    ZStack {
+                        Circle()
+                            .fill(Color(.systemGray5))
+                            .frame(width: 40, height: 40)
+
+                        Image(systemName: "medal")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(String(localized: "称号未獲得"))
+                            .font(.caption2)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.secondary)
+                        Text(String(format: String(localized: "あと%d種で「%@」"), max(0, firstBadge.requiredCount - unlockedCount), firstBadge.title))
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.primary)
+                    }
+                }
+
+                Spacer()
+
+                Button {
+                    isShowingRankSheet = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: currentBadge != nil ? "square.and.arrow.up" : "list.bullet.rectangle")
+                        Text(currentBadge != nil ? String(localized: "シェア") : String(localized: "称号一覧"))
+                    }
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(Color.accentColor.opacity(0.12))
+                    .foregroundStyle(Color.accentColor)
+                    .clipShape(Capsule())
+                }
+            }
         }
         .padding(14)
         .background(Color(.secondarySystemGroupedBackground))
@@ -87,7 +197,8 @@ public struct CollectionBookAnalyticsView: View {
     /// グリッド表示エリア（産地ごとにグループ化して表示）
     @ViewBuilder
     private var collectionGridView: some View {
-        let results = viewModel.checkCompletions(for: viewModel.selectedCategory, logs: allLogs)
+        let isPro = appState.isProVersion
+        let results = viewModel.checkCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
         let groupedByRegion = Dictionary(grouping: results, by: { $0.definition.region })
 
         ScrollView {
@@ -116,6 +227,59 @@ public struct CollectionBookAnalyticsView: View {
             }
             .padding(.vertical, 4)
         }
+    }
+
+    /// Pro版で追加されるマイナー組み合わせの解放誘導バナー
+    @ViewBuilder
+    private func proUpgradeBanner(extraCount: Int) -> some View {
+        Button {
+            isShowingPaywall = true
+        } label: {
+            HStack(spacing: 14) {
+                ZStack {
+                    Circle()
+                        .fill(LinearGradient(
+                            colors: [.yellow, .orange.opacity(0.8)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ))
+                        .frame(width: 44, height: 44)
+
+                    Image(systemName: "crown.fill")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                }
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(String(format: String(localized: "Pro版でさらに %d 種の希少枠を解放"), extraCount))
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.primary)
+
+                    Text(String(localized: "マイナー産地・土着品種・マニアックなスタイルの組み合わせを全て図鑑に追加します"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.leading)
+                }
+
+                Spacer(minLength: 4)
+
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(14)
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Color(.secondarySystemGroupedBackground))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14)
+                            .stroke(Color.orange.opacity(0.4), lineWidth: 1.2)
+                    )
+            )
+        }
+        .buttonStyle(.plain)
     }
 
     /// 個別のコレクション・セルカード
@@ -166,50 +330,41 @@ public struct CollectionBookAnalyticsView: View {
     }
 }
 
-#Preview {
+#Preview("図鑑ビュー（ブロンズ達成サンプル）") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, StorageLocation.self, configurations: config)
     
-    // サンプル1：フランス産のカベルネ・ソーヴィニヨン（図鑑が埋まるケース）
-    let wineItem = BeverageItem(
-        name: "Château Margaux 2015",
-        producer: "Château Margaux",
-        category: .wine,
-        region: "フランス, ボルドー",
-        specificMetadataJSON: "{\"wineType\":\"赤\",\"grapeVarieties\":\"カベルネ・ソーヴィニヨン\",\"blendComponents\":[{\"variety\":\"カベルネ・ソーヴィニヨン\",\"percentage\":80}]}"
-    )
-    let wineLog = TastingLog(
-        rating: 4.9,
-        appearanceNotes: "深みのあるルビー",
-        memo: "素晴らしい味わい。",
-        isEvaluated: true,
-        item: wineItem
-    )
-    
-    // サンプル2：新潟県の山田錦を使った日本酒（図鑑が埋まるケース）
-    let sakeItem = BeverageItem(
-        name: "久保田 萬寿",
-        producer: "朝日酒造",
-        category: .sake,
-        region: "新潟県, 長岡",
-        specificMetadataJSON: "{\"specificName\":\"純米大吟醸\",\"riceVariety\":\"山田錦\",\"polishingRate\":\"50%\",\"sakeMeterValue\":\"+2\"}"
-    )
-    let sakeLog = TastingLog(
-        rating: 4.8,
-        appearanceNotes: "澄んだ透明",
-        memo: "芳醇な香り。",
-        isEvaluated: true,
-        item: sakeItem
-    )
+    let samples: [(String, String, String)] = [
+        ("Château Margaux", "フランス, ボルドー", "カベルネ・ソーヴィニヨン"),
+        ("Château Cheval Blanc", "フランス, ボルドー", "メルロ"),
+        ("Romanée-Conti", "フランス, ブルゴーニュ", "ピノ・ノワール"),
+        ("Montrachet", "フランス, ブルゴーニュ", "シャルドネ"),
+        ("Sancerre", "フランス, ロワール", "ソーヴィニヨン・ブラン"),
+        ("Côte-Rôtie", "フランス, ローヌ", "シラー / シラーズ"),
+        ("Beaujolais Nouveau", "フランス", "ガメイ"),
+        ("Tignanello", "イタリア, トスカーナ", "サンジョヴェーゼ"),
+        ("Barolo", "イタリア, ピエモンテ", "ネッビオーロ"),
+        ("Barbera d'Alba", "イタリア, ピエモンテ", "バルベラ")
+    ]
 
-    container.mainContext.insert(wineItem)
-    container.mainContext.insert(wineLog)
-    container.mainContext.insert(sakeItem)
-    container.mainContext.insert(sakeLog)
+    var logs: [TastingLog] = []
+    for (name, region, variety) in samples {
+        let item = BeverageItem(
+            name: name,
+            producer: "Sample Producer",
+            category: .wine,
+            region: region,
+            specificMetadataJSON: "{\"wineType\":\"赤\",\"grapeVarieties\":\"\(variety)\",\"blendComponents\":[]}"
+        )
+        let log = TastingLog(rating: 4.5, isEvaluated: true, item: item)
+        container.mainContext.insert(item)
+        container.mainContext.insert(log)
+        logs.append(log)
+    }
 
     return NavigationStack {
         ScrollView {
-            CollectionBookAnalyticsView(allLogs: [wineLog, sakeLog])
+            CollectionBookAnalyticsView(allLogs: logs)
                 .padding()
         }
         .navigationTitle(String(localized: "図鑑"))

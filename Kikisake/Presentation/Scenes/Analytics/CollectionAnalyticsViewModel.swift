@@ -10,12 +10,27 @@ public final class CollectionAnalyticsViewModel {
 
     public init() {}
 
+    /// 現在のユーザー状態（無料 / Pro）に応じたターゲット一覧を取得
+    public func activeDefinitions(for category: BeverageCategory, isPro: Bool) -> [CollectionItemDefinition] {
+        let all = CollectionMatrixDataSource.definitions(for: category)
+        return isPro ? all : all.filter { !$0.isProOnly }
+    }
+
+    /// Pro版アップグレードで追加解放されるアイテム数
+    public func lockedProItemCount(for category: BeverageCategory) -> Int {
+        let all = CollectionMatrixDataSource.definitions(for: category)
+        return all.filter { $0.isProOnly }.count
+    }
+
     /// 指定された酒種の図鑑アイテムごとのコンプリート状態を判定
-    public func checkCompletions(for category: BeverageCategory, logs: [TastingLog]) -> [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLog: TastingLog?)] {
-        let definitions = CollectionMatrixDataSource.definitions(for: category)
+    public func checkCompletions(
+        for category: BeverageCategory,
+        logs: [TastingLog],
+        isPro: Bool = AppState.shared.isProVersion
+    ) -> [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLog: TastingLog?)] {
+        let definitions = activeDefinitions(for: category, isPro: isPro)
         
         return definitions.map { def in
-            // ログと紐づくアイテムの地域（region）と品種・米・スタイルが一致するかを判定
             let matchedLog = logs.first { log in
                 guard let item = log.item, item.category == category else { return false }
                 
@@ -52,10 +67,34 @@ public final class CollectionAnalyticsViewModel {
     }
     
     /// コンプリート率の計算 (0.0 〜 1.0)
-    public func completionRate(for category: BeverageCategory, logs: [TastingLog]) -> Double {
-        let results = checkCompletions(for: category, logs: logs)
+    public func completionRate(
+        for category: BeverageCategory,
+        logs: [TastingLog],
+        isPro: Bool = AppState.shared.isProVersion
+    ) -> Double {
+        let results = checkCompletions(for: category, logs: logs, isPro: isPro)
         guard !results.isEmpty else { return 0.0 }
         let unlockedCount = results.filter { $0.isUnlocked }.count
         return Double(unlockedCount) / Double(results.count)
+    }
+
+    /// 現在の達成数に応じた最高称号バッジを取得
+    public func currentRankBadge(
+        for category: BeverageCategory,
+        logs: [TastingLog],
+        isPro: Bool = AppState.shared.isProVersion
+    ) -> CollectionRankBadge? {
+        let unlockedCount = checkCompletions(for: category, logs: logs, isPro: isPro).filter { $0.isUnlocked }.count
+        return CollectionRankBadge.currentBadge(for: category, unlockedCount: unlockedCount)
+    }
+
+    /// 次の目標となる称号バッジを取得
+    public func nextRankBadge(
+        for category: BeverageCategory,
+        logs: [TastingLog],
+        isPro: Bool = AppState.shared.isProVersion
+    ) -> CollectionRankBadge? {
+        let unlockedCount = checkCompletions(for: category, logs: logs, isPro: isPro).filter { $0.isUnlocked }.count
+        return CollectionRankBadge.nextBadge(for: category, unlockedCount: unlockedCount)
     }
 }

@@ -71,6 +71,8 @@
 		D904F0A930A73FCC0046D409 /* CollectionMatrixModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0A830A73FCC0046D409 /* CollectionMatrixModel.swift */; };
 		D904F0AB30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AA30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift */; };
 		D904F0AD30A7400C0046D409 /* CollectionBookAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AC30A7400C0046D409 /* CollectionBookAnalyticsView.swift */; };
+		D904F0AF30A94F220046D409 /* CollectionRankModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AE30A94F220046D409 /* CollectionRankModel.swift */; };
+		D904F0B130A94F400046D409 /* RankShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0B030A94F400046D409 /* RankShareCardView.swift */; };
 		D95082573090D95D0045BF8E /* BackupDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082563090D95D0045BF8E /* BackupDTOs.swift */; };
 		D95082593090D9720045BF8E /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082583090D9720045BF8E /* BackupManager.swift */; };
 		D950825B309228190045BF8E /* BottleMattingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950825A309228190045BF8E /* BottleMattingHelper.swift */; };
@@ -149,6 +151,8 @@
 		D904F0A830A73FCC0046D409 /* CollectionMatrixModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionMatrixModel.swift; sourceTree = "<group>"; };
 		D904F0AA30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionAnalyticsViewModel.swift; sourceTree = "<group>"; };
 		D904F0AC30A7400C0046D409 /* CollectionBookAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionBookAnalyticsView.swift; sourceTree = "<group>"; };
+		D904F0AE30A94F220046D409 /* CollectionRankModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRankModel.swift; sourceTree = "<group>"; };
+		D904F0B030A94F400046D409 /* RankShareCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankShareCardView.swift; sourceTree = "<group>"; };
 		D95082563090D95D0045BF8E /* BackupDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDTOs.swift; sourceTree = "<group>"; };
 		D95082583090D9720045BF8E /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		D950825A309228190045BF8E /* BottleMattingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottleMattingHelper.swift; sourceTree = "<group>"; };
@@ -423,6 +427,8 @@
 				D950826630A030760045BF8E /* LogComparisonAnalyticsView.swift */,
 				D904F0AC30A7400C0046D409 /* CollectionBookAnalyticsView.swift */,
 				D904F0AA30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift */,
+				D904F0AE30A94F220046D409 /* CollectionRankModel.swift */,
+				D904F0B030A94F400046D409 /* RankShareCardView.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -605,6 +611,7 @@
 				D9044248307E864800EF4807 /* SettingsView.swift in Sources */,
 				D904421F307E853700EF4807 /* CalculateAnalyticsUseCase.swift in Sources */,
 				D90441E9307E817B00EF4807 /* KikisakeApp.swift in Sources */,
+				D904F0B130A94F400046D409 /* RankShareCardView.swift in Sources */,
 				D904422D307E85A000EF4807 /* LogListView.swift in Sources */,
 				D950826730A030760045BF8E /* LogComparisonAnalyticsView.swift in Sources */,
 				D9044239307E85E600EF4807 /* AddFlowViewModel.swift in Sources */,
@@ -617,6 +624,7 @@
 				D90442563081E26F00EF4807 /* BeverageSpecificMetadata.swift in Sources */,
 				D904420F307E84D800EF4807 /* Logger.swift in Sources */,
 				D950826930A1E7AD0045BF8E /* RegionPresetOptions.swift in Sources */,
+				D904F0AF30A94F220046D409 /* CollectionRankModel.swift in Sources */,
 				D9044259308366C300EF4807 /* StorageLocation.swift in Sources */,
 				D9044237307E85DB00EF4807 /* AddFlowView.swift in Sources */,
 				D9044221307E854100EF4807 /* ConsumeBeverageUseCase.swift in Sources */,
@@ -760,7 +768,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -781,7 +789,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.26;
+				MARKETING_VERSION = 1.27;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -804,7 +812,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -825,7 +833,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.26;
+				MARKETING_VERSION = 1.27;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

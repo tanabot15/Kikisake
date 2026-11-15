@@ -65,8 +65,7 @@ public struct PaywallView: View {
                             title: "保管場所を無制限に",
                             subtitle: "複数セラー・サブ冷蔵庫など無制限に追加可能"
                         )
-                        
-                        // マトリクス分析の訴求を追加
+
                         FeatureRow(
                             icon: "chart.dots.scatter",
                             title: "プロ用マトリクス分析",
@@ -77,6 +76,12 @@ public struct PaywallView: View {
                             icon: "sparkles",
                             title: "プロ仕様のテイスティングタグ",
                             subtitle: "マニアックな色や香りの表現要素を全オープン"
+                        )
+                        
+                        FeatureRow(
+                            icon: "trophy.fill",
+                            title: "コンプリート図鑑の全開放",
+                            subtitle: "希少産地やマニアックな品種・酒米・スタイルを全て解放"
                         )
                         
                         FeatureRow(
@@ -129,7 +134,6 @@ public struct PaywallView: View {
                                             .padding(.trailing, 8)
                                     }
                                     
-                                    // ✨ StoreKitから取得した価格（例: "¥3,800"）を動的に反映
                                     let priceString = storeProduct?.displayPrice ?? "¥100"
                                     Text("\(priceString) で買い切る（永久利用）")
                                         .font(.headline)
