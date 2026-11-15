@@ -83,7 +83,7 @@ public struct CollectionRankBadge: Identifiable, Hashable {
                     category: .wine,
                     tier: .gold,
                     requiredCount: 60,
-                    title: String(localized: "五つ星ワインマスター"),
+                    title: String(localized: "五つ星ソムリエ"),
                     subtitle: String(localized: "希少産地から土着品種まで極めし称号")
                 )
             ]
