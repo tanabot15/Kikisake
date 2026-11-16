@@ -10,34 +10,30 @@ public final class CollectionAnalyticsViewModel {
 
     public init() {}
 
-    /// 現在のユーザー状態（無料 / Pro）に応じたターゲット一覧を取得
     public func activeDefinitions(for category: BeverageCategory, isPro: Bool) -> [CollectionItemDefinition] {
         let all = CollectionMatrixDataSource.definitions(for: category)
         return isPro ? all : all.filter { !$0.isProOnly }
     }
 
-    /// Pro版アップグレードで追加解放されるアイテム数
     public func lockedProItemCount(for category: BeverageCategory) -> Int {
         let all = CollectionMatrixDataSource.definitions(for: category)
         return all.filter { $0.isProOnly }.count
     }
 
-    /// 指定された酒種の図鑑アイテムごとのコンプリート状態を判定
+    /// ✨ 指定された酒種の図鑑アイテムごとに、合致するすべてのログの配列を返すように拡張
     public func checkCompletions(
         for category: BeverageCategory,
         logs: [TastingLog],
         isPro: Bool = AppState.shared.isProVersion
-    ) -> [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLog: TastingLog?)] {
+    ) -> [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])] {
         let definitions = activeDefinitions(for: category, isPro: isPro)
         
         return definitions.map { def in
-            let matchedLog = logs.first { log in
+            let matchedLogs = logs.filter { log in
                 guard let item = log.item, item.category == category else { return false }
                 
-                // 1. 産地の部分一致または完全一致チェック (例: "フランス, ボルドー" は "フランス" にマッチ)
                 let regionMatched = item.region.contains(def.region)
                 
-                // 2. 酒種固有のターゲット要素（品種・米・スタイル）のチェック
                 var elementMatched = false
                 if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
                     let decoder = JSONDecoder()
@@ -62,11 +58,10 @@ public final class CollectionAnalyticsViewModel {
                 return regionMatched && elementMatched
             }
             
-            return (definition: def, isUnlocked: matchedLog != nil, unlockedLog: matchedLog)
+            return (definition: def, isUnlocked: !matchedLogs.isEmpty, unlockedLogs: matchedLogs)
         }
     }
     
-    /// コンプリート率の計算 (0.0 〜 1.0)
     public func completionRate(
         for category: BeverageCategory,
         logs: [TastingLog],
@@ -78,7 +73,6 @@ public final class CollectionAnalyticsViewModel {
         return Double(unlockedCount) / Double(results.count)
     }
 
-    /// 現在の達成数に応じた最高称号バッジを取得
     public func currentRankBadge(
         for category: BeverageCategory,
         logs: [TastingLog],
@@ -88,7 +82,6 @@ public final class CollectionAnalyticsViewModel {
         return CollectionRankBadge.currentBadge(for: category, unlockedCount: unlockedCount)
     }
 
-    /// 次の目標となる称号バッジを取得
     public func nextRankBadge(
         for category: BeverageCategory,
         logs: [TastingLog],

@@ -4858,6 +4858,7 @@
       }
     },
     "ピノ・タナージュ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4896,6 +4897,9 @@
           }
         }
       }
+    },
+    "ピノタージュ" : {
+
     },
     "ヒノヒカリ" : {
       "localizations" : {
@@ -8138,6 +8142,7 @@
       }
     },
     "和飲" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8197,7 +8202,11 @@
         }
       }
     },
+    "図鑑コンプリート進捗" : {
+
+    },
     "図鑑コンプリート進捗 (Pro全開放)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8208,6 +8217,7 @@
       }
     },
     "図鑑コンプリート進捗 (スタンダード)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

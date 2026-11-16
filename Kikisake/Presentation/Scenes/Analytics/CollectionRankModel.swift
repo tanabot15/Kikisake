@@ -82,7 +82,7 @@ public struct CollectionRankBadge: Identifiable, Hashable {
                 CollectionRankBadge(
                     category: .wine,
                     tier: .gold,
-                    requiredCount: 60,
+                    requiredCount: 70,
                     title: String(localized: "五つ星ソムリエ"),
                     subtitle: String(localized: "希少産地から土着品種まで極めし称号")
                 )
@@ -99,14 +99,14 @@ public struct CollectionRankBadge: Identifiable, Hashable {
                 CollectionRankBadge(
                     category: .sake,
                     tier: .silver,
-                    requiredCount: 30,
+                    requiredCount: 25,
                     title: String(localized: "銘酒の巡礼者"),
                     subtitle: String(localized: "全国の酒処と多様な酒米の個性を網羅")
                 ),
                 CollectionRankBadge(
                     category: .sake,
                     tier: .gold,
-                    requiredCount: 60,
+                    requiredCount: 50,
                     title: String(localized: "匠の利き酒マスター"),
                     subtitle: String(localized: "日本各地の風土と希少米を極めし称号")
                 )
@@ -123,14 +123,14 @@ public struct CollectionRankBadge: Identifiable, Hashable {
                 CollectionRankBadge(
                     category: .beer,
                     tier: .silver,
-                    requiredCount: 20,
+                    requiredCount: 15,
                     title: String(localized: "ホップの冒険者"),
                     subtitle: String(localized: "伝統スタイルからモダンIPAまで制覇")
                 ),
                 CollectionRankBadge(
                     category: .beer,
                     tier: .gold,
-                    requiredCount: 40,
+                    requiredCount: 30,
                     title: String(localized: "五つ星ビアテイスター"),
                     subtitle: String(localized: "世界の醸造文化と希少スタイルを極めし称号")
                 )
