@@ -165,127 +165,394 @@ public enum CollectionMatrixDataSource {
             ]
             
         case .sake:
-            // 無料版（isProOnly: false）= 30種 / Pro版 = 全100種
+            // すべての酒造好適米を網羅
             return [
                 // ==========================================
-                // 1. 新潟・東北の銘酒蔵 (無料: 12種 / Pro追加: 18種)
+                // 1. 北海道
                 // ==========================================
-                .init(region: "新潟県", targetElement: "山田錦", category: .sake, isProOnly: false),
-                .init(region: "新潟県", targetElement: "五百万石", category: .sake, isProOnly: false),
-                .init(region: "新潟県", targetElement: "越淡麗", category: .sake, isProOnly: false),
-                .init(region: "山形県", targetElement: "出羽燦々", category: .sake, isProOnly: false),
-                .init(region: "山形県", targetElement: "美山錦", category: .sake, isProOnly: false),
-                .init(region: "山形県", targetElement: "雄町", category: .sake, isProOnly: false),
-                .init(region: "秋田県", targetElement: "秋田酒こまち", category: .sake, isProOnly: false),
-                .init(region: "秋田県", targetElement: "美山錦", category: .sake, isProOnly: false),
-                .init(region: "宮城県", targetElement: "蔵の華", category: .sake, isProOnly: false),
-                .init(region: "福島県", targetElement: "夢の香", category: .sake, isProOnly: false),
-                .init(region: "福島県", targetElement: "山田錦", category: .sake, isProOnly: false),
                 .init(region: "北海道", targetElement: "彗星", category: .sake, isProOnly: false),
-                
-                .init(region: "新潟県", targetElement: "こいみどり", category: .sake, isProOnly: true),
-                .init(region: "新潟県", targetElement: "一般米（食用米）", category: .sake, isProOnly: true),
-                .init(region: "山形県", targetElement: "雪女神", category: .sake, isProOnly: true),
-                .init(region: "山形県", targetElement: "羽州誉", category: .sake, isProOnly: true),
-                .init(region: "秋田県", targetElement: "一輪", category: .sake, isProOnly: true),
-                .init(region: "宮城県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "福島県", targetElement: "五百万石", category: .sake, isProOnly: true),
-                .init(region: "岩手県", targetElement: "ぎんおとめ", category: .sake, isProOnly: true),
-                .init(region: "岩手県", targetElement: "結の香", category: .sake, isProOnly: true),
-                .init(region: "青森県", targetElement: "華吹雪", category: .sake, isProOnly: true),
-                .init(region: "青森県", targetElement: "華想い", category: .sake, isProOnly: true),
+                .init(region: "北海道", targetElement: "吟風", category: .sake, isProOnly: false),
                 .init(region: "北海道", targetElement: "きたしずく", category: .sake, isProOnly: true),
-                .init(region: "北海道", targetElement: "吟風", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 2. 青森県
+                // ==========================================
+                .init(region: "青森県", targetElement: "華吹雪", category: .sake, isProOnly: false),
+                .init(region: "青森県", targetElement: "華想い", category: .sake, isProOnly: false),
+                .init(region: "青森県", targetElement: "豊盃", category: .sake, isProOnly: true),
+                .init(region: "青森県", targetElement: "吟烏帽子", category: .sake, isProOnly: true),
+                .init(region: "青森県", targetElement: "古城錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 3. 岩手県
+                // ==========================================
+                .init(region: "岩手県", targetElement: "吟ぎんが", category: .sake, isProOnly: false),
+                .init(region: "岩手県", targetElement: "ぎんおとめ", category: .sake, isProOnly: false),
+                .init(region: "岩手県", targetElement: "結の香", category: .sake, isProOnly: true),
                 .init(region: "岩手県", targetElement: "美山錦", category: .sake, isProOnly: true),
-                .init(region: "青森県", targetElement: "まっしぐら", category: .sake, isProOnly: true),
-                .init(region: "山形県", targetElement: "愛山", category: .sake, isProOnly: true),
-                .init(region: "秋田県", targetElement: "山田錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 4. 宮城県
+                // ==========================================
+                .init(region: "宮城県", targetElement: "蔵の華", category: .sake, isProOnly: false),
+                .init(region: "宮城県", targetElement: "吟のいろは", category: .sake, isProOnly: false),
+                .init(region: "宮城県", targetElement: "美山錦", category: .sake, isProOnly: true),
+                .init(region: "宮城県", targetElement: "山田錦", category: .sake, isProOnly: true),
                 .init(region: "宮城県", targetElement: "ササニシキ", category: .sake, isProOnly: true),
 
                 // ==========================================
-                // 2. 関東・甲信越・北陸の酒処 (無料: 6種 / Pro追加: 19種)
+                // 5. 秋田県
+                // ==========================================
+                .init(region: "秋田県", targetElement: "秋田酒こまち", category: .sake, isProOnly: false),
+                .init(region: "秋田県", targetElement: "美山錦", category: .sake, isProOnly: false),
+                .init(region: "秋田県", targetElement: "美郷錦", category: .sake, isProOnly: true),
+                .init(region: "秋田県", targetElement: "百田", category: .sake, isProOnly: true),
+                .init(region: "秋田県", targetElement: "改良信交", category: .sake, isProOnly: true),
+                .init(region: "秋田県", targetElement: "一穂積", category: .sake, isProOnly: true),
+                .init(region: "秋田県", targetElement: "星あかり", category: .sake, isProOnly: true),
+                .init(region: "秋田県", targetElement: "山田錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 6. 山形県
+                // ==========================================
+                .init(region: "山形県", targetElement: "出羽燦々", category: .sake, isProOnly: false),
+                .init(region: "山形県", targetElement: "出羽の里", category: .sake, isProOnly: false),
+                .init(region: "山形県", targetElement: "美山錦", category: .sake, isProOnly: false),
+                .init(region: "山形県", targetElement: "雪女神", category: .sake, isProOnly: false),
+                .init(region: "山形県", targetElement: "酒未来", category: .sake, isProOnly: true),
+                .init(region: "山形県", targetElement: "山酒4号", category: .sake, isProOnly: true),
+                .init(region: "山形県", targetElement: "改良信交", category: .sake, isProOnly: true),
+                .init(region: "山形県", targetElement: "羽州誉", category: .sake, isProOnly: true),
+                .init(region: "山形県", targetElement: "龍の落とし子", category: .sake, isProOnly: true),
+                .init(region: "山形県", targetElement: "亀粋", category: .sake, isProOnly: true),
+                .init(region: "山形県", targetElement: "豊国", category: .sake, isProOnly: true),
+                .init(region: "山形県", targetElement: "愛山", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 7. 福島県
+                // ==========================================
+                .init(region: "福島県", targetElement: "夢の香", category: .sake, isProOnly: false),
+                .init(region: "福島県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "福島県", targetElement: "福乃香", category: .sake, isProOnly: false),
+                .init(region: "福島県", targetElement: "山田錦", category: .sake, isProOnly: true),
+                .init(region: "福島県", targetElement: "美山錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 8. 茨城県
+                // ==========================================
+                .init(region: "茨城県", targetElement: "ひたち錦", category: .sake, isProOnly: false),
+                .init(region: "茨城県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "茨城県", targetElement: "美山錦", category: .sake, isProOnly: true),
+                .init(region: "茨城県", targetElement: "渡船", category: .sake, isProOnly: true),
+                .init(region: "茨城県", targetElement: "山田錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 9. 栃木県
+                // ==========================================
+                .init(region: "栃木県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "栃木県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "栃木県", targetElement: "夢ささら", category: .sake, isProOnly: false),
+                .init(region: "栃木県", targetElement: "ひとごこち", category: .sake, isProOnly: true),
+                .init(region: "栃木県", targetElement: "とちぎ酒14", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 10. 群馬県
+                // ==========================================
+                .init(region: "群馬県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "群馬県", targetElement: "若水", category: .sake, isProOnly: false),
+                .init(region: "群馬県", targetElement: "改良信交", category: .sake, isProOnly: true),
+                .init(region: "群馬県", targetElement: "舞風", category: .sake, isProOnly: true),
+                .init(region: "群馬県", targetElement: "山酒4号", category: .sake, isProOnly: true),
+                .init(region: "群馬県", targetElement: "山田錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 11. 埼玉県
+                // ==========================================
+                .init(region: "埼玉県", targetElement: "さけ武蔵", category: .sake, isProOnly: false),
+                .init(region: "埼玉県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "埼玉県", targetElement: "五百万石", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 12. 千葉県
+                // ==========================================
+                .init(region: "千葉県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "千葉県", targetElement: "総の舞", category: .sake, isProOnly: false),
+                .init(region: "千葉県", targetElement: "山田錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 13. 東京都
+                // ==========================================
+                .init(region: "東京都", targetElement: "一般米（食用米）", category: .sake, isProOnly: false),
+
+                // ==========================================
+                // 14. 神奈川県
+                // ==========================================
+                .init(region: "神奈川県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "神奈川県", targetElement: "楽風舞", category: .sake, isProOnly: false),
+                .init(region: "神奈川県", targetElement: "若水", category: .sake, isProOnly: true),
+                .init(region: "神奈川県", targetElement: "雄町", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 15. 新潟県
+                // ==========================================
+                .init(region: "新潟県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "新潟県", targetElement: "越淡麗", category: .sake, isProOnly: false),
+                .init(region: "新潟県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "新潟県", targetElement: "たかね錦", category: .sake, isProOnly: true),
+                .init(region: "新潟県", targetElement: "一本〆", category: .sake, isProOnly: true),
+                .init(region: "新潟県", targetElement: "菊水", category: .sake, isProOnly: true),
+                .init(region: "新潟県", targetElement: "越神楽", category: .sake, isProOnly: true),
+                .init(region: "新潟県", targetElement: "楽風舞", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 16. 富山県
+                // ==========================================
+                .init(region: "富山県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "富山県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "富山県", targetElement: "雄山錦", category: .sake, isProOnly: true),
+                .init(region: "富山県", targetElement: "富の香", category: .sake, isProOnly: true),
+                .init(region: "富山県", targetElement: "美山錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 17. 石川県
+                // ==========================================
+                .init(region: "石川県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "石川県", targetElement: "石川門", category: .sake, isProOnly: false),
+                .init(region: "石川県", targetElement: "石川酒68号", category: .sake, isProOnly: true),
+                .init(region: "石川県", targetElement: "山田錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 18. 福井県
+                // ==========================================
+                .init(region: "福井県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "福井県", targetElement: "さかほまれ", category: .sake, isProOnly: false),
+                .init(region: "福井県", targetElement: "越の雫", category: .sake, isProOnly: true),
+                .init(region: "福井県", targetElement: "九頭竜", category: .sake, isProOnly: true),
+                .init(region: "福井県", targetElement: "神力", category: .sake, isProOnly: true),
+                .init(region: "福井県", targetElement: "山田錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 19. 山梨県
+                // ==========================================
+                .init(region: "山梨県", targetElement: "ひとごこち", category: .sake, isProOnly: false),
+                .init(region: "山梨県", targetElement: "夢山水", category: .sake, isProOnly: false),
+                .init(region: "山梨県", targetElement: "玉栄", category: .sake, isProOnly: true),
+                .init(region: "山梨県", targetElement: "山田錦", category: .sake, isProOnly: true),
+                .init(region: "山梨県", targetElement: "美山錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 20. 長野県
                 // ==========================================
                 .init(region: "長野県", targetElement: "美山錦", category: .sake, isProOnly: false),
                 .init(region: "長野県", targetElement: "ひとごこち", category: .sake, isProOnly: false),
-                .init(region: "静岡県", targetElement: "誉富士", category: .sake, isProOnly: false),
-                .init(region: "石川県", targetElement: "五百万石", category: .sake, isProOnly: false),
-                .init(region: "福井県", targetElement: "五百万石", category: .sake, isProOnly: false),
-                .init(region: "富山県", targetElement: "五百万石", category: .sake, isProOnly: false),
-                
+                .init(region: "長野県", targetElement: "山恵錦", category: .sake, isProOnly: false),
                 .init(region: "長野県", targetElement: "金紋錦", category: .sake, isProOnly: true),
-                .init(region: "長野県", targetElement: "山恵錦", category: .sake, isProOnly: true),
+                .init(region: "長野県", targetElement: "しらかば錦", category: .sake, isProOnly: true),
+                .init(region: "長野県", targetElement: "たかね錦", category: .sake, isProOnly: true),
                 .init(region: "長野県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "山梨県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "山梨県", targetElement: "一般米（食用米）", category: .sake, isProOnly: true),
-                .init(region: "静岡県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "富山県", targetElement: "雄山錦", category: .sake, isProOnly: true),
-                .init(region: "石川県", targetElement: "石川門", category: .sake, isProOnly: true),
-                .init(region: "福井県", targetElement: "さけににしき", category: .sake, isProOnly: true),
-                .init(region: "群馬県", targetElement: "舞風", category: .sake, isProOnly: true),
-                .init(region: "栃木県", targetElement: "とちぎ酒14", category: .sake, isProOnly: true),
-                .init(region: "茨城県", targetElement: "常盤錦", category: .sake, isProOnly: true),
-                .init(region: "埼玉県", targetElement: "さけ武蔵", category: .sake, isProOnly: true),
-                .init(region: "東京都", targetElement: "一般米（食用米）", category: .sake, isProOnly: true),
-                .init(region: "神奈川県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "千葉県", targetElement: "総の舞", category: .sake, isProOnly: true),
-                .init(region: "岐阜県", targetElement: "ひだほまれ", category: .sake, isProOnly: true),
-                .init(region: "愛知県", targetElement: "夢山水", category: .sake, isProOnly: true),
-                .init(region: "三重県", targetElement: "神の穂", category: .sake, isProOnly: true),
 
                 // ==========================================
-                // 3. 近畿・中国・四国の酒米文化 (無料: 10種 / Pro追加: 20種)
+                // 21. 岐阜県
+                // ==========================================
+                .init(region: "岐阜県", targetElement: "ひだほまれ", category: .sake, isProOnly: false),
+                .init(region: "岐阜県", targetElement: "五百万石", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 22. 静岡県
+                // ==========================================
+                .init(region: "静岡県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "静岡県", targetElement: "令和誉富士", category: .sake, isProOnly: false),
+                .init(region: "静岡県", targetElement: "誉富士", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 23. 愛知県
+                // ==========================================
+                .init(region: "愛知県", targetElement: "夢山水", category: .sake, isProOnly: false),
+                .init(region: "愛知県", targetElement: "若水", category: .sake, isProOnly: false),
+                .init(region: "愛知県", targetElement: "夢吟香", category: .sake, isProOnly: true),
+                .init(region: "愛知県", targetElement: "山田錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 24. 三重県
+                // ==========================================
+                .init(region: "三重県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "三重県", targetElement: "神の穂", category: .sake, isProOnly: false),
+                .init(region: "三重県", targetElement: "五百万石", category: .sake, isProOnly: true),
+                .init(region: "三重県", targetElement: "伊勢錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 25. 滋賀県
+                // ==========================================
+                .init(region: "滋賀県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "滋賀県", targetElement: "玉栄", category: .sake, isProOnly: false),
+                .init(region: "滋賀県", targetElement: "吟吹雪", category: .sake, isProOnly: true),
+                .init(region: "滋賀県", targetElement: "滋賀渡船6号", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 26. 京都府
+                // ==========================================
+                .init(region: "京都府", targetElement: "祝", category: .sake, isProOnly: false),
+                .init(region: "京都府", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "京都府", targetElement: "山田錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 27. 大阪府
+                // ==========================================
+                .init(region: "大阪府", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "大阪府", targetElement: "雄町", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 28. 兵庫県
                 // ==========================================
                 .init(region: "兵庫県", targetElement: "山田錦", category: .sake, isProOnly: false),
-                .init(region: "兵庫県", targetElement: "雄町", category: .sake, isProOnly: false),
-                .init(region: "京都府", targetElement: "山田錦", category: .sake, isProOnly: false),
-                .init(region: "京都府", targetElement: "祝", category: .sake, isProOnly: false),
-                .init(region: "岡山県", targetElement: "雄町", category: .sake, isProOnly: false),
-                .init(region: "広島県", targetElement: "八反錦", category: .sake, isProOnly: false),
-                .init(region: "山口県", targetElement: "山田錦", category: .sake, isProOnly: false),
-                .init(region: "高知県", targetElement: "吟の夢", category: .sake, isProOnly: false),
-                .init(region: "三重県", targetElement: "山田錦", category: .sake, isProOnly: false),
-                .init(region: "滋賀県", targetElement: "玉栄", category: .sake, isProOnly: false),
-                
+                .init(region: "兵庫県", targetElement: "愛山", category: .sake, isProOnly: false),
+                .init(region: "兵庫県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "兵庫県", targetElement: "白鶴錦", category: .sake, isProOnly: true),
                 .init(region: "兵庫県", targetElement: "兵庫北錦", category: .sake, isProOnly: true),
-                .init(region: "兵庫県", targetElement: "愛山", category: .sake, isProOnly: true),
-                .init(region: "京都府", targetElement: "五百万石", category: .sake, isProOnly: true),
-                .init(region: "滋賀県", targetElement: "秋の詩", category: .sake, isProOnly: true),
-                .init(region: "奈良県", targetElement: "露葉風", category: .sake, isProOnly: true),
-                .init(region: "奈良県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "和歌山県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "大阪府", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "岡山県", targetElement: "赤磐雄町", category: .sake, isProOnly: true),
-                .init(region: "広島県", targetElement: "千本錦", category: .sake, isProOnly: true),
-                .init(region: "山口県", targetElement: "西都の雫", category: .sake, isProOnly: true),
-                .init(region: "島根県", targetElement: "神の舞", category: .sake, isProOnly: true),
-                .init(region: "島根県", targetElement: "佐香錦", category: .sake, isProOnly: true),
-                .init(region: "鳥取県", targetElement: "強力", category: .sake, isProOnly: true),
-                .init(region: "鳥取県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "高知県", targetElement: "松山三井", category: .sake, isProOnly: true),
-                .init(region: "愛媛県", targetElement: "しずく媛", category: .sake, isProOnly: true),
-                .init(region: "徳島県", targetElement: "阿波山田錦", category: .sake, isProOnly: true),
-                .init(region: "香川県", targetElement: "オオセト", category: .sake, isProOnly: true),
-                .init(region: "岡山県", targetElement: "朝日", category: .sake, isProOnly: true),
+                .init(region: "兵庫県", targetElement: "山田穂", category: .sake, isProOnly: true),
+                .init(region: "兵庫県", targetElement: "兵庫錦", category: .sake, isProOnly: true),
+                .init(region: "兵庫県", targetElement: "渡船2号", category: .sake, isProOnly: true),
+                .init(region: "兵庫県", targetElement: "兵庫恋錦", category: .sake, isProOnly: true),
+                .init(region: "兵庫県", targetElement: "Hyogo Sake85", category: .sake, isProOnly: true),
+                .init(region: "兵庫県", targetElement: "但馬強力", category: .sake, isProOnly: true),
+                .init(region: "兵庫県", targetElement: "神力", category: .sake, isProOnly: true),
 
                 // ==========================================
-                // 4. 九州・沖縄のレア地域 (無料: 2種 / Pro追加: 13種)
+                // 29. 奈良県
+                // ==========================================
+                .init(region: "奈良県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "奈良県", targetElement: "露葉風", category: .sake, isProOnly: false),
+                .init(region: "奈良県", targetElement: "なら酒1504", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 30. 和歌山県
+                // ==========================================
+                .init(region: "和歌山県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "和歌山県", targetElement: "五百万石", category: .sake, isProOnly: true),
+                .init(region: "和歌山県", targetElement: "玉栄", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 31. 鳥取県
+                // ==========================================
+                .init(region: "鳥取県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "鳥取県", targetElement: "強力", category: .sake, isProOnly: false),
+                .init(region: "鳥取県", targetElement: "五百万石", category: .sake, isProOnly: true),
+                .init(region: "鳥取県", targetElement: "玉栄", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 32. 島根県
+                // ==========================================
+                .init(region: "島根県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "島根県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "島根県", targetElement: "佐香錦", category: .sake, isProOnly: true),
+                .init(region: "島根県", targetElement: "改良雄町", category: .sake, isProOnly: true),
+                .init(region: "島根県", targetElement: "縁の舞", category: .sake, isProOnly: true),
+                .init(region: "島根県", targetElement: "改良八反流", category: .sake, isProOnly: true),
+                .init(region: "島根県", targetElement: "神の舞", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 33. 岡山県
+                // ==========================================
+                .init(region: "岡山県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "岡山県", targetElement: "雄町", category: .sake, isProOnly: false),
+                .init(region: "岡山県", targetElement: "赤磐雄町", category: .sake, isProOnly: true),
+                .init(region: "岡山県", targetElement: "吟のさと", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 34. 広島県
+                // ==========================================
+                .init(region: "広島県", targetElement: "八反錦1号", category: .sake, isProOnly: false),
+                .init(region: "広島県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "広島県", targetElement: "八反35号", category: .sake, isProOnly: true),
+                .init(region: "広島県", targetElement: "千本錦", category: .sake, isProOnly: true),
+                .init(region: "広島県", targetElement: "萌えいぶき", category: .sake, isProOnly: true),
+                .init(region: "広島県", targetElement: "改良雄町", category: .sake, isProOnly: true),
+                .init(region: "広島県", targetElement: "こいおまち", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 35. 山口県
+                // ==========================================
+                .init(region: "山口県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "山口県", targetElement: "西都の雫", category: .sake, isProOnly: false),
+                .init(region: "山口県", targetElement: "白鶴錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 36. 徳島県
+                // ==========================================
+                .init(region: "徳島県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "徳島県", targetElement: "吟のさと", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 37. 香川県
+                // ==========================================
+                .init(region: "香川県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "香川県", targetElement: "雄町", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 38. 愛媛県
+                // ==========================================
+                .init(region: "愛媛県", targetElement: "しずく媛", category: .sake, isProOnly: false),
+                .init(region: "愛媛県", targetElement: "山田錦", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 39. 高知県
+                // ==========================================
+                .init(region: "高知県", targetElement: "吟の夢", category: .sake, isProOnly: false),
+                .init(region: "高知県", targetElement: "土佐麗", category: .sake, isProOnly: false),
+                .init(region: "高知県", targetElement: "山田錦", category: .sake, isProOnly: true),
+                .init(region: "高知県", targetElement: "風鳴子", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 40. 福岡県
                 // ==========================================
                 .init(region: "福岡県", targetElement: "山田錦", category: .sake, isProOnly: false),
-                .init(region: "佐賀県", targetElement: "山田錦", category: .sake, isProOnly: false),
-                
-                .init(region: "福岡県", targetElement: "夢一献", category: .sake, isProOnly: true),
-                .init(region: "佐賀県", targetElement: "佐賀の華", category: .sake, isProOnly: true),
-                .init(region: "長崎県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "熊本県", targetElement: "華錦", category: .sake, isProOnly: true),
-                .init(region: "熊本県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "大分県", targetElement: "ひのひかり", category: .sake, isProOnly: true),
-                .init(region: "大分県", targetElement: "山田錦", category: .sake, isProOnly: true),
-                .init(region: "宮崎県", targetElement: "一般米（食用米）", category: .sake, isProOnly: true),
-                .init(region: "鹿児島県", targetElement: "一般米（食用米）", category: .sake, isProOnly: true),
-                .init(region: "沖縄県", targetElement: "一般米（食用米）", category: .sake, isProOnly: true),
-                .init(region: "佐賀県", targetElement: "雄町", category: .sake, isProOnly: true),
+                .init(region: "福岡県", targetElement: "吟のさと", category: .sake, isProOnly: false),
+                .init(region: "福岡県", targetElement: "壽限無", category: .sake, isProOnly: true),
                 .init(region: "福岡県", targetElement: "雄町", category: .sake, isProOnly: true),
-                .init(region: "熊本県", targetElement: "神力", category: .sake, isProOnly: true)
+
+                // ==========================================
+                // 41. 佐賀県
+                // ==========================================
+                .init(region: "佐賀県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "佐賀県", targetElement: "さがの華", category: .sake, isProOnly: false),
+
+                // ==========================================
+                // 42. 長崎県
+                // ==========================================
+                .init(region: "長崎県", targetElement: "山田錦", category: .sake, isProOnly: false),
+
+                // ==========================================
+                // 43. 熊本県
+                // ==========================================
+                .init(region: "熊本県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "熊本県", targetElement: "華錦", category: .sake, isProOnly: false),
+                .init(region: "熊本県", targetElement: "神力", category: .sake, isProOnly: true),
+                .init(region: "熊本県", targetElement: "吟のさと", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 44. 大分県
+                // ==========================================
+                .init(region: "大分県", targetElement: "五百万石", category: .sake, isProOnly: false),
+                .init(region: "大分県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "大分県", targetElement: "若水", category: .sake, isProOnly: true),
+                .init(region: "大分県", targetElement: "雄町", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 45. 宮崎県
+                // ==========================================
+                .init(region: "宮崎県", targetElement: "山田錦", category: .sake, isProOnly: false),
+                .init(region: "宮崎県", targetElement: "はなかぐら", category: .sake, isProOnly: true),
+                .init(region: "宮崎県", targetElement: "ちほのまい", category: .sake, isProOnly: true),
+
+                // ==========================================
+                // 46. 鹿児島県
+                // ==========================================
+                .init(region: "鹿児島県", targetElement: "山田錦", category: .sake, isProOnly: false),
+
+                // ==========================================
+                // 47. 沖縄県
+                // ==========================================
+                .init(region: "沖縄県", targetElement: "一般米（食用米）", category: .sake, isProOnly: true)
             ]
             
         case .beer:
