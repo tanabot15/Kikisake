@@ -8,6 +8,29 @@ import SwiftData
 public final class CollectionAnalyticsViewModel {
     public var selectedCategory: BeverageCategory = .wine
 
+    // ✨ ここで国・都道府県の表示順序を自由にコントロールできます
+    public var wineRegionOrder: [String] = [
+        "フランス", "イタリア", "スペイン", "ポルトガル",
+        "ドイツ", "オーストリア", "スイス", "ハンガリー",
+        "アメリカ", "カナダ", "チリ", "アルゼンチン",
+        "オーストラリア", "ニュージーランド", "南アフリカ",
+        "日本", "ギリシャ", "ジョージア", "レバノン", "イギリス"
+    ]
+
+    public var sakeRegionOrder: [String] = [
+        "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
+        "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県",
+        "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県", "愛知県", "三重県",
+        "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県",
+        "鳥取県", "島根県", "岡山県", "広島県", "山口県",
+        "徳島県", "香川県", "愛媛県", "高知県",
+        "福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県"
+    ]
+
+    public var beerRegionOrder: [String] = [
+        "日本", "ドイツ", "チェコ", "ベルギー", "イギリス", "アイルランド", "アメリカ", "デンマーク", "エストニア"
+    ]
+
     public init() {}
 
     public func activeDefinitions(for category: BeverageCategory, isPro: Bool) -> [CollectionItemDefinition] {
@@ -20,7 +43,7 @@ public final class CollectionAnalyticsViewModel {
         return all.filter { $0.isProOnly }.count
     }
 
-    /// ✨ 指定された酒種の図鑑アイテムごとに、合致するすべてのログの配列を返すように拡張
+    /// 指定された酒種の図鑑アイテムごとに、合致するすべてのログの配列を返す
     public func checkCompletions(
         for category: BeverageCategory,
         logs: [TastingLog],
@@ -60,6 +83,41 @@ public final class CollectionAnalyticsViewModel {
             
             return (definition: def, isUnlocked: !matchedLogs.isEmpty, unlockedLogs: matchedLogs)
         }
+    }
+
+    /// ✨ 指定された表示順序に従って、国・都道府県別にグループ化した配列を返す
+    public func groupedCompletions(
+        for category: BeverageCategory,
+        logs: [TastingLog],
+        isPro: Bool = AppState.shared.isProVersion
+    ) -> [(region: String, items: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])])] {
+        let allResults = checkCompletions(for: category, logs: logs, isPro: isPro)
+        let groupedDict = Dictionary(grouping: allResults, by: { $0.definition.region })
+        
+        let orderList: [String]
+        switch category {
+        case .wine: orderList = wineRegionOrder
+        case .sake: orderList = sakeRegionOrder
+        case .beer: orderList = beerRegionOrder
+        }
+        
+        var sortedGroups: [(region: String, items: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])])] = []
+        var processedRegions = Set<String>()
+        
+        // 1. 指定された順番通りに追加
+        for region in orderList {
+            if let items = groupedDict[region], !items.isEmpty {
+                sortedGroups.append((region: region, items: items))
+                processedRegions.insert(region)
+            }
+        }
+        
+        // 2. 万が一 orderList に未記載の産地がデータ側に増えた場合は末尾に追加
+        for (region, items) in groupedDict where !processedRegions.contains(region) && !items.isEmpty {
+            sortedGroups.append((region: region, items: items))
+        }
+        
+        return sortedGroups
     }
     
     public func completionRate(

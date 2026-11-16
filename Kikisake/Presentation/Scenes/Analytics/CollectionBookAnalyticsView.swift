@@ -13,7 +13,6 @@ public struct CollectionBookAnalyticsView: View {
     @State private var selectedCell: (definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])? = nil
     @State private var isShowingDetailSheet: Bool = false
     @State private var isShowingPaywall: Bool = false
-    @State private var isShowingRankSheet: Bool = false
 
     public init(allLogs: [TastingLog]) {
         self.allLogs = allLogs
@@ -24,6 +23,7 @@ public struct CollectionBookAnalyticsView: View {
         let isPro = appState.isProVersion
         let proExtraCount = viewModel.lockedProItemCount(for: viewModel.selectedCategory)
         let completionResults = viewModel.checkCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
+        let groupedResults = viewModel.groupedCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
 
         return VStack(spacing: 16) {
             // 0. Pro版誘導バナー
@@ -43,8 +43,8 @@ public struct CollectionBookAnalyticsView: View {
             // 2. 進捗サマリーカード
             progressSummaryCard(completionResults: completionResults)
             
-            // 3. 一覧性を高めたコンパクト・グリッドビュー
-            collectionGridView(completionResults: completionResults)
+            // 3. 国・都道府県別のコレクション一覧
+            groupedCollectionView(groupedResults: groupedResults)
         }
         .sheet(isPresented: $isShowingDetailSheet) {
             if let cell = selectedCell {
@@ -99,14 +99,13 @@ public struct CollectionBookAnalyticsView: View {
 
         return VStack(spacing: 12) {
             HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(String(localized: "コンプリート進捗"))
-                        .font(.headline)
-                    Text(String(format: String(localized: "%d / %d 項目達成 (%.1f%%)"), unlockedCount, totalCount, rate * 100))
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
+                Text(String(localized: "コンプリート進捗"))
+                    .font(.headline)
                 Spacer()
+                Text(String(format: String(localized: "%d / %d"), unlockedCount, totalCount))
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color.accentColor)
             }
 
             ProgressView(value: rate)
@@ -117,64 +116,81 @@ public struct CollectionBookAnalyticsView: View {
         .cornerRadius(16)
     }
 
-    private func collectionGridView(completionResults: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])]) -> some View {
-        // ✨ 1画面に多くの項目を表示できるよう、3〜4列のコンパクトなグリッドを構築
-        let columns = [GridItem(.adaptive(minimum: 100, maximum: 120), spacing: 10)]
+    private func groupedCollectionView(
+        groupedResults: [(region: String, items: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])])]
+    ) -> some View {
+        // 折り返しテキストが読みやすいよう、3列程度になる幅に設定
+        let columns = [GridItem(.adaptive(minimum: 105, maximum: 140), spacing: 10, alignment: .top)]
 
-        return VStack(alignment: .leading, spacing: 12) {
-            Text(String(localized: "コレクション一覧"))
-                .font(.headline)
-                .padding(.horizontal, 4)
+        return VStack(alignment: .leading, spacing: 20) {
+            ForEach(groupedResults, id: \.region) { group in
+                let unlockedInRegion = group.items.filter { $0.isUnlocked }.count
+                let totalInRegion = group.items.count
 
-            LazyVGrid(columns: columns, spacing: 10) {
-                ForEach(completionResults, id: \.definition.id) { cell in
-                    Button {
-                        selectedCell = cell
-                        isShowingDetailSheet = true
-                    } label: {
-                        VStack(alignment: .leading, spacing: 6) {
-                            HStack {
-                                Image(systemName: cell.isUnlocked ? "checkmark.circle.fill" : "lock.circle")
-                                    .font(.system(size: 14))
-                                    .foregroundStyle(cell.isUnlocked ? Color.accentColor : Color(.systemGray3))
-                                
-                                Spacer()
-
-                                if cell.unlockedLogs.count > 1 {
-                                    Text("\(cell.unlockedLogs.count)")
-                                        .font(.system(size: 10, weight: .bold))
-                                        .padding(.horizontal, 6)
-                                        .padding(.vertical, 2)
-                                        .background(Color.accentColor.opacity(0.15))
-                                        .foregroundStyle(Color.accentColor)
-                                        .cornerRadius(6)
-                                }
-                            }
-
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(cell.definition.targetElement)
-                                    .font(.system(size: 12, weight: .bold))
-                                    .foregroundStyle(cell.isUnlocked ? .primary : .secondary)
-                                    .lineLimit(2)
-
-                                Text(cell.definition.region)
-                                    .font(.system(size: 10))
-                                    .foregroundStyle(.secondary)
-                                    .lineLimit(1)
-                            }
-
-                            Spacer(minLength: 0)
-                        }
-                        .padding(10)
-                        .frame(height: 90)
-                        .background(cell.isUnlocked ? Color(.secondarySystemGroupedBackground) : Color(.systemGray6).opacity(0.6))
-                        .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(cell.isUnlocked ? Color.accentColor.opacity(0.3) : Color(.systemGray4).opacity(0.5), lineWidth: 1)
-                        )
+                VStack(alignment: .leading, spacing: 10) {
+                    // ✨ 国・都道府県セクションヘッダー
+                    HStack(alignment: .firstTextBaseline) {
+                        Text(group.region)
+                            .font(.headline)
+                            .foregroundStyle(.primary)
+                        
+                        Spacer()
+                        
+                        Text("\(unlockedInRegion) / \(totalInRegion)")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(unlockedInRegion == totalInRegion && totalInRegion > 0 ? Color.accentColor : .secondary)
                     }
-                    .buttonStyle(.plain)
+                    .padding(.horizontal, 4)
+
+                    // 該当地域のグリッド
+                    LazyVGrid(columns: columns, spacing: 10) {
+                        ForEach(group.items, id: \.definition.id) { cell in
+                            Button {
+                                selectedCell = cell
+                                isShowingDetailSheet = true
+                            } label: {
+                                VStack(alignment: .leading, spacing: 6) {
+                                    HStack {
+                                        Image(systemName: cell.isUnlocked ? "checkmark.circle.fill" : "lock.circle")
+                                            .font(.system(size: 14))
+                                            .foregroundStyle(cell.isUnlocked ? Color.accentColor : Color(.systemGray3))
+                                        
+                                        Spacer()
+
+                                        if cell.unlockedLogs.count > 1 {
+                                            Text("\(cell.unlockedLogs.count)")
+                                                .font(.system(size: 10, weight: .bold))
+                                                .padding(.horizontal, 6)
+                                                .padding(.vertical, 2)
+                                                .background(Color.accentColor.opacity(0.15))
+                                                .foregroundStyle(Color.accentColor)
+                                                .cornerRadius(6)
+                                        }
+                                    }
+
+                                    // ✨ 銘柄・品種名が途切れないよう折り返し表示
+                                    Text(cell.definition.targetElement)
+                                        .font(.system(size: 12, weight: .bold))
+                                        .foregroundStyle(cell.isUnlocked ? .primary : .secondary)
+                                        .multilineTextAlignment(.leading)
+                                        .lineLimit(nil)
+                                        .fixedSize(horizontal: false, vertical: true)
+
+                                    Spacer(minLength: 0)
+                                }
+                                .padding(10)
+                                .frame(maxWidth: .infinity, minHeight: 74, alignment: .topLeading)
+                                .background(cell.isUnlocked ? Color(.secondarySystemGroupedBackground) : Color(.systemGray6).opacity(0.6))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(cell.isUnlocked ? Color.accentColor.opacity(0.3) : Color(.systemGray4).opacity(0.5), lineWidth: 1)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
                 }
             }
         }
@@ -196,6 +212,7 @@ private struct CollectionItemDetailSheet: View {
                         Text(definition.targetElement)
                             .font(.title3)
                             .fontWeight(.bold)
+                            .multilineTextAlignment(.center)
                         Text("\(definition.region) （\(definition.category.displayName)）")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
