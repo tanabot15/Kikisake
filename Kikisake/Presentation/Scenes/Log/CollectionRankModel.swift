@@ -99,14 +99,14 @@ public struct CollectionRankBadge: Identifiable, Hashable {
                 CollectionRankBadge(
                     category: .sake,
                     tier: .silver,
-                    requiredCount: 25,
+                    requiredCount: 30,
                     title: String(localized: "銘酒の巡礼者"),
                     subtitle: String(localized: "全国の酒処と多様な酒米の個性を網羅")
                 ),
                 CollectionRankBadge(
                     category: .sake,
                     tier: .gold,
-                    requiredCount: 50,
+                    requiredCount: 70,
                     title: String(localized: "匠の利き酒マスター"),
                     subtitle: String(localized: "日本各地の風土と希少米を極めし称号")
                 )
