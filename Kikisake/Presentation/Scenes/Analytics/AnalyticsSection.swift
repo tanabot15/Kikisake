@@ -8,7 +8,6 @@ public enum AnalyticsSection: String, CaseIterable, Identifiable {
     case consumption
     case evaluation
     case comparison
-    case collectionBook
 
     public var id: String { rawValue }
 
@@ -20,8 +19,6 @@ public enum AnalyticsSection: String, CaseIterable, Identifiable {
             return String(localized: "評価")
         case .comparison:
             return String(localized: "比較")
-        case .collectionBook:
-            return String(localized: "図鑑")
         }
     }
 }

@@ -4,17 +4,15 @@
 import SwiftUI
 import SwiftData
 
-/// [Tab 1] 飲んだ酒のリスト（テイスティングログ一覧）画面
+/// [Tab 1] 飲んだ酒のリスト、タイムライン、図鑑を統合した画面
 public struct LogListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \TastingLog.date, order: .reverse) private var logs: [TastingLog]
     @State private var viewModel = LogListViewModel()
     @State private var editMode: EditMode = .inactive
     
-    // フィルターシートの表示状態
     @State private var isShowingFilterSheet: Bool = false
 
-    /// フィルタリング済みのログリスト
     private var filteredLogs: [TastingLog] {
         viewModel.filteredLogs(logs)
     }
@@ -28,144 +26,86 @@ public struct LogListView: View {
                         .background(Color(.systemBackground))
                 }
 
-                Group {
-                    if filteredLogs.isEmpty {
-                        ContentUnavailableView(
-                            "該当するログが見つかりません",
-                            systemImage: "wineglass",
-                            description: Text(viewModel.hasActiveFilters ? "フィルター条件を変更してみてください。" : "「追加」タブから新しい記録を作成しましょう。")
-                        )
-                        .transition(.opacity)
-                    } else {
-                        // ✨ switch 全体を Group で囲むことで修飾子を正しく適用
-                        Group {
-                            switch viewModel.viewMode {
-                            case .card:
-                                // ✨ Listに戻し、セパレータや背景を消すことでカード風リストを実現
-                                List {
-                                    ForEach(filteredLogs) { log in
-                                        if let item = log.item {
-                                            NavigationLink(destination: LogDetailView(log: log)) {
-                                                BeverageCardView(
-                                                    name: item.name,
-                                                    producer: item.producer,
-                                                    category: item.category,
-                                                    region: item.region,
-                                                    vintage: item.vintage,
-                                                    rating: log.rating,
-                                                    imageData: item.imageDatas?.first,
-                                                    isBackgroundRemoved: item.isBackgroundRemoved,
-                                                    appearanceColorHex: log.appearanceColorHex
-                                                )
-                                            }
-                                            .buttonStyle(.plain)
-                                            // リスト固有の余白・区切り線をクリアしてカードを独立させる
-                                            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                                            .listRowSeparator(.hidden)
-                                            .listRowBackground(Color.clear)
-                                        }
-                                    }
-                                    .onDelete(perform: deleteLogs)
-                                    .onMove(perform: moveLogs)
-                                }
-                                .listStyle(.plain)
-                                .scrollContentBackground(.hidden) // 標準の背景色を隠す
-                                .environment(\.editMode, $editMode)
-
-                            case .compact:
-                                // 従来通りのコンパクトリスト
-                                List {
-                                    ForEach(filteredLogs) { log in
-                                        NavigationLink(destination: LogDetailView(log: log)) {
-                                            if let item = log.item {
-                                                LogCompactRowView(log: log, item: item)
-                                                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                                    .listRowSeparator(.automatic)
-                                            }
-                                        }
-                                    }
-                                    .onDelete(perform: deleteLogs)
-                                    .onMove(perform: moveLogs)
-                                }
-                                .listStyle(.plain)
-                                .scrollContentBackground(.hidden)
-                                .environment(\.editMode, $editMode)
-
-                            case .timeline:
-                                ScrollView {
-                                    LazyVStack(alignment: .leading, spacing: 0) {
-                                        ForEach(Array(filteredLogs.enumerated()), id: \.element.id) { index, log in
-                                            if let item = log.item {
-                                                NavigationLink(destination: LogDetailView(log: log)) {
-                                                    LogTimelineRowView(
-                                                        log: log,
-                                                        item: item,
-                                                        isFirst: index == 0,
-                                                        isLast: index == filteredLogs.count - 1
-                                                    )
-                                                }
-                                                .buttonStyle(.plain)
-                                            }
-                                        }
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 12)
-                                }
-                            }
-                        }
-                        .transition(.opacity)
+                // セグメントピッカー（リスト / タイムライン / 図鑑）
+                Picker(String(localized: "表示モード"), selection: $viewModel.selectedSection) {
+                    ForEach(LogMainSection.allCases) { section in
+                        Text(section.displayName).tag(section)
                     }
                 }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .background(Color(.systemGroupedBackground))
+
+                // TabViewによる切り替え
+                TabView(selection: $viewModel.selectedSection) {
+                    // 1. リストタブ（カード / コンパクト）
+                    listViewContent()
+                        .tag(LogMainSection.list)
+
+                    // 2. タイムラインタブ
+                    timelineViewContent()
+                        .tag(LogMainSection.timeline)
+
+                    // 3. 図鑑タブ（AnalyticsViewから移管）
+                    ScrollView {
+                        CollectionBookAnalyticsView(allLogs: logs)
+                            .padding()
+                    }
+                    .background(Color(.systemGroupedBackground))
+                    .tag(LogMainSection.collectionBook)
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
             }
-            // ✨ viewMode の変更に伴うアニメーションを明示的に同期
-            .animation(.easeInOut(duration: 0.2), value: viewModel.viewMode)
-            // ✨ searchableを画面全体の最外層（VStack）に付与することで結果0件時にも検索バーを維持
-            .searchable(
-                text: $viewModel.searchText,
-                placement: .navigationBarDrawer(displayMode: .always),
-                prompt: "銘柄名、生産者、メモで検索"
-            )
-            .navigationTitle("ログ")
+            .navigationTitle(String(localized: "ログ"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            viewModel.toggleViewMode()
+                // リストタブ表示時のみ、左上に表示形式（カード/コンパクト）切り替えボタンを出す
+                if viewModel.selectedSection == .list {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                viewModel.toggleListDisplayStyle()
+                            }
+                        } label: {
+                            Image(systemName: viewModel.listDisplayStyleIconName)
                         }
-                    } label: {
-                        Image(systemName: viewModel.viewModeIconName)
-                    }
-                    .tint(.primary)
-                    .accessibilityLabel("表示形式の切り替え")
-                }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        isShowingFilterSheet = true
-                    } label: {
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                            .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
+                        .tint(.primary)
+                        .accessibilityLabel(String(localized: "表示形式の切り替え"))
                     }
                 }
                 
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        withAnimation {
-                            editMode = (editMode == .active) ? .inactive : .active
+                // 図鑑タブ以外のときのみフィルターボタンを表示
+                if viewModel.selectedSection != .collectionBook {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            isShowingFilterSheet = true
+                        } label: {
+                            Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                                .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
                         }
-                    } label: {
-                        Image(systemName: editMode == .active ? "checkmark.circle" : "square.and.pencil")
-                            .foregroundStyle(editMode == .active ? Color.accentColor : Color.primary)
                     }
-                    .tint(.primary)
+                }
+                
+                // 図鑑以外のタブでのみ編集モードボタンを有効にする
+                if viewModel.selectedSection != .collectionBook {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            withAnimation {
+                                editMode = (editMode == .active) ? .inactive : .active
+                            }
+                        } label: {
+                            Image(systemName: editMode == .active ? "checkmark.circle" : "square.and.pencil")
+                                .foregroundStyle(editMode == .active ? Color.accentColor : Color.primary)
+                        }
+                        .tint(.primary)
+                    }
                 }
             }
             .sheet(isPresented: $isShowingFilterSheet) {
                 LogFilterSheet(viewModel: viewModel)
             }
             .onAppear {
-                // 評価フラグフィルター処理
                 if let pendingFilter = AppState.shared.pendingLogFilter {
                     viewModel.resetFilters()
                     switch pendingFilter {
@@ -179,7 +119,6 @@ public struct LogListView: View {
                     AppState.shared.pendingLogFilter = nil
                 }
 
-                // 香りタグフィルター処理
                 if let pendingAroma = AppState.shared.pendingAromaTagFilter {
                     viewModel.resetFilters()
                     viewModel.aromaTagFilter = pendingAroma
@@ -187,6 +126,134 @@ public struct LogListView: View {
                 }
             }
         }
+    }
+
+    @ViewBuilder
+    private func listViewContent() -> some View {
+        VStack(spacing: 0) {
+            // リストタブ専用の検索バー
+            HStack(spacing: 8) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundStyle(.secondary)
+                
+                TextField(String(localized: "銘柄名、生産者、メモで検索"), text: $viewModel.searchText)
+                    .textFieldStyle(.plain)
+                    .autocorrectionDisabled()
+                
+                if !viewModel.searchText.isEmpty {
+                    Button {
+                        viewModel.searchText = ""
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(Color(.secondarySystemGroupedBackground))
+            .cornerRadius(10)
+            .padding(.horizontal, 16)
+            .padding(.top, 4)
+            .padding(.bottom, 8)
+
+            Group {
+                if filteredLogs.isEmpty {
+                    ContentUnavailableView(
+                        String(localized: "該当するログが見つかりません"),
+                        systemImage: "wineglass",
+                        description: Text(viewModel.hasActiveFilters || !viewModel.searchText.isEmpty
+                            ? String(localized: "検索やフィルター条件を変更してみてください。")
+                            : String(localized: "「追加」タブから新しい記録を作成しましょう。"))
+                    )
+                    .frame(maxHeight: .infinity)
+                } else {
+                    if viewModel.listDisplayStyle == .card {
+                        List {
+                            ForEach(filteredLogs) { log in
+                                if let item = log.item {
+                                    NavigationLink(destination: LogDetailView(log: log)) {
+                                        BeverageCardView(
+                                            name: item.name,
+                                            producer: item.producer,
+                                            category: item.category,
+                                            region: item.region,
+                                            vintage: item.vintage,
+                                            rating: log.rating,
+                                            imageData: item.imageDatas?.first,
+                                            isBackgroundRemoved: item.isBackgroundRemoved,
+                                            appearanceColorHex: log.appearanceColorHex
+                                        )
+                                    }
+                                    .buttonStyle(.plain)
+                                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                                    .listRowSeparator(.hidden)
+                                    .listRowBackground(Color.clear)
+                                }
+                            }
+                            .onDelete(perform: deleteLogs)
+                            .onMove(perform: moveLogs)
+                        }
+                        .listStyle(.plain)
+                        .scrollContentBackground(.hidden)
+                        .environment(\.editMode, $editMode)
+                    } else {
+                        List {
+                            ForEach(filteredLogs) { log in
+                                NavigationLink(destination: LogDetailView(log: log)) {
+                                    if let item = log.item {
+                                        LogCompactRowView(log: log, item: item)
+                                            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                                            .listRowSeparator(.automatic)
+                                    }
+                                }
+                            }
+                            .onDelete(perform: deleteLogs)
+                            .onMove(perform: moveLogs)
+                        }
+                        .listStyle(.plain)
+                        .scrollContentBackground(.hidden)
+                        .environment(\.editMode, $editMode)
+                    }
+                }
+            }
+        }
+        .background(Color(.systemGroupedBackground))
+    }
+
+    @ViewBuilder
+    private func timelineViewContent() -> some View {
+        Group {
+            if filteredLogs.isEmpty {
+                ContentUnavailableView(
+                    String(localized: "該当するログが見つかりません"),
+                    systemImage: "wineglass",
+                    description: Text(viewModel.hasActiveFilters ? String(localized: "フィルター条件を変更してみてください。") : String(localized: "「追加」タブから新しい記録を作成しましょう。"))
+                )
+            } else {
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 0) {
+                        ForEach(Array(filteredLogs.enumerated()), id: \.element.id) { index, log in
+                            if let item = log.item {
+                                NavigationLink(destination: LogDetailView(log: log)) {
+                                    LogTimelineRowView(
+                                        log: log,
+                                        item: item,
+                                        isFirst: index == 0,
+                                        isLast: index == filteredLogs.count - 1
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                }
+            }
+        }
+        .background(Color(.systemGroupedBackground))
     }
 
     private func deleteLogs(at offsets: IndexSet) {

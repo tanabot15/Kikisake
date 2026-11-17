@@ -13,11 +13,27 @@ public enum LogSortOrder: String, CaseIterable, Codable {
     public var displayName: String { rawValue }
 }
 
-/// 表示形式のモード
-public enum LogViewMode: CaseIterable {
+/// LogListView内のメインセクション（タブ）
+public enum LogMainSection: String, CaseIterable, Identifiable {
+    case list
+    case timeline
+    case collectionBook
+
+    public var id: String { rawValue }
+
+    public var displayName: String {
+        switch self {
+        case .list: return String(localized: "リスト")
+        case .timeline: return String(localized: "タイムライン")
+        case .collectionBook: return String(localized: "図鑑")
+        }
+    }
+}
+
+/// リスト表示内のスタイル（カード / コンパクト）
+public enum ListDisplayStyle: CaseIterable {
     case card       // リッチカード表示
     case compact    // コンパクトリスト表示
-    case timeline   // タイムライン表示
 }
 
 /// 飲んだ酒のリスト画面のビジネスロジック・状態管理
@@ -27,8 +43,9 @@ public final class LogListViewModel {
     public var searchText: String = ""
     public var sortOrder: LogSortOrder = .dateDescending
 
-    // --- 表示形式の状態管理 (3モード循環) ---
-    public var viewMode: LogViewMode = .card
+    // --- メインセクション & リストスタイル状態管理 ---
+    public var selectedSection: LogMainSection = .list
+    public var listDisplayStyle: ListDisplayStyle = .card
 
     // --- 高機能フィルタープロパティ ---
     public var selectedCategoryFilter: BeverageCategory? = nil
@@ -48,7 +65,7 @@ public final class LogListViewModel {
     public var appearanceNoteFilter: String = ""
     public var balanceTagFilter: String = ""
 
-    // ✨ フラグフィルター
+    // フラグフィルター
     public var filterCostEffective: Bool? = nil
     public var filterWillingToRepeat: Bool? = nil
     public var filterAgingPotential: Bool? = nil
@@ -60,28 +77,14 @@ public final class LogListViewModel {
 
     public init() {}
 
-    /// 表示モードを次のものに切り替える
-    public func toggleViewMode() {
-        switch viewMode {
-        case .card:
-            viewMode = .compact
-        case .compact:
-            viewMode = .timeline
-        case .timeline:
-            viewMode = .card
-        }
+    /// リスト表示スタイルをカードとコンパクト間で切り替える
+    public func toggleListDisplayStyle() {
+        listDisplayStyle = (listDisplayStyle == .card) ? .compact : .card
     }
 
-    /// 現在のモードに応じたアイコン名を返す
-    public var viewModeIconName: String {
-        switch viewMode {
-        case .card:
-            return "rectangle.grid.1x2"
-        case .compact:
-            return "list.bullet"
-        case .timeline:
-            return "calendar.day.timeline.left"
-        }
+    /// 現在のリストスタイルに応じたアイコン名を返す
+    public var listDisplayStyleIconName: String {
+        listDisplayStyle == .card ? "list.bullet" : "rectangle.grid.1x2"
     }
 
     /// すべてのフィルター条件とソートを適用してログを絞り込む
@@ -89,7 +92,6 @@ public final class LogListViewModel {
         let filtered = logs.filter { log in
             guard let item = log.item else { return false }
 
-            // 1. メインキーワード検索 (銘柄名、生産者、メモ)
             if !searchText.isEmpty {
                 let nameMatch = item.name.localizedCaseInsensitiveContains(searchText)
                 let producerMatch = item.producer.localizedCaseInsensitiveContains(searchText)
@@ -97,45 +99,37 @@ public final class LogListViewModel {
                 if !nameMatch && !producerMatch && !memoMatch { return false }
             }
 
-            // 2. 酒種 (カテゴリ)
             if let category = selectedCategoryFilter {
                 if item.category != category { return false }
             }
 
-            // 3. 評価 (最低スコア)
             if let minRating = selectedRatingFilter {
                 if log.rating < minRating { return false }
             }
 
-            // 4. 生産者
             if !producerFilter.isEmpty {
                 if !item.producer.localizedCaseInsensitiveContains(producerFilter) { return false }
             }
 
-            // 5. 生産地
             if !regionFilter.isEmpty {
                 if !item.region.localizedCaseInsensitiveContains(regionFilter) { return false }
             }
 
-            // 6. ヴィンテージ
             if !vintageFilter.isEmpty {
                 let vintage = item.vintage ?? ""
                 if !vintage.localizedCaseInsensitiveContains(vintageFilter) { return false }
             }
 
-            // 7. アルコール度数 (最低度数)
             if let minAbv = minAbv {
                 let abv = item.alcoholByVolume ?? 0.0
                 if abv < minAbv { return false }
             }
 
-            // 8. 価格 (上限価格)
             if let maxPrice = maxPrice {
                 let price = item.price ?? 0
                 if price > maxPrice { return false }
             }
 
-            // 9. テイスティングデータ (香りタグ、外観、バランス表現)
             if !aromaTagFilter.isEmpty {
                 let hasTag = log.aromaTags.contains { $0.localizedCaseInsensitiveContains(aromaTagFilter) }
                 if !hasTag { return false }
@@ -148,7 +142,6 @@ public final class LogListViewModel {
                 if !hasBalanceTag { return false }
             }
 
-            // ✨ 10. フラグフィルター条件
             if let costEffective = filterCostEffective, costEffective, !log.isCostEffective {
                 return false
             }
@@ -159,7 +152,6 @@ public final class LogListViewModel {
                 return false
             }
 
-            // 11. 酒種固有のメタデータ (JSONデコードによる判定)
             if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
                 switch item.category {
                 case .wine:
@@ -187,7 +179,6 @@ public final class LogListViewModel {
             return true
         }
 
-        // ソート処理
         return filtered.sorted { log1, log2 in
             switch sortOrder {
             case .dateDescending:
@@ -202,7 +193,6 @@ public final class LogListViewModel {
         }
     }
 
-    /// デフォルト状態から何等かのフィルター条件が追加されているか
     public var hasActiveFilters: Bool {
         selectedCategoryFilter != nil ||
         selectedRatingFilter != nil ||
@@ -223,7 +213,6 @@ public final class LogListViewModel {
         sortOrder != .dateDescending
     }
 
-    /// すべてのフィルター条件を初期化する
     public func resetFilters() {
         self.selectedCategoryFilter = nil
         self.selectedRatingFilter = nil

@@ -20,7 +20,7 @@ public struct AnalyticsView: View {
                         .background(Color(.systemBackground))
                 }
                 
-                // セグメントピッカー（タブ選択と連動）
+                // セグメントピッカー（3つの分析カテゴリに絞る）
                 Picker(String(localized: "分析カテゴリ"), selection: $viewModel.selectedSection) {
                     ForEach(AnalyticsSection.allCases) { section in
                         Text(section.displayName).tag(section)
@@ -31,7 +31,7 @@ public struct AnalyticsView: View {
                 .padding(.vertical, 10)
                 .background(Color(.systemGroupedBackground))
 
-                // 左右スワイプで切り替え可能なタブビュー
+                // TabView
                 TabView(selection: $viewModel.selectedSection) {
                     // 1. 飲酒量・ログタブ
                     ScrollView {
@@ -58,21 +58,13 @@ public struct AnalyticsView: View {
                     }
                     .background(Color(.systemGroupedBackground))
                     .tag(AnalyticsSection.comparison)
-                    
-                    // 4. コンプリート図鑑タブ
-                    ScrollView {
-                        CollectionBookAnalyticsView(allLogs: logs)
-                            .padding()
-                    }
-                    .background(Color(.systemGroupedBackground))
-                    .tag(AnalyticsSection.collectionBook)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("分析")
+                    Text(String(localized: "分析"))
                         .font(.headline)
                         .fontWeight(.semibold)
                 }
@@ -113,8 +105,6 @@ public struct AnalyticsView: View {
             case .evaluation:
                 EvaluationAnalyticsView(viewModel: viewModel, targetLogs: targetLogs)
             case .comparison:
-                EmptyView()
-            case .collectionBook:
                 EmptyView()
             }
         }
