@@ -4,7 +4,7 @@
 import SwiftUI
 import SwiftData
 
-public struct LogComparisonAnalyticsView: View {
+public struct LogComparisonView: View {
     @Bindable var viewModel: AnalyticsViewModel
     let allLogs: [TastingLog]
 
@@ -455,7 +455,7 @@ public struct LogSelectionSheet: View {
 
     return NavigationStack {
         ScrollView {
-            LogComparisonAnalyticsView(viewModel: viewModel, allLogs: [wineLog, sakeLog])
+            LogComparisonView(viewModel: viewModel, allLogs: [wineLog, sakeLog])
                 .padding()
         }
         .background(Color(.systemGroupedBackground))

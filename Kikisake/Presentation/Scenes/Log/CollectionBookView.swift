@@ -4,7 +4,7 @@
 import SwiftUI
 import SwiftData
 
-public struct CollectionBookAnalyticsView: View {
+public struct CollectionBookView: View {
     @State private var viewModel = CollectionAnalyticsViewModel()
     @Bindable private var appState = AppState.shared
     var allLogs: [TastingLog]
@@ -300,7 +300,7 @@ private struct CollectionItemDetailSheet: View {
 
     return NavigationStack {
         ScrollView {
-            CollectionBookAnalyticsView(allLogs: logs)
+            CollectionBookView(allLogs: logs)
                 .padding()
         }
         .navigationTitle(String(localized: "図鑑"))

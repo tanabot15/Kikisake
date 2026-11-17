@@ -4,7 +4,7 @@
 import SwiftUI
 import SwiftData
 
-public struct EvaluationAnalyticsView: View {
+public struct EvaluationView: View {
     @Bindable var viewModel: AnalyticsViewModel
     let targetLogs: [TastingLog]
 
@@ -240,7 +240,7 @@ public struct EvaluationAnalyticsView: View {
 
     return NavigationStack {
         ScrollView {
-            EvaluationAnalyticsView(viewModel: viewModel, targetLogs: logs)
+            EvaluationView(viewModel: viewModel, targetLogs: logs)
                 .padding()
         }
         .background(Color(.systemGroupedBackground))

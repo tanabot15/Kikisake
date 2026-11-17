@@ -5,7 +5,7 @@ import SwiftUI
 import SwiftData
 import Charts
 
-public struct ConsumptionAnalyticsView: View {
+public struct ConsumptionView: View {
     @Bindable var viewModel: AnalyticsViewModel
     let targetLogs: [TastingLog]
     let allLogs: [TastingLog]
@@ -278,7 +278,7 @@ public struct ConsumptionAnalyticsView: View {
 
     return NavigationStack {
         ScrollView {
-            ConsumptionAnalyticsView(viewModel: viewModel, targetLogs: logs, allLogs: logs)
+            ConsumptionView(viewModel: viewModel, targetLogs: logs, allLogs: logs)
                 .padding()
         }
         .background(Color(.systemGroupedBackground))

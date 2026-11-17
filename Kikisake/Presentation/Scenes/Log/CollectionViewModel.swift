@@ -5,7 +5,7 @@ import Foundation
 import SwiftData
 
 @Observable
-public final class CollectionAnalyticsViewModel {
+public final class CollectionViewModel {
     public var selectedCategory: BeverageCategory = .wine
 
     // ✨ ここで国・都道府県の表示順序を自由にコントロールできます
