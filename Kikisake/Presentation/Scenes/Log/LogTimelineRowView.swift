@@ -1,18 +1,133 @@
-//
 //  LogTimelineRowView.swift
 //  Kikisake
-//
-//  Created by Kenichiro Suzuki on 2026/11/17.
-//
 
 import SwiftUI
 
-struct LogTimelineRowView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+/// タイムライン表示用のカスタム行コンポーネント
+public struct LogTimelineRowView: View {
+    public let log: TastingLog
+    public let item: BeverageItem
+    public let isFirst: Bool
+    public let isLast: Bool
+
+    public init(log: TastingLog, item: BeverageItem, isFirst: Bool, isLast: Bool) {
+        self.log = log
+        self.item = item
+        self.isFirst = isFirst
+        self.isLast = isLast
+    }
+
+    public var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            // 左側：タイムライン軸（ノット ＋ 縦線）
+            VStack(spacing: 0) {
+                // 上側の縦線
+                Rectangle()
+                    .fill(isFirst ? Color.clear : Color(.systemGray4))
+                    .frame(width: 2, height: 12)
+
+                // ドット（外観カラーを反映、未設定ならアクセントカラー）
+                Circle()
+                    .fill(Color(hex: log.appearanceColorHex) ?? Color.accentColor)
+                    .frame(width: 14, height: 14)
+                    .overlay(
+                        Circle().stroke(Color(.systemBackground), lineWidth: 2)
+                    )
+                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
+
+                // 下側の縦線
+                Rectangle()
+                    .fill(isLast ? Color.clear : Color(.systemGray4))
+                    .frame(width: 2)
+            }
+            .frame(width: 20)
+
+            // 右側：タイムラインカードコンテンツ
+            VStack(alignment: .leading, spacing: 6) {
+                // 日付
+                Text(log.date.toFormattedString(format: "yyyy年M月d日"))
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.secondary)
+
+                // メイン情報カード
+                HStack(spacing: 10) {
+                    if let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 35, height: 35)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    } else {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color(.systemGray5))
+                            .frame(width: 35, height: 35)
+                            .overlay {
+                                Image(systemName: "wineglass")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                    }
+
+                    VStack(alignment: .leading, spacing: 3) {
+                        HStack(spacing: 6) {
+                            Text(item.category.displayName)
+                                .font(.system(size: 9, weight: .bold))
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 2)
+                                .background(Color.accentColor.opacity(0.15))
+                                .foregroundStyle(Color.accentColor)
+                                .cornerRadius(3)
+
+                            HStack(spacing: 2) {
+                                Image(systemName: "star.fill")
+                                    .font(.caption2)
+                                    .foregroundStyle(.yellow)
+                                Text(String(format: "%.1f", log.rating))
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                            }
+                        }
+
+                        Text(item.name)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .lineLimit(1)
+                    }
+                    
+                    Spacer()
+                }
+                .padding(10)
+                .background(Color(.secondarySystemGroupedBackground))
+                .cornerRadius(12)
+                .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
+            }
+            .padding(.bottom, 8)
+        }
     }
 }
 
-#Preview {
-    LogTimelineRowView()
+#Preview("タイムライン行（中間要素）") {
+    let item = BeverageItem(
+        name: "Château Margaux 2015",
+        producer: "Château Margaux",
+        category: .wine,
+        region: "ボルドー, フランス",
+        vintage: "2015"
+    )
+    let log = TastingLog(
+        date: Date(),
+        rating: 4.8,
+        appearanceColorHex: "#991A33",
+        item: item
+    )
+    
+    return LogTimelineRowView(
+        log: log,
+        item: item,
+        isFirst: false,
+        isLast: false
+    )
+    .padding()
+    .background(Color(.systemGroupedBackground))
 }

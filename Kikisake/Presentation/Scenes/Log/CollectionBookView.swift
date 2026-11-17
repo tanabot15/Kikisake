@@ -1,11 +1,11 @@
-//  CollectionBookAnalyticsView.swift
+//  CollectionBookView.swift
 //  Kikisake
 
 import SwiftUI
 import SwiftData
 
 public struct CollectionBookView: View {
-    @State private var viewModel = CollectionAnalyticsViewModel()
+    @State private var viewModel = CollectionViewModel()
     @Bindable private var appState = AppState.shared
     var allLogs: [TastingLog]
 
@@ -13,6 +13,9 @@ public struct CollectionBookView: View {
     @State private var selectedCell: (definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])? = nil
     @State private var isShowingDetailSheet: Bool = false
     @State private var isShowingPaywall: Bool = false
+    
+    // 称号・シェアシート表示用のState
+    @State private var isShowingRankSheet: Bool = false
 
     public init(allLogs: [TastingLog]) {
         self.allLogs = allLogs
@@ -24,6 +27,12 @@ public struct CollectionBookView: View {
         let proExtraCount = viewModel.lockedProItemCount(for: viewModel.selectedCategory)
         let completionResults = viewModel.checkCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
         let groupedResults = viewModel.groupedCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
+        
+        // ✨ 現在のランクバッジの取得
+        let currentBadge = viewModel.currentRankBadge(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
+        let nextBadge = viewModel.nextRankBadge(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
+        let unlockedCount = completionResults.filter { $0.isUnlocked }.count
+        let totalCount = completionResults.count
 
         return VStack(spacing: 16) {
             // 0. Pro版誘導バナー
@@ -43,7 +52,10 @@ public struct CollectionBookView: View {
             // 2. 進捗サマリーカード
             progressSummaryCard(completionResults: completionResults)
             
-            // 3. 国・都道府県別のコレクション一覧
+            // ✨ 3. 称号・ランクバッジバナー（タップで RankShareSheetView を開く）
+            rankBadgeBanner(currentBadge: currentBadge, nextBadge: nextBadge, unlockedCount: unlockedCount)
+
+            // 4. 国・都道府県別のコレクション一覧
             groupedCollectionView(groupedResults: groupedResults)
         }
         .sheet(isPresented: $isShowingDetailSheet) {
@@ -53,6 +65,14 @@ public struct CollectionBookView: View {
         }
         .sheet(isPresented: $isShowingPaywall) {
             PaywallView()
+        }
+        .sheet(isPresented: $isShowingRankSheet) {
+            // ✨ 称号シェア・一覧シートの呼び出し
+            RankShareSheetView(
+                category: viewModel.selectedCategory,
+                unlockedCount: unlockedCount,
+                totalCount: totalCount
+            )
         }
     }
 
@@ -99,7 +119,7 @@ public struct CollectionBookView: View {
 
         return VStack(spacing: 12) {
             HStack {
-                Text(String(localized: "コンプリート進捗"))
+                Text(String(localized: "図鑑コンプリート進捗"))
                     .font(.headline)
                 Spacer()
                 Text(String(format: String(localized: "%d / %d"), unlockedCount, totalCount))
@@ -116,10 +136,73 @@ public struct CollectionBookView: View {
         .cornerRadius(16)
     }
 
+    /// ✨ 称号バッジの達成状況を表示し、タップでシートを開くバナー
+    @ViewBuilder
+    private func rankBadgeBanner(currentBadge: CollectionRankBadge?, nextBadge: CollectionRankBadge?, unlockedCount: Int) -> some View {
+        Button {
+            isShowingRankSheet = true
+        } label: {
+            HStack(spacing: 14) {
+                ZStack {
+                    Circle()
+                        .fill(
+                            currentBadge != nil
+                            ? LinearGradient(colors: currentBadge!.tier.gradientColors, startPoint: .topLeading, endPoint: .bottomTrailing)
+                            : LinearGradient(colors: [Color(.systemGray5), Color(.systemGray4)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        )
+                        .frame(width: 44, height: 44)
+
+                    Image(systemName: currentBadge?.tier.iconName ?? "lock.fill")
+                        .font(.headline)
+                        .foregroundStyle(currentBadge != nil ? .white : .secondary)
+                }
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(currentBadge?.tier.tierName ?? String(localized: "未獲得"))
+                        .font(.caption2)
+                        .fontWeight(.bold)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(currentBadge != nil ? currentBadge!.tier.accentColor.opacity(0.15) : Color(.systemGray5))
+                        .foregroundStyle(currentBadge != nil ? currentBadge!.tier.accentColor : .secondary)
+                        .clipShape(Capsule())
+
+                    if let current = currentBadge {
+                        Text(current.title)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.primary)
+                    } else if let next = nextBadge {
+                        Text(String(format: String(localized: "あと %d 種で「%@」"), max(0, next.requiredCount - unlockedCount), next.title))
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.primary)
+                    }
+
+                    Text(currentBadge?.subtitle ?? String(localized: "タップして称号・ランク一覧を確認"))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(14)
+            .background(Color(.secondarySystemGroupedBackground))
+            .cornerRadius(14)
+            .shadow(color: Color.black.opacity(0.04), radius: 6, x: 0, y: 2)
+        }
+        .buttonStyle(.plain)
+    }
+
     private func groupedCollectionView(
         groupedResults: [(region: String, items: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])])]
     ) -> some View {
-        // 折り返しテキストが読みやすいよう、3列程度になる幅に設定
         let columns = [GridItem(.adaptive(minimum: 105, maximum: 140), spacing: 10, alignment: .top)]
 
         return VStack(alignment: .leading, spacing: 20) {
@@ -128,7 +211,6 @@ public struct CollectionBookView: View {
                 let totalInRegion = group.items.count
 
                 VStack(alignment: .leading, spacing: 10) {
-                    // ✨ 国・都道府県セクションヘッダー
                     HStack(alignment: .firstTextBaseline) {
                         Text(group.region)
                             .font(.headline)
@@ -143,7 +225,6 @@ public struct CollectionBookView: View {
                     }
                     .padding(.horizontal, 4)
 
-                    // 該当地域のグリッド
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(group.items, id: \.definition.id) { cell in
                             Button {
@@ -169,7 +250,6 @@ public struct CollectionBookView: View {
                                         }
                                     }
 
-                                    // ✨ 銘柄・品種名が途切れないよう折り返し表示
                                     Text(cell.definition.targetElement)
                                         .font(.system(size: 12, weight: .bold))
                                         .foregroundStyle(cell.isUnlocked ? .primary : .secondary)
@@ -197,7 +277,7 @@ public struct CollectionBookView: View {
     }
 }
 
-// MARK: - 🎁 タップ時に開く銘柄詳細シート（BeverageCardViewを使用）
+// MARK: - タップ時に開く銘柄詳細シート
 private struct CollectionItemDetailSheet: View {
     @Environment(\.dismiss) private var dismiss
     let definition: CollectionItemDefinition
@@ -207,7 +287,6 @@ private struct CollectionItemDetailSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
-                    // ヘッダー情報
                     VStack(spacing: 4) {
                         Text(definition.targetElement)
                             .font(.title3)
@@ -229,7 +308,6 @@ private struct CollectionItemDetailSheet: View {
                         )
                         .padding(.top, 40)
                     } else {
-                        // ✨ 該当するすべての銘柄を BeverageCardView を使ってリスト表示
                         VStack(spacing: 12) {
                             ForEach(unlockedLogs, id: \.id) { log in
                                 if let item = log.item {

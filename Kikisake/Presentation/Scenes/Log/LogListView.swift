@@ -39,17 +39,21 @@ public struct LogListView: View {
 
                 // TabViewによる切り替え
                 TabView(selection: $viewModel.selectedSection) {
-                    // 1. リストタブ（カード / コンパクト）
-                    listViewContent()
-                        .tag(LogMainSection.list)
+                    // 1. リストタブ（切り出したビューを利用）
+                    LogListViewContent(
+                        viewModel: viewModel,
+                        filteredLogs: filteredLogs,
+                        editMode: $editMode
+                    )
+                    .tag(LogMainSection.list)
 
                     // 2. タイムラインタブ
                     timelineViewContent()
                         .tag(LogMainSection.timeline)
 
-                    // 3. 図鑑タブ（AnalyticsViewから移管）
+                    // 3. 図鑑タブ
                     ScrollView {
-                        CollectionBookAnalyticsView(allLogs: logs)
+                        CollectionBookView(allLogs: logs)
                             .padding()
                     }
                     .background(Color(.systemGroupedBackground))
@@ -129,100 +133,6 @@ public struct LogListView: View {
     }
 
     @ViewBuilder
-    private func listViewContent() -> some View {
-        VStack(spacing: 0) {
-            // リストタブ専用の検索バー
-            HStack(spacing: 8) {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(.secondary)
-                
-                TextField(String(localized: "銘柄名、生産者、メモで検索"), text: $viewModel.searchText)
-                    .textFieldStyle(.plain)
-                    .autocorrectionDisabled()
-                
-                if !viewModel.searchText.isEmpty {
-                    Button {
-                        viewModel.searchText = ""
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(Color(.secondarySystemGroupedBackground))
-            .cornerRadius(10)
-            .padding(.horizontal, 16)
-            .padding(.top, 4)
-            .padding(.bottom, 8)
-
-            Group {
-                if filteredLogs.isEmpty {
-                    ContentUnavailableView(
-                        String(localized: "該当するログが見つかりません"),
-                        systemImage: "wineglass",
-                        description: Text(viewModel.hasActiveFilters || !viewModel.searchText.isEmpty
-                            ? String(localized: "検索やフィルター条件を変更してみてください。")
-                            : String(localized: "「追加」タブから新しい記録を作成しましょう。"))
-                    )
-                    .frame(maxHeight: .infinity)
-                } else {
-                    if viewModel.listDisplayStyle == .card {
-                        List {
-                            ForEach(filteredLogs) { log in
-                                if let item = log.item {
-                                    NavigationLink(destination: LogDetailView(log: log)) {
-                                        BeverageCardView(
-                                            name: item.name,
-                                            producer: item.producer,
-                                            category: item.category,
-                                            region: item.region,
-                                            vintage: item.vintage,
-                                            rating: log.rating,
-                                            imageData: item.imageDatas?.first,
-                                            isBackgroundRemoved: item.isBackgroundRemoved,
-                                            appearanceColorHex: log.appearanceColorHex
-                                        )
-                                    }
-                                    .buttonStyle(.plain)
-                                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                                    .listRowSeparator(.hidden)
-                                    .listRowBackground(Color.clear)
-                                }
-                            }
-                            .onDelete(perform: deleteLogs)
-                            .onMove(perform: moveLogs)
-                        }
-                        .listStyle(.plain)
-                        .scrollContentBackground(.hidden)
-                        .environment(\.editMode, $editMode)
-                    } else {
-                        List {
-                            ForEach(filteredLogs) { log in
-                                NavigationLink(destination: LogDetailView(log: log)) {
-                                    if let item = log.item {
-                                        LogCompactRowView(log: log, item: item)
-                                            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                            .listRowSeparator(.automatic)
-                                    }
-                                }
-                            }
-                            .onDelete(perform: deleteLogs)
-                            .onMove(perform: moveLogs)
-                        }
-                        .listStyle(.plain)
-                        .scrollContentBackground(.hidden)
-                        .environment(\.editMode, $editMode)
-                    }
-                }
-            }
-        }
-        .background(Color(.systemGroupedBackground))
-    }
-
-    @ViewBuilder
     private func timelineViewContent() -> some View {
         Group {
             if filteredLogs.isEmpty {
@@ -254,152 +164,6 @@ public struct LogListView: View {
             }
         }
         .background(Color(.systemGroupedBackground))
-    }
-
-    private func deleteLogs(at offsets: IndexSet) {
-        let currentFiltered = filteredLogs
-        for index in offsets {
-            let log = currentFiltered[index]
-            modelContext.delete(log)
-        }
-        try? modelContext.save()
-    }
-    
-    private func moveLogs(from source: IndexSet, to destination: Int) {
-        var updatedLogs = filteredLogs
-        updatedLogs.move(fromOffsets: source, toOffset: destination)
-    }
-}
-
-/// シンプル・コンパクトなリスト行コンポーネント
-private struct LogCompactRowView: View {
-    let log: TastingLog
-    let item: BeverageItem
-
-    var body: some View {
-        HStack(spacing: 12) {
-            // 外観カラーのドット表現
-            Circle()
-                .fill(Color(hex: log.appearanceColorHex) ?? Color.gray)
-                .frame(width: 14, height: 14)
-                .overlay(
-                    Circle().stroke(Color.primary.opacity(0.2), lineWidth: 0.5)
-                )
-            
-            Text(item.name)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .lineLimit(1)
-
-            Spacer()
-            
-            HStack(spacing: 2) {
-                Image(systemName: "star.fill")
-                    .font(.caption2)
-                    .foregroundStyle(.yellow)
-                Text(String(format: "%.1f", log.rating))
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-            }
-        }
-        .padding(.vertical, 4)
-    }
-}
-
-/// タイムライン表示用のカスタム行コンポーネント
-private struct LogTimelineRowView: View {
-    let log: TastingLog
-    let item: BeverageItem
-    let isFirst: Bool
-    let isLast: Bool
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 14) {
-            // 左側：タイムライン軸（ノット ＋ 縦線）
-            VStack(spacing: 0) {
-                // 上側の縦線
-                Rectangle()
-                    .fill(isFirst ? Color.clear : Color(.systemGray4))
-                    .frame(width: 2, height: 12)
-
-                // ドット（外観カラーを反映、未設定ならアクセントカラー）
-                Circle()
-                    .fill(Color(hex: log.appearanceColorHex) ?? Color.accentColor)
-                    .frame(width: 14, height: 14)
-                    .overlay(
-                        Circle().stroke(Color(.systemBackground), lineWidth: 2)
-                    )
-                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
-
-                // 下側の縦線
-                Rectangle()
-                    .fill(isLast ? Color.clear : Color(.systemGray4))
-                    .frame(width: 2)
-            }
-            .frame(width: 20)
-
-            // 右側：タイムラインカードコンテンツ
-            VStack(alignment: .leading, spacing: 6) {
-                // 日付
-                Text(log.date.toFormattedString(format: "yyyy年M月d日"))
-                    .font(.caption)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.secondary)
-
-                // メイン情報カード
-                HStack(spacing: 10) {
-                    if let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 35, height: 35)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    } else {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color(.systemGray5))
-                            .frame(width: 35, height: 35)
-                            .overlay {
-                                Image(systemName: "wineglass")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                    }
-
-                    VStack(alignment: .leading, spacing: 3) {
-                        HStack(spacing: 6) {
-                            Text(item.category.displayName)
-                                .font(.system(size: 9, weight: .bold))
-                                .padding(.horizontal, 5)
-                                .padding(.vertical, 2)
-                                .background(Color.accentColor.opacity(0.15))
-                                .foregroundStyle(Color.accentColor)
-                                .cornerRadius(3)
-
-                            HStack(spacing: 2) {
-                                Image(systemName: "star.fill")
-                                    .font(.caption2)
-                                    .foregroundStyle(.yellow)
-                                Text(String(format: "%.1f", log.rating))
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                            }
-                        }
-
-                        Text(item.name)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                    }
-                    
-                    Spacer()
-                }
-                .padding(10)
-                .background(Color(.secondarySystemGroupedBackground))
-                .cornerRadius(12)
-                .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
-            }
-            .padding(.bottom, 8)
-        }
     }
 }
 

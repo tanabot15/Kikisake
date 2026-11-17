@@ -53,7 +53,7 @@ public struct AnalyticsView: View {
 
                     // 3. ログ比較タブ
                     ScrollView {
-                        LogComparisonAnalyticsView(viewModel: viewModel, allLogs: logs)
+                        LogComparisonView(viewModel: viewModel, allLogs: logs)
                             .padding()
                     }
                     .background(Color(.systemGroupedBackground))
@@ -101,9 +101,9 @@ public struct AnalyticsView: View {
         } else {
             switch section {
             case .consumption:
-                ConsumptionAnalyticsView(viewModel: viewModel, targetLogs: targetLogs, allLogs: logs)
+                ConsumptionView(viewModel: viewModel, targetLogs: targetLogs, allLogs: logs)
             case .evaluation:
-                EvaluationAnalyticsView(viewModel: viewModel, targetLogs: targetLogs)
+                EvaluationView(viewModel: viewModel, targetLogs: targetLogs)
             case .comparison:
                 EmptyView()
             }

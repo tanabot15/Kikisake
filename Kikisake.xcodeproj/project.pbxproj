@@ -61,26 +61,27 @@
 		D9044275308B18EE00EF4807 /* AnalyticsFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044274308B18EE00EF4807 /* AnalyticsFilterSheet.swift */; };
 		D9044277308B1ADF00EF4807 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044276308B1ADF00EF4807 /* FlowLayout.swift */; };
 		D9044279308B269300EF4807 /* InventoryFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044278308B269300EF4807 /* InventoryFilterSheet.swift */; };
-		D904427B308C9C8000EF4807 /* ConsumptionAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */; };
-		D904427D308C9C9B00EF4807 /* EvaluationAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */; };
+		D904427B308C9C8000EF4807 /* ConsumptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427A308C9C8000EF4807 /* ConsumptionView.swift */; };
+		D904427D308C9C9B00EF4807 /* EvaluationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427C308C9C9B00EF4807 /* EvaluationView.swift */; };
 		D904427F308CF04500EF4807 /* CellarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427E308CF04500EF4807 /* CellarGridView.swift */; };
 		D9044281308CF53B00EF4807 /* LocationSlotSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044280308CF53B00EF4807 /* LocationSlotSelectionSheet.swift */; };
 		D9044286308F113D00EF4807 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9044285308F113D00EF4807 /* StoreKit.framework */; };
 		D9044289308F136400EF4807 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044288308F136400EF4807 /* PaywallView.swift */; };
 		D904F0A730A2AF820046D409 /* SteppedNumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0A630A2AF820046D409 /* SteppedNumberField.swift */; };
 		D904F0A930A73FCC0046D409 /* CollectionMatrixModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0A830A73FCC0046D409 /* CollectionMatrixModel.swift */; };
-		D904F0AB30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AA30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift */; };
-		D904F0AD30A7400C0046D409 /* CollectionBookAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AC30A7400C0046D409 /* CollectionBookAnalyticsView.swift */; };
+		D904F0AB30A73FFA0046D409 /* CollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AA30A73FFA0046D409 /* CollectionViewModel.swift */; };
+		D904F0AD30A7400C0046D409 /* CollectionBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AC30A7400C0046D409 /* CollectionBookView.swift */; };
 		D904F0AF30A94F220046D409 /* CollectionRankModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AE30A94F220046D409 /* CollectionRankModel.swift */; };
 		D904F0B130A94F400046D409 /* RankShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0B030A94F400046D409 /* RankShareCardView.swift */; };
+		D904F0B330AC7A980046D409 /* LogTimelineRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0B230AC7A980046D409 /* LogTimelineRowView.swift */; };
+		D904F0B530AC7CC00046D409 /* LogListViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0B430AC7CC00046D409 /* LogListViewContent.swift */; };
 		D95082573090D95D0045BF8E /* BackupDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082563090D95D0045BF8E /* BackupDTOs.swift */; };
 		D95082593090D9720045BF8E /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082583090D9720045BF8E /* BackupManager.swift */; };
 		D950825B309228190045BF8E /* BottleMattingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950825A309228190045BF8E /* BottleMattingHelper.swift */; };
 		D950825D309C39C80045BF8E /* BeveragePresetOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */; };
 		D9508261309D8B530045BF8E /* TastingCustomizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9508260309D8B530045BF8E /* TastingCustomizationManager.swift */; };
 		D9508263309D8BB40045BF8E /* TastingCustomizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9508262309D8BB40045BF8E /* TastingCustomizationView.swift */; };
-		D950826530A0304F0045BF8E /* AnalyticsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950826430A0304F0045BF8E /* AnalyticsSection.swift */; };
-		D950826730A030760045BF8E /* LogComparisonAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950826630A030760045BF8E /* LogComparisonAnalyticsView.swift */; };
+		D950826730A030760045BF8E /* LogComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950826630A030760045BF8E /* LogComparisonView.swift */; };
 		D950826930A1E7AD0045BF8E /* RegionPresetOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950826830A1E7AD0045BF8E /* RegionPresetOptions.swift */; };
 /* End PBXBuildFile section */
 
@@ -140,8 +141,8 @@
 		D9044274308B18EE00EF4807 /* AnalyticsFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsFilterSheet.swift; sourceTree = "<group>"; };
 		D9044276308B1ADF00EF4807 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		D9044278308B269300EF4807 /* InventoryFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryFilterSheet.swift; sourceTree = "<group>"; };
-		D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumptionAnalyticsView.swift; sourceTree = "<group>"; };
-		D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationAnalyticsView.swift; sourceTree = "<group>"; };
+		D904427A308C9C8000EF4807 /* ConsumptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumptionView.swift; sourceTree = "<group>"; };
+		D904427C308C9C9B00EF4807 /* EvaluationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationView.swift; sourceTree = "<group>"; };
 		D904427E308CF04500EF4807 /* CellarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellarGridView.swift; sourceTree = "<group>"; };
 		D9044280308CF53B00EF4807 /* LocationSlotSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSlotSelectionSheet.swift; sourceTree = "<group>"; };
 		D9044285308F113D00EF4807 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -149,18 +150,19 @@
 		D9044288308F136400EF4807 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		D904F0A630A2AF820046D409 /* SteppedNumberField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SteppedNumberField.swift; sourceTree = "<group>"; };
 		D904F0A830A73FCC0046D409 /* CollectionMatrixModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionMatrixModel.swift; sourceTree = "<group>"; };
-		D904F0AA30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionAnalyticsViewModel.swift; sourceTree = "<group>"; };
-		D904F0AC30A7400C0046D409 /* CollectionBookAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionBookAnalyticsView.swift; sourceTree = "<group>"; };
+		D904F0AA30A73FFA0046D409 /* CollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewModel.swift; sourceTree = "<group>"; };
+		D904F0AC30A7400C0046D409 /* CollectionBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionBookView.swift; sourceTree = "<group>"; };
 		D904F0AE30A94F220046D409 /* CollectionRankModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRankModel.swift; sourceTree = "<group>"; };
 		D904F0B030A94F400046D409 /* RankShareCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankShareCardView.swift; sourceTree = "<group>"; };
+		D904F0B230AC7A980046D409 /* LogTimelineRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTimelineRowView.swift; sourceTree = "<group>"; };
+		D904F0B430AC7CC00046D409 /* LogListViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogListViewContent.swift; sourceTree = "<group>"; };
 		D95082563090D95D0045BF8E /* BackupDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDTOs.swift; sourceTree = "<group>"; };
 		D95082583090D9720045BF8E /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		D950825A309228190045BF8E /* BottleMattingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottleMattingHelper.swift; sourceTree = "<group>"; };
 		D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeveragePresetOptions.swift; sourceTree = "<group>"; };
 		D9508260309D8B530045BF8E /* TastingCustomizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCustomizationManager.swift; sourceTree = "<group>"; };
 		D9508262309D8BB40045BF8E /* TastingCustomizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCustomizationView.swift; sourceTree = "<group>"; };
-		D950826430A0304F0045BF8E /* AnalyticsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSection.swift; sourceTree = "<group>"; };
-		D950826630A030760045BF8E /* LogComparisonAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogComparisonAnalyticsView.swift; sourceTree = "<group>"; };
+		D950826630A030760045BF8E /* LogComparisonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogComparisonView.swift; sourceTree = "<group>"; };
 		D950826830A1E7AD0045BF8E /* RegionPresetOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPresetOptions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -420,11 +422,10 @@
 			children = (
 				D9044232307E85C300EF4807 /* AnalyticsView.swift */,
 				D9044234307E85CF00EF4807 /* AnalyticsViewModel.swift */,
-				D950826430A0304F0045BF8E /* AnalyticsSection.swift */,
 				D9044274308B18EE00EF4807 /* AnalyticsFilterSheet.swift */,
-				D904427A308C9C8000EF4807 /* ConsumptionAnalyticsView.swift */,
-				D904427C308C9C9B00EF4807 /* EvaluationAnalyticsView.swift */,
-				D950826630A030760045BF8E /* LogComparisonAnalyticsView.swift */,
+				D904427A308C9C8000EF4807 /* ConsumptionView.swift */,
+				D904427C308C9C9B00EF4807 /* EvaluationView.swift */,
+				D950826630A030760045BF8E /* LogComparisonView.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -435,11 +436,13 @@
 				D904422C307E85A000EF4807 /* LogListView.swift */,
 				D904422E307E85AB00EF4807 /* LogListViewModel.swift */,
 				D9044270308AFA4E00EF4807 /* LogFilterSheet.swift */,
+				D904F0B430AC7CC00046D409 /* LogListViewContent.swift */,
 				D9044230307E85B600EF4807 /* LogDetailView.swift */,
 				D904425C3085D32F00EF4807 /* TastingCardShareView.swift */,
 				D9044267308721A200EF4807 /* EditLogFlowView.swift */,
-				D904F0AC30A7400C0046D409 /* CollectionBookAnalyticsView.swift */,
-				D904F0AA30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift */,
+				D904F0B230AC7A980046D409 /* LogTimelineRowView.swift */,
+				D904F0AC30A7400C0046D409 /* CollectionBookView.swift */,
+				D904F0AA30A73FFA0046D409 /* CollectionViewModel.swift */,
 				D904F0AE30A94F220046D409 /* CollectionRankModel.swift */,
 				D904F0B030A94F400046D409 /* RankShareCardView.swift */,
 			);
@@ -570,9 +573,9 @@
 				D904425B308368BF00EF4807 /* AddLocationSheetView.swift in Sources */,
 				D9044211307E84E100EF4807 /* AppConstants.swift in Sources */,
 				D904427F308CF04500EF4807 /* CellarGridView.swift in Sources */,
+				D904F0B330AC7A980046D409 /* LogTimelineRowView.swift in Sources */,
 				D904F0A730A2AF820046D409 /* SteppedNumberField.swift in Sources */,
 				D904422F307E85AB00EF4807 /* LogListViewModel.swift in Sources */,
-				D950826530A0304F0045BF8E /* AnalyticsSection.swift in Sources */,
 				D9044231307E85B600EF4807 /* LogDetailView.swift in Sources */,
 				D9044268308721A200EF4807 /* EditLogFlowView.swift in Sources */,
 				D9044235307E85CF00EF4807 /* AnalyticsViewModel.swift in Sources */,
@@ -591,9 +594,9 @@
 				D9508261309D8B530045BF8E /* TastingCustomizationManager.swift in Sources */,
 				D904426D3088A3D000EF4807 /* AdMobBannerView.swift in Sources */,
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
-				D904427D308C9C9B00EF4807 /* EvaluationAnalyticsView.swift in Sources */,
+				D904427D308C9C9B00EF4807 /* EvaluationView.swift in Sources */,
 				D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */,
-				D904F0AD30A7400C0046D409 /* CollectionBookAnalyticsView.swift in Sources */,
+				D904F0AD30A7400C0046D409 /* CollectionBookView.swift in Sources */,
 				D904425D3085D33000EF4807 /* TastingCardShareView.swift in Sources */,
 				D9044233307E85C300EF4807 /* AnalyticsView.swift in Sources */,
 				D90442613086031D00EF4807 /* MatrixAnalysisCardView.swift in Sources */,
@@ -601,6 +604,7 @@
 				D9044289308F136400EF4807 /* PaywallView.swift in Sources */,
 				D90441E7307E817B00EF4807 /* MainTabView.swift in Sources */,
 				D904425F308602FD00EF4807 /* TasteRadarCardView.swift in Sources */,
+				D904F0B530AC7CC00046D409 /* LogListViewContent.swift in Sources */,
 				D9044242307E862600EF4807 /* FinalizeStepView.swift in Sources */,
 				D9044219307E851200EF4807 /* BeverageRepository.swift in Sources */,
 				D9044273308AFE0100EF4807 /* TastingOptions.swift in Sources */,
@@ -613,11 +617,11 @@
 				D90441E9307E817B00EF4807 /* KikisakeApp.swift in Sources */,
 				D904F0B130A94F400046D409 /* RankShareCardView.swift in Sources */,
 				D904422D307E85A000EF4807 /* LogListView.swift in Sources */,
-				D950826730A030760045BF8E /* LogComparisonAnalyticsView.swift in Sources */,
+				D950826730A030760045BF8E /* LogComparisonView.swift in Sources */,
 				D9044239307E85E600EF4807 /* AddFlowViewModel.swift in Sources */,
 				D9044213307E84EB00EF4807 /* ModelContainerManager.swift in Sources */,
 				D9044264308638D500EF4807 /* BoardingView.swift in Sources */,
-				D904F0AB30A73FFA0046D409 /* CollectionAnalyticsViewModel.swift in Sources */,
+				D904F0AB30A73FFA0046D409 /* CollectionViewModel.swift in Sources */,
 				D904420D307E84CD00EF4807 /* Formatters.swift in Sources */,
 				D904424C307F3C8D00EF4807 /* PreviewSampleLoader.swift in Sources */,
 				D9044215307E84F600EF4807 /* BeverageItem.swift in Sources */,
@@ -631,7 +635,7 @@
 				D9044244307E863000EF4807 /* InventoryView.swift in Sources */,
 				D950825D309C39C80045BF8E /* BeveragePresetOptions.swift in Sources */,
 				D9044217307E850500EF4807 /* TastingLog.swift in Sources */,
-				D904427B308C9C8000EF4807 /* ConsumptionAnalyticsView.swift in Sources */,
+				D904427B308C9C8000EF4807 /* ConsumptionView.swift in Sources */,
 				D904422B307E859300EF4807 /* BeverageCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
