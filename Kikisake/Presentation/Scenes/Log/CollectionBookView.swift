@@ -4,17 +4,27 @@
 import SwiftUI
 import SwiftData
 
+// シート用のラッパー構造体（Identifiableに適合させる）
+public struct CollectionCellSheetWrapper: Identifiable {
+    public let id = UUID()
+    let definition: CollectionItemDefinition
+    let isUnlocked: Bool
+    let unlockedLogs: [TastingLog]
+}
+
 public struct CollectionBookView: View {
     @State private var viewModel = CollectionViewModel()
     @Bindable private var appState = AppState.shared
     var allLogs: [TastingLog]
 
-    // タップされた図鑑セルの詳細保持用State
-    @State private var selectedCell: (definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])? = nil
-    @State private var isShowingDetailSheet: Bool = false
-    @State private var isShowingPaywall: Bool = false
+    // シート表示用のStateをひとつに統合（.sheet(item:)用）
+    @State private var activeSheetWrapper: CollectionCellSheetWrapper? = nil
     
-    // 称号・シェアシート表示用のState
+    // 未達成タップ時のサジェスト表示用アラート制御
+    @State private var selectedHintMessage: String? = nil
+    @State private var isShowingSuggestionAlert: Bool = false
+
+    @State private var isShowingPaywall: Bool = false
     @State private var isShowingRankSheet: Bool = false
 
     public init(allLogs: [TastingLog]) {
@@ -28,7 +38,6 @@ public struct CollectionBookView: View {
         let completionResults = viewModel.checkCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
         let groupedResults = viewModel.groupedCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
         
-        // ✨ 現在のランクバッジの取得
         let currentBadge = viewModel.currentRankBadge(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
         let nextBadge = viewModel.nextRankBadge(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
         let unlockedCount = completionResults.filter { $0.isUnlocked }.count
@@ -52,27 +61,31 @@ public struct CollectionBookView: View {
             // 2. 進捗サマリーカード
             progressSummaryCard(completionResults: completionResults)
             
-            // ✨ 3. 称号・ランクバッジバナー（タップで RankShareSheetView を開く）
+            // 3. 称号・ランクバッジバナー
             rankBadgeBanner(currentBadge: currentBadge, nextBadge: nextBadge, unlockedCount: unlockedCount)
 
             // 4. 国・都道府県別のコレクション一覧
             groupedCollectionView(groupedResults: groupedResults)
         }
-        .sheet(isPresented: $isShowingDetailSheet) {
-            if let cell = selectedCell {
-                CollectionItemDetailSheet(definition: cell.definition, unlockedLogs: cell.unlockedLogs)
-            }
+        // ✨ .sheet(item:) を利用することで、1回目の真っ白な表示バグを完全に防止
+        .sheet(item: $activeSheetWrapper) { wrapper in
+            CollectionItemDetailSheet(definition: wrapper.definition, unlockedLogs: wrapper.unlockedLogs)
         }
         .sheet(isPresented: $isShowingPaywall) {
             PaywallView()
         }
         .sheet(isPresented: $isShowingRankSheet) {
-            // ✨ 称号シェア・一覧シートの呼び出し
             RankShareSheetView(
                 category: viewModel.selectedCategory,
                 unlockedCount: unlockedCount,
                 totalCount: totalCount
             )
+        }
+        // ✨ 未達成アイテムタップ時のサジェスト用アラート
+        .alert(String(localized: "解放のヒント"), isPresented: $isShowingSuggestionAlert, presenting: selectedHintMessage) { hint in
+            Button(String(localized: "閉じる"), role: .cancel) {}
+        } message: { hint in
+            Text(hint)
         }
     }
 
@@ -136,7 +149,6 @@ public struct CollectionBookView: View {
         .cornerRadius(16)
     }
 
-    /// ✨ 称号バッジの達成状況を表示し、タップでシートを開くバナー
     @ViewBuilder
     private func rankBadgeBanner(currentBadge: CollectionRankBadge?, nextBadge: CollectionRankBadge?, unlockedCount: Int) -> some View {
         Button {
@@ -228,8 +240,18 @@ public struct CollectionBookView: View {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(group.items, id: \.definition.id) { cell in
                             Button {
-                                selectedCell = cell
-                                isShowingDetailSheet = true
+                                if cell.isUnlocked {
+                                    // 達成済みの場合は詳細シートを表示
+                                    activeSheetWrapper = CollectionCellSheetWrapper(
+                                        definition: cell.definition,
+                                        isUnlocked: cell.isUnlocked,
+                                        unlockedLogs: cell.unlockedLogs
+                                    )
+                                } else {
+                                    // ✨ 未達成の場合はサジェストヒントを表示
+                                    selectedHintMessage = cell.definition.suggestionHint
+                                    isShowingSuggestionAlert = true
+                                }
                             } label: {
                                 VStack(alignment: .leading, spacing: 6) {
                                     HStack {

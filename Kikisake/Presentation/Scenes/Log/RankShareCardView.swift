@@ -75,7 +75,7 @@ public struct RankShareCardView: View {
                 .padding(.horizontal, 16)
 
             // 達成スコア表示
-            HStack(spacing: 24) {
+            HStack(spacing: 36) {
                 VStack(spacing: 2) {
                     Text(String(localized: "図鑑達成数"))
                         .font(.caption2)
@@ -332,12 +332,6 @@ public struct RankShareSheetView: View {
     }
 }
 
-#Preview("称号シェアシート（シルバー達成時）") {
+#Preview("称号シェアシート") {
     RankShareSheetView(category: .wine, unlockedCount: 34, totalCount: 100)
-}
-
-#Preview("称号カード単体（ゴールド）") {
-    let goldBadge = CollectionRankBadge.badges(for: .sake).last!
-    return RankShareCardView(badge: goldBadge, unlockedCount: 65, totalCount: 100)
-        .padding()
 }
