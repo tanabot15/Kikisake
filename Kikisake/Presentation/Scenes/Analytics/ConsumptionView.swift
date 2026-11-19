@@ -8,7 +8,6 @@ import Charts
 public struct ConsumptionView: View {
     @Bindable var viewModel: AnalyticsViewModel
     let targetLogs: [TastingLog]
-    let allLogs: [TastingLog]
 
     public var body: some View {
         VStack(spacing: 20) {
@@ -167,7 +166,7 @@ public struct ConsumptionView: View {
                 .font(.headline)
 
             if viewModel.selectedCategoryFilter != nil {
-                let subRatio = viewModel.subCategoryRatio(from: allLogs)
+                let subRatio = viewModel.subCategoryRatio(from: targetLogs)
                 let sortedKeys = Array(subRatio.keys.sorted())
                 let totalCount = subRatio.values.reduce(0, +)
 
@@ -212,7 +211,7 @@ public struct ConsumptionView: View {
                         .padding(.vertical, 12)
                 }
             } else {
-                let ratio = viewModel.categoryRatio(from: allLogs)
+                let ratio = viewModel.categoryRatio(from: targetLogs)
 
                 Chart {
                     ForEach(BeverageCategory.allCases, id: \.self) { category in
@@ -278,7 +277,7 @@ public struct ConsumptionView: View {
 
     return NavigationStack {
         ScrollView {
-            ConsumptionView(viewModel: viewModel, targetLogs: logs, allLogs: logs)
+            ConsumptionView(viewModel: viewModel, targetLogs: logs)
                 .padding()
         }
         .background(Color(.systemGroupedBackground))

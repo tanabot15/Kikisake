@@ -8,9 +8,6 @@ public struct LogComparisonView: View {
     @Bindable var viewModel: AnalyticsViewModel
     let allLogs: [TastingLog]
 
-    @State private var leftLogID: UUID?
-    @State private var rightLogID: UUID?
-    
     @State private var isShowingLeftPicker = false
     @State private var isShowingRightPicker = false
 
@@ -19,55 +16,63 @@ public struct LogComparisonView: View {
         self.allLogs = allLogs
     }
 
+    private var candidateLogs: [TastingLog] {
+        viewModel.comparisonCandidateLogs(from: allLogs)
+    }
+
     public var body: some View {
         VStack(spacing: 16) {
             // 1. 上部：ログ選択カード（左右）
             HStack(spacing: 12) {
                 logSelectorCard(
                     title: String(localized: "左のログ"),
-                    selectedLog: leftLog(from: allLogs),
+                    selectedLog: leftLog(from: candidateLogs),
                     action: { isShowingLeftPicker = true }
                 )
                 
                 logSelectorCard(
                     title: String(localized: "右のログ"),
-                    selectedLog: rightLog(from: allLogs),
+                    selectedLog: rightLog(from: candidateLogs),
                     action: { isShowingRightPicker = true }
                 )
             }
 
             // 2. 比較コンテンツ
-            if let left = leftLog(from: allLogs), let right = rightLog(from: allLogs) {
+            if let left = leftLog(from: candidateLogs), let right = rightLog(from: candidateLogs) {
                 comparisonContent(left: left, right: right)
             } else {
                 ContentUnavailableView(
-                    String(localized: "ログが選択されていません"),
+                    String(localized: "該当する比較ログがありません"),
                     systemImage: "arrow.left.arrow.right.circle",
-                    description: Text(String(localized: "上のボタンから左右それぞれのログを選択してください。"))
+                    description: Text(viewModel.hasActiveFilters
+                        ? String(localized: "フィルター条件を変更してみてください。")
+                        : String(localized: "上のボタンから左右それぞれのログを選択してください。"))
                 )
                 .padding(.top, 40)
             }
         }
         .sheet(isPresented: $isShowingLeftPicker) {
-            LogSelectionSheet(allLogs: allLogs, selectedLogID: $leftLogID)
+            LogSelectionSheet(allLogs: candidateLogs, selectedLogID: $viewModel.comparisonLeftLogID)
         }
         .sheet(isPresented: $isShowingRightPicker) {
-            LogSelectionSheet(allLogs: allLogs, selectedLogID: $rightLogID)
+            LogSelectionSheet(allLogs: candidateLogs, selectedLogID: $viewModel.comparisonRightLogID)
         }
     }
 
     private func leftLog(from logs: [TastingLog]) -> TastingLog? {
-        if let id = leftLogID {
-            return logs.first(where: { $0.id == id })
+        if let id = viewModel.comparisonLeftLogID,
+           let matched = logs.first(where: { $0.id == id }) {
+            return matched
         }
-        return logs.first // デフォルトで最初のログ
+        return logs.first // デフォルトで候補の先頭ログ
     }
 
     private func rightLog(from logs: [TastingLog]) -> TastingLog? {
-        if let id = rightLogID {
-            return logs.first(where: { $0.id == id })
+        if let id = viewModel.comparisonRightLogID,
+           let matched = logs.first(where: { $0.id == id }) {
+            return matched
         }
-        return logs.dropFirst().first ?? logs.first // デフォルトで2番目、なければ最初
+        return logs.dropFirst().first ?? logs.first // デフォルトで2番目、なければ先頭
     }
 
     private func logSelectorCard(title: String, selectedLog: TastingLog?, action: @escaping () -> Void) -> some View {
@@ -267,7 +272,6 @@ public struct LogComparisonView: View {
 
     private func comparisonCard<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            // セクションタイトルを中央揃えに修正
             HStack {
                 Spacer()
                 Text(title)
@@ -282,7 +286,6 @@ public struct LogComparisonView: View {
         .shadow(color: Color.black.opacity(0.03), radius: 6, x: 0, y: 2)
     }
 
-    // テキスト用の汎用比較行
     private func comparisonRow(label: String, leftVal: String, rightVal: String) -> some View {
         HStack {
             Text(leftVal)
@@ -304,7 +307,6 @@ public struct LogComparisonView: View {
         }
     }
 
-    // Viewビルダー用の汎用比較行（スコアやカラーチップなど複雑なビュー用）
     private func comparisonRow(label: String, leftView: AnyView, rightView: AnyView) -> some View {
         HStack {
             leftView

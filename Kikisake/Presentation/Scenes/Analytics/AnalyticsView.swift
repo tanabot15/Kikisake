@@ -61,14 +61,10 @@ public struct AnalyticsView: View {
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
+            .navigationTitle(String(localized: "分析"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(String(localized: "分析"))
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                }
-
+                // 全セクション共通のフィルターボタン（LogViewと統一）
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         isShowingFilterSheet = true
@@ -79,14 +75,10 @@ public struct AnalyticsView: View {
                     .accessibilityLabel(String(localized: "分析フィルター"))
                 }
             }
-            .sheet(isPresented: isBindingFilterSheet) {
+            .sheet(isPresented: $isShowingFilterSheet) {
                 AnalyticsFilterSheet(viewModel: viewModel, allLogs: logs)
             }
         }
-    }
-
-    private var isBindingFilterSheet: Binding<Bool> {
-        $isShowingFilterSheet
     }
 
     @ViewBuilder
@@ -101,7 +93,7 @@ public struct AnalyticsView: View {
         } else {
             switch section {
             case .consumption:
-                ConsumptionView(viewModel: viewModel, targetLogs: targetLogs, allLogs: logs)
+                ConsumptionView(viewModel: viewModel, targetLogs: targetLogs)
             case .evaluation:
                 EvaluationView(viewModel: viewModel, targetLogs: targetLogs)
             case .comparison:
