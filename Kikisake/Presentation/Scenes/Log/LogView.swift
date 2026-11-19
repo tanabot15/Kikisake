@@ -5,7 +5,7 @@ import SwiftUI
 import SwiftData
 
 /// [Tab 1] 飲んだ酒のリスト、タイムライン、図鑑を統合した画面
-public struct LogListView: View {
+public struct LogView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \TastingLog.date, order: .reverse) private var logs: [TastingLog]
     @State private var viewModel = LogListViewModel()
@@ -40,7 +40,7 @@ public struct LogListView: View {
                 // TabViewによる切り替え
                 TabView(selection: $viewModel.selectedSection) {
                     // 1. リストタブ（切り出したビューを利用）
-                    LogListViewContent(
+                    ListView(
                         viewModel: viewModel,
                         filteredLogs: filteredLogs,
                         editMode: $editMode
@@ -200,6 +200,6 @@ public struct LogListView: View {
     container.mainContext.insert(wineItem)
     container.mainContext.insert(wineLog)
 
-    return LogListView()
+    return LogView()
         .modelContainer(container)
 }

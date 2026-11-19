@@ -4,7 +4,7 @@
 import SwiftUI
 
 /// タイムライン表示用のカスタム行コンポーネント
-public struct LogTimelineRowView: View {
+public struct TimelineRowView: View {
     public let log: TastingLog
     public let item: BeverageItem
     public let isFirst: Bool
@@ -122,7 +122,7 @@ public struct LogTimelineRowView: View {
         item: item
     )
     
-    return LogTimelineRowView(
+    return TimelineRowView(
         log: log,
         item: item,
         isFirst: false,

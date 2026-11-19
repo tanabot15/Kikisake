@@ -38,7 +38,7 @@ public enum ListDisplayStyle: CaseIterable {
 
 /// 飲んだ酒のリスト画面のビジネスロジック・状態管理
 @Observable
-public final class LogListViewModel {
+public final class LogViewModel {
     // 基本検索 & ソート
     public var searchText: String = ""
     public var sortOrder: LogSortOrder = .dateDescending

@@ -5,7 +5,7 @@ import SwiftUI
 import SwiftData
 
 /// ログ画面の「リストタブ」部分を切り出したビュー
-public struct LogListViewContent: View {
+public struct ListView: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable public var viewModel: LogListViewModel
     public var filteredLogs: [TastingLog]
@@ -201,7 +201,7 @@ public struct LogCompactRowView: View {
     let viewModel = LogListViewModel()
 
     return NavigationStack {
-        LogListViewContent(
+        ListView(
             viewModel: viewModel,
             filteredLogs: [wineLog],
             editMode: .constant(.inactive)
