@@ -1,23 +1,6 @@
 {
   "sourceLanguage" : "ja",
   "strings" : {
-    "\n産地: %@\n銘柄: %@\n評価: %.1f \n飲んだ日: %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Region: %1$@\\nBrand: %2$@\\nRating: %3$.1f\\nTasted on: %4$@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "\n産地: %1$@\n銘柄: %2$@\n評価: %3$.1f \n飲んだ日: %4$@"
-          }
-        }
-      }
-    },
     " 点" : {
       "localizations" : {
         "en" : {
@@ -58,17 +41,6 @@
         }
       }
     },
-    "???" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "???"
-          }
-        }
-      }
-    },
     "(%lld %%)" : {
       "localizations" : {
         "en" : {
@@ -81,23 +53,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "(%lld ％)"
-          }
-        }
-      }
-    },
-    "(次: %d種で%@)" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(Next: %1$d types for %2$@)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "(次: %1$d種で%2$@)"
           }
         }
       }
@@ -154,23 +109,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "【Kikisake 図鑑アワード】%1$@の%2$@ランク称号「%3$@」を獲得しました！（達成数: %4$d/%5$d） #Kikisake"
-          }
-        }
-      }
-    },
-    "【未踏破】\n産地: %@\n品種・スタイル: %@\n\nこの組み合わせの銘柄を飲んで記録すると図鑑が埋まります！" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "【Unexplored】\\nRegion: %1$@\\nVariety / Style: %2$@\\n\\nDrink and log a brand with this combination to complete your collection!"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "【未踏破】\n産地: %1$@\n品種・スタイル: %2$@\n\nこの組み合わせの銘柄を飲んで記録すると図鑑が埋まります！"
           }
         }
       }
@@ -712,17 +650,6 @@
         }
       }
     },
-    "Pro版でさらに %d 種の希少枠を解放" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlock %d more rare slots with Pro"
-          }
-        }
-      }
-    },
     "PRO限定機能" : {
       "localizations" : {
         "en" : {
@@ -843,17 +770,6 @@
         }
       }
     },
-    "あきたこまち" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Akitakomachi"
-          }
-        }
-      }
-    },
     "アコンカグア・ヴァレー" : {
       "localizations" : {
         "en" : {
@@ -896,23 +812,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "あと %1$d 種類記録すると、最初のブロンズ称号「%2$@」が解放され、SNSでシェアできるようになります！"
-          }
-        }
-      }
-    },
-    "あと%d種で「%@」" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$d more types for \\\"%2$@\\"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "あと%1$d種で「%2$@」"
           }
         }
       }
@@ -1243,17 +1142,6 @@
         }
       }
     },
-    "ヴァッハウ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wachau"
-          }
-        }
-      }
-    },
     "ヴァッレ・ダオスタ" : {
 
     },
@@ -1283,17 +1171,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wheat"
-          }
-        }
-      }
-    },
-    "ヴィーニョ・ヴェルデ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vinho Verde"
           }
         }
       }
@@ -1583,17 +1460,6 @@
         }
       }
     },
-    "オカナガン・ヴァレー" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Okanagan Valley"
-          }
-        }
-      }
-    },
     "オスロ" : {
       "localizations" : {
         "en" : {
@@ -1713,17 +1579,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cassis"
-          }
-        }
-      }
-    },
-    "カタルーニャ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Catalonia"
           }
         }
       }
@@ -1897,17 +1752,6 @@
         }
       }
     },
-    "カリフォルニア (パソ・ロブレス)" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "California (Paso Robles)"
-          }
-        }
-      }
-    },
     "ガルガネガ" : {
       "localizations" : {
         "en" : {
@@ -1954,17 +1798,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Campania"
-          }
-        }
-      }
-    },
-    "カンプタール" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kamptal"
           }
         }
       }
@@ -2330,34 +2163,12 @@
     "こいおまち" : {
 
     },
-    "コウノトリ育むお米" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kounotori-Nurtured Rice"
-          }
-        }
-      }
-    },
     "ここに配置" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Place Here"
-          }
-        }
-      }
-    },
-    "コシヒカリ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Koshihikari"
           }
         }
       }
@@ -2521,17 +2332,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Corvina"
-          }
-        }
-      }
-    },
-    "コルシカ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Corsica"
           }
         }
       }
@@ -2707,17 +2507,6 @@
         }
       }
     },
-    "サルタ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salta"
-          }
-        }
-      }
-    },
     "サルタ (カファジャテ)" : {
 
     },
@@ -2833,17 +2622,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "St. Laurent"
-          }
-        }
-      }
-    },
-    "シェア" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share"
           }
         }
       }
@@ -2976,17 +2754,6 @@
     },
     "ジュラ" : {
 
-    },
-    "ジュラ・サヴォワ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jura & Savoie"
-          }
-        }
-      }
     },
     "ジョージア" : {
       "localizations" : {
@@ -4143,17 +3910,6 @@
         }
       }
     },
-    "ドウロ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Douro"
-          }
-        }
-      }
-    },
     "ドウロ (ポート)" : {
 
     },
@@ -4339,17 +4095,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Niagara"
-          }
-        }
-      }
-    },
-    "ナイアガラ・ペニンシュラ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Niagara Peninsula"
           }
         }
       }
@@ -4688,17 +4433,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brown Ale"
-          }
-        }
-      }
-    },
-    "パタゴニア" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Patagonia"
           }
         }
       }
@@ -5045,34 +4779,12 @@
         }
       }
     },
-    "ひとめぼれ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hitomebore"
-          }
-        }
-      }
-    },
     "ピノ・グリ / ピノ-グリージョ" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pinot Gris / Pinot Grigio"
-          }
-        }
-      }
-    },
-    "ピノ・タナージュ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pinotage"
           }
         }
       }
@@ -5109,17 +4821,6 @@
     },
     "ピノタージュ" : {
 
-    },
-    "ヒノヒカリ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hinohikari"
-          }
-        }
-      }
     },
     "ピルスナー" : {
       "localizations" : {
@@ -5942,17 +5643,6 @@
         }
       }
     },
-    "マーティンボロ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Martinborough"
-          }
-        }
-      }
-    },
     "マーティンボロ (ワイララパ)" : {
 
     },
@@ -5972,17 +5662,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Marlborough"
-          }
-        }
-      }
-    },
-    "マイナー産地・土着品種・マニアックなスタイルの組み合わせを全て図鑑に追加します" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add all rare regions, indigenous varieties, and niche style combinations to your collection"
           }
         }
       }
@@ -6046,17 +5725,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No titles unlocked yet"
-          }
-        }
-      }
-    },
-    "まっしぐら" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Masshigura"
           }
         }
       }
@@ -6594,17 +6262,6 @@
     "ラングドック" : {
 
     },
-    "ラングドック・ルーション" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Languedoc-Roussillon"
-          }
-        }
-      }
-    },
     "ランシオ" : {
       "localizations" : {
         "en" : {
@@ -6873,17 +6530,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Roasted Aroma"
-          }
-        }
-      }
-    },
-    "ローヌ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rhône"
           }
         }
       }
@@ -7480,17 +7126,6 @@
         }
       }
     },
-    "京都県" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kyoto Prefecture"
-          }
-        }
-      }
-    },
     "今日飲む" : {
       "localizations" : {
         "en" : {
@@ -7853,30 +7488,8 @@
     "八反35号" : {
 
     },
-    "八反錦" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hattannishiki"
-          }
-        }
-      }
-    },
     "八反錦1号" : {
 
-    },
-    "兵庫" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hyogo"
-          }
-        }
-      }
     },
     "兵庫北錦" : {
 
@@ -8485,17 +8098,6 @@
         }
       }
     },
-    "和飲" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wa-in (Japanese Wine)"
-          }
-        }
-      }
-    },
     "品種" : {
       "localizations" : {
         "en" : {
@@ -8505,6 +8107,9 @@
           }
         }
       }
+    },
+    "品種・米・スタイル" : {
+
     },
     "品種を自由入力 (例: カベルネ・ソーヴィニヨン)" : {
       "localizations" : {
@@ -8552,27 +8157,8 @@
     "図鑑コンプリート進捗" : {
 
     },
-    "図鑑コンプリート進捗 (Pro全開放)" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Collection Progress (Pro Unlocked)"
-          }
-        }
-      }
-    },
-    "図鑑コンプリート進捗 (スタンダード)" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Collection Progress (Standard)"
-          }
-        }
-      }
+    "図鑑フィルター" : {
+
     },
     "図鑑達成数" : {
       "localizations" : {
@@ -8926,17 +8512,6 @@
         }
       }
     },
-    "大阪県" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Osaka Prefecture"
-          }
-        }
-      }
-    },
     "奄美・薩摩" : {
       "localizations" : {
         "en" : {
@@ -8993,17 +8568,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Miyagi Prefecture"
-          }
-        }
-      }
-    },
-    "宮崎" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Miyazaki"
           }
         }
       }
@@ -9071,17 +8635,6 @@
         }
       }
     },
-    "山形" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yamagata"
-          }
-        }
-      }
-    },
     "山形県" : {
       "localizations" : {
         "en" : {
@@ -9094,17 +8647,6 @@
     },
     "山恵錦" : {
 
-    },
-    "山梨" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yamanashi"
-          }
-        }
-      }
     },
     "山梨県" : {
       "localizations" : {
@@ -9168,17 +8710,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Iwakuni & Shunan"
-          }
-        }
-      }
-    },
-    "岩手" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Iwate"
           }
         }
       }
@@ -9393,17 +8924,6 @@
         }
       }
     },
-    "惣無面" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Somumen"
-          }
-        }
-      }
-    },
     "愛好家のためのプロフェッショナル向け記録アプリ" : {
       "localizations" : {
         "en" : {
@@ -9581,17 +9101,6 @@
         }
       }
     },
-    "新潟" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Niigata"
-          }
-        }
-      }
-    },
     "新潟県" : {
       "localizations" : {
         "en" : {
@@ -9738,17 +9247,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Umami"
-          }
-        }
-      }
-    },
-    "旭の夢" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Asahi no Yume"
           }
         }
       }
@@ -10624,6 +10122,9 @@
         }
       }
     },
+    "現在のタブ (%@)" : {
+
+    },
     "球磨" : {
       "localizations" : {
         "en" : {
@@ -10753,6 +10254,9 @@
           }
         }
       }
+    },
+    "産地や品種・米・スタイルの絞り込み条件を変更してみてください。" : {
+
     },
     "甲州" : {
       "localizations" : {
@@ -11224,28 +10728,6 @@
         }
       }
     },
-    "称号一覧" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Title List"
-          }
-        }
-      }
-    },
-    "称号未獲得" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Title Locked"
-          }
-        }
-      }
-    },
     "移動先の選択" : {
       "localizations" : {
         "en" : {
@@ -11713,17 +11195,6 @@
         }
       }
     },
-    "華厳" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kegon"
-          }
-        }
-      }
-    },
     "華吹雪" : {
       "localizations" : {
         "en" : {
@@ -11958,6 +11429,9 @@
         }
       }
     },
+    "解放のヒント" : {
+
+    },
     "言語 / Language" : {
       "localizations" : {
         "en" : {
@@ -12047,6 +11521,9 @@
           }
         }
       }
+    },
+    "該当する図鑑項目がありません" : {
+
     },
     "該当条件の記録がありません" : {
       "localizations" : {
@@ -12472,17 +11949,6 @@
         }
       }
     },
-    "金紋錦" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kinmon Nishiki"
-          }
-        }
-      }
-    },
     "針葉樹" : {
       "localizations" : {
         "en" : {
@@ -12559,17 +12025,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nagasaki Prefecture"
-          }
-        }
-      }
-    },
-    "長野" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nagano"
           }
         }
       }

@@ -13,7 +13,7 @@ public struct MainTabView: View {
 
     public var body: some View {
         TabView(selection: $appState.selectedTab) {
-            LogListView()
+            LogView()
                 .tabItem {
                     Label {
                         Text("ログ")

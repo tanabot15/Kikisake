@@ -1,4 +1,4 @@
-//  LogListViewModel.swift
+//  LogViewModel.swift
 //  Kikisake
 
 import Foundation
@@ -13,7 +13,7 @@ public enum LogSortOrder: String, CaseIterable, Codable {
     public var displayName: String { rawValue }
 }
 
-/// LogListView内のメインセクション（タブ）
+/// LogView内のメインセクション（タブ）
 public enum LogMainSection: String, CaseIterable, Identifiable {
     case list
     case timeline
@@ -46,6 +46,11 @@ public final class LogViewModel {
     // --- メインセクション & リストスタイル状態管理 ---
     public var selectedSection: LogMainSection = .list
     public var listDisplayStyle: ListDisplayStyle = .card
+
+    // --- 図鑑専用シンプルフィルター（category / region / targetElement） ---
+    public var collectionCategoryFilter: BeverageCategory? = nil
+    public var collectionRegionFilter: String = ""
+    public var collectionTargetElementFilter: String = ""
 
     // --- 高機能フィルタープロパティ ---
     public var selectedCategoryFilter: BeverageCategory? = nil
@@ -85,6 +90,40 @@ public final class LogViewModel {
     /// 現在のリストスタイルに応じたアイコン名を返す
     public var listDisplayStyleIconName: String {
         listDisplayStyle == .card ? "list.bullet" : "rectangle.grid.1x2"
+    }
+
+    /// 現在のセクションに応じたフィルター有効状態
+    public var hasActiveCurrentSectionFilters: Bool {
+        switch selectedSection {
+        case .list, .timeline:
+            return hasActiveFilters
+        case .collectionBook:
+            return hasActiveCollectionFilters
+        }
+    }
+
+    /// 現在のセクションに応じたフィルターリセット
+    public func resetCurrentSectionFilters() {
+        switch selectedSection {
+        case .list, .timeline:
+            resetFilters()
+        case .collectionBook:
+            resetCollectionFilters()
+        }
+    }
+
+    /// 図鑑フィルターが有効かどうか
+    public var hasActiveCollectionFilters: Bool {
+        collectionCategoryFilter != nil ||
+        !collectionRegionFilter.isEmpty ||
+        !collectionTargetElementFilter.isEmpty
+    }
+
+    /// 図鑑フィルターをリセットする
+    public func resetCollectionFilters() {
+        collectionCategoryFilter = nil
+        collectionRegionFilter = ""
+        collectionTargetElementFilter = ""
     }
 
     /// すべてのフィルター条件とソートを適用してログを絞り込む

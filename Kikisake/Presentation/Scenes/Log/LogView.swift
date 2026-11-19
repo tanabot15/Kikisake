@@ -1,4 +1,4 @@
-//  LogListView.swift
+//  LogView.swift
 //  Kikisake
 
 import SwiftUI
@@ -8,9 +8,9 @@ import SwiftData
 public struct LogView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \TastingLog.date, order: .reverse) private var logs: [TastingLog]
-    @State private var viewModel = LogListViewModel()
+    @State private var viewModel = LogViewModel()
+    @State private var collectionViewModel = CollectionViewModel()
     @State private var editMode: EditMode = .inactive
-    
     @State private var isShowingFilterSheet: Bool = false
 
     private var filteredLogs: [TastingLog] {
@@ -39,7 +39,7 @@ public struct LogView: View {
 
                 // TabViewによる切り替え
                 TabView(selection: $viewModel.selectedSection) {
-                    // 1. リストタブ（切り出したビューを利用）
+                    // 1. リストタブ
                     ListView(
                         viewModel: viewModel,
                         filteredLogs: filteredLogs,
@@ -53,8 +53,12 @@ public struct LogView: View {
 
                     // 3. 図鑑タブ
                     ScrollView {
-                        CollectionBookView(allLogs: logs)
-                            .padding()
+                        CollectionBookView(
+                            allLogs: logs,
+                            logViewModel: viewModel,
+                            viewModel: collectionViewModel
+                        )
+                        .padding()
                     }
                     .background(Color(.systemGroupedBackground))
                     .tag(LogMainSection.collectionBook)
@@ -78,21 +82,19 @@ public struct LogView: View {
                         .accessibilityLabel(String(localized: "表示形式の切り替え"))
                     }
                 }
-                
-                // 図鑑タブ以外のときのみフィルターボタンを表示
-                if viewModel.selectedSection != .collectionBook {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            isShowingFilterSheet = true
-                        } label: {
-                            Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                                .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
-                        }
+
+                // 全セクション共通のフィルターボタン
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isShowingFilterSheet = true
+                    } label: {
+                        Image(systemName: viewModel.hasActiveCurrentSectionFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                            .foregroundStyle(viewModel.hasActiveCurrentSectionFilters ? Color.accentColor : Color.primary)
                     }
                 }
-                
-                // 図鑑以外のタブでのみ編集モードボタンを有効にする
-                if viewModel.selectedSection != .collectionBook {
+
+                // 編集モードボタンはリストタブのみ表示
+                if viewModel.selectedSection == .list {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             withAnimation {
@@ -107,7 +109,17 @@ public struct LogView: View {
                 }
             }
             .sheet(isPresented: $isShowingFilterSheet) {
-                LogFilterSheet(viewModel: viewModel)
+                LogFilterSheet(
+                    viewModel: viewModel,
+                    collectionViewModel: collectionViewModel,
+                    currentCollectionCategory: collectionViewModel.selectedCategory,
+                    isPro: AppState.shared.isProVersion
+                )
+            }
+            .onChange(of: viewModel.selectedSection) { _, newSection in
+                if newSection != .list {
+                    editMode = .inactive
+                }
             }
             .onAppear {
                 if let pendingFilter = AppState.shared.pendingLogFilter {
@@ -147,7 +159,7 @@ public struct LogView: View {
                         ForEach(Array(filteredLogs.enumerated()), id: \.element.id) { index, log in
                             if let item = log.item {
                                 NavigationLink(destination: LogDetailView(log: log)) {
-                                    LogTimelineRowView(
+                                    TimelineRowView(
                                         log: log,
                                         item: item,
                                         isFirst: index == 0,

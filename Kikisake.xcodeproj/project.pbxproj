@@ -27,8 +27,8 @@
 		D9044221307E854100EF4807 /* ConsumeBeverageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044220307E854100EF4807 /* ConsumeBeverageUseCase.swift */; };
 		D9044223307E856F00EF4807 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044222307E856F00EF4807 /* CustomSlider.swift */; };
 		D904422B307E859300EF4807 /* BeverageCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904422A307E859300EF4807 /* BeverageCardView.swift */; };
-		D904422D307E85A000EF4807 /* LogListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904422C307E85A000EF4807 /* LogListView.swift */; };
-		D904422F307E85AB00EF4807 /* LogListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904422E307E85AB00EF4807 /* LogListViewModel.swift */; };
+		D904422D307E85A000EF4807 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904422C307E85A000EF4807 /* LogView.swift */; };
+		D904422F307E85AB00EF4807 /* LogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904422E307E85AB00EF4807 /* LogViewModel.swift */; };
 		D9044231307E85B600EF4807 /* LogDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044230307E85B600EF4807 /* LogDetailView.swift */; };
 		D9044233307E85C300EF4807 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044232307E85C300EF4807 /* AnalyticsView.swift */; };
 		D9044235307E85CF00EF4807 /* AnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044234307E85CF00EF4807 /* AnalyticsViewModel.swift */; };
@@ -73,8 +73,8 @@
 		D904F0AD30A7400C0046D409 /* CollectionBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AC30A7400C0046D409 /* CollectionBookView.swift */; };
 		D904F0AF30A94F220046D409 /* CollectionRankModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0AE30A94F220046D409 /* CollectionRankModel.swift */; };
 		D904F0B130A94F400046D409 /* RankShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0B030A94F400046D409 /* RankShareCardView.swift */; };
-		D904F0B330AC7A980046D409 /* LogTimelineRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0B230AC7A980046D409 /* LogTimelineRowView.swift */; };
-		D904F0B530AC7CC00046D409 /* LogListViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0B430AC7CC00046D409 /* LogListViewContent.swift */; };
+		D904F0B330AC7A980046D409 /* TimelineRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0B230AC7A980046D409 /* TimelineRowView.swift */; };
+		D904F0B530AC7CC00046D409 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904F0B430AC7CC00046D409 /* ListView.swift */; };
 		D95082573090D95D0045BF8E /* BackupDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082563090D95D0045BF8E /* BackupDTOs.swift */; };
 		D95082593090D9720045BF8E /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95082583090D9720045BF8E /* BackupManager.swift */; };
 		D950825B309228190045BF8E /* BottleMattingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950825A309228190045BF8E /* BottleMattingHelper.swift */; };
@@ -107,8 +107,8 @@
 		D9044220307E854100EF4807 /* ConsumeBeverageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumeBeverageUseCase.swift; sourceTree = "<group>"; };
 		D9044222307E856F00EF4807 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		D904422A307E859300EF4807 /* BeverageCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeverageCardView.swift; sourceTree = "<group>"; };
-		D904422C307E85A000EF4807 /* LogListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogListView.swift; sourceTree = "<group>"; };
-		D904422E307E85AB00EF4807 /* LogListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogListViewModel.swift; sourceTree = "<group>"; };
+		D904422C307E85A000EF4807 /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
+		D904422E307E85AB00EF4807 /* LogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewModel.swift; sourceTree = "<group>"; };
 		D9044230307E85B600EF4807 /* LogDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogDetailView.swift; sourceTree = "<group>"; };
 		D9044232307E85C300EF4807 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
 		D9044234307E85CF00EF4807 /* AnalyticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewModel.swift; sourceTree = "<group>"; };
@@ -154,8 +154,8 @@
 		D904F0AC30A7400C0046D409 /* CollectionBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionBookView.swift; sourceTree = "<group>"; };
 		D904F0AE30A94F220046D409 /* CollectionRankModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRankModel.swift; sourceTree = "<group>"; };
 		D904F0B030A94F400046D409 /* RankShareCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankShareCardView.swift; sourceTree = "<group>"; };
-		D904F0B230AC7A980046D409 /* LogTimelineRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTimelineRowView.swift; sourceTree = "<group>"; };
-		D904F0B430AC7CC00046D409 /* LogListViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogListViewContent.swift; sourceTree = "<group>"; };
+		D904F0B230AC7A980046D409 /* TimelineRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineRowView.swift; sourceTree = "<group>"; };
+		D904F0B430AC7CC00046D409 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		D95082563090D95D0045BF8E /* BackupDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDTOs.swift; sourceTree = "<group>"; };
 		D95082583090D9720045BF8E /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		D950825A309228190045BF8E /* BottleMattingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottleMattingHelper.swift; sourceTree = "<group>"; };
@@ -433,14 +433,14 @@
 		D9044203307E848900EF4807 /* Log */ = {
 			isa = PBXGroup;
 			children = (
-				D904422C307E85A000EF4807 /* LogListView.swift */,
-				D904422E307E85AB00EF4807 /* LogListViewModel.swift */,
+				D904422C307E85A000EF4807 /* LogView.swift */,
+				D904422E307E85AB00EF4807 /* LogViewModel.swift */,
 				D9044270308AFA4E00EF4807 /* LogFilterSheet.swift */,
-				D904F0B430AC7CC00046D409 /* LogListViewContent.swift */,
+				D904F0B430AC7CC00046D409 /* ListView.swift */,
 				D9044230307E85B600EF4807 /* LogDetailView.swift */,
 				D904425C3085D32F00EF4807 /* TastingCardShareView.swift */,
 				D9044267308721A200EF4807 /* EditLogFlowView.swift */,
-				D904F0B230AC7A980046D409 /* LogTimelineRowView.swift */,
+				D904F0B230AC7A980046D409 /* TimelineRowView.swift */,
 				D904F0AC30A7400C0046D409 /* CollectionBookView.swift */,
 				D904F0AA30A73FFA0046D409 /* CollectionViewModel.swift */,
 				D904F0AE30A94F220046D409 /* CollectionRankModel.swift */,
@@ -518,7 +518,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2650;
-				LastUpgradeCheck = 2650;
+				LastUpgradeCheck = 2720;
 				TargetAttributes = {
 					D90441D0307E815800EF4807 = {
 						CreatedOnToolsVersion = 26.5;
@@ -573,9 +573,9 @@
 				D904425B308368BF00EF4807 /* AddLocationSheetView.swift in Sources */,
 				D9044211307E84E100EF4807 /* AppConstants.swift in Sources */,
 				D904427F308CF04500EF4807 /* CellarGridView.swift in Sources */,
-				D904F0B330AC7A980046D409 /* LogTimelineRowView.swift in Sources */,
+				D904F0B330AC7A980046D409 /* TimelineRowView.swift in Sources */,
 				D904F0A730A2AF820046D409 /* SteppedNumberField.swift in Sources */,
-				D904422F307E85AB00EF4807 /* LogListViewModel.swift in Sources */,
+				D904422F307E85AB00EF4807 /* LogViewModel.swift in Sources */,
 				D9044231307E85B600EF4807 /* LogDetailView.swift in Sources */,
 				D9044268308721A200EF4807 /* EditLogFlowView.swift in Sources */,
 				D9044235307E85CF00EF4807 /* AnalyticsViewModel.swift in Sources */,
@@ -604,7 +604,7 @@
 				D9044289308F136400EF4807 /* PaywallView.swift in Sources */,
 				D90441E7307E817B00EF4807 /* MainTabView.swift in Sources */,
 				D904425F308602FD00EF4807 /* TasteRadarCardView.swift in Sources */,
-				D904F0B530AC7CC00046D409 /* LogListViewContent.swift in Sources */,
+				D904F0B530AC7CC00046D409 /* ListView.swift in Sources */,
 				D9044242307E862600EF4807 /* FinalizeStepView.swift in Sources */,
 				D9044219307E851200EF4807 /* BeverageRepository.swift in Sources */,
 				D9044273308AFE0100EF4807 /* TastingOptions.swift in Sources */,
@@ -616,7 +616,7 @@
 				D904421F307E853700EF4807 /* CalculateAnalyticsUseCase.swift in Sources */,
 				D90441E9307E817B00EF4807 /* KikisakeApp.swift in Sources */,
 				D904F0B130A94F400046D409 /* RankShareCardView.swift in Sources */,
-				D904422D307E85A000EF4807 /* LogListView.swift in Sources */,
+				D904422D307E85A000EF4807 /* LogView.swift in Sources */,
 				D950826730A030760045BF8E /* LogComparisonView.swift in Sources */,
 				D9044239307E85E600EF4807 /* AddFlowViewModel.swift in Sources */,
 				D9044213307E84EB00EF4807 /* ModelContainerManager.swift in Sources */,
@@ -648,6 +648,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -702,6 +703,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -713,6 +715,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -760,6 +763,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
@@ -772,7 +776,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -793,7 +797,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.30;
+				MARKETING_VERSION = 1.31;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -816,7 +820,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -837,7 +841,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.30;
+				MARKETING_VERSION = 1.31;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

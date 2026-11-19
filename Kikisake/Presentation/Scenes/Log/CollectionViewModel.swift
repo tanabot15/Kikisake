@@ -120,6 +120,57 @@ public final class CollectionViewModel {
         return sortedGroups
     }
     
+    public func availableRegions(for category: BeverageCategory, isPro: Bool) -> [String] {
+        let definitions = activeDefinitions(for: category, isPro: isPro)
+        let groupedDict = Dictionary(grouping: definitions, by: { $0.region })
+
+        let orderList: [String]
+        switch category {
+        case .wine: orderList = wineRegionOrder
+        case .sake: orderList = sakeRegionOrder
+        case .beer: orderList = beerRegionOrder
+        }
+
+        var ordered: [String] = []
+        var seen = Set<String>()
+
+        for region in orderList where groupedDict[region] != nil {
+            ordered.append(region)
+            seen.insert(region)
+        }
+
+        for region in groupedDict.keys where !seen.contains(region) {
+            ordered.append(region)
+        }
+
+        return ordered
+    }
+    
+    public func availableTargetElements(
+        for category: BeverageCategory,
+        isPro: Bool,
+        region: String = ""
+    ) -> [String] {
+        let definitions = activeDefinitions(for: category, isPro: isPro)
+        let trimmedRegion = region.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        let filtered = trimmedRegion.isEmpty
+            ? definitions
+            : definitions.filter { $0.region == trimmedRegion }
+
+        var seen = Set<String>()
+        var ordered: [String] = []
+
+        for def in filtered {
+            if !seen.contains(def.targetElement) {
+                seen.insert(def.targetElement)
+                ordered.append(def.targetElement)
+            }
+        }
+
+        return ordered
+    }
+    
     public func completionRate(
         for category: BeverageCategory,
         logs: [TastingLog],

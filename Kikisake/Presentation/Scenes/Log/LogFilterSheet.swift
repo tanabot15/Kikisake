@@ -3,13 +3,24 @@
 
 import SwiftUI
 
-/// テイスティングログの多機能フィルター設定シート
+/// テイスティングログ・図鑑の共通フィルター設定シート
 public struct LogFilterSheet: View {
     @Environment(\.dismiss) private var dismiss
-    @Bindable var viewModel: LogListViewModel
+    @Bindable var viewModel: LogViewModel
+    private let collectionViewModel: CollectionViewModel
+    private let currentCollectionCategory: BeverageCategory
+    private let isPro: Bool
 
-    public init(viewModel: LogListViewModel) {
+    public init(
+        viewModel: LogViewModel,
+        collectionViewModel: CollectionViewModel = CollectionViewModel(),
+        currentCollectionCategory: BeverageCategory = .wine,
+        isPro: Bool = AppState.shared.isProVersion
+    ) {
         self.viewModel = viewModel
+        self.collectionViewModel = collectionViewModel
+        self.currentCollectionCategory = currentCollectionCategory
+        self.isPro = isPro
     }
 
     /// 現在の選択カテゴリに基づいたカラーオプション一覧
@@ -17,179 +28,44 @@ public struct LogFilterSheet: View {
         return TastingOptions.colorOptions(for: viewModel.selectedCategoryFilter, wineType: viewModel.wineTypeFilter)
     }
 
-    /// 現在の選択カテゴリに基づいた香りタグ一覧のフラットリスト（✨ AromaTag の name を抽出して [String] に変換）
+    /// 現在の選択カテゴリに基づいた香りタグ一覧のフラットリスト
     private var availableAromaTags: [String] {
         let categories = TastingOptions.aromaCategories(for: viewModel.selectedCategoryFilter, wineType: viewModel.wineTypeFilter)
         return categories.flatMap { $0.tags }.map { $0.name }
     }
 
+    /// 図鑑モードで有効な酒種
+    private var effectiveCollectionCategory: BeverageCategory {
+        viewModel.collectionCategoryFilter ?? currentCollectionCategory
+    }
+
+    /// 図鑑モードで選択可能な産地一覧
+    private var availableCollectionRegions: [String] {
+        collectionViewModel.availableRegions(for: effectiveCollectionCategory, isPro: isPro)
+    }
+
+    /// 図鑑モードで選択可能な品種・米・スタイル一覧
+    private var availableCollectionTargetElements: [String] {
+        collectionViewModel.availableTargetElements(
+            for: effectiveCollectionCategory,
+            isPro: isPro,
+            region: viewModel.collectionRegionFilter
+        )
+    }
+
     public var body: some View {
         NavigationStack {
             Form {
-                // 1. 酒種 (カテゴリ) 選択
-                Section("酒種 (カテゴリ)") {
-                    Picker("酒種を選択", selection: $viewModel.selectedCategoryFilter) {
-                        Text("すべて").tag(BeverageCategory?.none)
-                        ForEach(BeverageCategory.allCases, id: \.self) { category in
-                            Text(category.displayName).tag(BeverageCategory?.some(category))
-                        }
-                    }
-                    .pickerStyle(.segmented)
+                if viewModel.selectedSection == .collectionBook {
+                    collectionFilterSections
+                } else {
+                    logFilterSections
                 }
 
-                // 2. 基本情報 (生産者, 生産地, ヴィンテージ)
-                Section("基本情報") {
-                    TextField("生産者 / 蔵元 / ブルワリー", text: $viewModel.producerFilter)
-                    TextField("生産地 (例: ボルドー, 新潟)", text: $viewModel.regionFilter)
-                    TextField("ヴィンテージ / 製造年月 (例: 2020)", text: $viewModel.vintageFilter)
-                }
-
-                // 3. スペック (アルコール度数 & 価格)
-                Section("スペック") {
-                    VStack(alignment: .leading, spacing: 6) {
-                        HStack {
-                            Text("最低アルコール度数")
-                                .font(.subheadline)
-                            Spacer()
-                            Text(viewModel.minAbv == nil ? "指定なし" : String(format: "%.1f %% 以上", viewModel.minAbv!))
-                                .font(.subheadline)
-                                .fontWeight(.bold)
-                                .foregroundStyle(Color.accentColor)
-                        }
-
-                        Slider(
-                            value: Binding(
-                                get: { viewModel.minAbv ?? 0.0 },
-                                set: { viewModel.minAbv = $0 == 0.0 ? nil : $0 }
-                            ),
-                            in: 0.0...20.0,
-                            step: 0.5
-                        )
-                    }
-
-                    HStack {
-                        Text("上限価格")
-                            .font(.subheadline)
-                        Spacer()
-                        TextField("円", value: $viewModel.maxPrice, format: .number)
-                            .keyboardType(.numberPad)
-                            .multilineTextAlignment(.trailing)
-                            .frame(width: 100)
-                    }
-                }
-
-                // 4. テイスティングデータ (評価、外観カラー、香りタグ、バランス表現)
-                Section("評価・テイスティングデータ") {
-                    VStack(alignment: .leading, spacing: 6) {
-                        HStack {
-                            Text("最低評価 (スコア)")
-                                .font(.subheadline)
-                            Spacer()
-                            Text(viewModel.selectedRatingFilter == nil ? "指定なし" : String(format: "★ %.1f 以上", viewModel.selectedRatingFilter!))
-                                .font(.subheadline)
-                                .fontWeight(.bold)
-                                .foregroundStyle(Color.accentColor)
-                        }
-
-                        Slider(
-                            value: Binding(
-                                get: { viewModel.selectedRatingFilter ?? 1.0 },
-                                set: { viewModel.selectedRatingFilter = $0 }
-                            ),
-                            in: 1.0...5.0,
-                            step: 0.5
-                        )
-                        .tint(.yellow)
-                    }
-
-                    // 外観・色調の選択メニュー
-                    Picker("外観・色調", selection: $viewModel.appearanceNoteFilter) {
-                        Text("指定なし").tag("")
-                        ForEach(availableColorOptions) { option in
-                            Text(option.name).tag(option.name)
-                        }
-                    }
-                    .pickerStyle(.menu)
-
-                    // 香りタグの選択メニュー
-                    Picker("香りタグ", selection: $viewModel.aromaTagFilter) {
-                        Text("指定なし").tag("")
-                        ForEach(availableAromaTags, id: \.self) { tag in
-                            Text(tag).tag(tag)
-                        }
-                    }
-                    .pickerStyle(.menu)
-
-                    // 味わい・バランス表現の選択メニュー
-                    Picker("味わい・バランス表現", selection: $viewModel.balanceTagFilter) {
-                        Text("指定なし").tag("")
-                        ForEach(TastingOptions.balanceOptions, id: \.self) { option in
-                            Text(option).tag(option)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                }
-
-                // ✨ 5. 特徴・評価フラグフィルター
-                Section("特徴・評価フラグ") {
-                    Toggle("コスパが高い", isOn: Binding(
-                        get: { viewModel.filterCostEffective ?? false },
-                        set: { viewModel.filterCostEffective = $0 ? true : nil }
-                    ))
-                    Toggle("リピート意向あり", isOn: Binding(
-                        get: { viewModel.filterWillingToRepeat ?? false },
-                        set: { viewModel.filterWillingToRepeat = $0 ? true : nil }
-                    ))
-                    Toggle("熟成ポテンシャルあり", isOn: Binding(
-                        get: { viewModel.filterAgingPotential ?? false },
-                        set: { viewModel.filterAgingPotential = $0 ? true : nil }
-                    ))
-                }
-
-                // 6. 酒種固有のメタデータ
-                Section("固有詳細条件") {
-                    if viewModel.selectedCategoryFilter == nil || viewModel.selectedCategoryFilter == .wine {
-                        Picker("ワインタイプ", selection: $viewModel.wineTypeFilter) {
-                            Text("すべて").tag("すべて")
-                            Text("赤").tag("赤")
-                            Text("白").tag("白")
-                            Text("ロゼ").tag("ロゼ")
-                            Text("オレンジ").tag("オレンジ")
-                            Text("スパークリング").tag("スパークリング")
-                        }
-                    }
-
-                    if viewModel.selectedCategoryFilter == nil || viewModel.selectedCategoryFilter == .sake {
-                        Picker("日本酒 特定名称", selection: $viewModel.sakeSpecificNameFilter) {
-                            Text("すべて").tag("すべて")
-                            Text("純米大吟醸").tag("純米大吟醸")
-                            Text("純米吟醸").tag("純米吟醸")
-                            Text("大吟醸").tag("大吟醸")
-                            Text("特別純米").tag("特別純米")
-                            Text("純米酒").tag("純米")
-                            Text("本醸造").tag("本醸造")
-                        }
-                    }
-
-                    if viewModel.selectedCategoryFilter == nil || viewModel.selectedCategoryFilter == .beer {
-                        TextField("ビアスタイル (例: IPA, Stout)", text: $viewModel.beerStyleFilter)
-                    }
-                }
-
-                // 7. ソート設定
-                Section("並び替え (ソート)") {
-                    Picker("表示順序", selection: $viewModel.sortOrder) {
-                        ForEach(LogSortOrder.allCases, id: \.self) { order in
-                            Text(order.displayName).tag(order)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                }
-
-                // 8. 一括リセット
+                // 一括リセット
                 Section {
                     Button(role: .destructive) {
-                        viewModel.resetFilters()
+                        viewModel.resetCurrentSectionFilters()
                     } label: {
                         HStack {
                             Spacer()
@@ -198,9 +74,10 @@ public struct LogFilterSheet: View {
                             Spacer()
                         }
                     }
+                    .disabled(!viewModel.hasActiveCurrentSectionFilters)
                 }
             }
-            .navigationTitle("フィルターと並び替え")
+            .navigationTitle(viewModel.selectedSection == .collectionBook ? "図鑑フィルター" : "フィルターと並び替え")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -212,8 +89,223 @@ public struct LogFilterSheet: View {
             }
         }
     }
+
+    // MARK: - 図鑑セクション用フィルター
+
+    @ViewBuilder
+    private var collectionFilterSections: some View {
+        Section("酒種 (カテゴリ)") {
+            Picker("酒種", selection: Binding(
+                get: { viewModel.collectionCategoryFilter },
+                set: { newValue in
+                    viewModel.collectionCategoryFilter = newValue
+                    viewModel.collectionRegionFilter = ""
+                    viewModel.collectionTargetElementFilter = ""
+                }
+            )) {
+                Text("現在のタブ (\(currentCollectionCategory.displayName))").tag(BeverageCategory?.none)
+                ForEach(BeverageCategory.allCases, id: \.self) { category in
+                    Text(category.displayName).tag(BeverageCategory?.some(category))
+                }
+            }
+        }
+
+        Section("産地") {
+            Picker("産地", selection: Binding(
+                get: { viewModel.collectionRegionFilter },
+                set: { newRegion in
+                    viewModel.collectionRegionFilter = newRegion
+                    let validElements = collectionViewModel.availableTargetElements(
+                        for: effectiveCollectionCategory,
+                        isPro: isPro,
+                        region: newRegion
+                    )
+                    if !viewModel.collectionTargetElementFilter.isEmpty &&
+                        !validElements.contains(viewModel.collectionTargetElementFilter) {
+                        viewModel.collectionTargetElementFilter = ""
+                    }
+                }
+            )) {
+                Text("すべて").tag("")
+                ForEach(availableCollectionRegions, id: \.self) { region in
+                    Text(region).tag(region)
+                }
+            }
+        }
+
+        Section("品種・米・スタイル") {
+            Picker("品種・米・スタイル", selection: $viewModel.collectionTargetElementFilter) {
+                Text("すべて").tag("")
+                ForEach(availableCollectionTargetElements, id: \.self) { element in
+                    Text(element).tag(element)
+                }
+            }
+        }
+    }
+
+    // MARK: - リスト・タイムラインセクション用フィルター
+
+    @ViewBuilder
+    private var logFilterSections: some View {
+        // 1. 酒種 (カテゴリ) 選択
+        Section("酒種 (カテゴリ)") {
+            Picker("酒種を選択", selection: $viewModel.selectedCategoryFilter) {
+                Text("すべて").tag(BeverageCategory?.none)
+                ForEach(BeverageCategory.allCases, id: \.self) { category in
+                    Text(category.displayName).tag(BeverageCategory?.some(category))
+                }
+            }
+            .pickerStyle(.segmented)
+        }
+
+        // 2. 基本情報 (生産者, 生産地, ヴィンテージ)
+        Section("基本情報") {
+            TextField("生産者 / 蔵元 / ブルワリー", text: $viewModel.producerFilter)
+            TextField("生産地 (例: ボルドー, 新潟)", text: $viewModel.regionFilter)
+            TextField("ヴィンテージ / 製造年月 (例: 2020)", text: $viewModel.vintageFilter)
+        }
+
+        // 3. スペック (アルコール度数 & 価格)
+        Section("スペック") {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text("最低アルコール度数")
+                        .font(.subheadline)
+                    Spacer()
+                    Text(viewModel.minAbv == nil ? "指定なし" : String(format: "%.1f %% 以上", viewModel.minAbv!))
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.accentColor)
+                }
+
+                Slider(
+                    value: Binding(
+                        get: { viewModel.minAbv ?? 0.0 },
+                        set: { viewModel.minAbv = $0 == 0.0 ? nil : $0 }
+                    ),
+                    in: 0.0...20.0,
+                    step: 0.5
+                )
+            }
+
+            HStack {
+                Text("上限価格")
+                    .font(.subheadline)
+                Spacer()
+                TextField("円", value: $viewModel.maxPrice, format: .number)
+                    .keyboardType(.numberPad)
+                    .multilineTextAlignment(.trailing)
+                    .frame(width: 100)
+            }
+        }
+
+        // 4. テイスティングデータ (評価、外観カラー、香りタグ、バランス表現)
+        Section("評価・テイスティングデータ") {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text("最低評価 (スコア)")
+                        .font(.subheadline)
+                    Spacer()
+                    Text(viewModel.selectedRatingFilter == nil ? "指定なし" : String(format: "★ %.1f 以上", viewModel.selectedRatingFilter!))
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.accentColor)
+                }
+
+                Slider(
+                    value: Binding(
+                        get: { viewModel.selectedRatingFilter ?? 1.0 },
+                        set: { viewModel.selectedRatingFilter = $0 }
+                    ),
+                    in: 1.0...5.0,
+                    step: 0.5
+                )
+                .tint(.yellow)
+            }
+
+            Picker("外観・色調", selection: $viewModel.appearanceNoteFilter) {
+                Text("指定なし").tag("")
+                ForEach(availableColorOptions) { option in
+                    Text(option.name).tag(option.name)
+                }
+            }
+            .pickerStyle(.menu)
+
+            Picker("香りタグ", selection: $viewModel.aromaTagFilter) {
+                Text("指定なし").tag("")
+                ForEach(availableAromaTags, id: \.self) { tag in
+                    Text(tag).tag(tag)
+                }
+            }
+            .pickerStyle(.menu)
+
+            Picker("味わい・バランス表現", selection: $viewModel.balanceTagFilter) {
+                Text("指定なし").tag("")
+                ForEach(TastingOptions.balanceOptions, id: \.self) { option in
+                    Text(option).tag(option)
+                }
+            }
+            .pickerStyle(.menu)
+        }
+
+        // 5. 特徴・評価フラグフィルター
+        Section("特徴・評価フラグ") {
+            Toggle("コスパが高い", isOn: Binding(
+                get: { viewModel.filterCostEffective ?? false },
+                set: { viewModel.filterCostEffective = $0 ? true : nil }
+            ))
+            Toggle("リピート意向あり", isOn: Binding(
+                get: { viewModel.filterWillingToRepeat ?? false },
+                set: { viewModel.filterWillingToRepeat = $0 ? true : nil }
+            ))
+            Toggle("熟成ポテンシャルあり", isOn: Binding(
+                get: { viewModel.filterAgingPotential ?? false },
+                set: { viewModel.filterAgingPotential = $0 ? true : nil }
+            ))
+        }
+
+        // 6. 酒種固有のメタデータ
+        Section("固有詳細条件") {
+            if viewModel.selectedCategoryFilter == nil || viewModel.selectedCategoryFilter == .wine {
+                Picker("ワインタイプ", selection: $viewModel.wineTypeFilter) {
+                    Text("すべて").tag("すべて")
+                    Text("赤").tag("赤")
+                    Text("白").tag("白")
+                    Text("ロゼ").tag("ロゼ")
+                    Text("オレンジ").tag("オレンジ")
+                    Text("スパークリング").tag("スパークリング")
+                }
+            }
+
+            if viewModel.selectedCategoryFilter == nil || viewModel.selectedCategoryFilter == .sake {
+                Picker("日本酒 特定名称", selection: $viewModel.sakeSpecificNameFilter) {
+                    Text("すべて").tag("すべて")
+                    Text("純米大吟醸").tag("純米大吟醸")
+                    Text("純米吟醸").tag("純米吟醸")
+                    Text("大吟醸").tag("大吟醸")
+                    Text("特別純米").tag("特別純米")
+                    Text("純米酒").tag("純米")
+                    Text("本醸造").tag("本醸造")
+                }
+            }
+
+            if viewModel.selectedCategoryFilter == nil || viewModel.selectedCategoryFilter == .beer {
+                TextField("ビアスタイル (例: IPA, Stout)", text: $viewModel.beerStyleFilter)
+            }
+        }
+
+        // 7. ソート設定
+        Section("並び替え (ソート)") {
+            Picker("表示順序", selection: $viewModel.sortOrder) {
+                ForEach(LogSortOrder.allCases, id: \.self) { order in
+                    Text(order.displayName).tag(order)
+                }
+            }
+            .pickerStyle(.menu)
+        }
+    }
 }
 
 #Preview {
-    LogFilterSheet(viewModel: LogListViewModel())
+    LogFilterSheet(viewModel: LogViewModel())
 }

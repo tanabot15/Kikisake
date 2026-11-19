@@ -13,9 +13,12 @@ public struct CollectionCellSheetWrapper: Identifiable {
 }
 
 public struct CollectionBookView: View {
-    @State private var viewModel = CollectionViewModel()
+    @Bindable private var viewModel: CollectionViewModel
     @Bindable private var appState = AppState.shared
     var allLogs: [TastingLog]
+
+    // 外部（LogView）から渡されるフィルター状態
+    @Bindable var logViewModel: LogViewModel
 
     // シート表示用のStateをひとつに統合（.sheet(item:)用）
     @State private var activeSheetWrapper: CollectionCellSheetWrapper? = nil
@@ -27,19 +30,27 @@ public struct CollectionBookView: View {
     @State private var isShowingPaywall: Bool = false
     @State private var isShowingRankSheet: Bool = false
 
-    public init(allLogs: [TastingLog]) {
+    public init(
+        allLogs: [TastingLog],
+        logViewModel: LogViewModel = LogViewModel(),
+        viewModel: CollectionViewModel = CollectionViewModel()
+    ) {
         self.allLogs = allLogs
+        self.logViewModel = logViewModel
+        self.viewModel = viewModel
     }
 
     public var body: some View {
         @Bindable var viewModel = viewModel
+        @Bindable var logViewModel = logViewModel
+        let activeCategory = logViewModel.collectionCategoryFilter ?? viewModel.selectedCategory
         let isPro = appState.isProVersion
-        let proExtraCount = viewModel.lockedProItemCount(for: viewModel.selectedCategory)
-        let completionResults = viewModel.checkCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
-        let groupedResults = viewModel.groupedCompletions(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
+        let proExtraCount = viewModel.lockedProItemCount(for: activeCategory)
+        let completionResults = filteredCompletions(for: activeCategory, isPro: isPro)
+        let groupedResults = filteredGroupedCompletions(for: activeCategory, isPro: isPro)
         
-        let currentBadge = viewModel.currentRankBadge(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
-        let nextBadge = viewModel.nextRankBadge(for: viewModel.selectedCategory, logs: allLogs, isPro: isPro)
+        let currentBadge = viewModel.currentRankBadge(for: activeCategory, logs: allLogs, isPro: isPro)
+        let nextBadge = viewModel.nextRankBadge(for: activeCategory, logs: allLogs, isPro: isPro)
         let unlockedCount = completionResults.filter { $0.isUnlocked }.count
         let totalCount = completionResults.count
 
@@ -50,7 +61,15 @@ public struct CollectionBookView: View {
             }
 
             // 1. 酒種切り替えピッカー
-            Picker(String(localized: "酒種"), selection: $viewModel.selectedCategory) {
+            Picker(String(localized: "酒種"), selection: Binding(
+                get: { activeCategory },
+                set: { newValue in
+                    viewModel.selectedCategory = newValue
+                    if logViewModel.collectionCategoryFilter != nil {
+                        logViewModel.collectionCategoryFilter = newValue
+                    }
+                }
+            )) {
                 ForEach(BeverageCategory.allCases, id: \.self) { category in
                     Text(category.displayName).tag(category)
                 }
@@ -65,7 +84,16 @@ public struct CollectionBookView: View {
             rankBadgeBanner(currentBadge: currentBadge, nextBadge: nextBadge, unlockedCount: unlockedCount)
 
             // 4. 国・都道府県別のコレクション一覧
-            groupedCollectionView(groupedResults: groupedResults)
+            if groupedResults.isEmpty {
+                ContentUnavailableView(
+                    String(localized: "該当する図鑑項目がありません"),
+                    systemImage: "line.3.horizontal.decrease.circle",
+                    description: Text(String(localized: "産地や品種・米・スタイルの絞り込み条件を変更してみてください。"))
+                )
+                .padding(.top, 24)
+            } else {
+                groupedCollectionView(groupedResults: groupedResults)
+            }
         }
         // ✨ .sheet(item:) を利用することで、1回目の真っ白な表示バグを完全に防止
         .sheet(item: $activeSheetWrapper) { wrapper in
@@ -76,7 +104,7 @@ public struct CollectionBookView: View {
         }
         .sheet(isPresented: $isShowingRankSheet) {
             RankShareSheetView(
-                category: viewModel.selectedCategory,
+                category: activeCategory,
                 unlockedCount: unlockedCount,
                 totalCount: totalCount
             )
@@ -86,6 +114,41 @@ public struct CollectionBookView: View {
             Button(String(localized: "閉じる"), role: .cancel) {}
         } message: { hint in
             Text(hint)
+        }
+    }
+
+    // MARK: - Filtering Helpers
+
+    private func matchesElementFilter(_ definition: CollectionItemDefinition) -> Bool {
+        let selected = logViewModel.collectionTargetElementFilter.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !selected.isEmpty else { return true }
+        return definition.targetElement == selected
+    }
+
+    private func matchesRegionFilter(_ region: String) -> Bool {
+        let selected = logViewModel.collectionRegionFilter.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !selected.isEmpty else { return true }
+        return region == selected
+    }
+
+    private func filteredCompletions(
+        for category: BeverageCategory,
+        isPro: Bool
+    ) -> [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])] {
+        viewModel.checkCompletions(for: category, logs: allLogs, isPro: isPro).filter { result in
+            matchesRegionFilter(result.definition.region) && matchesElementFilter(result.definition)
+        }
+    }
+
+    private func filteredGroupedCompletions(
+        for category: BeverageCategory,
+        isPro: Bool
+    ) -> [(region: String, items: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])])] {
+        viewModel.groupedCompletions(for: category, logs: allLogs, isPro: isPro).compactMap { group in
+            guard matchesRegionFilter(group.region) else { return nil }
+            let filteredItems = group.items.filter { matchesElementFilter($0.definition) }
+            guard !filteredItems.isEmpty else { return nil }
+            return (region: group.region, items: filteredItems)
         }
     }
 
@@ -241,14 +304,12 @@ public struct CollectionBookView: View {
                         ForEach(group.items, id: \.definition.id) { cell in
                             Button {
                                 if cell.isUnlocked {
-                                    // 達成済みの場合は詳細シートを表示
                                     activeSheetWrapper = CollectionCellSheetWrapper(
                                         definition: cell.definition,
                                         isUnlocked: cell.isUnlocked,
                                         unlockedLogs: cell.unlockedLogs
                                     )
                                 } else {
-                                    // ✨ 未達成の場合はサジェストヒントを表示
                                     selectedHintMessage = cell.definition.suggestionHint
                                     isShowingSuggestionAlert = true
                                 }
