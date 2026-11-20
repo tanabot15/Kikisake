@@ -16,7 +16,7 @@ private struct AddFlowDraftData: Codable {
     var abvString: String
     var priceString: String
     var storageLocation: String
-    var isBackgroundRemoved: Bool // ✨ 下書きにも透過状態を保存
+    var isBackgroundRemoved: Bool
     
     var wineType: String
     var blendComponents: [BlendComponent]
@@ -62,6 +62,10 @@ public final class AddFlowViewModel {
 
     public var isOpeningExistingItem: Bool = false
 
+    // 内部状態ガード（リセット中の下書き保存防止・二重保存防止）
+    private var isResetting: Bool = false
+    private var isSaving: Bool = false
+
     // Step 1: 一般的な情報
     public var selectedCategory: BeverageCategory = .wine { didSet { saveDraft() } }
     public var sourceItem: BeverageItem? = nil
@@ -71,7 +75,7 @@ public final class AddFlowViewModel {
     public var vintage: String = "" { didSet { saveDraft() } }
     public var abvString: String = "" { didSet { saveDraft() } }
     public var priceString: String = "" { didSet { saveDraft() } }
-    public var storageLocation: String = "未設定" { didSet { saveDraft() } }
+    public var storageLocation: String = "" { didSet { saveDraft() } }
     
     public var selectedImageData: Data? = nil { didSet { saveDraft() } }
     public var originalImageData: Data? = nil { didSet { saveDraft() } }
@@ -140,7 +144,7 @@ public final class AddFlowViewModel {
     private let consumeUseCase = ConsumeBeverageUseCase()
     private let draftKey = "Kikisake_AddFlow_DraftData_v1"
     private let frontImageDraftKey = "Kikisake_AddFlow_FrontImage_v1"
-    private let originalImageDraftKey = "Kikisake_AddFlow_OriginalImage_v1" // ✨ 追加
+    private let originalImageDraftKey = "Kikisake_AddFlow_OriginalImage_v1"
     private let backImageDraftKey = "Kikisake_AddFlow_BackImage_v1"
 
     public init() {}
@@ -149,6 +153,7 @@ public final class AddFlowViewModel {
     
     /// 現在の入力をローカル（UserDefaults）に自動保存
     public func saveDraft() {
+        guard !isResetting, !isSaving else { return }
         if editingLog != nil || isOpeningExistingItem { return }
         guard !name.isEmpty || !producer.isEmpty || !memo.isEmpty || selectedImageData != nil else { return }
         
@@ -217,6 +222,9 @@ public final class AddFlowViewModel {
         guard let data = UserDefaults.standard.data(forKey: draftKey),
               let draft = try? JSONDecoder().decode(AddFlowDraftData.self, from: data) else { return }
         
+        isResetting = true
+        defer { isResetting = false }
+
         self.currentStep = draft.currentStep
         self.selectedCategory = BeverageCategory(rawValue: draft.selectedCategoryRaw) ?? .wine
         self.name = draft.name
@@ -304,6 +312,9 @@ public final class AddFlowViewModel {
     }
 
     public func reset() {
+        isResetting = true
+        defer { isResetting = false }
+
         clearDraft()
         self.currentStep = 1
         self.isOpeningExistingItem = false
@@ -315,7 +326,7 @@ public final class AddFlowViewModel {
         self.vintage = ""
         self.abvString = ""
         self.priceString = ""
-        self.storageLocation = "未設定"
+        self.storageLocation = ""
         self.selectedGridRow = nil
         self.selectedGridColumn = nil
         self.selectedImageData = nil
@@ -358,7 +369,11 @@ public final class AddFlowViewModel {
     }
 
     public func configureWithItem(_ item: BeverageItem) {
+        isResetting = true
+        defer { isResetting = false }
+
         self.sourceItem = item
+        self.editingItem = item
         self.selectedCategory = item.category
         self.name = item.name
         self.producer = item.producer
@@ -375,10 +390,17 @@ public final class AddFlowViewModel {
         self.selectedGridColumn = item.gridColumn
         
         self.selectedImageData = item.imageDatas?.first
-        // ✨ DBに保存されている元画像を優先して読み込み、なければ表示用画像をフォールバックとする
         self.originalImageData = item.originalImageDatas?.first ?? item.imageDatas?.first
         self.selectedBackImageData = item.backImageDatas?.first
         self.isBackgroundRemoved = item.isBackgroundRemoved
+
+        // すでに未評価ログが存在する場合はそれを更新対象として保持し、重複作成を防ぐ
+        if self.editingLog == nil {
+            self.editingLog = item.tastingLogs?
+                .filter { !$0.isEvaluated }
+                .sorted(by: { $0.date > $1.date })
+                .first
+        }
     }
 
     public func configureWithLog(_ log: TastingLog) {
@@ -387,6 +409,9 @@ public final class AddFlowViewModel {
         if let item = log.item {
             configureWithItem(item)
             
+            isResetting = true
+            defer { isResetting = false }
+
             if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
                 let decoder = JSONDecoder()
                 switch item.category {
@@ -415,6 +440,9 @@ public final class AddFlowViewModel {
             }
         }
         
+        isResetting = true
+        defer { isResetting = false }
+
         self.tastingDate = log.date
         self.rating = log.rating
         self.appearanceNotes = log.appearanceNotes
@@ -459,23 +487,57 @@ public final class AddFlowViewModel {
         }
     }
 
-    private func ensureStorageLocationExists(modelContext: ModelContext) throws {
+    /// 在庫として保管場所を指定する場合のみ、StorageLocation の存在を保証する
+    private func ensureStorageLocationExistsIfStocked(modelContext: ModelContext) {
+        let trimmed = storageLocation.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            self.storageLocation = ""
+            return
+        }
+
         let descriptor = FetchDescriptor<StorageLocation>()
         let existingLocations = (try? modelContext.fetch(descriptor)) ?? []
 
-        if existingLocations.isEmpty {
-            let defaultLocation = StorageLocation(name: "未設定", type: .other, memo: "自動生成されたデフォルトの保管場所")
-            modelContext.insert(defaultLocation)
-            self.storageLocation = "未設定"
-        } else if storageLocation.isEmpty || !existingLocations.contains(where: { $0.name == storageLocation }) {
-            if let firstLoc = existingLocations.first {
-                self.storageLocation = firstLoc.name
-            }
+        if !existingLocations.contains(where: { $0.name == trimmed }) {
+            let newLocation = StorageLocation(name: trimmed, type: .other, memo: "")
+            modelContext.insert(newLocation)
         }
+        self.storageLocation = trimmed
     }
 
+    private func applyTastingData(to log: TastingLog, isTanninApplicable: Bool) {
+        log.date = tastingDate
+        log.rating = rating
+        log.appearanceNotes = appearanceNotes
+        log.appearanceColorHex = appearanceColorHex
+        log.aromaTags = selectedAromaTags
+        log.sweetness = sweetness
+        log.saltiness = saltiness
+        log.acidity = acidity
+        log.bitterness = bitterness
+        log.umami = umami
+        log.tannin = isTanninApplicable ? tannin : nil
+        log.body = body
+        log.balanceTags = selectedBalanceTags
+        log.finishLength = finishLength
+        log.isCostEffective = isCostEffective
+        log.isWillingToRepeat = isWillingToRepeat
+        log.hasAgingPotential = hasAgingPotential
+        log.pairing = pairing.isEmpty ? nil : pairing
+        log.memo = memo
+        log.isEvaluated = true
+    }
+
+    /// ステップ1から「未開栓のまま在庫として保存」する処理（LogViewにも未評価ログとして残す）
     public func saveAsInventoryOnly(modelContext: ModelContext) throws {
-        try ensureStorageLocationExists(modelContext: modelContext)
+        guard !isSaving else { return }
+        isSaving = true
+        defer { isSaving = false }
+
+        if storageLocation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            self.storageLocation = String(localized: "未設定")
+        }
+        ensureStorageLocationExistsIfStocked(modelContext: modelContext)
 
         let abv = Double(abvString)
         let price = Int(priceString)
@@ -493,20 +555,39 @@ public final class AddFlowViewModel {
             gridRow: selectedGridRow,
             gridColumn: selectedGridColumn,
             imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
-            originalImageDatas: originalImageData != nil ? [originalImageData!] : nil, // ✨ 保存
+            originalImageDatas: originalImageData != nil ? [originalImageData!] : nil,
             backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
             isBackgroundRemoved: isBackgroundRemoved,
             specificMetadataJSON: metadataJSON
         )
 
+        let unevaluatedLog = TastingLog(
+            date: Date(),
+            rating: 0.0,
+            appearanceNotes: "",
+            appearanceColorHex: "#802633",
+            aromaTags: [],
+            memo: "",
+            isEvaluated: false
+        )
+
         modelContext.insert(newItem)
+        modelContext.insert(unevaluatedLog)
+        unevaluatedLog.item = newItem
+
         try modelContext.save()
 
         reset()
     }
     
+    /// ステップ5から「テイスティングログ＋ボトルの扱いを選んで保存」する処理
+    /// 既存の未評価ログがある場合は新規作成せず更新する
     public func saveWithStock(modelContext: ModelContext) throws {
-        try ensureStorageLocationExists(modelContext: modelContext)
+        guard !isSaving else { return }
+        isSaving = true
+        defer { isSaving = false }
+
+        ensureStorageLocationExistsIfStocked(modelContext: modelContext)
 
         let isTanninApplicable: Bool = {
             guard selectedCategory == .wine else { return false }
@@ -518,149 +599,8 @@ public final class AddFlowViewModel {
         let metadataJSON = buildMetadataJSON()
         
         let targetItem: BeverageItem
-        if let existingItem = sourceItem {
+        if let existingItem = sourceItem ?? editingItem {
             targetItem = existingItem
-            existingItem.storageLocation = storageLocation
-            existingItem.gridRow = selectedGridRow
-            existingItem.gridColumn = selectedGridColumn
-            existingItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
-            existingItem.originalImageDatas = originalImageData != nil ? [originalImageData!] : nil // ✨ 保存
-            existingItem.backImageDatas = selectedBackImageData != nil ? [selectedBackImageData!] : nil
-            existingItem.isBackgroundRemoved = isBackgroundRemoved
-        } else {
-            targetItem = BeverageItem(
-                name: name,
-                producer: producer,
-                category: selectedCategory,
-                region: region,
-                vintage: vintage.isEmpty ? nil : vintage,
-                alcoholByVolume: abv,
-                price: price,
-                storageLocation: storageLocation,
-                gridRow: selectedGridRow,
-                gridColumn: selectedGridColumn,
-                imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
-                originalImageDatas: originalImageData != nil ? [originalImageData!] : nil, // ✨ 保存
-                backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
-                isBackgroundRemoved: isBackgroundRemoved,
-                specificMetadataJSON: metadataJSON
-            )
-            modelContext.insert(targetItem)
-        }
-
-        let newLog = TastingLog(
-            date: tastingDate,
-            rating: rating,
-            appearanceNotes: appearanceNotes,
-            appearanceColorHex: appearanceColorHex,
-            aromaTags: selectedAromaTags,
-            sweetness: sweetness,
-            saltiness: saltiness,
-            acidity: acidity,
-            bitterness: bitterness,
-            umami: umami,
-            tannin: isTanninApplicable ? tannin : nil,
-            body: body,
-            balanceTags: selectedBalanceTags,
-            finishLength: finishLength,
-            isCostEffective: isCostEffective,
-            isWillingToRepeat: isWillingToRepeat,
-            hasAgingPotential: hasAgingPotential,
-            pairing: pairing.isEmpty ? nil : pairing,
-            memo: memo,
-            isEvaluated: true,
-            item: targetItem
-        )
-
-        modelContext.insert(newLog)
-        try modelContext.save()
-
-        reset()
-    }
-
-    public func save(modelContext: ModelContext) throws {
-        try ensureStorageLocationExists(modelContext: modelContext)
-
-        let isTanninApplicable: Bool = {
-            guard selectedCategory == .wine else { return false }
-            return wineType == "赤" || wineType == "ロゼ" || wineType == "オレンジ"
-        }()
-        
-        let targetItem: BeverageItem
-        if let existingItem = sourceItem {
-            targetItem = existingItem
-        } else {
-            let price = Int(priceString)
-            let abv = Double(abvString)
-            let metadataJSON = buildMetadataJSON()
-            
-            targetItem = BeverageItem(
-                name: name,
-                producer: producer,
-                category: selectedCategory,
-                region: region,
-                vintage: vintage.isEmpty ? nil : vintage,
-                alcoholByVolume: abv,
-                price: price,
-                storageLocation: storageLocation,
-                gridRow: selectedGridRow,
-                gridColumn: selectedGridColumn,
-                imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
-                originalImageDatas: originalImageData != nil ? [originalImageData!] : nil, // ✨ 保存
-                backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
-                isBackgroundRemoved: isBackgroundRemoved,
-                specificMetadataJSON: metadataJSON
-            )
-            modelContext.insert(targetItem)
-        }
-
-        let newLog = TastingLog(
-            date: tastingDate,
-            rating: rating,
-            appearanceNotes: appearanceNotes,
-            appearanceColorHex: appearanceColorHex,
-            aromaTags: selectedAromaTags,
-            sweetness: sweetness,
-            saltiness: saltiness,
-            acidity: acidity,
-            bitterness: bitterness,
-            umami: umami,
-            tannin: isTanninApplicable ? tannin : nil,
-            body: body,
-            balanceTags: selectedBalanceTags,
-            finishLength: finishLength,
-            isCostEffective: isCostEffective,
-            isWillingToRepeat: isWillingToRepeat,
-            hasAgingPotential: hasAgingPotential,
-            pairing: pairing.isEmpty ? nil : pairing,
-            memo: memo,
-            isEvaluated: true,
-            item: targetItem
-        )
-
-        modelContext.insert(newLog)
-        try modelContext.save()
-
-        reset()
-    }
-
-    public func update(modelContext: ModelContext) throws {
-        guard let targetLog = editingLog else {
-            try save(modelContext: modelContext)
-            return
-        }
-
-        try ensureStorageLocationExists(modelContext: modelContext)
-
-        let price = Int(priceString)
-        let abv = Double(abvString)
-        let isTanninApplicable: Bool = {
-            guard selectedCategory == .wine else { return false }
-            return wineType == "赤" || wineType == "ロゼ" || wineType == "オレンジ"
-        }()
-        let metadataJSON = buildMetadataJSON()
-
-        if let targetItem = editingItem {
             targetItem.name = name
             targetItem.producer = producer
             targetItem.category = selectedCategory
@@ -669,35 +609,128 @@ public final class AddFlowViewModel {
             targetItem.alcoholByVolume = abv
             targetItem.price = price
             targetItem.storageLocation = storageLocation
-            targetItem.gridRow = selectedGridRow
-            targetItem.gridColumn = selectedGridColumn
+            targetItem.gridRow = storageLocation.isEmpty ? nil : selectedGridRow
+            targetItem.gridColumn = storageLocation.isEmpty ? nil : selectedGridColumn
             targetItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
-            targetItem.originalImageDatas = originalImageData != nil ? [originalImageData!] : nil // ✨ 保存
+            targetItem.originalImageDatas = originalImageData != nil ? [originalImageData!] : nil
             targetItem.backImageDatas = selectedBackImageData != nil ? [selectedBackImageData!] : nil
             targetItem.isBackgroundRemoved = isBackgroundRemoved
             targetItem.specificMetadataJSON = metadataJSON
+        } else {
+            targetItem = BeverageItem(
+                name: name,
+                producer: producer,
+                category: selectedCategory,
+                region: region,
+                vintage: vintage.isEmpty ? nil : vintage,
+                alcoholByVolume: abv,
+                price: price,
+                storageLocation: storageLocation,
+                gridRow: storageLocation.isEmpty ? nil : selectedGridRow,
+                gridColumn: storageLocation.isEmpty ? nil : selectedGridColumn,
+                imageDatas: selectedImageData != nil ? [selectedImageData!] : nil,
+                originalImageDatas: originalImageData != nil ? [originalImageData!] : nil,
+                backImageDatas: selectedBackImageData != nil ? [selectedBackImageData!] : nil,
+                isBackgroundRemoved: isBackgroundRemoved,
+                specificMetadataJSON: metadataJSON
+            )
+            modelContext.insert(targetItem)
         }
 
-        targetLog.date = tastingDate
-        targetLog.rating = rating
-        targetLog.appearanceNotes = appearanceNotes
-        targetLog.appearanceColorHex = appearanceColorHex
-        targetLog.aromaTags = selectedAromaTags
-        targetLog.sweetness = sweetness
-        targetLog.saltiness = saltiness
-        targetLog.acidity = acidity
-        targetLog.bitterness = bitterness
-        targetLog.umami = umami
-        targetLog.tannin = isTanninApplicable ? tannin : nil
-        targetLog.body = body
-        targetLog.balanceTags = selectedBalanceTags
-        targetLog.finishLength = finishLength
-        targetLog.isCostEffective = isCostEffective
-        targetLog.isWillingToRepeat = isWillingToRepeat
-        targetLog.hasAgingPotential = hasAgingPotential
-        targetLog.pairing = pairing.isEmpty ? nil : pairing
-        targetLog.memo = memo
-        targetLog.isEvaluated = true
+        // 未評価の既存ログを探す（editingLog が未評価ならそれを使用し、なければ targetItem 配下の未評価ログを検索）
+        let existingUnevaluatedLog: TastingLog? = {
+            if let currentEditingLog = editingLog, !currentEditingLog.isEvaluated {
+                return currentEditingLog
+            }
+            return targetItem.tastingLogs?
+                .filter { !$0.isEvaluated }
+                .sorted(by: { $0.date > $1.date })
+                .first
+        }()
+
+        if let logToUpdate = existingUnevaluatedLog {
+            applyTastingData(to: logToUpdate, isTanninApplicable: isTanninApplicable)
+            logToUpdate.item = targetItem
+        } else {
+            let newLog = TastingLog(
+                date: tastingDate,
+                rating: rating,
+                appearanceNotes: appearanceNotes,
+                appearanceColorHex: appearanceColorHex,
+                aromaTags: selectedAromaTags,
+                sweetness: sweetness,
+                saltiness: saltiness,
+                acidity: acidity,
+                bitterness: bitterness,
+                umami: umami,
+                tannin: isTanninApplicable ? tannin : nil,
+                body: body,
+                balanceTags: selectedBalanceTags,
+                finishLength: finishLength,
+                isCostEffective: isCostEffective,
+                isWillingToRepeat: isWillingToRepeat,
+                hasAgingPotential: hasAgingPotential,
+                pairing: pairing.isEmpty ? nil : pairing,
+                memo: memo,
+                isEvaluated: true
+            )
+            modelContext.insert(newLog)
+            newLog.item = targetItem
+        }
+
+        try modelContext.save()
+
+        reset()
+    }
+
+    /// ログのみ保存する処理（在庫なし）
+    public func save(modelContext: ModelContext) throws {
+        self.storageLocation = ""
+        self.selectedGridRow = nil
+        self.selectedGridColumn = nil
+        try saveWithStock(modelContext: modelContext)
+    }
+
+    public func update(modelContext: ModelContext) throws {
+        guard let targetLog = editingLog else {
+            try save(modelContext: modelContext)
+            return
+        }
+
+        guard !isSaving else { return }
+        isSaving = true
+        defer { isSaving = false }
+
+        ensureStorageLocationExistsIfStocked(modelContext: modelContext)
+
+        let price = Int(priceString)
+        let abv = Double(abvString)
+        let isTanninApplicable: Bool = {
+            guard selectedCategory == .wine else { return false }
+            return wineType == "赤" || wineType == "ロゼ" || wineType == "オレンジ"
+        }()
+        let metadataJSON = buildMetadataJSON()
+
+        if let targetItem = editingItem ?? sourceItem {
+            targetItem.name = name
+            targetItem.producer = producer
+            targetItem.category = selectedCategory
+            targetItem.region = region
+            targetItem.vintage = vintage.isEmpty ? nil : vintage
+            targetItem.alcoholByVolume = abv
+            targetItem.price = price
+            targetItem.storageLocation = storageLocation
+            targetItem.gridRow = storageLocation.isEmpty ? nil : selectedGridRow
+            targetItem.gridColumn = storageLocation.isEmpty ? nil : selectedGridColumn
+            targetItem.imageDatas = selectedImageData != nil ? [selectedImageData!] : nil
+            targetItem.originalImageDatas = originalImageData != nil ? [originalImageData!] : nil
+            targetItem.backImageDatas = selectedBackImageData != nil ? [selectedBackImageData!] : nil
+            targetItem.isBackgroundRemoved = isBackgroundRemoved
+            targetItem.specificMetadataJSON = metadataJSON
+            targetLog.item = targetItem
+        }
+
+        applyTastingData(to: targetLog, isTanninApplicable: isTanninApplicable)
 
         try modelContext.save()
         reset()

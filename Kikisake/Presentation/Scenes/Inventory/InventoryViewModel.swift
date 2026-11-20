@@ -226,7 +226,16 @@ public final class InventoryViewModel {
         }
         try? modelContext.save()
     }
-    
+
+    /// 「飲み切った」処理：在庫（保管場所・棚スロット）から外すが、BeverageItemとTastingLogは削除せずLogViewに残す
+    public func markItemAsConsumed(_ item: BeverageItem, modelContext: ModelContext) {
+        item.storageLocation = ""
+        item.gridRow = nil
+        item.gridColumn = nil
+        try? modelContext.save()
+    }
+
+    /// 編集モードのマイナスボタン等からアイテム自体を削除する処理
     public func deleteItem(_ item: BeverageItem, modelContext: ModelContext) {
         let repository = BeverageRepository(modelContext: modelContext)
         repository.deleteItem(item)

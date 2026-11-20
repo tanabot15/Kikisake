@@ -111,10 +111,17 @@ public struct ListView: View {
     }
 
     private func deleteLogs(at offsets: IndexSet) {
-        let currentFiltered = filteredLogs
-        for index in offsets {
-            let log = currentFiltered[index]
+        let logsToDelete = offsets.map { filteredLogs[$0] }
+        for log in logsToDelete {
+            let parentItem = log.item
             modelContext.delete(log)
+
+            if let item = parentItem {
+                let remainingLogs = (item.tastingLogs ?? []).filter { $0.id != log.id }
+                if remainingLogs.isEmpty && item.storageLocation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    modelContext.delete(item)
+                }
+            }
         }
         try? modelContext.save()
     }

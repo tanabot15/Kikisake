@@ -475,7 +475,7 @@ public struct InventoryView: View {
             }
 
             Button(String(localized: "飲み切った"), role: .destructive) {
-                viewModel.deleteItem(item, modelContext: modelContext)
+                viewModel.markItemAsConsumed(item, modelContext: modelContext)
             }
         }
 

@@ -137,7 +137,7 @@ public struct AddFlowView: View {
             // テイスティングログ書き切り後の保存先選択ダイアログ
             .confirmationDialog(String(localized: "ボトルの扱いを選択"), isPresented: $isShowingSaveOptions, titleVisibility: .visible) {
                 Button(String(localized: "飲みきった（ログのみ記録・在庫なし）")) {
-                    executeFullSave(storageLocation: String(localized: "未設定"), targetTab: 0)
+                    executeFullSave(storageLocation: "", targetTab: 0)
                 }
                 
                 if locations.isEmpty {
@@ -292,11 +292,11 @@ public struct AddFlowView: View {
     }
 
     /// ステップ1から「未開栓のまま在庫として保存」する処理
-    private func saveToInventory(locationName: String) {
+    private func saveToInventory(locationName: String, targetTab: Int = 0) {
         do {
             viewModel.storageLocation = locationName
             try viewModel.saveAsInventoryOnly(modelContext: modelContext)
-            AppState.shared.selectedTab = 3
+            AppState.shared.selectedTab = targetTab
         } catch {
             alertMessage = String(format: String(localized: "在庫の保存に失敗しました: %@"), error.localizedDescription)
             showAlert = true

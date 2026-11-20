@@ -135,6 +135,12 @@
     },
     "%@ （%@）" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -295,6 +301,12 @@
     },
     "%d / %d" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d / %2$d"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -478,7 +490,14 @@
       }
     },
     "Hyogo Sake85" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyogo Sake85"
+          }
+        }
+      }
     },
     "IBU" : {
       "localizations" : {
@@ -792,6 +811,12 @@
     },
     "あと %d 種で「%@」" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d more types for \\\"%2$@\\\""
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -1027,7 +1052,14 @@
       }
     },
     "イーデン・ヴァレー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eden Valley"
+          }
+        }
+      }
     },
     "イギリス" : {
       "localizations" : {
@@ -1070,7 +1102,14 @@
       }
     },
     "いにしえの舞" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inishie no Mai"
+          }
+        }
+      }
     },
     "イメレティ" : {
       "localizations" : {
@@ -1143,7 +1182,14 @@
       }
     },
     "ヴァッレ・ダオスタ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valle d'Aosta"
+          }
+        }
+      }
     },
     "ヴァニラ" : {
       "localizations" : {
@@ -1176,7 +1222,14 @@
       }
     },
     "ウィーン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vienna"
+          }
+        }
+      }
     },
     "ウィーン・ラガー" : {
       "localizations" : {
@@ -1209,7 +1262,14 @@
       }
     },
     "ヴィッラーニ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Villány"
+          }
+        }
+      }
     },
     "ヴィンテージ / 年月" : {
       "localizations" : {
@@ -1322,7 +1382,14 @@
       }
     },
     "ヴュルテンベルク" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Württemberg"
+          }
+        }
+      }
     },
     "ウルグアイ" : {
       "localizations" : {
@@ -1375,7 +1442,14 @@
       }
     },
     "エミリア・ロマーニャ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emilia-Romagna"
+          }
+        }
+      }
     },
     "エラー" : {
       "localizations" : {
@@ -1388,7 +1462,14 @@
       }
     },
     "エルギン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elgin"
+          }
+        }
+      }
     },
     "エンバーエール" : {
       "localizations" : {
@@ -1531,7 +1612,14 @@
       }
     },
     "オンタリオ (ナイアガラ・ペニンシュラ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ontario (Niagara Peninsula)"
+          }
+        }
+      }
     },
     "お酒を飲んだ日（直近4ヶ月）" : {
       "localizations" : {
@@ -1584,7 +1672,14 @@
       }
     },
     "カチャポアル・ヴァレー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cachapoal Valley"
+          }
+        }
+      }
     },
     "カテゴリ" : {
       "localizations" : {
@@ -1697,7 +1792,14 @@
       }
     },
     "カラブリア" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calabria"
+          }
+        }
+      }
     },
     "カラメル" : {
       "localizations" : {
@@ -1730,7 +1832,14 @@
       }
     },
     "カリフォルニア (セントラル・コースト / パソ・ロブレス)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "California (Central Coast / Paso Robles)"
+          }
+        }
+      }
     },
     "カリフォルニア (ソノマ)" : {
       "localizations" : {
@@ -1803,7 +1912,14 @@
       }
     },
     "ギズボーン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gisborne"
+          }
+        }
+      }
     },
     "きたしずく" : {
       "localizations" : {
@@ -1866,7 +1982,14 @@
       }
     },
     "ぎんおとめ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ginotome"
+          }
+        }
+      }
     },
     "キンモクセイ" : {
       "localizations" : {
@@ -1899,7 +2022,14 @@
       }
     },
     "グラウビュンデン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graubünden"
+          }
+        }
+      }
     },
     "グラスを傾けて見える最も近い色をタップしてください。" : {
       "localizations" : {
@@ -1962,7 +2092,14 @@
       }
     },
     "クリコ・ヴァレー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curicó Valley"
+          }
+        }
+      }
     },
     "クリスタル・クリア" : {
       "localizations" : {
@@ -2045,7 +2182,14 @@
       }
     },
     "クレア・ヴァレー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clare Valley"
+          }
+        }
+      }
     },
     "ゲヴュルツトラミネール" : {
       "localizations" : {
@@ -2108,7 +2252,14 @@
       }
     },
     "コート・デュ・ローヌ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Côtes du Rhône"
+          }
+        }
+      }
     },
     "コーヒー" : {
       "localizations" : {
@@ -2161,7 +2312,14 @@
       }
     },
     "こいおまち" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koiomachi"
+          }
+        }
+      }
     },
     "ここに配置" : {
       "localizations" : {
@@ -2294,7 +2452,14 @@
       }
     },
     "この条件に一致するお酒を記録すると、図鑑が解放されます。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log a drink matching these conditions to unlock this collection entry."
+          }
+        }
+      }
     },
     "コペンハーゲン" : {
       "localizations" : {
@@ -2337,7 +2502,14 @@
       }
     },
     "コルス (コルシカ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corse (Corsica)"
+          }
+        }
+      }
     },
     "コルチャグア・ヴァレー" : {
       "localizations" : {
@@ -2400,19 +2572,54 @@
       }
     },
     "ザーレ・ウンストルート" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saale-Unstrut"
+          }
+        }
+      }
     },
     "サヴォワ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Savoie"
+          }
+        }
+      }
     },
     "さがの華" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saganohana"
+          }
+        }
+      }
     },
     "さかほまれ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sakahomare"
+          }
+        }
+      }
     },
     "ザクセン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sachsen"
+          }
+        }
+      }
     },
     "サグランド" : {
       "localizations" : {
@@ -2425,7 +2632,14 @@
       }
     },
     "さけ武蔵" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sakemusashi"
+          }
+        }
+      }
     },
     "ササニシキ" : {
       "localizations" : {
@@ -2508,7 +2722,14 @@
       }
     },
     "サルタ (カファジャテ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salta (Cafayate)"
+          }
+        }
+      }
     },
     "サルデーニャ" : {
       "localizations" : {
@@ -2541,10 +2762,24 @@
       }
     },
     "サン・アントニオ・ヴァレー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "San Antonio Valley"
+          }
+        }
+      }
     },
     "サン・フアン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "San Juan"
+          }
+        }
+      }
     },
     "サンジョヴェーゼ" : {
       "localizations" : {
@@ -2727,7 +2962,14 @@
       }
     },
     "シュタイヤーマルク" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steiermark"
+          }
+        }
+      }
     },
     "シュナン・ブラン" : {
       "localizations" : {
@@ -2740,7 +2982,14 @@
       }
     },
     "ジュネーヴ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geneva"
+          }
+        }
+      }
     },
     "シュバルツ" : {
       "localizations" : {
@@ -2753,7 +3002,14 @@
       }
     },
     "ジュラ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jura"
+          }
+        }
+      }
     },
     "ジョージア" : {
       "localizations" : {
@@ -2776,7 +3032,14 @@
       }
     },
     "しらかば錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shirakabanishiki"
+          }
+        }
+      }
     },
     "シルヴァーナー" : {
       "localizations" : {
@@ -3229,7 +3492,14 @@
       }
     },
     "セトゥーバル" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setúbal"
+          }
+        }
+      }
     },
     "セミヨン" : {
       "localizations" : {
@@ -3422,7 +3692,14 @@
       }
     },
     "タイムライン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timeline"
+          }
+        }
+      }
     },
     "たかね錦" : {
       "localizations" : {
@@ -3505,7 +3782,14 @@
       }
     },
     "タップして称号・ランク一覧を確認" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to view titles & ranks"
+          }
+        }
+      }
     },
     "タップして選択" : {
       "localizations" : {
@@ -3668,7 +3952,14 @@
       }
     },
     "ちほのまい" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chihonomai"
+          }
+        }
+      }
     },
     "チョコレート" : {
       "localizations" : {
@@ -3911,7 +4202,14 @@
       }
     },
     "ドウロ (ポート)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Douro (Port)"
+          }
+        }
+      }
     },
     "トカイ" : {
       "localizations" : {
@@ -3934,7 +4232,14 @@
       }
     },
     "とちぎ酒14" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tochigisake 14"
+          }
+        }
+      }
     },
     "トッビーア / フルラノ" : {
       "localizations" : {
@@ -4087,7 +4392,14 @@
       }
     },
     "ナーエ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nahe"
+          }
+        }
+      }
     },
     "ナイアガラ" : {
       "localizations" : {
@@ -4140,10 +4452,24 @@
       }
     },
     "なら酒1504" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Narasake 1504"
+          }
+        }
+      }
     },
     "ニーダーエスターライヒ (ヴァッハウ / カンプタール)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niederösterreich (Wachau / Kamptal)"
+          }
+        }
+      }
     },
     "にごり（濃い乳白色）" : {
       "localizations" : {
@@ -4266,7 +4592,14 @@
       }
     },
     "ノース・カンタベリー (ワイパラ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "North Canterbury (Waipara)"
+          }
+        }
+      }
     },
     "ノルウェー" : {
       "localizations" : {
@@ -4369,7 +4702,14 @@
       }
     },
     "パール" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paarl"
+          }
+        }
+      }
     },
     "パール・ホワイト" : {
       "localizations" : {
@@ -4412,10 +4752,24 @@
       }
     },
     "バイラーダ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bairrada"
+          }
+        }
+      }
     },
     "バジリカータ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basilicata"
+          }
+        }
+      }
     },
     "バスク" : {
       "localizations" : {
@@ -4438,7 +4792,14 @@
       }
     },
     "パタゴニア (リオ・ネグロ / ネウケン)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patagonia (Río Negro / Neuquén)"
+          }
+        }
+      }
     },
     "ハチミツ" : {
       "localizations" : {
@@ -4481,7 +4842,14 @@
       }
     },
     "はなかぐら" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanakagura"
+          }
+        }
+      }
     },
     "バナナ" : {
       "localizations" : {
@@ -4604,7 +4972,14 @@
       }
     },
     "ハンプシャー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hampshire"
+          }
+        }
+      }
     },
     "ピーチ・アンバー" : {
       "localizations" : {
@@ -4757,7 +5132,14 @@
       }
     },
     "ひたち錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hitachinishiki"
+          }
+        }
+      }
     },
     "ひだほまれ" : {
       "localizations" : {
@@ -4820,7 +5202,14 @@
       }
     },
     "ピノタージュ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pinotage"
+          }
+        }
+      }
     },
     "ピルスナー" : {
       "localizations" : {
@@ -4933,7 +5322,14 @@
       }
     },
     "フミーリャ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jumilla"
+          }
+        }
+      }
     },
     "プライバシーポリシー" : {
       "localizations" : {
@@ -5086,7 +5482,14 @@
       }
     },
     "フランシュック" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Franschhoek"
+          }
+        }
+      }
     },
     "フランス" : {
       "localizations" : {
@@ -5129,7 +5532,14 @@
       }
     },
     "ブリティッシュ・コロンビア (オカナガン・ヴァレー)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "British Columbia (Okanagan Valley)"
+          }
+        }
+      }
     },
     "ブリティッシュコロンビア (バンクーバー)" : {
       "localizations" : {
@@ -5262,7 +5672,14 @@
       }
     },
     "プロ版で図鑑を全解放" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Full Collection with Pro"
+          }
+        }
+      }
     },
     "ヘーゼルナッツ" : {
       "localizations" : {
@@ -5365,7 +5782,14 @@
       }
     },
     "ヘッシシェ・ベルクシュトラーセ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hessische Bergstrasse"
+          }
+        }
+      }
     },
     "ペトロール" : {
       "localizations" : {
@@ -5378,7 +5802,14 @@
       }
     },
     "ペネデス (カバ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penedès (Cava)"
+          }
+        }
+      }
     },
     "ベルギー" : {
       "localizations" : {
@@ -5481,7 +5912,14 @@
       }
     },
     "ボージョレ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beaujolais"
+          }
+        }
+      }
     },
     "ポーター" : {
       "localizations" : {
@@ -5644,7 +6082,14 @@
       }
     },
     "マーティンボロ (ワイララパ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Martinborough (Wairarapa)"
+          }
+        }
+      }
     },
     "マーマレード" : {
       "localizations" : {
@@ -5687,7 +6132,14 @@
       }
     },
     "マウレ・ヴァレー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maule Valley"
+          }
+        }
+      }
     },
     "マクラーレン・ヴェール" : {
       "localizations" : {
@@ -5790,7 +6242,14 @@
       }
     },
     "マニアックな品種や産地など、追加の %d 項目が解放されます" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock %d additional entries including rare varieties and regions"
+          }
+        }
+      }
     },
     "マホガニー" : {
       "localizations" : {
@@ -5833,7 +6292,14 @@
       }
     },
     "マルケ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marche"
+          }
+        }
+      }
     },
     "マルサンヌ" : {
       "localizations" : {
@@ -5846,7 +6312,14 @@
       }
     },
     "マルドナド" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maldonado"
+          }
+        }
+      }
     },
     "マルベック" : {
       "localizations" : {
@@ -5879,13 +6352,34 @@
       }
     },
     "マンティニア" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantinia"
+          }
+        }
+      }
     },
     "ミーニョ (ヴィーニョ・ヴェルデ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minho (Vinho Verde)"
+          }
+        }
+      }
     },
     "ミッテルライン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mittelrhein"
+          }
+        }
+      }
     },
     "ミネラル" : {
       "localizations" : {
@@ -6028,7 +6522,14 @@
       }
     },
     "モーニントン・ペニンシュラ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mornington Peninsula"
+          }
+        }
+      }
     },
     "もう一度同じものを飲む" : {
       "localizations" : {
@@ -6051,7 +6552,14 @@
       }
     },
     "モリーゼ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Molise"
+          }
+        }
+      }
     },
     "ヤラ・ヴァレー" : {
       "localizations" : {
@@ -6124,7 +6632,14 @@
       }
     },
     "ラ・マンチャ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La Mancha"
+          }
+        }
+      }
     },
     "ライIPA" : {
       "localizations" : {
@@ -6247,7 +6762,14 @@
       }
     },
     "ラツィオ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lazio"
+          }
+        }
+      }
     },
     "ラベンダー・ローズ" : {
       "localizations" : {
@@ -6260,7 +6782,14 @@
       }
     },
     "ラングドック" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Languedoc"
+          }
+        }
+      }
     },
     "ランシオ" : {
       "localizations" : {
@@ -6313,7 +6842,14 @@
       }
     },
     "リグーリア" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liguria"
+          }
+        }
+      }
     },
     "リスト" : {
       "localizations" : {
@@ -6336,7 +6872,14 @@
       }
     },
     "リスボア" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisboa"
+          }
+        }
+      }
     },
     "リピート" : {
       "localizations" : {
@@ -6409,10 +6952,24 @@
       }
     },
     "ルーション" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Roussillon"
+          }
+        }
+      }
     },
     "ルエダ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rueda"
+          }
+        }
+      }
     },
     "ルビー・エール" : {
       "localizations" : {
@@ -6550,17 +7107,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Log"
-          }
-        }
-      }
-    },
-    "ログが選択されていません" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Log Selected"
           }
         }
       }
@@ -6766,13 +7312,34 @@
       }
     },
     "一本〆" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ipponjime"
+          }
+        }
+      }
     },
     "一穂積" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ichihodumi"
+          }
+        }
+      }
     },
     "一般米（食用米）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Table Rice"
+          }
+        }
+      }
     },
     "丁子" : {
       "localizations" : {
@@ -7085,7 +7652,14 @@
       }
     },
     "亀粋" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kisui"
+          }
+        }
+      }
     },
     "五つ星ソムリエ" : {
       "localizations" : {
@@ -7168,7 +7742,14 @@
       }
     },
     "伊勢錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isenishiki"
+          }
+        }
+      }
     },
     "伊賀" : {
       "localizations" : {
@@ -7211,7 +7792,14 @@
       }
     },
     "但馬強力" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tajimagoriki"
+          }
+        }
+      }
     },
     "佐渡" : {
       "localizations" : {
@@ -7234,7 +7822,14 @@
       }
     },
     "佐香錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sakanishiki"
+          }
+        }
+      }
     },
     "余韻" : {
       "localizations" : {
@@ -7487,16 +8082,44 @@
       }
     },
     "八反35号" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hattan 35"
+          }
+        }
+      }
     },
     "八反錦1号" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hattan Nishiki 1"
+          }
+        }
+      }
     },
     "兵庫北錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyogo Kitanishiki"
+          }
+        }
+      }
     },
     "兵庫恋錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyogo Koinishiki"
+          }
+        }
+      }
     },
     "兵庫県" : {
       "localizations" : {
@@ -7509,7 +8132,14 @@
       }
     },
     "兵庫錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyogonishiki"
+          }
+        }
+      }
     },
     "円" : {
       "localizations" : {
@@ -7612,7 +8242,14 @@
       }
     },
     "出羽の里" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dewanosato"
+          }
+        }
+      }
     },
     "出羽燦々" : {
       "localizations" : {
@@ -7905,7 +8542,14 @@
       }
     },
     "古城錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kojonishiki"
+          }
+        }
+      }
     },
     "右のログ" : {
       "localizations" : {
@@ -7948,7 +8592,14 @@
       }
     },
     "吟ぎんが" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ginginga"
+          }
+        }
+      }
     },
     "吟のいろは" : {
       "localizations" : {
@@ -7961,7 +8612,14 @@
       }
     },
     "吟のさと" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ginnosato"
+          }
+        }
+      }
     },
     "吟の夢" : {
       "localizations" : {
@@ -7984,10 +8642,24 @@
       }
     },
     "吟烏帽子" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gineboshi"
+          }
+        }
+      }
     },
     "吟風" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ginpu"
+          }
+        }
+      }
     },
     "呉・竹原" : {
       "localizations" : {
@@ -8110,7 +8782,14 @@
       }
     },
     "品種・米・スタイル" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variety / Rice / Style"
+          }
+        }
+      }
     },
     "品種を自由入力 (例: カベルネ・ソーヴィニヨン)" : {
       "localizations" : {
@@ -8153,13 +8832,34 @@
       }
     },
     "図鑑アイテム詳細" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collection Item Details"
+          }
+        }
+      }
     },
     "図鑑コンプリート進捗" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collection Completion Progress"
+          }
+        }
+      }
     },
     "図鑑フィルター" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collection Filter"
+          }
+        }
+      }
     },
     "図鑑達成数" : {
       "localizations" : {
@@ -8222,7 +8922,14 @@
       }
     },
     "土佐麗" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tosaurara"
+          }
+        }
+      }
     },
     "在庫" : {
       "localizations" : {
@@ -8375,7 +9082,14 @@
       }
     },
     "壽限無" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jugemu"
+          }
+        }
+      }
     },
     "外観" : {
       "localizations" : {
@@ -8468,7 +9182,14 @@
       }
     },
     "夢ささら" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yumesasara"
+          }
+        }
+      }
     },
     "夢の香" : {
       "localizations" : {
@@ -8481,7 +9202,14 @@
       }
     },
     "夢吟香" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yumeginga"
+          }
+        }
+      }
     },
     "大分県" : {
       "localizations" : {
@@ -8584,7 +9312,14 @@
       }
     },
     "富の香" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tominokaori"
+          }
+        }
+      }
     },
     "富山県" : {
       "localizations" : {
@@ -8647,7 +9382,14 @@
       }
     },
     "山恵錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sankeinishiki"
+          }
+        }
+      }
     },
     "山梨県" : {
       "localizations" : {
@@ -8660,7 +9402,14 @@
       }
     },
     "山田穂" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yamadaho"
+          }
+        }
+      }
     },
     "山田錦" : {
       "localizations" : {
@@ -8683,7 +9432,14 @@
       }
     },
     "山酒4号" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yamasake 4"
+          }
+        }
+      }
     },
     "岐阜県" : {
       "localizations" : {
@@ -9022,13 +9778,34 @@
       }
     },
     "改良信交" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kairyoshinko"
+          }
+        }
+      }
     },
     "改良八反流" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kairyohattanryu"
+          }
+        }
+      }
     },
     "改良雄町" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kairyo-omachi"
+          }
+        }
+      }
     },
     "新しいカラーを追加 (%@%@)" : {
       "localizations" : {
@@ -9253,7 +10030,14 @@
       }
     },
     "星あかり" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoshiakari"
+          }
+        }
+      }
     },
     "更新" : {
       "localizations" : {
@@ -9316,7 +10100,14 @@
       }
     },
     "未獲得" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locked"
+          }
+        }
+      }
     },
     "未設定" : {
       "localizations" : {
@@ -9359,7 +10150,14 @@
       }
     },
     "未達成の項目です" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This entry has not been unlocked yet"
+          }
+        }
+      }
     },
     "未選択" : {
       "localizations" : {
@@ -9632,10 +10430,24 @@
       }
     },
     "検索やフィルター条件を変更してみてください。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try adjusting your search or filter criteria"
+          }
+        }
+      }
     },
     "楽風舞" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rakufumai"
+          }
+        }
+      }
     },
     "構造・特徴" : {
       "localizations" : {
@@ -9718,13 +10530,34 @@
       }
     },
     "比較フィルター" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparison Filter"
+          }
+        }
+      }
     },
     "比較候補の絞り込み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter Comparison Candidates"
+          }
+        }
+      }
     },
     "比較対象ログ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparison Logs"
+          }
+        }
+      }
     },
     "水" : {
       "localizations" : {
@@ -9857,7 +10690,14 @@
       }
     },
     "渡船2号" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wataribune 2"
+          }
+        }
+      }
     },
     "湖北・湖東 (長浜・彦根)" : {
       "localizations" : {
@@ -9880,7 +10720,14 @@
       }
     },
     "滋賀渡船6号" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shiga Wataribune 6"
+          }
+        }
+      }
     },
     "滋賀県" : {
       "localizations" : {
@@ -10133,7 +10980,14 @@
       }
     },
     "現在のタブ (%@)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current Tab (%@)"
+          }
+        }
+      }
     },
     "球磨" : {
       "localizations" : {
@@ -10266,13 +11120,34 @@
       }
     },
     "産地 (例: ボルドー, 秋田県)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Region (e.g., Bordeaux, Akita)"
+          }
+        }
+      }
     },
     "産地で絞り込み (例: ボルドー, 新潟)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter by region (e.g., Bordeaux, Niigata)"
+          }
+        }
+      }
     },
     "産地や品種・米・スタイルの絞り込み条件を変更してみてください。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try changing the region, variety, rice, or style filters."
+          }
+        }
+      }
     },
     "甲州" : {
       "localizations" : {
@@ -10375,7 +11250,14 @@
       }
     },
     "白菊" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shiragiku"
+          }
+        }
+      }
     },
     "白銀（プラチナ）" : {
       "localizations" : {
@@ -10388,10 +11270,24 @@
       }
     },
     "白鶴錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hakutsurunishiki"
+          }
+        }
+      }
     },
     "百田" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyakuden"
+          }
+        }
+      }
     },
     "盛岡・紫波 (南部杜氏)" : {
       "localizations" : {
@@ -10584,10 +11480,24 @@
       }
     },
     "石川酒68号" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ishikawasake 68"
+          }
+        }
+      }
     },
     "石川門" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ishikawamon"
+          }
+        }
+      }
     },
     "石灰" : {
       "localizations" : {
@@ -10640,13 +11550,34 @@
       }
     },
     "祝" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iwai"
+          }
+        }
+      }
     },
     "神の穂" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaminoho"
+          }
+        }
+      }
     },
     "神の舞" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaminomai"
+          }
+        }
+      }
     },
     "神力" : {
       "localizations" : {
@@ -10669,10 +11600,24 @@
       }
     },
     "神龍錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shinryunishiki"
+          }
+        }
+      }
     },
     "福乃香" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fukunoka"
+          }
+        }
+      }
     },
     "福井県" : {
       "localizations" : {
@@ -10901,7 +11846,14 @@
       }
     },
     "結の香" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yuinoka"
+          }
+        }
+      }
     },
     "続きから復元する" : {
       "localizations" : {
@@ -10914,7 +11866,14 @@
       }
     },
     "総の舞" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fusanomai"
+          }
+        }
+      }
     },
     "総合コメント" : {
       "localizations" : {
@@ -10967,7 +11926,14 @@
       }
     },
     "縁の舞" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enishinomai"
+          }
+        }
+      }
     },
     "置賜 (米沢)" : {
       "localizations" : {
@@ -11010,7 +11976,14 @@
       }
     },
     "美郷錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Misatonishiki"
+          }
+        }
+      }
     },
     "群馬県" : {
       "localizations" : {
@@ -11073,7 +12046,14 @@
       }
     },
     "舞風" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maikaze"
+          }
+        }
+      }
     },
     "色の名前 (例: ローズピンク)" : {
       "localizations" : {
@@ -11146,7 +12126,14 @@
       }
     },
     "若水" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wakamizu"
+          }
+        }
+      }
     },
     "若草・微緑" : {
       "localizations" : {
@@ -11199,7 +12186,14 @@
       }
     },
     "菊水" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kikusui"
+          }
+        }
+      }
     },
     "菩提樹" : {
       "localizations" : {
@@ -11222,13 +12216,34 @@
       }
     },
     "華想い" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanaomoi"
+          }
+        }
+      }
     },
     "華錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hananishiki"
+          }
+        }
+      }
     },
     "萌えいぶき" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moeibuki"
+          }
+        }
+      }
     },
     "萩・長門" : {
       "localizations" : {
@@ -11241,7 +12256,14 @@
       }
     },
     "蔵の華" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuranohana"
+          }
+        }
+      }
     },
     "蜂蜜" : {
       "localizations" : {
@@ -11284,7 +12306,14 @@
       }
     },
     "表示モード" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display Mode"
+          }
+        }
+      }
     },
     "表示形式" : {
       "localizations" : {
@@ -11423,7 +12452,14 @@
       }
     },
     "西都の雫" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saito no Shizuku"
+          }
+        }
+      }
     },
     "見習いソムリエ" : {
       "localizations" : {
@@ -11446,7 +12482,14 @@
       }
     },
     "解放のヒント" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Hint"
+          }
+        }
+      }
     },
     "言語 / Language" : {
       "localizations" : {
@@ -11459,7 +12502,14 @@
       }
     },
     "記録済みの産地から選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select from logged regions"
+          }
+        }
+      }
     },
     "設定" : {
       "localizations" : {
@@ -11482,7 +12532,14 @@
       }
     },
     "評価・アロマ条件" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating & Aroma Criteria"
+          }
+        }
+      }
     },
     "評価・スコア" : {
       "localizations" : {
@@ -11505,7 +12562,14 @@
       }
     },
     "評価フィルター" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating Filter"
+          }
+        }
+      }
     },
     "評価フラグの傾向" : {
       "localizations" : {
@@ -11548,10 +12612,24 @@
       }
     },
     "該当する図鑑項目がありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matching collection entries found"
+          }
+        }
+      }
     },
     "該当する比較ログがありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matching comparison logs found"
+          }
+        }
+      }
     },
     "該当条件の記録がありません" : {
       "localizations" : {
@@ -11584,7 +12662,14 @@
       }
     },
     "豊国" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toyokuni"
+          }
+        }
+      }
     },
     "豊潤な" : {
       "localizations" : {
@@ -11597,7 +12682,14 @@
       }
     },
     "豊盃" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hohai"
+          }
+        }
+      }
     },
     "貝殻" : {
       "localizations" : {
@@ -11670,7 +12762,14 @@
       }
     },
     "越の雫" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koshinoshizuku"
+          }
+        }
+      }
     },
     "越淡麗" : {
       "localizations" : {
@@ -11683,7 +12782,14 @@
       }
     },
     "越神楽" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koshikagura"
+          }
+        }
+      }
     },
     "追加" : {
       "localizations" : {
@@ -11862,7 +12968,14 @@
       }
     },
     "酒未来" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sakemirai"
+          }
+        }
+      }
     },
     "酒種" : {
       "localizations" : {
@@ -11965,7 +13078,14 @@
       }
     },
     "野条穂" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nojobo"
+          }
+        }
+      }
     },
     "金" : {
       "localizations" : {
@@ -12078,7 +13198,14 @@
       }
     },
     "雄山錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oyamanishiki"
+          }
+        }
+      }
     },
     "雄町" : {
       "localizations" : {
@@ -12101,7 +13228,14 @@
       }
     },
     "露葉風" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tsuyuhakaze"
+          }
+        }
+      }
     },
     "青りんご" : {
       "localizations" : {
@@ -12154,7 +13288,14 @@
       }
     },
     "風鳴子" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kazenaruko"
+          }
+        }
+      }
     },
     "飛騨 (高山・古川)" : {
       "localizations" : {
@@ -12217,7 +13358,14 @@
       }
     },
     "飲酒ログフィルター" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tasting Log Filter"
+          }
+        }
+      }
     },
     "飲酒記録" : {
       "localizations" : {
@@ -12466,7 +13614,14 @@
       }
     },
     "龍の落とし子" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tatsuno-otoshigo"
+          }
+        }
+      }
     }
   },
   "version" : "1.2"
