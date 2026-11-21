@@ -9,9 +9,9 @@ import Foundation
 
 /// ワインのブレンド品種と割合の構造体
 public struct BlendComponent: Codable, Identifiable, Hashable {
-    public var id: UUID = UUID()
-    public var variety: String // 品種名 (例: "メルロ")
-    public var percentage: Int? // 割合％ (例: 40)
+    public var id: UUID
+    public var variety: String
+    public var percentage: Int?
 
     public init(id: UUID = UUID(), variety: String, percentage: Int? = nil) {
         self.id = id
@@ -21,23 +21,52 @@ public struct BlendComponent: Codable, Identifiable, Hashable {
 }
 
 /// ワイン固有のメタデータ
-public struct WineSpecificMetadata: Codable {
-    public var wineType: String           // 例: "赤", "白", "ロゼ", "スパークリング", "オレンジ"
-    public var grapeVarieties: String     // 互換性維持用の旧主要品種文字列
-    public var blendComponents: [BlendComponent] // アッサンブラージュ品種と割合のリスト
-    public var appellation: String?       // 原産地呼称 (例: AOC, DOCG, AVA など)
+public struct WineSpecificMetadata: Codable, Hashable {
+    public var wineType: String
+    public var grapeVarieties: String
+    public var blendComponents: [BlendComponent]
+    public var appellation: String?
+
+    public init(
+        wineType: String,
+        grapeVarieties: String,
+        blendComponents: [BlendComponent] = [],
+        appellation: String? = nil
+    ) {
+        self.wineType = wineType
+        self.grapeVarieties = grapeVarieties
+        self.blendComponents = blendComponents
+        self.appellation = appellation
+    }
 }
 
 /// 日本酒固有のメタデータ
-public struct SakeSpecificMetadata: Codable {
-    public var specificName: String   // 例: "純米大吟醸", "特別純米", "生原酒"
-    public var riceVariety: String    // 例: "山田錦"
-    public var polishingRate: String  // 例: "50%"
-    public var sakeMeterValue: String // 例: "+3.0"
+public struct SakeSpecificMetadata: Codable, Hashable {
+    public var specificName: String
+    public var riceVariety: String
+    public var polishingRate: String
+    public var sakeMeterValue: String
+
+    public init(
+        specificName: String,
+        riceVariety: String,
+        polishingRate: String,
+        sakeMeterValue: String
+    ) {
+        self.specificName = specificName
+        self.riceVariety = riceVariety
+        self.polishingRate = polishingRate
+        self.sakeMeterValue = sakeMeterValue
+    }
 }
 
 /// ビール固有のメタデータ
-public struct BeerSpecificMetadata: Codable {
-    public var beerStyle: String      // 例: "IPA", "Pilsner", "Stout"
-    public var ibu: String            // 例: "45"
+public struct BeerSpecificMetadata: Codable, Hashable {
+    public var beerStyle: String
+    public var ibu: String
+
+    public init(beerStyle: String, ibu: String) {
+        self.beerStyle = beerStyle
+        self.ibu = ibu
+    }
 }

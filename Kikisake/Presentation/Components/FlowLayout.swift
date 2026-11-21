@@ -1,3 +1,4 @@
+//
 //  FlowLayout.swift
 //  Kikisake
 //
@@ -8,6 +9,11 @@ import SwiftUI
 
 /// タグやバッジなどを自動で折り返して並べるレイアウトコンポーネント
 public struct FlowLayout: Layout {
+    private struct LayoutResult {
+        let size: CGSize
+        let placements: [CGPoint]
+    }
+
     public var spacing: CGFloat
 
     public init(spacing: CGFloat = 8) {
@@ -15,40 +21,41 @@ public struct FlowLayout: Layout {
     }
 
     public func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let width = proposal.width ?? .infinity
-        var height: CGFloat = 0
-        var x: CGFloat = 0
-        var rowHeight: CGFloat = 0
-
-        for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
-            if x + size.width > width {
-                x = 0
-                height += rowHeight + spacing
-                rowHeight = 0
-            }
-            x += size.width + spacing
-            rowHeight = max(rowHeight, size.height)
-        }
-        return CGSize(width: width, height: height + rowHeight)
+        computeLayout(maxWidth: proposal.width ?? .infinity, origin: .zero, subviews: subviews).size
     }
 
     public func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        var x = bounds.minX
-        var y = bounds.minY
+        let layout = computeLayout(maxWidth: bounds.width, origin: bounds.origin, subviews: subviews)
+        for (subview, point) in zip(subviews, layout.placements) {
+            subview.place(at: point, proposal: .unspecified)
+        }
+    }
+
+    private func computeLayout(maxWidth: CGFloat, origin: CGPoint, subviews: Subviews) -> LayoutResult {
+        var x = origin.x
+        var y = origin.y
         var rowHeight: CGFloat = 0
+        var placements: [CGPoint] = []
+        placements.reserveCapacity(subviews.count)
+
+        let rowLimitX = maxWidth.isInfinite ? .infinity : origin.x + maxWidth
 
         for subview in subviews {
             let size = subview.sizeThatFits(.unspecified)
-            if x + size.width > bounds.maxX {
-                x = bounds.minX
+            if x > origin.x && x + size.width > rowLimitX {
+                x = origin.x
                 y += rowHeight + spacing
                 rowHeight = 0
             }
-            subview.place(at: CGPoint(x: x, y: y), proposal: .unspecified)
+
+            placements.append(CGPoint(x: x, y: y))
             x += size.width + spacing
             rowHeight = max(rowHeight, size.height)
         }
+
+        let totalHeight = (y - origin.y) + rowHeight
+        let resolvedWidth = maxWidth.isInfinite ? max(0, x - origin.x - spacing) : maxWidth
+        return LayoutResult(size: CGSize(width: resolvedWidth, height: totalHeight), placements: placements)
     }
 }
 

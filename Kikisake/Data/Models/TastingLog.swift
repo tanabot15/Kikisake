@@ -1,5 +1,7 @@
+//
 //  TastingLog.swift
 //  Kikisake
+//
 
 import Foundation
 import SwiftData
@@ -22,23 +24,23 @@ public final class TastingLog {
     public var acidity: Double               // 酸味 (0.0〜5.0)
     public var bitterness: Double            // 苦味 (0.0〜5.0)
     public var umami: Double                 // 旨味 (0.0〜5.0)
-    
+
     public var tannin: Double?               // タンニン / 渋味（赤・ロゼ・オレンジワイン用）
     public var body: Double                  // ボディ / 重み (0.0〜5.0)
     public var balanceTags: [String]         // バランス評価表現（複数選択）
     public var finishLength: Double          // 余韻の長さ (0.0〜5.0)
 
     // --- フラグ項目 ---
-    public var isCostEffective: Bool         // 1. コスパ（コストパフォーマンスが良いか）
-    public var isWillingToRepeat: Bool       // 2. リピート意向（また飲みたいか）
-    public var hasAgingPotential: Bool       // 3. 熟成ポテンシャル（さらに寝かせるポテンシャルがあるか）
+    public var isCostEffective: Bool         // コスパ（コストパフォーマンスが良いか）
+    public var isWillingToRepeat: Bool       // リピート意向（また飲みたいか）
+    public var hasAgingPotential: Bool       // 熟成ポテンシャル（さらに寝かせるポテンシャルがあるか）
 
     // 専門パラメータ（オプショナル）
     public var alcoholByVolume: Double?      // アルコール度数
     public var specificDataJSON: String?     // 日本酒度・酸度・IBU等の酒種特有メタデータ（JSON形式）
 
-    // ✨ アップデート追加項目（オプショナル）
-    public var pairing: String?              // 料理・ペアリングメモ
+    // 料理・ペアリングメモ
+    public var pairing: String?
 
     public var memo: String                  // 総合コメント
 

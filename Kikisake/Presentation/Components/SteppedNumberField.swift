@@ -1,5 +1,7 @@
+//
 //  SteppedNumberField.swift
 //  Kikisake
+//
 
 import SwiftUI
 
@@ -11,7 +13,7 @@ public struct SteppedNumberField<Field: Hashable>: View {
     let range: ClosedRange<Double>?
     let defaultValue: Double
     let isInteger: Bool
-    
+
     @FocusState<Field?>.Binding var focusedField: Field?
     let fieldTag: Field
     let keyboardType: UIKeyboardType
@@ -45,9 +47,8 @@ public struct SteppedNumberField<Field: Hashable>: View {
                 .focused($focusedField, equals: fieldTag)
 
             HStack(spacing: 4) {
-                // マイナスボタン
                 Button {
-                    decrement()
+                    adjust(by: -step)
                 } label: {
                     Image(systemName: "minus.circle.fill")
                         .font(.title3)
@@ -55,9 +56,8 @@ public struct SteppedNumberField<Field: Hashable>: View {
                 }
                 .buttonStyle(.plain)
 
-                // プラスボタン
                 Button {
-                    increment()
+                    adjust(by: step)
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.title3)
@@ -68,26 +68,11 @@ public struct SteppedNumberField<Field: Hashable>: View {
         }
     }
 
-    private func increment() {
+    private func adjust(by delta: Double) {
         let current = Double(text) ?? defaultValue
-        let next = current + step
-        if let r = range, next > r.upperBound { return }
-        updateValue(next)
-    }
-
-    private func decrement() {
-        let current = Double(text) ?? defaultValue
-        let next = current - step
-        if let r = range, next < r.lowerBound { return }
-        updateValue(next)
-    }
-
-    private func updateValue(_ value: Double) {
-        if isInteger {
-            text = "\(Int(value))"
-        } else {
-            text = String(format: "%.1f", value)
-        }
+        let next = current + delta
+        if let range, !range.contains(next) { return }
+        text = isInteger ? "\(Int(next))" : String(format: "%.1f", next)
     }
 }
 
@@ -100,7 +85,6 @@ public struct SteppedNumberField<Field: Hashable>: View {
         var body: some View {
             Form {
                 Section("＋／− ステップアップ入力プレビュー") {
-                    // 1. ヴィンテージ（整数・1刻み）
                     SteppedNumberField(
                         title: "ヴィンテージ / 製造年月",
                         text: $vintageText,
@@ -113,7 +97,6 @@ public struct SteppedNumberField<Field: Hashable>: View {
                         keyboardType: .numberPad
                     )
 
-                    // 2. アルコール度数（小数・0.5刻み）
                     SteppedNumberField(
                         title: "アルコール度数 (%)",
                         text: $abvText,

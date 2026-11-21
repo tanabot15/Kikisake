@@ -9,18 +9,22 @@ import SwiftUI
 import SwiftData
 import GoogleMobileAds
 import AppTrackingTransparency
+import os
 
-/// アプリケーションのエントリーポイント
 @main
 struct KikisakeApp: App {
     private let modelContainerManager = ModelContainerManager.shared
     @Bindable private var appState = AppState.shared
 
-    init() {
-        // Google Mobile Ads SDK の初期化
-        MobileAds.shared.start(completionHandler: nil)
+    private var isOnboardingPresented: Binding<Bool> {
+        Binding(
+            get: { !appState.hasCompletedOnboarding },
+            set: { appState.hasCompletedOnboarding = !$0 }
+        )
+    }
 
-        // デバッグビルド（シミュレータ等）の起動時にサンプルデータを自動挿入
+    init() {
+        MobileAds.shared.start(completionHandler: nil)
         PreviewSampleLoader.insertSamplesIfNeeded(into: modelContainerManager.container.mainContext)
     }
 
@@ -29,41 +33,31 @@ struct KikisakeApp: App {
             MainTabView()
                 .modelContainer(modelContainerManager.container)
                 .preferredColorScheme(appState.appearanceMode.colorScheme)
-                // 初回起動時のみボードビュー（オンボーディング）をシート表示
-                .sheet(isPresented: Binding(
-                    get: { !appState.hasCompletedOnboarding },
-                    set: { appState.hasCompletedOnboarding = !$0 }
-                )) {
-                    BoardingView(isPresented: Binding(
-                        get: { !appState.hasCompletedOnboarding },
-                        set: { appState.hasCompletedOnboarding = !$0 }
-                    ))
-                    .interactiveDismissDisabled(true) // 途中でスワイプして閉じられないように固定
+                .sheet(isPresented: isOnboardingPresented) {
+                    BoardingView(isPresented: isOnboardingPresented)
+                        .interactiveDismissDisabled(true)
                 }
                 .task {
-                    requestTrackingPermission()
+                    await requestTrackingPermission()
                 }
         }
     }
 
-    /// ATT（トラッキング許可）のポップアップを要求するメソッド
-    private func requestTrackingPermission() {
-        // 少し遅延を入れて、画面表示やオンボーディングが落ち着いた後にポップアップを出すとスムーズです
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            ATTrackingManager.requestTrackingAuthorization { status in
-                switch status {
-                case .authorized:
-                    print("ユーザーがトラッキングを許可しました。")
-                case .denied:
-                    print("ユーザーがトラッキングを拒否しました。")
-                case .restricted:
-                    print("トラッキングが制限されています。")
-                case .notDetermined:
-                    print("まだトラッキングの選択がされていません。")
-                @unknown default:
-                    break
-                }
-            }
+    private func requestTrackingPermission() async {
+        // Delay ATT prompt slightly so initial view and onboarding settle first.
+        try? await Task.sleep(for: .seconds(1))
+        let status = await ATTrackingManager.requestTrackingAuthorization()
+        switch status {
+        case .authorized:
+            AppLogger.general.info("ATT tracking authorized.")
+        case .denied:
+            AppLogger.general.info("ATT tracking denied.")
+        case .restricted:
+            AppLogger.general.info("ATT tracking restricted.")
+        case .notDetermined:
+            AppLogger.general.info("ATT tracking not determined.")
+        @unknown default:
+            break
         }
     }
 }

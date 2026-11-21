@@ -1,14 +1,15 @@
+//
 //  BeveragePresetOptions.swift
 //  Kikisake
+//
 
 import Foundation
 
 /// ワイン品種・日本酒使用米・ビアスタイルの選択肢マスター
 public enum BeveragePresetOptions {
-    
     /// 主要およびマイナーブドウ品種（ワイン）
     public static let grapeVarieties: [String] = [
-        // --- メジャー黒ブドウ ---
+        // メジャー黒ブドウ
         String(localized: "カベルネ・ソーヴィニヨン"),
         String(localized: "メルロ"),
         String(localized: "ピノ・ノワール"),
@@ -30,7 +31,7 @@ public enum BeveragePresetOptions {
         String(localized: "カリニャン"),
         String(localized: "ガメイ"),
         String(localized: "カルメネール"),
-        // --- マイナー・ローカル黒ブドウ ---
+        // マイナー・ローカル黒ブドウ
         String(localized: "タナ"),
         String(localized: "サグランド"),
         String(localized: "ネレッロ・マスカレーゼ"),
@@ -41,8 +42,7 @@ public enum BeveragePresetOptions {
         String(localized: "ブラウフランキッシュ"),
         String(localized: "ツヴァイゲルトレーベ"),
         String(localized: "サンローラン"),
-        
-        // --- メジャー白ブドウ ---
+        // メジャー白ブドウ
         String(localized: "シャルドネ"),
         String(localized: "ソーヴィニヨン・ブラン"),
         String(localized: "リースリング"),
@@ -57,7 +57,7 @@ public enum BeveragePresetOptions {
         String(localized: "ガヴィ / コルテーゼ"),
         String(localized: "ピノ・ブラン"),
         String(localized: "シルヴァーナー"),
-        // --- マイナー・ローカル白ブドウ ---
+        // マイナー・ローカル白ブドウ
         String(localized: "シャスラ"),
         String(localized: "マルサンヌ"),
         String(localized: "ルーサンヌ"),
@@ -70,8 +70,7 @@ public enum BeveragePresetOptions {
         String(localized: "レッチーナ"),
         String(localized: "ペコリーノ"),
         String(localized: "パッセリーナ"),
-        
-        // --- 日本の固有品種 ---
+        // 日本の固有品種
         String(localized: "甲州"),
         String(localized: "マスカット・ベーリーA"),
         String(localized: "山葡萄"),
@@ -79,13 +78,12 @@ public enum BeveragePresetOptions {
         String(localized: "デラウェア"),
         String(localized: "コンコード"),
         String(localized: "清見"),
-        
         String(localized: "その他")
     ]
-    
+
     /// 酒造好適米・希少使用米（日本酒） - 図鑑と完全に同期
     public static let riceVarieties: [String] = [
-        // --- 三大酒造好適米・主要米 ---
+        // 三大酒造好適米・主要米
         String(localized: "山田錦"),
         String(localized: "五百万石"),
         String(localized: "美山錦"),
@@ -97,8 +95,7 @@ public enum BeveragePresetOptions {
         String(localized: "秋田酒こまち"),
         String(localized: "吟の夢"),
         String(localized: "亀の尾"),
-        
-        // --- 全国の酒造好適米（都道府県別網羅） ---
+        // 全国の酒造好適米（都道府県別網羅）
         String(localized: "彗星"),
         String(localized: "吟風"),
         String(localized: "きたしずく"),
@@ -193,17 +190,15 @@ public enum BeveragePresetOptions {
         String(localized: "華錦"),
         String(localized: "はなかぐら"),
         String(localized: "ちほのまい"),
-        
-        // --- 食用米（飯米由来） ---
+        // 食用米（飯米由来）
         String(localized: "ササニシキ"),
         String(localized: "一般米（食用米）"),
-        
         String(localized: "その他")
     ]
-    
+
     /// 主要およびディープなビアスタイル（ビール）
     public static let beerStyles: [String] = [
-        // --- ラガー系 ---
+        // ラガー系
         String(localized: "ピルスナー"),
         String(localized: "ボヘミアン・ピルスナー"),
         String(localized: "アメリカン・ラガー"),
@@ -217,7 +212,7 @@ public enum BeveragePresetOptions {
         String(localized: "ラオハス（燻製ビール）"),
         String(localized: "ケルシュ"),
         String(localized: "アルトビール"),
-        // --- エール系：ペール / IPA ---
+        // エール系：ペール / IPA
         String(localized: "イングリッシュ・ペールエール"),
         String(localized: "アメリカン・ペールエール"),
         String(localized: "ビター / ESB"),
@@ -230,7 +225,7 @@ public enum BeveragePresetOptions {
         String(localized: "ブラックIPA"),
         String(localized: "レッドIPA / ブラウンIPA"),
         String(localized: "ライIPA"),
-        // --- エール系：ダーク / ストロング ---
+        // エール系：ダーク / ストロング
         String(localized: "ポーター"),
         String(localized: "スタウト"),
         String(localized: "アイリッシュ・スタウト"),
@@ -240,7 +235,7 @@ public enum BeveragePresetOptions {
         String(localized: "スコッチエール"),
         String(localized: "バーレイワイン"),
         String(localized: "オールドエール"),
-        // --- ベルジャン / トラピスト系 ---
+        // ベルジャン / トラピスト系
         String(localized: "ベルジャン・ブロンド"),
         String(localized: "ベルジャン・デュペル"),
         String(localized: "ベルジャン・トリプル"),
@@ -250,23 +245,22 @@ public enum BeveragePresetOptions {
         String(localized: "ランビック"),
         String(localized: "グース / フルーツ・ランビック（グーズ）"),
         String(localized: "ベルジャンホワイト（ヴィットビール）"),
-        // --- サワー / ワイルドエール系 ---
+        // サワー / ワイルドエール系
         String(localized: "サワーエール"),
         String(localized: "ゴーゼ"),
         String(localized: "ベルリーナー・ヴァイセ"),
         String(localized: "アメリカン・ワイルドエール"),
         String(localized: "フラダース・レッドエール"),
-        // --- 小麦系その他 ---
+        // 小麦系その他
         String(localized: "ヴァイツェン（ヘーフェヴァイツェン）"),
         String(localized: "デュンケルヴァイツェン"),
         String(localized: "ヴァイツェンボック"),
         String(localized: "アメリカン・ウィート"),
-        // --- その他・モダン ---
+        // その他・モダン
         String(localized: "フルーツビール"),
         String(localized: "ハーブ・スパイスビール"),
         String(localized: "エンバーエール"),
         String(localized: "セッションエール"),
-        
         String(localized: "その他")
     ]
 }

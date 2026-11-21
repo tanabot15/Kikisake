@@ -12,6 +12,7 @@ public struct LogDetailView: View {
     @State private var isShowingEditSheet: Bool = false
     @State private var isShowingBackImageModal: Bool = false
     @State private var processedBottleImage: UIImage? = nil
+    @State private var resolvedShareBottleImage: UIImage? = nil
 
     public init(log: TastingLog) {
         self.log = log
@@ -111,7 +112,7 @@ public struct LogDetailView: View {
                     Image(systemName: "square.and.pencil")
                 }
             }
-            
+
             ToolbarItem(placement: .topBarTrailing) {
                 if log.isEvaluated {
                     if #available(iOS 16.0, *) {
@@ -132,6 +133,9 @@ public struct LogDetailView: View {
         }
         .sheet(isPresented: $isShowingEditSheet) {
             EditLogFlowView(log: log)
+        }
+        .task(id: log.item?.imageDatas?.first) {
+            await prepareShareBottleImageIfNeeded()
         }
     }
 
@@ -501,12 +505,36 @@ public struct LogDetailView: View {
         )
         .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
     }
-    
+
+    @MainActor
+    private func prepareShareBottleImageIfNeeded() async {
+        guard let item = log.item,
+              item.isBackgroundRemoved,
+              let imageData = item.imageDatas?.first,
+              let uiImage = UIImage(data: imageData) else {
+            resolvedShareBottleImage = nil
+            return
+        }
+
+        if let processedBottleImage {
+            resolvedShareBottleImage = processedBottleImage
+            return
+        }
+
+        let removed = await BottleMattingHelper.removeBackground(from: uiImage)
+        processedBottleImage = removed
+        resolvedShareBottleImage = removed
+    }
+
     @MainActor
     private func renderShareImage() -> Image {
-        let cardView = TastingCardShareView(log: log)
+        let bottleForShare = resolvedShareBottleImage ?? processedBottleImage
+        let cardView = TastingCardShareView(
+            log: log,
+            precomputedBottleImage: bottleForShare
+        )
         let renderer = ImageRenderer(content: cardView)
-        renderer.scale = UIScreen.main.scale
+        renderer.scale = 3.0
 
         if let uiImage = renderer.uiImage {
             return Image(uiImage: uiImage)

@@ -1,10 +1,12 @@
+//
 //  BackupDTOs.swift
 //  Kikisake
+//
 
 import Foundation
 
 /// バックアップJSONの最上位ルート構造体
-public struct BackupPayload: Codable {
+public struct BackupPayload: Codable, Sendable {
     public let schemaVersion: Int
     public let exportedAt: Date
     public let appVersion: String
@@ -28,7 +30,7 @@ public struct BackupPayload: Codable {
 
 // MARK: - DTOs
 
-public struct StorageLocationDTO: Codable {
+public struct StorageLocationDTO: Codable, Sendable {
     public let id: UUID
     public let name: String
     public let typeRawValue: String
@@ -62,9 +64,18 @@ public struct StorageLocationDTO: Codable {
             createdAt: createdAt
         )
     }
+
+    public func apply(to model: StorageLocation) {
+        model.name = name
+        model.typeRawValue = typeRawValue
+        model.memo = memo
+        model.isGridEnabled = isGridEnabled
+        model.gridRows = gridRows
+        model.gridColumns = gridColumns
+    }
 }
 
-public struct BeverageItemDTO: Codable {
+public struct BeverageItemDTO: Codable, Sendable {
     public let id: UUID
     public let name: String
     public let producer: String
@@ -120,14 +131,28 @@ public struct BeverageItemDTO: Codable {
             specificMetadataJSON: specificMetadataJSON,
             createdAt: createdAt
         )
-        // 子ログの紐付け復元
-        let logs = tastingLogs.map { $0.toModel(parentItem: item) }
-        item.tastingLogs = logs
+        item.tastingLogs = tastingLogs.map { $0.toModel(parentItem: item) }
         return item
+    }
+
+    public func apply(to model: BeverageItem) {
+        model.name = name
+        model.producer = producer
+        model.categoryRawValue = categoryRawValue
+        model.region = region
+        model.vintage = vintage
+        model.alcoholByVolume = alcoholByVolume
+        model.price = price
+        model.storageLocation = storageLocation
+        model.purchaseDate = purchaseDate
+        model.gridRow = gridRow
+        model.gridColumn = gridColumn
+        model.imageDatas = imageDatas
+        model.specificMetadataJSON = specificMetadataJSON
     }
 }
 
-public struct TastingLogDTO: Codable {
+public struct TastingLogDTO: Codable, Sendable {
     public let id: UUID
     public let date: Date
     public let rating: Double
@@ -177,7 +202,7 @@ public struct TastingLogDTO: Codable {
     }
 
     public func toModel(parentItem: BeverageItem) -> TastingLog {
-        return TastingLog(
+        TastingLog(
             id: id,
             date: date,
             rating: rating,
@@ -202,31 +227,5 @@ public struct TastingLogDTO: Codable {
             isEvaluated: isEvaluated,
             item: parentItem
         )
-    }
-}
-
-// MARK: - SwiftUI File Document Wrapper
-
-import UniformTypeIdentifiers
-import SwiftUI
-
-public struct BackupFileDocument: FileDocument {
-    public static var readableContentTypes: [UTType] { [.json] }
-
-    public var payloadData: Data
-
-    public init(payloadData: Data) {
-        self.payloadData = payloadData
-    }
-
-    public init(configuration: ReadConfiguration) throws {
-        guard let data = configuration.file.regularFileContents else {
-            throw CocoaError(.fileReadCorruptFile)
-        }
-        self.payloadData = data
-    }
-
-    public func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        return FileWrapper(regularFileWithContents: payloadData)
     }
 }

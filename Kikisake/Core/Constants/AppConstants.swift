@@ -7,10 +7,9 @@
 
 import Foundation
 
-/// アプリ全体で使用する定数定義
 public enum AppConstants {
     public static let appName = "Kikisake"
-    
+
     public enum Storage {
         public static let defaultStorageName = "ワインセラー"
         public static let defaultLocation = String(localized: String.LocalizationValue("ワインセラー"))

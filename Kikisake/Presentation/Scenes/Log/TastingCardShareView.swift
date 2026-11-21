@@ -11,11 +11,17 @@ public struct TastingCardShareView: View {
     // MARK: - Properties
 
     let log: TastingLog
+    private let precomputedBottleImage: UIImage?
 
     @State private var processedBottleImage: UIImage? = nil
 
-    public init(log: TastingLog) {
+    public init(
+        log: TastingLog,
+        precomputedBottleImage: UIImage? = nil
+    ) {
         self.log = log
+        self.precomputedBottleImage = precomputedBottleImage
+        self._processedBottleImage = State(initialValue: precomputedBottleImage)
     }
 
     // MARK: - Constants
@@ -45,6 +51,16 @@ public struct TastingCardShareView: View {
 
     private var mutedInkColor: Color {
         inkColor.opacity(0.52)
+    }
+
+    /// 紙面上で視認性を確保しつつ、外観色のニュアンスを添えるチャート用アクセント
+    private var chartAccentColor: Color {
+        appearanceColor.opacity(0.85)
+    }
+
+    /// 分析カード用の紙面サーフェス
+    private var shareCardSurfaceColor: Color {
+        inkColor.opacity(0.025)
     }
 
     private var categoryLabel: String {
@@ -85,7 +101,6 @@ public struct TastingCardShareView: View {
             analysisSection
 
             // MARK: Pairing / Memo
-
             noteSection
 
             // MARK: Footer
@@ -168,8 +183,7 @@ public struct TastingCardShareView: View {
             Spacer()
 
             Text(categoryLabel)
-                .font(.system(size: 8,weight: .semibold)
-                )
+                .font(.system(size: 8, weight: .semibold))
                 .tracking(1.8)
                 .foregroundStyle(mutedInkColor)
         }
@@ -221,8 +235,10 @@ public struct TastingCardShareView: View {
            let uiImage = UIImage(data: imageData) {
 
             if item.isBackgroundRemoved {
-                if let processedBottleImage {
-                    Image(uiImage: processedBottleImage)
+                let activeBottleImage = processedBottleImage ?? precomputedBottleImage
+
+                if let activeBottleImage {
+                    Image(uiImage: activeBottleImage)
                         .resizable()
                         .scaledToFit()
                         .frame(
@@ -249,11 +265,10 @@ public struct TastingCardShareView: View {
                             x: 0,
                             y: 8
                         )
-                        .task {
-                            let processed =
-                                await BottleMattingHelper.removeBackground(
-                                    from: uiImage
-                                )
+                        .task(id: imageData) {
+                            let processed = await BottleMattingHelper.removeBackground(
+                                from: uiImage
+                            )
                             await MainActor.run {
                                 processedBottleImage = processed
                             }
@@ -752,7 +767,23 @@ public struct TastingCardShareView: View {
     // MARK: - Analysis
 
     private var analysisSection: some View {
-        VStack(spacing: 8) {
+        let radarStyle: TasteRadarCardView.PresentationStyle = .shareCard(
+            accentColor: chartAccentColor,
+            surfaceColor: shareCardSurfaceColor,
+            lineColor: inkColor,
+            textColor: inkColor,
+            mutedTextColor: mutedInkColor
+        )
+
+        let matrixStyle: MatrixAnalysisCardView.PresentationStyle = .shareCard(
+            accentColor: chartAccentColor,
+            surfaceColor: shareCardSurfaceColor,
+            lineColor: inkColor,
+            textColor: inkColor,
+            mutedTextColor: mutedInkColor
+        )
+
+        return VStack(spacing: 8) {
             Rectangle()
                 .fill(inkColor.opacity(0.10))
                 .frame(height: 0.5)
@@ -761,13 +792,15 @@ public struct TastingCardShareView: View {
 
                 TasteRadarCardView(
                     log: log,
-                    isCompactMode: true
+                    isCompactMode: true,
+                    presentationStyle: radarStyle
                 )
                 .frame(maxWidth: .infinity)
 
                 MatrixAnalysisCardView(
                     log: log,
-                    isCompactMode: true
+                    isCompactMode: true,
+                    presentationStyle: matrixStyle
                 )
                 .frame(maxWidth: .infinity)
             }
@@ -1156,8 +1189,7 @@ private func generateBackSampleImage() -> Data? {
 }
 
 // MARK: - Preview
-
-#Preview() {
+#Preview("Standard") {
 
     let schema = Schema([
         BeverageItem.self,

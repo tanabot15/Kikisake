@@ -10,201 +10,337 @@ import SwiftData
 
 /// 味わい構造（多角形・レーダーチャート）カードコンポーネント
 public struct TasteRadarCardView: View {
+    public struct TasteAxisItem: Identifiable, Hashable {
+        public let id: String
+        public let title: String
+        public let value: Double
+
+        public init(title: String, value: Double) {
+            self.id = title
+            self.title = title
+            self.value = value
+        }
+    }
+
+    private struct ChartMetrics {
+        let levels: Int
+        let frameHeight: CGFloat
+        let radiusOffset: CGFloat
+        let fontTitleSize: CGFloat
+        let fontValueSize: CGFloat
+
+        init(isCompactMode: Bool) {
+            self.levels = isCompactMode ? 3 : 4
+            self.frameHeight = isCompactMode ? 104 : 240
+            self.radiusOffset = isCompactMode ? 16 : 28
+            self.fontTitleSize = isCompactMode ? 8 : 10
+            self.fontValueSize = isCompactMode ? 8 : 9
+        }
+    }
+
     let log: TastingLog
     let isCompactMode: Bool
 
-    public init(log: TastingLog, isCompactMode: Bool = false) {
+    /// 表示コンテキスト
+    public enum PresentationStyle {
+        case standard
+        case shareCard(
+            accentColor: Color,
+            surfaceColor: Color,
+            lineColor: Color,
+            textColor: Color,
+            mutedTextColor: Color
+        )
+    }
+
+    let presentationStyle: PresentationStyle
+
+    public init(
+        log: TastingLog,
+        isCompactMode: Bool = false,
+        presentationStyle: PresentationStyle = .standard
+    ) {
         self.log = log
         self.isCompactMode = isCompactMode
+        self.presentationStyle = presentationStyle
     }
 
     /// 味わい構造の項目リスト（塩味を含む）を生成するヘルパー
-    public static func tasteItems(for log: TastingLog) -> [(title: String, value: Double)] {
-        var items: [(title: String, value: Double)] = [
-            ("甘味", log.sweetness),
-            ("酸味", log.acidity),
-            ("苦味", log.bitterness),
-            ("旨味", log.umami),
-            ("塩味", log.saltiness)
+    public static func tasteItems(for log: TastingLog) -> [TasteAxisItem] {
+        var items: [TasteAxisItem] = [
+            .init(title: "甘味", value: log.sweetness),
+            .init(title: "酸味", value: log.acidity),
+            .init(title: "苦味", value: log.bitterness),
+            .init(title: "旨味", value: log.umami),
+            .init(title: "塩味", value: log.saltiness)
         ]
+
         if let tannin = log.tannin {
-            items.append(("渋味", tannin))
+            items.append(.init(title: "渋味", value: tannin))
         }
-        items.append(("ボディ", log.body))
-        items.append(("余韻", log.finishLength))
+
+        items.append(.init(title: "ボディ", value: log.body))
+        items.append(.init(title: "余韻", value: log.finishLength))
+
         return items
     }
 
     public var body: some View {
         let items = Self.tasteItems(for: log)
-        let levels = isCompactMode ? 3 : 4
-        let frameHeight: CGFloat = isCompactMode ? 104 : 240
-        let radiusOffset: CGFloat = isCompactMode ? 16 : 28
-        let fontTitleSize: CGFloat = isCompactMode ? 8 : 10
-        let fontValueSize: CGFloat = isCompactMode ? 8 : 9
+        let metrics = ChartMetrics(isCompactMode: isCompactMode)
 
-        // 条件に応じて外側の装飾（パディングや背景色）を切り分ける
-        Group {
-            if isCompactMode {
-                VStack(spacing: 2) {
-                    // マトリクス側と高さを合わせるためのヘッダー行
-                    HStack(spacing: 2) {
-                        Text("味わいプロファイル")
-                            .font(.system(size: 8, weight: .bold))
-                            .foregroundStyle(.primary)
-                        Spacer()
-                    }
+        switch presentationStyle {
+        case .standard:
+            standardContent(items: items, metrics: metrics)
 
-                    radarChartContent(items: items, levels: levels, frameHeight: frameHeight, radiusOffset: radiusOffset, fontTitleSize: fontTitleSize, fontValueSize: fontValueSize)
-                }
-                .padding(6)
-                .background(Color(.systemGray6).opacity(0.6))
-                .cornerRadius(10)
-            } else {
-                VStack(spacing: 14) {
-                    HStack {
-                        Text("味わい構造プロファイル")
-                            .font(.headline)
-                        Spacer()
-                    }
-
-                    radarChartContent(items: items, levels: levels, frameHeight: frameHeight, radiusOffset: radiusOffset, fontTitleSize: fontTitleSize, fontValueSize: fontValueSize)
-                        .padding(.vertical, 8)
-                }
-                .padding()
-                .background(Color(.secondarySystemGroupedBackground))
-                .cornerRadius(16)
-            }
+        case let .shareCard(accentColor, surfaceColor, lineColor, textColor, mutedTextColor):
+            shareCardContent(
+                items: items,
+                metrics: metrics,
+                accentColor: accentColor,
+                surfaceColor: surfaceColor,
+                lineColor: lineColor,
+                textColor: textColor,
+                mutedTextColor: mutedTextColor
+            )
         }
     }
 
-    /// レーダーチャートの描画本体（共通部分）
+    // MARK: - Standard
+
     @ViewBuilder
-    private func radarChartContent(items: [(title: String, value: Double)], levels: Int, frameHeight: CGFloat, radiusOffset: CGFloat, fontTitleSize: CGFloat, fontValueSize: CGFloat) -> some View {
-        ZStack {
-            ForEach(1...levels, id: \.self) { level in
-                RadarPolygon(sides: items.count, scale: CGFloat(level) / CGFloat(levels), radiusOffset: radiusOffset)
-                    .stroke(Color(.systemGray4), lineWidth: isCompactMode ? 0.5 : (level == levels ? 1 : 0.5))
+    private func standardContent(items: [TasteAxisItem], metrics: ChartMetrics) -> some View {
+        if isCompactMode {
+            VStack(spacing: 2) {
+                HStack(spacing: 2) {
+                    Text("味わいプロファイル")
+                        .font(.system(size: 8, weight: .bold))
+                        .foregroundStyle(.primary)
+                    Spacer()
+                }
+
+                radarChart(
+                    items: items,
+                    metrics: metrics,
+                    fillColor: Color.accentColor.opacity(0.25),
+                    strokeColor: Color.accentColor,
+                    gridColor: Color(.systemGray4),
+                    titleColor: .primary,
+                    valueColor: .secondary,
+                    useEditorialStyle: false
+                )
+            }
+            .padding(6)
+            .background(Color(.systemGray6).opacity(0.6))
+            .cornerRadius(10)
+        } else {
+            VStack(spacing: 14) {
+                HStack {
+                    Text("味わい構造プロファイル")
+                        .font(.headline)
+                    Spacer()
+                }
+
+                radarChart(
+                    items: items,
+                    metrics: metrics,
+                    fillColor: Color.accentColor.opacity(0.25),
+                    strokeColor: Color.accentColor,
+                    gridColor: Color(.systemGray4),
+                    titleColor: .primary,
+                    valueColor: .secondary,
+                    useEditorialStyle: false
+                )
+                .padding(.vertical, 8)
+            }
+            .padding()
+            .background(Color(.secondarySystemGroupedBackground))
+            .cornerRadius(16)
+        }
+    }
+
+    // MARK: - Share Card Editorial
+
+    @ViewBuilder
+    private func shareCardContent(
+        items: [TasteAxisItem],
+        metrics: ChartMetrics,
+        accentColor: Color,
+        surfaceColor: Color,
+        lineColor: Color,
+        textColor: Color,
+        mutedTextColor: Color
+    ) -> some View {
+        VStack(spacing: 5) {
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("TASTE PROFILE")
+                        .font(.system(size: isCompactMode ? 6.5 : 8, weight: .black))
+                        .tracking(1.5)
+                        .foregroundStyle(accentColor)
+
+                    Text("味わい構造")
+                        .font(.system(size: isCompactMode ? 8 : 11, weight: .bold, design: .serif))
+                        .foregroundStyle(textColor)
+                }
+
+                Spacer()
+
+                Text("01")
+                    .font(.system(size: isCompactMode ? 7 : 9, weight: .medium, design: .serif))
+                    .foregroundStyle(mutedTextColor)
             }
 
-            RadarAxesLines(sides: items.count, radiusOffset: radiusOffset)
-                .stroke(Color(.systemGray4), lineWidth: isCompactMode ? 0.5 : 0.8)
+            Rectangle()
+                .fill(accentColor.opacity(0.28))
+                .frame(height: 0.5)
 
-            RadarPolygonShape(values: items.map { $0.value / 5.0 }, radiusOffset: radiusOffset)
-                .fill(Color.accentColor.opacity(0.25))
+            radarChart(
+                items: items,
+                metrics: metrics,
+                fillColor: accentColor.opacity(0.16),
+                strokeColor: accentColor.opacity(0.9),
+                gridColor: lineColor.opacity(0.35),
+                titleColor: textColor,
+                valueColor: mutedTextColor,
+                useEditorialStyle: true
+            )
+        }
+        .padding(.horizontal, isCompactMode ? 7 : 12)
+        .padding(.vertical, isCompactMode ? 6 : 10)
+        .background(
+            RoundedRectangle(cornerRadius: isCompactMode ? 8 : 12, style: .continuous)
+                .fill(surfaceColor)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: isCompactMode ? 8 : 12, style: .continuous)
+                .stroke(accentColor.opacity(0.22), lineWidth: 0.7)
+        )
+    }
 
-            RadarPolygonShape(values: items.map { $0.value / 5.0 }, radiusOffset: radiusOffset)
-                .stroke(Color.accentColor, lineWidth: isCompactMode ? 1.5 : 2)
+    // MARK: - Shared Radar Chart
+
+    @ViewBuilder
+    private func radarChart(
+        items: [TasteAxisItem],
+        metrics: ChartMetrics,
+        fillColor: Color,
+        strokeColor: Color,
+        gridColor: Color,
+        titleColor: Color,
+        valueColor: Color,
+        useEditorialStyle: Bool
+    ) -> some View {
+        let normalizedValues = items.map { $0.value / 5.0 }
+
+        ZStack {
+            ForEach(1...metrics.levels, id: \.self) { level in
+                let isOuterLevel = level == metrics.levels
+                RadarPolygon(
+                    sides: items.count,
+                    scale: CGFloat(level) / CGFloat(metrics.levels),
+                    radiusOffset: metrics.radiusOffset
+                )
+                .stroke(
+                    useEditorialStyle ? gridColor.opacity(isOuterLevel ? 1.5 : 0.7) : gridColor,
+                    lineWidth: useEditorialStyle
+                        ? (isOuterLevel ? 0.7 : 0.45)
+                        : (isCompactMode ? 0.5 : (isOuterLevel ? 1 : 0.5))
+                )
+            }
+
+            RadarAxesLines(
+                sides: items.count,
+                radiusOffset: metrics.radiusOffset
+            )
+            .stroke(
+                useEditorialStyle ? gridColor.opacity(0.8) : gridColor,
+                lineWidth: useEditorialStyle ? 0.45 : (isCompactMode ? 0.5 : 0.8)
+            )
+
+            RadarPolygonShape(
+                values: normalizedValues,
+                radiusOffset: metrics.radiusOffset
+            )
+            .fill(fillColor)
+
+            RadarPolygonShape(
+                values: normalizedValues,
+                radiusOffset: metrics.radiusOffset
+            )
+            .stroke(
+                strokeColor,
+                lineWidth: useEditorialStyle
+                    ? (isCompactMode ? 1.15 : 1.5)
+                    : (isCompactMode ? 1.5 : 2)
+            )
 
             GeometryReader { geo in
                 let center = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
-                let radius = min(geo.size.width, geo.size.height) / 2 - radiusOffset
+                let radius = min(geo.size.width, geo.size.height) / 2 - metrics.radiusOffset
+                let labelOffset: CGFloat = isCompactMode ? (useEditorialStyle ? 7 : 6) : (useEditorialStyle ? 13 : 14)
 
-                ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                     let angle = (CGFloat(index) * 2.0 * .pi / CGFloat(items.count)) - (.pi / 2)
-                    let labelOffset: CGFloat = isCompactMode ? 6 : 14
                     let x = center.x + (radius + labelOffset) * cos(angle)
                     let y = center.y + (radius + labelOffset) * sin(angle)
 
-                    if isCompactMode {
-                        Text(item.title)
-                            .font(.system(size: fontTitleSize, weight: .bold))
-                            .foregroundStyle(.primary)
-                            .position(x: x, y: y)
-                    } else {
-                        VStack(spacing: 1) {
-                            Text(item.title)
-                                .font(.system(size: fontTitleSize, weight: .bold))
-                                .foregroundStyle(.primary)
-                            Text(String(format: "%.1f", item.value))
-                                .font(.system(size: fontValueSize))
-                                .foregroundStyle(.secondary)
-                        }
-                        .position(x: x, y: y)
-                    }
+                    axisLabelView(
+                        item: item,
+                        metrics: metrics,
+                        titleColor: titleColor,
+                        valueColor: valueColor,
+                        useEditorialStyle: useEditorialStyle
+                    )
+                    .position(x: x, y: y)
                 }
             }
         }
-        .frame(height: frameHeight)
+        .frame(height: metrics.frameHeight)
     }
-}
 
-// MARK: - レーダーチャート用ヘルパーシェイプ
-public struct RadarPolygon: Shape {
-    public let sides: Int
-    public let scale: CGFloat
-    public let radiusOffset: CGFloat
+    @ViewBuilder
+    private func axisLabelView(
+        item: TasteAxisItem,
+        metrics: ChartMetrics,
+        titleColor: Color,
+        valueColor: Color,
+        useEditorialStyle: Bool
+    ) -> some View {
+        let showValue = !isCompactMode
 
-    public func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let center = CGPoint(x: rect.width / 2, y: rect.height / 2)
-        let radius = (min(rect.width, rect.height) / 2 - radiusOffset) * scale
+        if useEditorialStyle {
+            VStack(spacing: 1) {
+                Text(item.title)
+                    .font(.system(size: metrics.fontTitleSize, weight: .semibold, design: .serif))
+                    .foregroundStyle(titleColor)
 
-        for i in 0..<sides {
-            let angle = (CGFloat(i) * 2.0 * .pi / CGFloat(sides)) - (.pi / 2)
-            let x = center.x + radius * cos(angle)
-            let y = center.y + radius * sin(angle)
-
-            if i == 0 {
-                path.move(to: CGPoint(x: x, y: y))
-            } else {
-                path.addLine(to: CGPoint(x: x, y: y))
+                if showValue {
+                    Text(String(format: "%.1f", item.value))
+                        .font(.system(size: metrics.fontValueSize, weight: .medium, design: .monospaced))
+                        .foregroundStyle(valueColor)
+                }
             }
-        }
-        path.closeSubpath()
-        return path
-    }
-}
+            .multilineTextAlignment(.center)
+        } else if showValue {
+            VStack(spacing: 0) {
+                Text(item.title)
+                    .font(.system(size: metrics.fontTitleSize, weight: .bold))
+                    .foregroundStyle(titleColor)
 
-public struct RadarAxesLines: Shape {
-    public let sides: Int
-    public let radiusOffset: CGFloat
-
-    public func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let center = CGPoint(x: rect.width / 2, y: rect.height / 2)
-        let radius = min(rect.width, rect.height) / 2 - radiusOffset
-
-        for i in 0..<sides {
-            let angle = (CGFloat(i) * 2.0 * .pi / CGFloat(sides)) - (.pi / 2)
-            let x = center.x + radius * cos(angle)
-            let y = center.y + radius * sin(angle)
-
-            path.move(to: center)
-            path.addLine(to: CGPoint(x: x, y: y))
-        }
-        return path
-    }
-}
-
-public struct RadarPolygonShape: Shape {
-    public let values: [Double]
-    public let radiusOffset: CGFloat
-
-    public func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let center = CGPoint(x: rect.width / 2, y: rect.height / 2)
-        let radius = min(rect.width, rect.height) / 2 - radiusOffset
-        let sides = values.count
-
-        for (i, value) in values.enumerated() {
-            let clampedVal = max(0.0, min(1.0, value))
-            let angle = (CGFloat(i) * 2.0 * .pi / CGFloat(sides)) - (.pi / 2)
-            let x = center.x + radius * CGFloat(clampedVal) * cos(angle)
-            let y = center.y + radius * CGFloat(clampedVal) * sin(angle)
-
-            if i == 0 {
-                path.move(to: CGPoint(x: x, y: y))
-            } else {
-                path.addLine(to: CGPoint(x: x, y: y))
+                Text(String(format: "%.1f", item.value))
+                    .font(.system(size: metrics.fontValueSize, weight: .medium))
+                    .foregroundStyle(valueColor)
             }
+        } else {
+            Text(item.title)
+                .font(.system(size: metrics.fontTitleSize, weight: .bold))
+                .foregroundStyle(titleColor)
         }
-        path.closeSubpath()
-        return path
     }
 }
 
-#Preview {
+#Preview("Standard") {
     let schema = Schema([BeverageItem.self, TastingLog.self])
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: schema, configurations: [config])
@@ -237,7 +373,109 @@ public struct RadarPolygonShape: Shape {
     container.mainContext.insert(sampleItem)
     container.mainContext.insert(sampleLog)
 
-    return TasteRadarCardView(log: sampleLog)
-        .padding()
-        .modelContainer(container)
+    return VStack {
+        TasteRadarCardView(log: sampleLog, isCompactMode: false, presentationStyle: .standard)
+    }
+    .padding()
+    .background(Color(.systemGroupedBackground))
+    .modelContainer(container)
+}
+
+#Preview("Share Card") {
+    let schema = Schema([BeverageItem.self, TastingLog.self])
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: schema, configurations: [config])
+
+    let sampleItem = BeverageItem(
+        name: "Barolo DOCG 2018",
+        producer: "Prunotto",
+        category: .wine,
+        region: "ピエモンテ, イタリア",
+        vintage: "2018"
+    )
+
+    let sampleLog = TastingLog(
+        date: Date(),
+        rating: 4.8,
+        appearanceNotes: "ガーネット",
+        appearanceColorHex: "#802633",
+        sweetness: 2.0,
+        saltiness: 0.0,
+        acidity: 4.2,
+        bitterness: 2.0,
+        umami: 2.5,
+        tannin: 4.5,
+        body: 4.5,
+        finishLength: 4.8,
+        memo: "素晴らしいバランス",
+        item: sampleItem
+    )
+
+    container.mainContext.insert(sampleItem)
+    container.mainContext.insert(sampleLog)
+
+    return TasteRadarCardView(
+        log: sampleLog,
+        isCompactMode: false,
+        presentationStyle: .shareCard(
+            accentColor: Color(red: 0.72, green: 0.48, blue: 0.24),
+            surfaceColor: Color(red: 0.12, green: 0.09, blue: 0.08),
+            lineColor: Color(red: 0.72, green: 0.48, blue: 0.24).opacity(0.45),
+            textColor: Color(red: 0.94, green: 0.91, blue: 0.86),
+            mutedTextColor: Color(red: 0.94, green: 0.91, blue: 0.86).opacity(0.52)
+        )
+    )
+    .padding()
+    .background(Color.black)
+    .modelContainer(container)
+}
+
+#Preview("Share Card Compact") {
+    let schema = Schema([BeverageItem.self, TastingLog.self])
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: schema, configurations: [config])
+
+    let sampleItem = BeverageItem(
+        name: "Barolo DOCG 2018",
+        producer: "Prunotto",
+        category: .wine,
+        region: "ピエモンテ, イタリア",
+        vintage: "2018"
+    )
+
+    let sampleLog = TastingLog(
+        date: Date(),
+        rating: 4.8,
+        appearanceNotes: "ガーネット",
+        appearanceColorHex: "#802633",
+        sweetness: 2.0,
+        saltiness: 0.0,
+        acidity: 4.2,
+        bitterness: 2.0,
+        umami: 2.5,
+        tannin: 4.5,
+        body: 4.5,
+        finishLength: 4.8,
+        memo: "素晴らしいバランス",
+        item: sampleItem
+    )
+
+    container.mainContext.insert(sampleItem)
+    container.mainContext.insert(sampleLog)
+
+    return TasteRadarCardView(
+        log: sampleLog,
+        isCompactMode: true,
+        presentationStyle: .shareCard(
+            accentColor: Color(red: 0.72, green: 0.48, blue: 0.24),
+            surfaceColor: Color(red: 0.12, green: 0.09, blue: 0.08),
+            lineColor: Color(red: 0.72, green: 0.48, blue: 0.24).opacity(0.45),
+            textColor: Color(red: 0.94, green: 0.91, blue: 0.86),
+            mutedTextColor: Color(red: 0.94, green: 0.91, blue: 0.86).opacity(0.52)
+        )
+    )
+    .frame(width: 180)
+    .padding()
+    .background(Color.black)
+    .modelContainer(container)
 }

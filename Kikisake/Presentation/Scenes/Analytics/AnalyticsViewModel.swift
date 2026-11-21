@@ -1,5 +1,7 @@
+//
 //  AnalyticsViewModel.swift
 //  Kikisake
+//
 
 import Foundation
 import SwiftData
@@ -14,12 +16,9 @@ public enum AnalyticsSection: String, CaseIterable, Identifiable {
 
     public var displayName: String {
         switch self {
-        case .consumption:
-            return String(localized: "飲酒ログ")
-        case .evaluation:
-            return String(localized: "評価")
-        case .comparison:
-            return String(localized: "比較")
+        case .consumption: String(localized: "飲酒ログ")
+        case .evaluation: String(localized: "評価")
+        case .comparison: String(localized: "比較")
         }
     }
 }
@@ -33,17 +32,13 @@ public enum AnalyticsTimeFilter: String, CaseIterable, Identifiable {
 
     public var id: String { rawValue }
 
-    /// ✨ Localizable.xcstrings が自動検出し、英訳を行えるように直接文字列リテラルを指定
+    /// Localizable.xcstrings が自動検出し、英訳を行えるように直接文字列リテラルを指定
     public var displayName: String {
         switch self {
-        case .all:
-            return String(localized: "全期間")
-        case .month1:
-            return String(localized: "直近1ヶ月")
-        case .months3:
-            return String(localized: "直近3ヶ月")
-        case .year1:
-            return String(localized: "直近1年")
+        case .all: String(localized: "全期間")
+        case .month1: String(localized: "直近1ヶ月")
+        case .months3: String(localized: "直近3ヶ月")
+        case .year1: String(localized: "直近1年")
         }
     }
 
@@ -97,35 +92,7 @@ public final class AnalyticsViewModel {
     public func filteredLogs(from logs: [TastingLog]) -> [TastingLog] {
         logs.filter { log in
             guard selectedTimeFilter.evaluate(date: log.date) else { return false }
-
-            if let category = selectedCategoryFilter {
-                guard let item = log.item, item.category == category else { return false }
-
-                if let subCategory = selectedSubCategoryFilter {
-                    guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else { return false }
-
-                    switch category {
-                    case .wine:
-                        guard let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data),
-                              meta.wineType == subCategory else { return false }
-                    case .sake:
-                        guard let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data),
-                              meta.specificName == subCategory else { return false }
-                    case .beer:
-                        guard let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data),
-                              meta.beerStyle == subCategory else { return false }
-                    }
-                }
-            }
-
-            if !regionFilter.isEmpty {
-                let region = log.item?.region ?? ""
-                if !region.localizedCaseInsensitiveContains(regionFilter) { return false }
-            }
-
-            if let minRating = minRatingFilter {
-                if log.rating < minRating { return false }
-            }
+            guard matchesCommonFilters(log: log, includeSubCategory: true) else { return false }
 
             if !aromaTagFilter.isEmpty {
                 let hasTag = log.aromaTags.contains { $0.localizedCaseInsensitiveContains(aromaTagFilter) }
@@ -138,19 +105,7 @@ public final class AnalyticsViewModel {
 
     /// 比較候補として絞り込まれたログ一覧
     public func comparisonCandidateLogs(from logs: [TastingLog]) -> [TastingLog] {
-        logs.filter { log in
-            if let category = selectedCategoryFilter {
-                guard let item = log.item, item.category == category else { return false }
-            }
-            if !regionFilter.isEmpty {
-                let region = log.item?.region ?? ""
-                if !region.localizedCaseInsensitiveContains(regionFilter) { return false }
-            }
-            if let minRating = minRatingFilter {
-                if log.rating < minRating { return false }
-            }
-            return true
-        }
+        logs.filter { matchesCommonFilters(log: $0, includeSubCategory: false) }
     }
 
     public var hasActiveFilters: Bool {
@@ -175,12 +130,12 @@ public final class AnalyticsViewModel {
     }
 
     public func resetFilters() {
-        self.selectedTimeFilter = .all
-        self.selectedCategoryFilter = nil
-        self.selectedSubCategoryFilter = nil
-        self.regionFilter = ""
-        self.minRatingFilter = nil
-        self.aromaTagFilter = ""
+        selectedTimeFilter = .all
+        selectedCategoryFilter = nil
+        selectedSubCategoryFilter = nil
+        regionFilter = ""
+        minRatingFilter = nil
+        aromaTagFilter = ""
     }
 
     public func availableRegions(from logs: [TastingLog]) -> [String] {
@@ -208,32 +163,16 @@ public final class AnalyticsViewModel {
         var subTypes = Set<String>()
 
         for log in logs {
-            guard let item = log.item,
-                  item.category == category,
-                  let json = item.specificMetadataJSON,
-                  let data = json.data(using: .utf8) else { continue }
-
-            switch category {
-            case .wine:
-                if let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data), !meta.wineType.isEmpty {
-                    subTypes.insert(meta.wineType)
-                }
-            case .sake:
-                if let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data), !meta.specificName.isEmpty {
-                    subTypes.insert(meta.specificName)
-                }
-            case .beer:
-                if let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data), !meta.beerStyle.isEmpty {
-                    subTypes.insert(meta.beerStyle)
-                }
-            }
+            guard let item = log.item, item.category == category,
+                  let subCategory = extractSubCategory(from: item, category: category),
+                  !subCategory.isEmpty else { continue }
+            subTypes.insert(subCategory)
         }
         return Array(subTypes).sorted()
     }
 
     public func categoryRatio(from logs: [TastingLog]) -> [BeverageCategory: Int] {
-        let targetLogs = filteredLogs(from: logs)
-        return calculateUseCase.calculateCategoryRatio(from: targetLogs)
+        calculateUseCase.calculateCategoryRatio(from: filteredLogs(from: logs))
     }
 
     public func subCategoryRatio(from logs: [TastingLog]) -> [String: Int] {
@@ -243,30 +182,12 @@ public final class AnalyticsViewModel {
 
         for log in targetLogs {
             guard let item = log.item, item.category == category else { continue }
-            guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else {
+            if item.specificMetadataJSON == nil {
                 counts["未設定", default: 0] += 1
-                continue
-            }
-
-            switch category {
-            case .wine:
-                if let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data), !meta.wineType.isEmpty {
-                    counts[meta.wineType, default: 0] += 1
-                } else {
-                    counts["その他", default: 0] += 1
-                }
-            case .sake:
-                if let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data), !meta.specificName.isEmpty {
-                    counts[meta.specificName, default: 0] += 1
-                } else {
-                    counts["その他", default: 0] += 1
-                }
-            case .beer:
-                if let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data), !meta.beerStyle.isEmpty {
-                    counts[meta.beerStyle, default: 0] += 1
-                } else {
-                    counts["その他", default: 0] += 1
-                }
+            } else if let subCategory = extractSubCategory(from: item, category: category), !subCategory.isEmpty {
+                counts[subCategory, default: 0] += 1
+            } else {
+                counts["その他", default: 0] += 1
             }
         }
         return counts
@@ -277,19 +198,15 @@ public final class AnalyticsViewModel {
         let today = calendar.startOfDay(for: Date())
         let targetLogs = filteredLogs(from: logs)
 
-        var days: [HeatmapDay] = []
-        for dayOffset in (0..<119).reversed() {
-            if let date = calendar.date(byAdding: .day, value: -dayOffset, to: today) {
-                let count = targetLogs.filter { calendar.isDate($0.date, inSameDayAs: date) }.count
-                days.append(HeatmapDay(date: date, count: count))
-            }
+        return (0..<119).reversed().compactMap { dayOffset in
+            guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { return nil }
+            let count = targetLogs.filter { calendar.isDate($0.date, inSameDayAs: date) }.count
+            return HeatmapDay(date: date, count: count)
         }
-        return days
     }
 
     public func topRatedLog(for category: BeverageCategory, from logs: [TastingLog]) -> TastingLog? {
-        let targetLogs = filteredLogs(from: logs)
-        return targetLogs
+        filteredLogs(from: logs)
             .filter { $0.item?.category == category }
             .max(by: { $0.rating < $1.rating })
     }
@@ -307,9 +224,8 @@ public final class AnalyticsViewModel {
             .map { (tag: $0.key, count: $0.value) }
     }
 
-    public func averageTasteProfile(from logs: [TastingLog]) -> (sweetness: Double, saltiness: Double, acidity: Double, bitterness: Double, umami: Double, tannin: Double, body: Double, finishLength: Double) {
-        let targetLogs = filteredLogs(from: logs)
-        return calculateUseCase.calculateAverageTasteProfile(from: targetLogs)
+    public func averageTasteProfile(from logs: [TastingLog]) -> AverageTasteProfile {
+        calculateUseCase.calculateAverageTasteProfile(from: filteredLogs(from: logs))
     }
 
     public func featureFlagsSummary(from logs: [TastingLog]) -> (costEffective: Int, repeatIntent: Int, agingPotential: Int, total: Int) {
@@ -317,9 +233,9 @@ public final class AnalyticsViewModel {
         let total = targetLogs.count
         guard total > 0 else { return (0, 0, 0, 0) }
 
-        let costEffective = targetLogs.filter { $0.isCostEffective }.count
-        let repeatIntent = targetLogs.filter { $0.isWillingToRepeat }.count
-        let agingPotential = targetLogs.filter { $0.hasAgingPotential }.count
+        let costEffective = targetLogs.filter(\.isCostEffective).count
+        let repeatIntent = targetLogs.filter(\.isWillingToRepeat).count
+        let agingPotential = targetLogs.filter(\.hasAgingPotential).count
 
         return (costEffective, repeatIntent, agingPotential, total)
     }
@@ -328,5 +244,43 @@ public final class AnalyticsViewModel {
         guard !targetLogs.isEmpty else { return 0.0 }
         let totalRating = targetLogs.reduce(0.0) { $0 + $1.rating }
         return totalRating / Double(targetLogs.count)
+    }
+
+    // MARK: - Private Helpers
+
+    private func matchesCommonFilters(log: TastingLog, includeSubCategory: Bool) -> Bool {
+        if let category = selectedCategoryFilter {
+            guard let item = log.item, item.category == category else { return false }
+
+            if includeSubCategory, let subCategory = selectedSubCategoryFilter {
+                guard extractSubCategory(from: item, category: category) == subCategory else { return false }
+            }
+        }
+
+        if !regionFilter.isEmpty {
+            let region = log.item?.region ?? ""
+            if !region.localizedCaseInsensitiveContains(regionFilter) { return false }
+        }
+
+        if let minRating = minRatingFilter, log.rating < minRating {
+            return false
+        }
+
+        return true
+    }
+
+    private func extractSubCategory(from item: BeverageItem, category: BeverageCategory) -> String? {
+        guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else {
+            return nil
+        }
+
+        switch category {
+        case .wine:
+            return try? JSONDecoder().decode(WineSpecificMetadata.self, from: data).wineType
+        case .sake:
+            return try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data).specificName
+        case .beer:
+            return try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data).beerStyle
+        }
     }
 }

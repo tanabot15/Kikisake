@@ -1,12 +1,14 @@
+//
 //  BackupManager.swift
 //  Kikisake
+//
 
 import Foundation
 import SwiftData
 
-public enum RestoreStrategy {
-    case replaceAll // 全上書き（既存データを破棄）
-    case merge      // マージ（重複IDは更新、未存在IDは追加）
+public enum RestoreStrategy: Sendable {
+    case replaceAll
+    case merge
 }
 
 public enum BackupError: LocalizedError {
@@ -18,13 +20,13 @@ public enum BackupError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .exportFailed(let msg):
-            return String(localized: "エクスポートに失敗しました: \(msg)")
+            String(localized: "エクスポートに失敗しました: \(msg)")
         case .importFailed(let msg):
-            return String(localized: "リストアに失敗しました: \(msg)")
+            String(localized: "リストアに失敗しました: \(msg)")
         case .unsupportedSchemaVersion(let ver):
-            return String(localized: "サポートされていないデータバージョンです (Version: \(ver))")
+            String(localized: "サポートされていないデータバージョンです (Version: \(ver))")
         case .invalidFile:
-            return String(localized: "無効なバックアップファイルです。")
+            String(localized: "無効なバックアップファイルです。")
         }
     }
 }
@@ -50,15 +52,12 @@ public final class BackupManager {
             let locations = try modelContext.fetch(FetchDescriptor<StorageLocation>())
             let items = try modelContext.fetch(FetchDescriptor<BeverageItem>())
 
-            let locationDTOs = locations.map { StorageLocationDTO(from: $0) }
-            let itemDTOs = items.map { BeverageItemDTO(from: $0) }
-
             let payload = BackupPayload(
                 schemaVersion: Self.currentSchemaVersion,
                 exportedAt: Date(),
                 appVersion: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0",
-                storageLocations: locationDTOs,
-                beverageItems: itemDTOs
+                storageLocations: locations.map(StorageLocationDTO.init(from:)),
+                beverageItems: items.map(BeverageItemDTO.init(from:))
             )
 
             let encoder = JSONEncoder()
@@ -90,56 +89,9 @@ public final class BackupManager {
         do {
             switch strategy {
             case .replaceAll:
-                try clearAllData(modelContext: modelContext)
-
-                for locDTO in payload.storageLocations {
-                    modelContext.insert(locDTO.toModel())
-                }
-
-                for itemDTO in payload.beverageItems {
-                    let newItem = itemDTO.toModel()
-                    modelContext.insert(newItem)
-                }
-
+                try replaceAllData(with: payload, in: modelContext)
             case .merge:
-                let existingLocations = try modelContext.fetch(FetchDescriptor<StorageLocation>())
-                let existingLocMap = Dictionary(uniqueKeysWithValues: existingLocations.map { ($0.id, $0) })
-
-                for locDTO in payload.storageLocations {
-                    if let existing = existingLocMap[locDTO.id] {
-                        existing.name = locDTO.name
-                        existing.typeRawValue = locDTO.typeRawValue
-                        existing.memo = locDTO.memo
-                        existing.isGridEnabled = locDTO.isGridEnabled
-                        existing.gridRows = locDTO.gridRows
-                        existing.gridColumns = locDTO.gridColumns
-                    } else {
-                        modelContext.insert(locDTO.toModel())
-                    }
-                }
-
-                let existingItems = try modelContext.fetch(FetchDescriptor<BeverageItem>())
-                let existingItemMap = Dictionary(uniqueKeysWithValues: existingItems.map { ($0.id, $0) })
-
-                for itemDTO in payload.beverageItems {
-                    if let existing = existingItemMap[itemDTO.id] {
-                        existing.name = itemDTO.name
-                        existing.producer = itemDTO.producer
-                        existing.categoryRawValue = itemDTO.categoryRawValue
-                        existing.region = itemDTO.region
-                        existing.vintage = itemDTO.vintage
-                        existing.alcoholByVolume = itemDTO.alcoholByVolume
-                        existing.price = itemDTO.price
-                        existing.storageLocation = itemDTO.storageLocation
-                        existing.purchaseDate = itemDTO.purchaseDate
-                        existing.gridRow = itemDTO.gridRow
-                        existing.gridColumn = itemDTO.gridColumn
-                        existing.imageDatas = itemDTO.imageDatas
-                        existing.specificMetadataJSON = itemDTO.specificMetadataJSON
-                    } else {
-                        modelContext.insert(itemDTO.toModel())
-                    }
-                }
+                try mergeData(from: payload, into: modelContext)
             }
 
             try modelContext.save()
@@ -148,10 +100,42 @@ public final class BackupManager {
         }
     }
 
-    private func clearAllData(modelContext: ModelContext) throws {
+    private func replaceAllData(with payload: BackupPayload, in modelContext: ModelContext) throws {
         try modelContext.delete(model: TastingLog.self)
         try modelContext.delete(model: BeverageItem.self)
         try modelContext.delete(model: StorageLocation.self)
         try modelContext.save()
+
+        for locDTO in payload.storageLocations {
+            modelContext.insert(locDTO.toModel())
+        }
+
+        for itemDTO in payload.beverageItems {
+            modelContext.insert(itemDTO.toModel())
+        }
+    }
+
+    private func mergeData(from payload: BackupPayload, into modelContext: ModelContext) throws {
+        let existingLocations = try modelContext.fetch(FetchDescriptor<StorageLocation>())
+        let existingLocMap = Dictionary(uniqueKeysWithValues: existingLocations.map { ($0.id, $0) })
+
+        for locDTO in payload.storageLocations {
+            if let existing = existingLocMap[locDTO.id] {
+                locDTO.apply(to: existing)
+            } else {
+                modelContext.insert(locDTO.toModel())
+            }
+        }
+
+        let existingItems = try modelContext.fetch(FetchDescriptor<BeverageItem>())
+        let existingItemMap = Dictionary(uniqueKeysWithValues: existingItems.map { ($0.id, $0) })
+
+        for itemDTO in payload.beverageItems {
+            if let existing = existingItemMap[itemDTO.id] {
+                itemDTO.apply(to: existing)
+            } else {
+                modelContext.insert(itemDTO.toModel())
+            }
+        }
     }
 }

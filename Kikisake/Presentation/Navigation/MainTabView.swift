@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainTabView.swift
 //  Kikisake
 //
 //  Created by Kenichiro Suzuki on 2026/10/14.
@@ -9,66 +9,61 @@ import SwiftUI
 
 /// 5つのタブを統括するメインナビゲーションビュー
 public struct MainTabView: View {
+    private enum TabItem: Int, CaseIterable {
+        case log = 0
+        case analytics = 1
+        case add = 2
+        case inventory = 3
+        case settings = 4
+
+        var title: LocalizedStringKey {
+            switch self {
+            case .log: "ログ"
+            case .analytics: "分析"
+            case .add: "追加"
+            case .inventory: "在庫"
+            case .settings: "設定"
+            }
+        }
+
+        var systemImage: String {
+            switch self {
+            case .log: "waveform.path.ecg.text.clipboard"
+            case .analytics: "chart.pie"
+            case .add: "plus.circle"
+            case .inventory: "refrigerator"
+            case .settings: "gearshape"
+            }
+        }
+    }
+
     @Bindable private var appState = AppState.shared
+
+    public init() {}
 
     public var body: some View {
         TabView(selection: $appState.selectedTab) {
-            LogView()
-                .tabItem {
-                    Label {
-                        Text("ログ")
-                    } icon: {
-                        Image(systemName: "waveform.path.ecg.text.clipboard")
-                            .environment(\.symbolVariants, appState.selectedTab == 0 ? .fill : .none)
-                    }
-                }
-                .tag(0)
-
-            AnalyticsView()
-                .tabItem {
-                    Label {
-                        Text("分析")
-                    } icon: {
-                        Image(systemName: "chart.pie")
-                            .environment(\.symbolVariants, appState.selectedTab == 1 ? .fill : .none)
-                    }
-                }
-                .tag(1)
-
-            AddFlowView()
-                .tabItem {
-                    Label {
-                        Text("追加")
-                    } icon: {
-                        Image(systemName: "plus.circle")
-                            .environment(\.symbolVariants, appState.selectedTab == 2 ? .fill : .none)
-                    }
-                }
-                .tag(2)
-
-            InventoryView()
-                .tabItem {
-                    Label {
-                        Text("在庫")
-                    } icon: {
-                        Image(systemName: "refrigerator")
-                            .environment(\.symbolVariants, appState.selectedTab == 3 ? .fill : .none)
-                    }
-                }
-                .tag(3)
-
-            SettingsView()
-                .tabItem {
-                    Label {
-                        Text("設定")
-                    } icon: {
-                        Image(systemName: "gearshape")
-                            .environment(\.symbolVariants, appState.selectedTab == 4 ? .fill : .none)
-                    }
-                }
-                .tag(4)
+            tabContent(for: .log) { LogView() }
+            tabContent(for: .analytics) { AnalyticsView() }
+            tabContent(for: .add) { AddFlowView() }
+            tabContent(for: .inventory) { InventoryView() }
+            tabContent(for: .settings) { SettingsView() }
         }
         .tint(.accentColor)
+    }
+
+    @ViewBuilder
+    private func tabContent<Content: View>(for tab: TabItem, @ViewBuilder content: () -> Content) -> some View {
+        content()
+            .tabItem {
+                Label {
+                    Text(tab.title)
+                } icon: {
+                    Image(systemName: tab.systemImage)
+                        .environment(\.symbolVariants, appState.selectedTab == tab.rawValue ? .fill : .none)
+                }
+            }
+            .tag(tab.rawValue)
     }
 }
 

@@ -1,12 +1,13 @@
+//
 //  ConsumeBeverageUseCase.swift
 //  Kikisake
+//
 
 import Foundation
 import os
 
 /// 在庫ボトルを開けて消費し、テイスティングログ作成へスムーズに連携するユースケース
 public struct ConsumeBeverageUseCase {
-    
     public init() {}
 
     /// 指定された在庫アイテムの消費処理を行いログを記録可能にする

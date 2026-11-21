@@ -31,6 +31,9 @@
         }
       }
     },
+    "—" : {
+
+    },
     "・ %@" : {
       "localizations" : {
         "en" : {
@@ -40,6 +43,9 @@
           }
         }
       }
+    },
+    "“%@”" : {
+
     },
     "(%lld %%)" : {
       "localizations" : {
@@ -113,6 +119,9 @@
         }
       }
     },
+    "/ 5" : {
+
+    },
     "%" : {
       "localizations" : {
         "en" : {
@@ -124,6 +133,7 @@
       }
     },
     "%@\n▶" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -418,6 +428,7 @@
       }
     },
     "▲ %@: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -434,6 +445,7 @@
       }
     },
     "▼ %@: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -450,6 +462,7 @@
       }
     },
     "◀\n%@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -458,6 +471,9 @@
           }
         }
       }
+    },
+    "01" : {
+
     },
     "1段あたりの本数（列）: %d本" : {
       "localizations" : {
@@ -468,6 +484,9 @@
           }
         }
       }
+    },
+    "02" : {
+
     },
     "23区" : {
       "localizations" : {
@@ -500,6 +519,7 @@
       }
     },
     "IBU" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -549,7 +569,11 @@
         }
       }
     },
+    "KIKISAKE" : {
+
+    },
     "Kikisake - Professional Tasting Log" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -630,6 +654,7 @@
       }
     },
     "No Image" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -638,6 +663,9 @@
           }
         }
       }
+    },
+    "NO IMAGE" : {
+
     },
     "OK" : {
       "localizations" : {
@@ -649,6 +677,15 @@
         }
       }
     },
+    "OVERALL" : {
+
+    },
+    "PAIRING" : {
+
+    },
+    "POSITION" : {
+
+    },
     "PRO" : {
       "localizations" : {
         "en" : {
@@ -658,6 +695,9 @@
           }
         }
       }
+    },
+    "PROFESSIONAL TASTING LOG" : {
+
     },
     "Pro版がアクティブです" : {
       "localizations" : {
@@ -679,6 +719,9 @@
         }
       }
     },
+    "SIGNATURE" : {
+
+    },
     "SNSでシェアする" : {
       "localizations" : {
         "en" : {
@@ -698,6 +741,12 @@
           }
         }
       }
+    },
+    "TASTE PROFILE" : {
+
+    },
+    "TASTING NOTE" : {
+
     },
     "Upgrade to Kikisake Pro" : {
       "localizations" : {
@@ -2332,6 +2381,7 @@
       }
     },
     "コスパ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3152,6 +3202,7 @@
       }
     },
     "スタイル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4090,6 +4141,9 @@
           }
         }
       }
+    },
+    "テイスト・マトリクス" : {
+
     },
     "テイストバランス" : {
       "localizations" : {
@@ -6882,6 +6936,7 @@
       }
     },
     "リピート" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8721,6 +8776,9 @@
         }
       }
     },
+    "味わい構造" : {
+
+    },
     "味わい構造プロファイル" : {
       "localizations" : {
         "en" : {
@@ -8752,6 +8810,7 @@
       }
     },
     "呼称" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8772,6 +8831,7 @@
       }
     },
     "品種" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10860,6 +10920,7 @@
       }
     },
     "熟成" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10950,6 +11011,7 @@
       }
     },
     "特徴" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13378,6 +13440,7 @@
       }
     },
     "香り" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

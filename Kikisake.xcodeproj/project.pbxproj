@@ -83,6 +83,11 @@
 		D9508263309D8BB40045BF8E /* TastingCustomizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9508262309D8BB40045BF8E /* TastingCustomizationView.swift */; };
 		D950826730A030760045BF8E /* LogComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950826630A030760045BF8E /* LogComparisonView.swift */; };
 		D950826930A1E7AD0045BF8E /* RegionPresetOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D950826830A1E7AD0045BF8E /* RegionPresetOptions.swift */; };
+		D9FB6CE730B15CE600D105C9 /* SampleBeverageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CE630B15CE600D105C9 /* SampleBeverageFactory.swift */; };
+		D9FB6CEA30B15F3E00D105C9 /* CollectionMatrixDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CE930B15F3E00D105C9 /* CollectionMatrixDataSource.swift */; };
+		D9FB6CEC30B1602A00D105C9 /* BackupFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CEB30B1602A00D105C9 /* BackupFileDocument.swift */; };
+		D9FB6CEE30B1614300D105C9 /* RadarChartShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CED30B1614300D105C9 /* RadarChartShapes.swift */; };
+		D9FB6CF030B1617600D105C9 /* MatrixHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CEF30B1617600D105C9 /* MatrixHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -164,6 +169,11 @@
 		D9508262309D8BB40045BF8E /* TastingCustomizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCustomizationView.swift; sourceTree = "<group>"; };
 		D950826630A030760045BF8E /* LogComparisonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogComparisonView.swift; sourceTree = "<group>"; };
 		D950826830A1E7AD0045BF8E /* RegionPresetOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPresetOptions.swift; sourceTree = "<group>"; };
+		D9FB6CE630B15CE600D105C9 /* SampleBeverageFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleBeverageFactory.swift; sourceTree = "<group>"; };
+		D9FB6CE930B15F3E00D105C9 /* CollectionMatrixDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionMatrixDataSource.swift; sourceTree = "<group>"; };
+		D9FB6CEB30B1602A00D105C9 /* BackupFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupFileDocument.swift; sourceTree = "<group>"; };
+		D9FB6CED30B1614300D105C9 /* RadarChartShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarChartShapes.swift; sourceTree = "<group>"; };
+		D9FB6CEF30B1617600D105C9 /* MatrixHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,7 +225,6 @@
 			children = (
 				D90441E4307E817B00EF4807 /* KikisakeApp.swift */,
 				D90441F2307E83F600EF4807 /* AppState.swift */,
-				D904424B307F3C8C00EF4807 /* PreviewSampleLoader.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -235,7 +244,10 @@
 			children = (
 				D90441F9307E843600EF4807 /* Persistence */,
 				D90441F8307E842F00EF4807 /* Models */,
+				D9FB6CE830B15E6D00D105C9 /* Presets */,
+				D9FB6CE530B15C1D00D105C9 /* Seed */,
 				D90441F7307E842100EF4807 /* Repositories */,
+				D95082553090D93D0045BF8E /* Backup */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -245,7 +257,6 @@
 			children = (
 				D90441FB307E844600EF4807 /* Entities */,
 				D90441FA307E844000EF4807 /* UseCases */,
-				D95082553090D93D0045BF8E /* Backup */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -315,11 +326,6 @@
 				D9044216307E850500EF4807 /* TastingLog.swift */,
 				D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */,
 				D9044258308366C300EF4807 /* StorageLocation.swift */,
-				D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */,
-				D9044272308AFE0100EF4807 /* TastingOptions.swift */,
-				D950826830A1E7AD0045BF8E /* RegionPresetOptions.swift */,
-				D9508260309D8B530045BF8E /* TastingCustomizationManager.swift */,
-				D904F0A830A73FCC0046D409 /* CollectionMatrixModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -376,7 +382,9 @@
 				D9044222307E856F00EF4807 /* CustomSlider.swift */,
 				D904F0A630A2AF820046D409 /* SteppedNumberField.swift */,
 				D904425E308602FD00EF4807 /* TasteRadarCardView.swift */,
+				D9FB6CED30B1614300D105C9 /* RadarChartShapes.swift */,
 				D90442603086031D00EF4807 /* MatrixAnalysisCardView.swift */,
+				D9FB6CEF30B1617600D105C9 /* MatrixHelper.swift */,
 				D904426C3088A3D000EF4807 /* AdMobBannerView.swift */,
 				D9044276308B1ADF00EF4807 /* FlowLayout.swift */,
 				D950825A309228190045BF8E /* BottleMattingHelper.swift */,
@@ -482,9 +490,32 @@
 			isa = PBXGroup;
 			children = (
 				D95082563090D95D0045BF8E /* BackupDTOs.swift */,
+				D9FB6CEB30B1602A00D105C9 /* BackupFileDocument.swift */,
 				D95082583090D9720045BF8E /* BackupManager.swift */,
 			);
 			path = Backup;
+			sourceTree = "<group>";
+		};
+		D9FB6CE530B15C1D00D105C9 /* Seed */ = {
+			isa = PBXGroup;
+			children = (
+				D904424B307F3C8C00EF4807 /* PreviewSampleLoader.swift */,
+				D9FB6CE630B15CE600D105C9 /* SampleBeverageFactory.swift */,
+			);
+			path = Seed;
+			sourceTree = "<group>";
+		};
+		D9FB6CE830B15E6D00D105C9 /* Presets */ = {
+			isa = PBXGroup;
+			children = (
+				D950825C309C39C80045BF8E /* BeveragePresetOptions.swift */,
+				D9044272308AFE0100EF4807 /* TastingOptions.swift */,
+				D950826830A1E7AD0045BF8E /* RegionPresetOptions.swift */,
+				D904F0A830A73FCC0046D409 /* CollectionMatrixModel.swift */,
+				D9508260309D8B530045BF8E /* TastingCustomizationManager.swift */,
+				D9FB6CE930B15F3E00D105C9 /* CollectionMatrixDataSource.swift */,
+			);
+			path = Presets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -575,6 +606,8 @@
 				D904427F308CF04500EF4807 /* CellarGridView.swift in Sources */,
 				D904F0B330AC7A980046D409 /* TimelineRowView.swift in Sources */,
 				D904F0A730A2AF820046D409 /* SteppedNumberField.swift in Sources */,
+				D9FB6CEA30B15F3E00D105C9 /* CollectionMatrixDataSource.swift in Sources */,
+				D9FB6CE730B15CE600D105C9 /* SampleBeverageFactory.swift in Sources */,
 				D904422F307E85AB00EF4807 /* LogViewModel.swift in Sources */,
 				D9044231307E85B600EF4807 /* LogDetailView.swift in Sources */,
 				D9044268308721A200EF4807 /* EditLogFlowView.swift in Sources */,
@@ -587,6 +620,7 @@
 				D9044281308CF53B00EF4807 /* LocationSlotSelectionSheet.swift in Sources */,
 				D9044277308B1ADF00EF4807 /* FlowLayout.swift in Sources */,
 				D904F0A930A73FCC0046D409 /* CollectionMatrixModel.swift in Sources */,
+				D9FB6CEE30B1614300D105C9 /* RadarChartShapes.swift in Sources */,
 				D90442503081A43B00EF4807 /* AppearanceStepView.swift in Sources */,
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
 				D95082593090D9720045BF8E /* BackupManager.swift in Sources */,
@@ -596,6 +630,7 @@
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
 				D904427D308C9C9B00EF4807 /* EvaluationView.swift in Sources */,
 				D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */,
+				D9FB6CEC30B1602A00D105C9 /* BackupFileDocument.swift in Sources */,
 				D904F0AD30A7400C0046D409 /* CollectionBookView.swift in Sources */,
 				D904425D3085D33000EF4807 /* TastingCardShareView.swift in Sources */,
 				D9044233307E85C300EF4807 /* AnalyticsView.swift in Sources */,
@@ -608,6 +643,7 @@
 				D9044242307E862600EF4807 /* FinalizeStepView.swift in Sources */,
 				D9044219307E851200EF4807 /* BeverageRepository.swift in Sources */,
 				D9044273308AFE0100EF4807 /* TastingOptions.swift in Sources */,
+				D9FB6CF030B1617600D105C9 /* MatrixHelper.swift in Sources */,
 				D9508263309D8BB40045BF8E /* TastingCustomizationView.swift in Sources */,
 				D90442543081A46800EF4807 /* TasteStepView.swift in Sources */,
 				D9044275308B18EE00EF4807 /* AnalyticsFilterSheet.swift in Sources */,
@@ -776,7 +812,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -797,7 +833,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.32;
+				MARKETING_VERSION = 1.33;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -820,7 +856,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -841,7 +877,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.32;
+				MARKETING_VERSION = 1.33;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

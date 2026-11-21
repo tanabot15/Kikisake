@@ -1,5 +1,7 @@
+//
 //  BeverageItem.swift
 //  Kikisake
+//
 
 import Foundation
 import SwiftData
@@ -27,13 +29,13 @@ public final class BeverageItem {
     // 写真データ（表示用：切り抜き済み or オリジナル）
     @Attribute(.externalStorage) public var imageDatas: [Data]?
 
-    // ✨ 追加：切り抜き前のオリジナル写真データ（背景透過の復元・再適用用）
+    // 切り抜き前のオリジナル写真データ（背景透過の復元・再適用用）
     @Attribute(.externalStorage) public var originalImageDatas: [Data]?
-    
+
     // 裏面ラベル写真データ
     @Attribute(.externalStorage) public var backImageDatas: [Data]?
 
-    // 背景をくり抜いたかどうか（デフォルトは true）
+    // 背景をくり抜いたかどうか
     public var isBackgroundRemoved: Bool = true
 
     // 酒種ごとの固有メタデータをJSON形式で保持
@@ -59,7 +61,7 @@ public final class BeverageItem {
         vintage: String? = nil,
         alcoholByVolume: Double? = nil,
         price: Int? = nil,
-        storageLocation: String = "ワインセラー",
+        storageLocation: String = AppConstants.Storage.defaultStorageName,
         purchaseDate: Date? = nil,
         gridRow: Int? = nil,
         gridColumn: Int? = nil,

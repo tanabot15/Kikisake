@@ -15,6 +15,20 @@ public struct CustomSlider: View {
     var step: Double = 0.5
     var unit: String = ""
 
+    public init(
+        title: String,
+        value: Binding<Double>,
+        range: ClosedRange<Double> = 0.0...5.0,
+        step: Double = 0.5,
+        unit: String = ""
+    ) {
+        self.title = title
+        self._value = value
+        self.range = range
+        self.step = step
+        self.unit = unit
+    }
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
@@ -22,15 +36,15 @@ public struct CustomSlider: View {
                     .font(.subheadline)
                     .fontWeight(.medium)
                     .foregroundStyle(.primary)
-                
+
                 Spacer()
-                
+
                 Text(String(format: "%.1f %@", value, unit))
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundStyle(Color.accentColor)
             }
-            
+
             Slider(value: $value, in: range, step: step)
                 .tint(.accentColor)
         }
