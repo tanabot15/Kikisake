@@ -1,5 +1,7 @@
+//
 //  SettingsView.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
@@ -9,213 +11,57 @@ public struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable private var appState = AppState.shared
     @State private var viewModel = SettingsViewModel()
-    
+
     @State private var showOnboarding: Bool = false
     @State private var showLoadedAlert: Bool = false
     @State private var showPaywall: Bool = false
-    @State private var showCustomizationSheet: Bool = false // ✨ カスタマイズ画面用シートの状態
-
-    // MARK: - データ削除確認用 State
+    @State private var showCustomizationSheet: Bool = false
     @State private var showDeleteConfirmation: Bool = false
-
-    // MARK: - バックアップ/リストア用 State
-    @State private var isExporting: Bool = false
-    @State private var exportDocument: BackupFileDocument? = nil
-    @State private var exportFileName: String = ""
-
     @State private var isImporting: Bool = false
-    @State private var showRestoreConfirmation: Bool = false
-    @State private var selectedImportURL: URL? = nil
 
-    @State private var isProcessing: Bool = false
-    @State private var alertTitle: String = ""
-    @State private var alertMessage: String = ""
-    @State private var showAlert: Bool = false
+    private let privacyPolicyURL = URL(
+        string: "https://sites.google.com/view/kikisake/%E3%83%97%E3%83%A9%E3%82%A4%E3%83%90%E3%82%B7%E3%83%BC-%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC"
+    )!
 
     public var body: some View {
         NavigationStack {
             Form {
-                // MARK: - 0. Kikisake Pro 案内カード
-                Section {
-                    Button {
-                        showPaywall = true
-                    } label: {
-                        HStack(spacing: 16) {
-                            Image(systemName: "crown.fill")
-                                .font(.title2)
-                                .foregroundStyle(.white)
+                proBannerSection
+                appSettingsSection
+                dataManagementSection
+                appInfoSection
 
-                            VStack(alignment: .leading, spacing: 3) {
-                                Text(appState.isProVersion ? "Kikisake Pro Active" : "Upgrade to Kikisake Pro")
-                                    .font(.headline)
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.white)
-
-                                Text(appState.isProVersion ? "すべての機能が無制限に開放されています" : "無制限保管場所 • プロ向けタグ • 広告非表示")
-                                    .font(.caption)
-                                    .fontWeight(.medium)
-                                    .foregroundStyle(.white.opacity(0.9))
-                            }
-
-                            Spacer()
-
-                            if !appState.isProVersion {
-                                Image(systemName: "chevron.right")
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.white)
-                            }
-                        }
-                        .padding(.vertical, 4)
-                    }
-                    .buttonStyle(.plain)
-                    .listRowBackground(
-                        LinearGradient(
-                            colors: [Color.orange, Color(red: 0.95, green: 0.35, blue: 0.1)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                }
-
-                // MARK: - 1. アプリ設定
-                Section("アプリ設定") {
-                    Picker("外観モード", selection: $appState.appearanceMode) {
-                        ForEach(AppearanceMode.allCases) { mode in
-                            Text(mode.localizedName).tag(mode)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    
-                    Button {
-                        viewModel.openDeviceSettings()
-                    } label: {
-                        HStack {
-                            Text("言語 / Language")
-                            Spacer()
-                            Text(viewModel.currentLanguageDisplayName)
-                                .foregroundStyle(.secondary)
-                            Image(systemName: "chevron.right")
-                                .font(.caption)
-                                .foregroundStyle(.tertiary)
-                        }
-                    }
-                    .foregroundStyle(.primary)
-
-                    // ✨ Pro限定：テイスティング選択肢のカスタマイズメニュー
-                    Button {
-                        if appState.isProVersion {
-                            showCustomizationSheet = true
-                        } else {
-                            showPaywall = true
-                        }
-                    } label: {
-                        HStack {
-                            Text("テイスティング選択肢のカスタマイズ")
-                            Spacer()
-                            if !appState.isProVersion {
-                                proBadge
-                            } else {
-                                Image(systemName: "chevron.right")
-                                    .font(.caption)
-                                    .foregroundStyle(.tertiary)
-                            }
-                        }
-                    }
-                    .foregroundStyle(.primary)
-                }
-
-                // MARK: - 2. データ・バックアップ管理
-                Section("データ管理・バックアップ") {
-                    Button {
-                        showOnboarding = true
-                    } label: {
-                        Text("使い方ガイドを見る")
-                    }
-
-                    Button {
-                        PreviewSampleLoader.insertSamples(into: modelContext)
-                        showLoadedAlert = true
-                    } label: {
-                        Text("サンプルデータを読み込む")
-                    }
-
-                    // バックアップ（エクスポート）ボタン
-                    Button {
-                        handleExport()
-                    } label: {
-                        Text("バックアップを作成する (JSON)")
-                    }
-
-                    // リストア（インポート）ボタン
-                    Button {
-                        isImporting = true
-                    } label: {
-                        Text("データを復元する")
-                    }
-
-                    // すべてのデータを削除するボタン
-                    Button(role: .destructive) {
-                        showDeleteConfirmation = true
-                    } label: {
-                        Text("すべてのデータを削除する")
-                    }
-                }
-
-                // MARK: - 3. アプリ情報
-                Section("アプリ情報") {
-                    LabeledContent("バージョン", value: viewModel.appVersion)
-                    
-                    Link(destination: URL(string: "https://sites.google.com/view/kikisake/%E3%83%97%E3%83%A9%E3%82%A4%E3%83%90%E3%82%B7%E3%83%BC-%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC")!) {
-                        HStack {
-                            Text("プライバシーポリシー")
-                            Spacer()
-                            Image(systemName: "safari")
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    .foregroundStyle(.primary)
-                }
-
-                // MARK: - 4. デバッグ用（Preview・テスト用）
                 #if DEBUG
-                Section(header: Text("デバッグ機能")) {
-                    Toggle("isProVersion 強制ON/OFF", isOn: $appState.isProVersion)
+                Section(String(localized: "デバッグ機能")) {
+                    Toggle(String(localized: "isProVersion 強制ON/OFF"), isOn: $appState.isProVersion)
                 }
                 #endif
             }
-            .navigationTitle("設定")
+            .navigationTitle(String(localized: "設定"))
             .navigationBarTitleDisplayMode(.inline)
-            .disabled(isProcessing)
+            .disabled(viewModel.isProcessing)
             .overlay {
-                if isProcessing {
-                    ZStack {
-                        Color.black.opacity(0.3).ignoresSafeArea()
-                        VStack(spacing: 12) {
-                            ProgressView()
-                                .controlSize(.large)
-                                .tint(.white)
-                            Text("処理中...")
-                                .font(.headline)
-                                .foregroundStyle(.white)
-                        }
-                        .padding(24)
-                        .background(Color(.darkGray))
-                        .cornerRadius(16)
-                    }
+                if viewModel.isProcessing {
+                    processingOverlay
                 }
             }
             .fileExporter(
-                isPresented: $isExporting,
-                document: exportDocument,
+                isPresented: $viewModel.isExporting,
+                document: viewModel.exportDocument,
                 contentType: .json,
-                defaultFilename: exportFileName
+                defaultFilename: viewModel.exportFileName
             ) { result in
                 switch result {
                 case .success(let url):
-                    presentAlert(title: "成功", message: "バックアップを正常に保存しました:\n\(url.lastPathComponent)")
+                    viewModel.presentAlert(
+                        title: String(localized: "成功"),
+                        message: String(format: String(localized: "バックアップを正常に保存しました:\n%@"), url.lastPathComponent)
+                    )
                 case .failure(let error):
-                    presentAlert(title: "エラー", message: "ファイルの書き出しに失敗しました: \(error.localizedDescription)")
+                    viewModel.presentAlert(
+                        title: String(localized: "エラー"),
+                        message: String(format: String(localized: "ファイルの書き出しに失敗しました: %@"), error.localizedDescription)
+                    )
                 }
             }
             .fileImporter(
@@ -225,39 +71,38 @@ public struct SettingsView: View {
             ) { result in
                 switch result {
                 case .success(let urls):
-                    guard let url = urls.first else { return }
-                    selectedImportURL = url
-                    showRestoreConfirmation = true
+                    viewModel.prepareImport(from: urls)
                 case .failure(let error):
-                    presentAlert(title: "エラー", message: "ファイルの読み込みに失敗しました: \(error.localizedDescription)")
+                    viewModel.presentAlert(
+                        title: String(localized: "エラー"),
+                        message: String(format: String(localized: "ファイルの読み込みに失敗しました: %@"), error.localizedDescription)
+                    )
                 }
             }
             .confirmationDialog(
-                "データの復元",
-                isPresented: $showRestoreConfirmation,
+                String(localized: "データの復元"),
+                isPresented: $viewModel.showRestoreConfirmation,
                 titleVisibility: .visible
             ) {
-                Button("既存データを上書きして復元", role: .destructive) {
-                    executeRestore(strategy: .replaceAll)
+                Button(String(localized: "既存データを上書きして復元"), role: .destructive) {
+                    Task { await viewModel.restoreBackup(strategy: .replaceAll, modelContext: modelContext) }
                 }
-                Button("既存データにマージ", role: .none) {
-                    executeRestore(strategy: .merge)
+                Button(String(localized: "既存データにマージ"), role: .none) {
+                    Task { await viewModel.restoreBackup(strategy: .merge, modelContext: modelContext) }
                 }
-                Button("キャンセル", role: .cancel) {
-                    selectedImportURL = nil
+                Button(String(localized: "キャンセル"), role: .cancel) {
+                    viewModel.selectedImportURL = nil
                 }
             } message: {
-                Text("「上書き復元」を選択すると、現在のアプリ内の全データが上書きされます。この操作は取り消せません。")
+                Text(String(localized: "「上書き復元」を選択すると、現在のアプリ内の全データが上書きされます。この操作は取り消せません。"))
             }
-            // 💡 すべてのデータ削除を確認するアラート（ポップアップ）
-            .alert("すべてのデータを削除", isPresented: $showDeleteConfirmation) {
-                Button("削除する", role: .destructive) {
+            .alert(String(localized: "すべてのデータを削除"), isPresented: $showDeleteConfirmation) {
+                Button(String(localized: "削除する"), role: .destructive) {
                     viewModel.deleteAllData(using: modelContext)
-                    presentAlert(title: "完了", message: "すべてのデータが削除されました。")
                 }
-                Button("キャンセル", role: .cancel) {}
+                Button(String(localized: "キャンセル"), role: .cancel) {}
             } message: {
-                Text("登録したすべての銘柄、テイスティング記録、保管場所が完全に削除されます。この操作は取り消せません。")
+                Text(String(localized: "登録したすべての銘柄、テイスティング記録、保管場所が完全に削除されます。この操作は取り消せません。"))
             }
             .sheet(isPresented: $showOnboarding) {
                 BoardingView(isPresented: $showOnboarding)
@@ -268,71 +113,174 @@ public struct SettingsView: View {
             .sheet(isPresented: $showCustomizationSheet) {
                 TastingCustomizationView()
             }
-            .alert("サンプルデータの読み込み", isPresented: $showLoadedAlert) {
-                Button("OK", role: .cancel) {}
+            .alert(String(localized: "サンプルデータの読み込み"), isPresented: $showLoadedAlert) {
+                Button(String(localized: "OK"), role: .cancel) {}
             } message: {
-                Text("サンプルデータが追加されました。")
+                Text(String(localized: "サンプルデータが追加されました。"))
             }
-            .alert(alertTitle, isPresented: $showAlert) {
-                Button("OK", role: .cancel) {}
+            .alert(viewModel.alertTitle, isPresented: $viewModel.showAlert) {
+                Button(String(localized: "OK"), role: .cancel) {}
             } message: {
-                Text(alertMessage)
+                Text(viewModel.alertMessage)
             }
         }
     }
 
-    // MARK: - Action Handlers
+    // MARK: - Sections
 
-    private func handleExport() {
-        isProcessing = true
-        Task {
-            do {
-                let data = try BackupManager.shared.exportData(modelContext: modelContext)
-                exportDocument = BackupFileDocument(payloadData: data)
-                exportFileName = BackupManager.shared.generateBackupFileName()
-                isProcessing = false
-                isExporting = true
-            } catch {
-                isProcessing = false
-                presentAlert(title: "エクスポート失敗", message: error.localizedDescription)
-            }
-        }
-    }
+    private var proBannerSection: some View {
+        Section {
+            Button {
+                showPaywall = true
+            } label: {
+                HStack(spacing: 16) {
+                    Image(systemName: "crown.fill")
+                        .font(.title2)
+                        .foregroundStyle(.white)
 
-    private func executeRestore(strategy: RestoreStrategy) {
-        guard let url = selectedImportURL else { return }
-        isProcessing = true
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(appState.isProVersion ? "Kikisake Pro Active" : "Upgrade to Kikisake Pro")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.white)
 
-        Task {
-            do {
-                // セキュリティスコープアクセスの取得（Filesアプリ等の安全なパーミッション処理）
-                guard url.startAccessingSecurityScopedResource() else {
-                    throw BackupError.importFailed("ファイルアクセスの権限が取得できませんでした。")
+                        Text(
+                            appState.isProVersion
+                                ? String(localized: "すべての機能が無制限に開放されています")
+                                : String(localized: "無制限保管場所 • プロ向けタグ • 広告非表示")
+                        )
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.white.opacity(0.9))
+                    }
+
+                    Spacer()
+
+                    if !appState.isProVersion {
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.white)
+                    }
                 }
-                defer { url.stopAccessingSecurityScopedResource() }
+                .padding(.vertical, 4)
+            }
+            .buttonStyle(.plain)
+            .listRowBackground(
+                LinearGradient(
+                    colors: [Color.orange, Color(red: 0.95, green: 0.35, blue: 0.1)],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+        }
+    }
 
-                let data = try Data(contentsOf: url)
-                try BackupManager.shared.importData(from: data, strategy: strategy, modelContext: modelContext)
+    private var appSettingsSection: some View {
+        Section(String(localized: "アプリ設定")) {
+            Picker(String(localized: "外観モード"), selection: $appState.appearanceMode) {
+                ForEach(AppearanceMode.allCases) { mode in
+                    Text(mode.localizedName).tag(mode)
+                }
+            }
+            .pickerStyle(.menu)
 
-                isProcessing = false
-                selectedImportURL = nil
-                presentAlert(title: "復元完了", message: "バックアップからの復元が正常に完了しました。")
-            } catch {
-                isProcessing = false
-                selectedImportURL = nil
-                presentAlert(title: "リストア失敗", message: error.localizedDescription)
+            Button {
+                viewModel.openDeviceSettings()
+            } label: {
+                HStack {
+                    Text(String(localized: "言語 / Language"))
+                    Spacer()
+                    Text(viewModel.currentLanguageDisplayName)
+                        .foregroundStyle(.secondary)
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+            }
+            .foregroundStyle(.primary)
+
+            Button {
+                if appState.isProVersion {
+                    showCustomizationSheet = true
+                } else {
+                    showPaywall = true
+                }
+            } label: {
+                HStack {
+                    Text(String(localized: "テイスティング選択肢のカスタマイズ"))
+                    Spacer()
+                    if !appState.isProVersion {
+                        proBadge
+                    } else {
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+            }
+            .foregroundStyle(.primary)
+        }
+    }
+
+    private var dataManagementSection: some View {
+        Section(String(localized: "データ管理・バックアップ")) {
+            Button(String(localized: "使い方ガイドを見る")) {
+                showOnboarding = true
+            }
+
+            Button(String(localized: "サンプルデータを読み込む")) {
+                PreviewSampleLoader.insertSamples(into: modelContext)
+                showLoadedAlert = true
+            }
+
+            Button(String(localized: "バックアップを作成する (JSON)")) {
+                Task { await viewModel.exportBackup(modelContext: modelContext) }
+            }
+
+            Button(String(localized: "データを復元する")) {
+                isImporting = true
+            }
+
+            Button(String(localized: "すべてのデータを削除する"), role: .destructive) {
+                showDeleteConfirmation = true
             }
         }
     }
 
-    private func presentAlert(title: String, message: String) {
-        alertTitle = title
-        alertMessage = message
-        showAlert = true
+    private var appInfoSection: some View {
+        Section(String(localized: "アプリ情報")) {
+            LabeledContent(String(localized: "バージョン"), value: viewModel.appVersion)
+
+            Link(destination: privacyPolicyURL) {
+                HStack {
+                    Text(String(localized: "プライバシーポリシー"))
+                    Spacer()
+                    Image(systemName: "safari")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .foregroundStyle(.primary)
+        }
     }
-    
-    // MARK: - UI Components for Pro Status
-    
+
+    private var processingOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.3).ignoresSafeArea()
+            VStack(spacing: 12) {
+                ProgressView()
+                    .controlSize(.large)
+                    .tint(.white)
+                Text(String(localized: "処理中..."))
+                    .font(.headline)
+                    .foregroundStyle(.white)
+            }
+            .padding(24)
+            .background(Color(.darkGray))
+            .cornerRadius(16)
+        }
+    }
+
     private var proBadge: some View {
         HStack(spacing: 3) {
             Image(systemName: "lock.fill")

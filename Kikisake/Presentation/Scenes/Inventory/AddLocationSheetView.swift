@@ -1,10 +1,12 @@
+//
 //  AddLocationSheetView.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
 
-/// 保管場所を追加するためのシートビュー
+/// Sheet view for adding a new storage location.
 public struct AddLocationSheetView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -12,8 +14,7 @@ public struct AddLocationSheetView: View {
     @State private var name: String = ""
     @State private var selectedType: StorageCategoryType = .cellar
     @State private var memo: String = ""
-    
-    // グリッド設定用のState（デフォルトで有効に設定）
+
     @State private var isGridEnabled: Bool = true
     @State private var gridRows: Int = 4
     @State private var gridColumns: Int = 6
@@ -40,10 +41,9 @@ public struct AddLocationSheetView: View {
                     TextField(String(localized: "例: 温度14度設定"), text: $memo)
                 }
 
-                // セラー構造（グリッド）設定セクション
                 Section(String(localized: "セラー構造・棚番マッピング")) {
                     Toggle(String(localized: "グリッドで視覚管理する"), isOn: $isGridEnabled)
-                    
+
                     if isGridEnabled {
                         Stepper(String(format: String(localized: "段数（行）: %d段"), gridRows), value: $gridRows, in: 1...10)
                         Stepper(String(format: String(localized: "1段あたりの本数（列）: %d本"), gridColumns), value: $gridColumns, in: 1...12)
@@ -60,22 +60,29 @@ public struct AddLocationSheetView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(String(localized: "追加")) {
-                        let newLoc = StorageLocation(
-                            name: name,
-                            type: selectedType,
-                            memo: memo,
-                            isGridEnabled: isGridEnabled,
-                            gridRows: gridRows,
-                            gridColumns: gridColumns
-                        )
-                        modelContext.insert(newLoc)
-                        try? modelContext.save()
-                        dismiss()
+                        createLocation()
                     }
                     .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }
         }
+    }
+
+    private func createLocation() {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty else { return }
+
+        let newLocation = StorageLocation(
+            name: trimmedName,
+            type: selectedType,
+            memo: memo,
+            isGridEnabled: isGridEnabled,
+            gridRows: gridRows,
+            gridColumns: gridColumns
+        )
+        modelContext.insert(newLocation)
+        try? modelContext.save()
+        dismiss()
     }
 }
 

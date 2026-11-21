@@ -1,9 +1,12 @@
-//  LogComparisonAnalyticsView.swift
+//
+//  LogComparisonView.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
 
+/// Side-by-side tasting log comparison view.
 public struct LogComparisonView: View {
     @Bindable var viewModel: AnalyticsViewModel
     let allLogs: [TastingLog]
@@ -20,33 +23,49 @@ public struct LogComparisonView: View {
         viewModel.comparisonCandidateLogs(from: allLogs)
     }
 
+    private var leftLog: TastingLog? {
+        if let id = viewModel.comparisonLeftLogID,
+           let matched = candidateLogs.first(where: { $0.id == id }) {
+            return matched
+        }
+        return candidateLogs.first
+    }
+
+    private var rightLog: TastingLog? {
+        if let id = viewModel.comparisonRightLogID,
+           let matched = candidateLogs.first(where: { $0.id == id }) {
+            return matched
+        }
+        return candidateLogs.dropFirst().first ?? candidateLogs.first
+    }
+
     public var body: some View {
         VStack(spacing: 16) {
-            // 1. 上部：ログ選択カード（左右）
             HStack(spacing: 12) {
                 logSelectorCard(
                     title: String(localized: "左のログ"),
-                    selectedLog: leftLog(from: candidateLogs),
+                    selectedLog: leftLog,
                     action: { isShowingLeftPicker = true }
                 )
-                
+
                 logSelectorCard(
                     title: String(localized: "右のログ"),
-                    selectedLog: rightLog(from: candidateLogs),
+                    selectedLog: rightLog,
                     action: { isShowingRightPicker = true }
                 )
             }
 
-            // 2. 比較コンテンツ
-            if let left = leftLog(from: candidateLogs), let right = rightLog(from: candidateLogs) {
+            if let left = leftLog, let right = rightLog {
                 comparisonContent(left: left, right: right)
             } else {
                 ContentUnavailableView(
                     String(localized: "該当する比較ログがありません"),
                     systemImage: "arrow.left.arrow.right.circle",
-                    description: Text(viewModel.hasActiveFilters
-                        ? String(localized: "フィルター条件を変更してみてください。")
-                        : String(localized: "上のボタンから左右それぞれのログを選択してください。"))
+                    description: Text(
+                        viewModel.hasActiveFilters
+                            ? String(localized: "フィルター条件を変更してみてください。")
+                            : String(localized: "上のボタンから左右それぞれのログを選択してください。")
+                    )
                 )
                 .padding(.top, 40)
             }
@@ -57,22 +76,6 @@ public struct LogComparisonView: View {
         .sheet(isPresented: $isShowingRightPicker) {
             LogSelectionSheet(allLogs: candidateLogs, selectedLogID: $viewModel.comparisonRightLogID)
         }
-    }
-
-    private func leftLog(from logs: [TastingLog]) -> TastingLog? {
-        if let id = viewModel.comparisonLeftLogID,
-           let matched = logs.first(where: { $0.id == id }) {
-            return matched
-        }
-        return logs.first // デフォルトで候補の先頭ログ
-    }
-
-    private func rightLog(from logs: [TastingLog]) -> TastingLog? {
-        if let id = viewModel.comparisonRightLogID,
-           let matched = logs.first(where: { $0.id == id }) {
-            return matched
-        }
-        return logs.dropFirst().first ?? logs.first // デフォルトで2番目、なければ先頭
     }
 
     private func logSelectorCard(title: String, selectedLog: TastingLog?, action: @escaping () -> Void) -> some View {
@@ -95,7 +98,7 @@ public struct LogComparisonView: View {
                         .fontWeight(.semibold)
                         .foregroundStyle(.primary)
                         .lineLimit(1)
-                    
+
                     HStack(spacing: 4) {
                         Image(systemName: "star.fill")
                             .font(.system(size: 9))
@@ -127,7 +130,6 @@ public struct LogComparisonView: View {
     @ViewBuilder
     private func comparisonContent(left: TastingLog, right: TastingLog) -> some View {
         VStack(spacing: 20) {
-            // A. ボトル・ラベル写真比較
             comparisonCard(title: String(localized: "ボトル写真")) {
                 HStack(spacing: 12) {
                     heroImageThumbnail(for: left)
@@ -135,45 +137,55 @@ public struct LogComparisonView: View {
                 }
             }
 
-            // B. 総合スコア・評価比較
             comparisonCard(title: String(localized: "評価")) {
-                VStack(spacing: 10) {
-                    comparisonRow(
-                        label: String(localized: "総合スコア"),
-                        leftView: AnyView(scoreStarsView(for: left.rating)),
-                        rightView: AnyView(scoreStarsView(for: right.rating))
-                    )
+                comparisonRow(label: String(localized: "総合スコア")) {
+                    scoreStarsView(for: left.rating)
+                } rightContent: {
+                    scoreStarsView(for: right.rating)
                 }
             }
 
-            // C. 基本情報比較
             comparisonCard(title: String(localized: "基本情報")) {
                 VStack(spacing: 10) {
-                    comparisonRow(label: String(localized: "酒種"), leftVal: left.item?.category.displayName ?? "-", rightVal: right.item?.category.displayName ?? "-")
-                    comparisonRow(label: String(localized: "生産者"), leftVal: left.item?.producer ?? "-", rightVal: right.item?.producer ?? "-")
-                    comparisonRow(label: String(localized: "産地"), leftVal: left.item?.region ?? "-", rightVal: right.item?.region ?? "-")
-                    comparisonRow(label: String(localized: "価格"), leftVal: left.item?.price.map { "\($0) 円" } ?? "-", rightVal: right.item?.price.map { "\($0) 円" } ?? "-")
+                    comparisonTextRow(
+                        label: String(localized: "酒種"),
+                        leftVal: left.item?.category.displayName ?? "-",
+                        rightVal: right.item?.category.displayName ?? "-"
+                    )
+                    comparisonTextRow(
+                        label: String(localized: "生産者"),
+                        leftVal: left.item?.producer ?? "-",
+                        rightVal: right.item?.producer ?? "-"
+                    )
+                    comparisonTextRow(
+                        label: String(localized: "産地"),
+                        leftVal: left.item?.region ?? "-",
+                        rightVal: right.item?.region ?? "-"
+                    )
+                    comparisonTextRow(
+                        label: String(localized: "価格"),
+                        leftVal: left.item?.price.map { "\($0) 円" } ?? "-",
+                        rightVal: right.item?.price.map { "\($0) 円" } ?? "-"
+                    )
                 }
             }
 
-            // D. 外観・カラー・香り比較
             comparisonCard(title: String(localized: "外観・香り")) {
                 VStack(spacing: 10) {
-                    comparisonRow(
-                        label: String(localized: "外観"),
-                        leftView: AnyView(colorChipView(colorHex: left.appearanceColorHex, note: left.appearanceNotes)),
-                        rightView: AnyView(colorChipView(colorHex: right.appearanceColorHex, note: right.appearanceNotes))
-                    )
+                    comparisonRow(label: String(localized: "外観")) {
+                        colorChipView(colorHex: left.appearanceColorHex, note: left.appearanceNotes)
+                    } rightContent: {
+                        colorChipView(colorHex: right.appearanceColorHex, note: right.appearanceNotes)
+                    }
                     Divider()
-                    comparisonRow(
-                        label: String(localized: "香りタグ"),
-                        leftView: AnyView(tagFlow(tags: left.aromaTags)),
-                        rightView: AnyView(tagFlow(tags: right.aromaTags))
-                    )
+                    comparisonRow(label: String(localized: "香りタグ")) {
+                        tagFlow(tags: left.aromaTags)
+                    } rightContent: {
+                        tagFlow(tags: right.aromaTags)
+                    }
                 }
             }
 
-            // E. 味わいレーダーチャート並列比較
             comparisonCard(title: String(localized: "テイストバランス")) {
                 HStack(spacing: 12) {
                     TasteRadarCardView(log: left, isCompactMode: true)
@@ -181,7 +193,6 @@ public struct LogComparisonView: View {
                 }
             }
 
-            // F. マトリクス分析並列比較
             comparisonCard(title: String(localized: "マトリクス位置")) {
                 HStack(spacing: 12) {
                     MatrixAnalysisCardView(log: left, isCompactMode: true)
@@ -189,12 +200,19 @@ public struct LogComparisonView: View {
                 }
             }
 
-            // G. ペアリング・メモ比較
             comparisonCard(title: String(localized: "ペアリング等")) {
                 VStack(spacing: 10) {
-                    comparisonRow(label: String(localized: "ペアリング"), leftVal: left.pairing ?? "-", rightVal: right.pairing ?? "-")
+                    comparisonTextRow(
+                        label: String(localized: "ペアリング"),
+                        leftVal: left.pairing ?? "-",
+                        rightVal: right.pairing ?? "-"
+                    )
                     Divider()
-                    comparisonRow(label: String(localized: "メモ"), leftVal: left.memo.isEmpty ? "-" : left.memo, rightVal: right.memo.isEmpty ? "-" : right.memo)
+                    comparisonTextRow(
+                        label: String(localized: "メモ"),
+                        leftVal: left.memo.isEmpty ? "-" : left.memo,
+                        rightVal: right.memo.isEmpty ? "-" : right.memo
+                    )
                 }
             }
         }
@@ -227,7 +245,6 @@ public struct LogComparisonView: View {
         .frame(maxWidth: .infinity)
     }
 
-    @ViewBuilder
     private func scoreStarsView(for rating: Double) -> some View {
         VStack(spacing: 2) {
             HStack(spacing: 2) {
@@ -244,7 +261,6 @@ public struct LogComparisonView: View {
         .frame(maxWidth: .infinity, alignment: .center)
     }
 
-    @ViewBuilder
     private func colorChipView(colorHex: String, note: String) -> some View {
         HStack(spacing: 6) {
             Circle()
@@ -286,40 +302,35 @@ public struct LogComparisonView: View {
         .shadow(color: Color.black.opacity(0.03), radius: 6, x: 0, y: 2)
     }
 
-    private func comparisonRow(label: String, leftVal: String, rightVal: String) -> some View {
-        HStack {
+    private func comparisonTextRow(label: String, leftVal: String, rightVal: String) -> some View {
+        comparisonRow(label: label) {
             Text(leftVal)
                 .font(.subheadline)
-                .frame(maxWidth: .infinity, alignment: .center)
                 .multilineTextAlignment(.center)
-            
-            Text(label)
-                .font(.caption2)
-                .fontWeight(.bold)
-                .foregroundStyle(.secondary)
-                .frame(width: 76, alignment: .center)
-                .multilineTextAlignment(.center)
-            
+        } rightContent: {
             Text(rightVal)
                 .font(.subheadline)
-                .frame(maxWidth: .infinity, alignment: .center)
                 .multilineTextAlignment(.center)
         }
     }
 
-    private func comparisonRow(label: String, leftView: AnyView, rightView: AnyView) -> some View {
+    private func comparisonRow<LeftContent: View, RightContent: View>(
+        label: String,
+        @ViewBuilder leftContent: () -> LeftContent,
+        @ViewBuilder rightContent: () -> RightContent
+    ) -> some View {
         HStack {
-            leftView
+            leftContent()
                 .frame(maxWidth: .infinity, alignment: .center)
-            
+
             Text(label)
                 .font(.caption2)
                 .fontWeight(.bold)
                 .foregroundStyle(.secondary)
                 .frame(width: 76, alignment: .center)
                 .multilineTextAlignment(.center)
-            
-            rightView
+
+            rightContent()
                 .frame(maxWidth: .infinity, alignment: .center)
         }
     }
@@ -347,122 +358,85 @@ public struct LogComparisonView: View {
     }
 }
 
-/// ログ選択用シート
-public struct LogSelectionSheet: View {
-    @Environment(\.dismiss) private var dismiss
-    let allLogs: [TastingLog]
-    @Binding var selectedLogID: UUID?
-
-    public var body: some View {
-        NavigationStack {
-            List(allLogs) { log in
-                Button {
-                    selectedLogID = log.id
-                    dismiss()
-                } label: {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(log.item?.name ?? String(localized: "不明な銘柄"))
-                                .font(.headline)
-                                .foregroundStyle(.primary)
-                            if let producer = log.item?.producer, !producer.isEmpty {
-                                Text(producer)
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        Spacer()
-                        HStack(spacing: 2) {
-                            Image(systemName: "star.fill")
-                                .font(.caption2)
-                                .foregroundStyle(.orange)
-                            Text(String(format: "%.1f", log.rating))
-                                .font(.subheadline)
-                                .fontWeight(.bold)
-                        }
-                    }
-                }
-            }
-            .navigationTitle(String(localized: "比較するログを選択"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(String(localized: "キャンセル")) {
-                        dismiss()
-                    }
-                }
-            }
-        }
-    }
+#Preview {
+    LogComparisonViewPreviewHost()
 }
 
-#Preview {
-    let schema = Schema([BeverageItem.self, TastingLog.self])
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: schema, configurations: [config])
+private struct LogComparisonViewPreviewHost: View {
+    private let container: ModelContainer
+    private let logs: [TastingLog]
 
-    let wineItem = BeverageItem(
-        name: "Barolo DOCG 2018",
-        producer: "Prunotto",
-        category: .wine,
-        region: "ピエモンテ, イタリア",
-        vintage: "2018",
-        price: 8500
-    )
-    let wineLog = TastingLog(
-        rating: 4.8,
-        appearanceNotes: "ガーネット",
-        appearanceColorHex: "#802633",
-        aromaTags: ["チェリー", "樽香"],
-        sweetness: 2.0,
-        acidity: 4.2,
-        tannin: 4.5,
-        body: 4.5,
-        finishLength: 4.8,
-        pairing: "和牛のローストビーフ",
-        memo: "素晴らしいネッビオーロ。",
-        isEvaluated: true,
-        item: wineItem
-    )
+    init() {
+        let schema = Schema([BeverageItem.self, TastingLog.self])
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let modelContainer = try! ModelContainer(for: schema, configurations: [config])
 
-    let sakeItem = BeverageItem(
-        name: "新政 No.6",
-        producer: "新政酒造",
-        category: .sake,
-        region: "秋田県",
-        vintage: "2024",
-        price: 3200
-    )
-    let sakeLog = TastingLog(
-        rating: 4.6,
-        appearanceNotes: "クリスタル",
-        appearanceColorHex: "#E6F2FF",
-        aromaTags: ["洋梨", "メロン"],
-        sweetness: 3.2,
-        acidity: 3.8,
-        body: 3.0,
-        finishLength: 4.0,
-        pairing: "白身魚のカルパッチョ",
-        memo: "ジューシーな酸味。",
-        isEvaluated: true,
-        item: sakeItem
-    )
+        let wineItem = BeverageItem(
+            name: "Barolo DOCG 2018",
+            producer: "Prunotto",
+            category: .wine,
+            region: "ピエモンテ, イタリア",
+            vintage: "2018",
+            price: 8500
+        )
+        let wineLog = TastingLog(
+            rating: 4.8,
+            appearanceNotes: "ガーネット",
+            appearanceColorHex: "#802633",
+            aromaTags: ["チェリー", "樽香"],
+            sweetness: 2.0,
+            acidity: 4.2,
+            tannin: 4.5,
+            body: 4.5,
+            finishLength: 4.8,
+            pairing: "和牛のローストビーフ",
+            memo: "素晴らしいネッビオーロ。",
+            isEvaluated: true,
+            item: wineItem
+        )
 
-    container.mainContext.insert(wineItem)
-    container.mainContext.insert(wineLog)
-    container.mainContext.insert(sakeItem)
-    container.mainContext.insert(sakeLog)
+        let sakeItem = BeverageItem(
+            name: "新政 No.6",
+            producer: "新政酒造",
+            category: .sake,
+            region: "秋田県",
+            vintage: "2024",
+            price: 3200
+        )
+        let sakeLog = TastingLog(
+            rating: 4.6,
+            appearanceNotes: "クリスタル",
+            appearanceColorHex: "#E6F2FF",
+            aromaTags: ["洋梨", "メロン"],
+            sweetness: 3.2,
+            acidity: 3.8,
+            body: 3.0,
+            finishLength: 4.0,
+            pairing: "白身魚のカルパッチョ",
+            memo: "ジューシーな酸味。",
+            isEvaluated: true,
+            item: sakeItem
+        )
 
-    let viewModel = AnalyticsViewModel()
+        modelContainer.mainContext.insert(wineItem)
+        modelContainer.mainContext.insert(wineLog)
+        modelContainer.mainContext.insert(sakeItem)
+        modelContainer.mainContext.insert(sakeLog)
 
-    return NavigationStack {
-        ScrollView {
-            LogComparisonView(viewModel: viewModel, allLogs: [wineLog, sakeLog])
-                .padding()
-        }
-        .background(Color(.systemGroupedBackground))
-        .navigationTitle("ログ比較")
-        .navigationBarTitleDisplayMode(.inline)
+        self.container = modelContainer
+        self.logs = [wineLog, sakeLog]
     }
-    .modelContainer(container)
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                LogComparisonView(viewModel: AnalyticsViewModel(), allLogs: logs)
+                    .padding()
+            }
+            .background(Color(.systemGroupedBackground))
+            .navigationTitle("ログ比較")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .modelContainer(container)
+    }
 }

@@ -1,10 +1,12 @@
+//
 //  InventoryFilterSheet.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
 
-/// 在庫管理画面専用のフィルター設定シート
+/// Filter configuration sheet dedicated to InventoryView.
 public struct InventoryFilterSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var viewModel: InventoryViewModel
@@ -18,10 +20,9 @@ public struct InventoryFilterSheet: View {
     public var body: some View {
         NavigationStack {
             Form {
-                // 1. 保管場所の種類 (StorageCategoryType)
                 Section(String(localized: "保管場所の種類")) {
                     Picker(String(localized: "保管場所の種類"), selection: $viewModel.selectedStorageCategoryType) {
-                        Text("すべて").tag(StorageCategoryType?.none)
+                        Text(String(localized: "すべて")).tag(StorageCategoryType?.none)
                         ForEach(StorageCategoryType.allCases) { type in
                             Text(type.localizedName).tag(StorageCategoryType?.some(type))
                         }
@@ -29,10 +30,9 @@ public struct InventoryFilterSheet: View {
                     .pickerStyle(.menu)
                 }
 
-                // 2. 酒種 (categoryRawValue)
                 Section(String(localized: "酒種 (カテゴリ)")) {
                     Picker(String(localized: "酒種を選択"), selection: $viewModel.selectedCategory) {
-                        Text("すべて").tag(BeverageCategory?.none)
+                        Text(String(localized: "すべて")).tag(BeverageCategory?.none)
                         ForEach(BeverageCategory.allCases, id: \.self) { category in
                             Text(category.displayName).tag(BeverageCategory?.some(category))
                         }
@@ -43,13 +43,12 @@ public struct InventoryFilterSheet: View {
                     }
                 }
 
-                // 3. 選択された酒種に応じたサブタイプ
                 if let category = viewModel.selectedCategory {
                     Section(subCategorySectionTitle(for: category)) {
                         let subCategories = viewModel.availableSubCategories(from: allItems)
-                        
+
                         Picker(String(localized: "サブタイプを選択"), selection: $viewModel.selectedSubCategory) {
-                            Text("すべて").tag(String?.none)
+                            Text(String(localized: "すべて")).tag(String?.none)
                             ForEach(subCategories, id: \.self) { sub in
                                 Text(sub).tag(String?.some(sub))
                             }
@@ -58,14 +57,13 @@ public struct InventoryFilterSheet: View {
                     }
                 }
 
-                // 4. フィルターリセット
                 Section {
                     Button(role: .destructive) {
                         viewModel.resetFilters()
                     } label: {
                         HStack {
                             Spacer()
-                            Text("フィルター条件をリセット")
+                            Text(String(localized: "フィルター条件をリセット"))
                                 .fontWeight(.semibold)
                             Spacer()
                         }
@@ -95,26 +93,56 @@ public struct InventoryFilterSheet: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-    let encoder = JSONEncoder()
+    InventoryFilterSheetPreviewHost()
+}
 
-    // サンプルデータの作成
-    let wineMeta = WineSpecificMetadata(wineType: "赤", grapeVarieties: "カベルネ・ソーヴィニヨン", blendComponents: [], appellation: "Bordeaux")
-    let wineJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
-    let sampleWine = BeverageItem(name: "Chateau Margaux", producer: "Margaux", category: .wine, specificMetadataJSON: wineJSON)
+private struct InventoryFilterSheetPreviewHost: View {
+    private let container: ModelContainer
+    private let items: [BeverageItem]
 
-    let sakeMeta = SakeSpecificMetadata(specificName: "純米大吟醸", riceVariety: "山田錦", polishingRate: "40%", sakeMeterValue: "+4.0")
-    let sakeJSON = String(data: try! encoder.encode(sakeMeta), encoding: .utf8)
-    let sampleSake = BeverageItem(name: "獺祭 磨き二割三分", producer: "旭酒造", category: .sake, specificMetadataJSON: sakeJSON)
+    init() {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let modelContainer = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
+        let encoder = JSONEncoder()
 
-    container.mainContext.insert(sampleWine)
-    container.mainContext.insert(sampleSake)
+        let wineMeta = WineSpecificMetadata(
+            wineType: "赤",
+            grapeVarieties: "カベルネ・ソーヴィニヨン",
+            blendComponents: [],
+            appellation: "Bordeaux"
+        )
+        let wineJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
+        let sampleWine = BeverageItem(
+            name: "Chateau Margaux",
+            producer: "Margaux",
+            category: .wine,
+            specificMetadataJSON: wineJSON
+        )
 
-    // サンプルアイテムを取得してプレビューに渡す
-    let descriptor = FetchDescriptor<BeverageItem>()
-    let items = (try? container.mainContext.fetch(descriptor)) ?? []
+        let sakeMeta = SakeSpecificMetadata(
+            specificName: "純米大吟醸",
+            riceVariety: "山田錦",
+            polishingRate: "40%",
+            sakeMeterValue: "+4.0"
+        )
+        let sakeJSON = String(data: try! encoder.encode(sakeMeta), encoding: .utf8)
+        let sampleSake = BeverageItem(
+            name: "獺祭 磨き二割三分",
+            producer: "旭酒造",
+            category: .sake,
+            specificMetadataJSON: sakeJSON
+        )
 
-    return InventoryFilterSheet(viewModel: InventoryViewModel(), allItems: items)
-        .modelContainer(container)
+        modelContainer.mainContext.insert(sampleWine)
+        modelContainer.mainContext.insert(sampleSake)
+
+        let descriptor = FetchDescriptor<BeverageItem>()
+        self.items = (try? modelContainer.mainContext.fetch(descriptor)) ?? []
+        self.container = modelContainer
+    }
+
+    var body: some View {
+        InventoryFilterSheet(viewModel: InventoryViewModel(), allItems: items)
+            .modelContainer(container)
+    }
 }

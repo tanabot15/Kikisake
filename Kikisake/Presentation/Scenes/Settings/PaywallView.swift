@@ -1,25 +1,35 @@
+//
 //  PaywallView.swift
 //  Kikisake
+//
 
 import SwiftUI
 import StoreKit
 
-/// [Paywall] 買い切り版 Kikisake Pro の訴求＆購入案内シート
+/// Paywall sheet for purchasing one-time Kikisake Pro unlock via StoreKit 2.
 public struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable private var appState = AppState.shared
-    
+
     @State private var isPurchasing: Bool = false
     @State private var errorMessage: String? = nil
     @State private var showErrorAlert: Bool = false
     @State private var showSuccessAlert: Bool = false
 
-    /// ✨ StoreKit から取得したプロダクト情報と価格文字列
     @State private var storeProduct: Product? = nil
     @State private var isLoadingProduct: Bool = true
 
-    /// StoreKit 2 用の Non-Consumable プロダクトID
     private let productId = "com.suzuki.kenichiro.Kikisake.pro"
+
+    private let features: [(icon: String, title: String, subtitle: String)] = [
+        ("cabinet.fill", String(localized: "保管場所を無制限に"), String(localized: "複数セラー・サブ冷蔵庫など無制限に追加可能")),
+        ("chart.dots.scatter", String(localized: "プロ用マトリクス分析"), String(localized: "テイスティング記録を味わいマップにプロット")),
+        ("sparkles", String(localized: "プロ仕様のテイスティングタグ"), String(localized: "マニアックな色や香りの表現要素を全オープン")),
+        ("trophy.fill", String(localized: "コンプリート図鑑の全開放"), String(localized: "希少産地やマニアックな品種・酒米・スタイルを全て解放")),
+        ("slider.horizontal.3", String(localized: "テイスティング要素のカスタム"), String(localized: "オリジナルの香り・色・味わい表現の編集する")),
+        ("eye.slash.fill", String(localized: "広告の完全非表示"), String(localized: "バナー広告を排除し、洗練された記録空間を")),
+        ("infinity", String(localized: "完全買い切り"), String(localized: "追加課金・サブスクリプションは一切発生なし"))
+    ]
 
     public init() {}
 
@@ -27,146 +37,20 @@ public struct PaywallView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    // MARK: - ヘッダーアイコン＆タイトル
-                    VStack(spacing: 12) {
-                        ZStack {
-                            Circle()
-                                .fill(LinearGradient(
-                                    colors: [.yellow, .orange.opacity(0.7)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                ))
-                                .frame(width: 84, height: 84)
-                                .shadow(color: .yellow.opacity(0.3), radius: 10, x: 0, y: 5)
-
-                            Image(systemName: "crown.fill")
-                                .font(.system(size: 40))
-                                .foregroundStyle(.white)
-                        }
-                        .padding(.top, 16)
-
-                        Text("Kikisake Pro")
-                            .font(.title)
-                            .fontWeight(.black)
-
-                        Text("一度の買い切りで、プロ向けの機能を永久に無制限解放")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                    }
-                    
-                    Spacer()
-
-                    // MARK: - 機能比較リスト
-                    VStack(spacing: 14) {
-                        FeatureRow(
-                            icon: "cabinet.fill",
-                            title: "保管場所を無制限に",
-                            subtitle: "複数セラー・サブ冷蔵庫など無制限に追加可能"
-                        )
-
-                        FeatureRow(
-                            icon: "chart.dots.scatter",
-                            title: "プロ用マトリクス分析",
-                            subtitle: "テイスティング記録を味わいマップにプロット"
-                        )
-
-                        FeatureRow(
-                            icon: "sparkles",
-                            title: "プロ仕様のテイスティングタグ",
-                            subtitle: "マニアックな色や香りの表現要素を全オープン"
-                        )
-                        
-                        FeatureRow(
-                            icon: "trophy.fill",
-                            title: "コンプリート図鑑の全開放",
-                            subtitle: "希少産地やマニアックな品種・酒米・スタイルを全て解放"
-                        )
-                        
-                        FeatureRow(
-                            icon: "slider.horizontal.3",
-                            title: "テイスティング要素のカスタム",
-                            subtitle: "オリジナルの香り・色・味わい表現の編集する"
-                        )
-
-                        FeatureRow(
-                            icon: "eye.slash.fill",
-                            title: "広告の完全非表示",
-                            subtitle: "バナー広告を排除し、洗練された記録空間を"
-                        )
-
-                        FeatureRow(
-                            icon: "infinity",
-                            title: "完全買い切り",
-                            subtitle: "追加課金・サブスクリプションは一切発生なし"
-                        )
-                    }
-                    .padding()
-                    .background(Color(.secondarySystemGroupedBackground))
-                    .cornerRadius(16)
-                    .padding(.horizontal)
-                    
-                    Spacer()
-
-                    // MARK: - 購入ボタンエリア
-                    VStack(spacing: 12) {
-                        if appState.isProVersion {
-                            HStack {
-                                Image(systemName: "checkmark.seal.fill")
-                                    .foregroundStyle(.green)
-                                Text("Pro版がアクティブです")
-                                    .fontWeight(.bold)
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.green.opacity(0.12))
-                            .cornerRadius(12)
-                            .padding(.horizontal)
-                        } else {
-                            Button {
-                                purchasePro()
-                            } label: {
-                                HStack {
-                                    if isPurchasing {
-                                        ProgressView()
-                                            .tint(.white)
-                                            .padding(.trailing, 8)
-                                    }
-                                    
-                                    let priceString = storeProduct?.displayPrice ?? "¥100"
-                                    Text("\(priceString) で買い切る（永久利用）")
-                                        .font(.headline)
-                                        .fontWeight(.bold)
-                                }
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
-                                .background(Color.accentColor)
-                                .foregroundStyle(.white)
-                                .cornerRadius(14)
-                                .shadow(color: Color.accentColor.opacity(0.3), radius: 8, x: 0, y: 4)
-                            }
-                            .disabled(isPurchasing)
-                            .padding(.horizontal)
-                        }
-
-                        Button("購入を復元する（Restore）") {
-                            restorePurchase()
-                        }
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                    }
+                    headerView
+                    featureListView
+                    purchaseSection
 
                     #if DEBUG
                     Divider()
                         .padding(.vertical, 8)
 
                     VStack(spacing: 8) {
-                        Text("[デバッグ用] 動作確認フラグ切り替え")
+                        Text(String(localized: "[デバッグ用] 動作確認フラグ切り替え"))
                             .font(.caption)
                             .foregroundStyle(.tertiary)
 
-                        Toggle("isProVersion 強制ON/OFF", isOn: $appState.isProVersion)
+                        Toggle(String(localized: "isProVersion 強制ON/OFF"), isOn: $appState.isProVersion)
                             .padding(.horizontal)
                     }
                     #endif
@@ -177,7 +61,9 @@ public struct PaywallView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: { dismiss() }) {
+                    Button {
+                        dismiss()
+                    } label: {
                         Image(systemName: "xmark.circle.fill")
                             .foregroundStyle(.primary)
                     }
@@ -186,90 +72,180 @@ public struct PaywallView: View {
             .task {
                 await fetchProduct()
             }
-            .alert("エラー", isPresented: $showErrorAlert) {
-                Button("OK", role: .cancel) {}
+            .alert(String(localized: "エラー"), isPresented: $showErrorAlert) {
+                Button(String(localized: "OK"), role: .cancel) {}
             } message: {
-                Text(errorMessage ?? "処理中にエラーが発生しました。")
+                Text(errorMessage ?? String(localized: "処理中にエラーが発生しました。"))
             }
-            .alert("完了", isPresented: $showSuccessAlert) {
-                Button("OK") { dismiss() }
+            .alert(String(localized: "完了"), isPresented: $showSuccessAlert) {
+                Button(String(localized: "OK")) { dismiss() }
             } message: {
-                Text("Kikisake Pro の購入・復元が完了しました！")
+                Text(String(localized: "Kikisake Pro の購入・復元が完了しました！"))
             }
+        }
+    }
+
+    private var headerView: some View {
+        VStack(spacing: 12) {
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [.yellow, .orange.opacity(0.7)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 84, height: 84)
+                    .shadow(color: .yellow.opacity(0.3), radius: 10, x: 0, y: 5)
+
+                Image(systemName: "crown.fill")
+                    .font(.system(size: 40))
+                    .foregroundStyle(.white)
+            }
+            .padding(.top, 16)
+
+            Text("Kikisake Pro")
+                .font(.title)
+                .fontWeight(.black)
+
+            Text(String(localized: "一度の買い切りで、プロ向けの機能を永久に無制限解放"))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+        }
+    }
+
+    private var featureListView: some View {
+        VStack(spacing: 14) {
+            ForEach(features, id: \.title) { feature in
+                FeatureRow(icon: feature.icon, title: feature.title, subtitle: feature.subtitle)
+            }
+        }
+        .padding()
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+        .padding(.horizontal)
+    }
+
+    private var purchaseSection: some View {
+        VStack(spacing: 12) {
+            if appState.isProVersion {
+                HStack {
+                    Image(systemName: "checkmark.seal.fill")
+                        .foregroundStyle(.green)
+                    Text(String(localized: "Pro版がアクティブです"))
+                        .fontWeight(.bold)
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.green.opacity(0.12))
+                .cornerRadius(12)
+                .padding(.horizontal)
+            } else {
+                Button {
+                    Task { await purchasePro() }
+                } label: {
+                    HStack {
+                        if isPurchasing {
+                            ProgressView()
+                                .tint(.white)
+                                .padding(.trailing, 8)
+                        }
+
+                        let priceString = storeProduct?.displayPrice ?? "¥100"
+                        Text(String(format: String(localized: "%@ で買い切る（永久利用）"), priceString))
+                            .font(.headline)
+                            .fontWeight(.bold)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(Color.accentColor)
+                    .foregroundStyle(.white)
+                    .cornerRadius(14)
+                    .shadow(color: Color.accentColor.opacity(0.3), radius: 8, x: 0, y: 4)
+                }
+                .disabled(isPurchasing)
+                .padding(.horizontal)
+            }
+
+            Button(String(localized: "購入を復元する（Restore）")) {
+                Task { await restorePurchase() }
+            }
+            .font(.footnote)
+            .foregroundStyle(.secondary)
         }
     }
 
     @MainActor
     private func fetchProduct() async {
+        defer { isLoadingProduct = false }
         do {
             let products = try await Product.products(for: [productId])
             self.storeProduct = products.first
         } catch {
             print("Failed to fetch product: \(error)")
         }
-        isLoadingProduct = false
     }
 
     @MainActor
-    private func purchasePro() {
+    private func purchasePro() async {
         isPurchasing = true
-        Task {
-            do {
-                if let product = storeProduct {
-                    let result = try await product.purchase()
-                    switch result {
-                    case .success(let verification):
-                        switch verification {
-                        case .verified(let transaction):
-                            await transaction.finish()
-                            appState.isProVersion = true
-                            showSuccessAlert = true
-                        case .unverified:
-                            errorMessage = "取引の検証に失敗しました。"
-                            showErrorAlert = true
-                        }
-                    case .userCancelled:
-                        break
-                    case .pending:
-                        errorMessage = "承認待ちです。"
+        defer { isPurchasing = false }
+
+        do {
+            if let product = storeProduct {
+                let result = try await product.purchase()
+                switch result {
+                case .success(let verification):
+                    switch verification {
+                    case .verified(let transaction):
+                        await transaction.finish()
+                        appState.isProVersion = true
+                        showSuccessAlert = true
+                    case .unverified:
+                        errorMessage = String(localized: "取引の検証に失敗しました。")
                         showErrorAlert = true
-                    @unknown default:
-                        break
                     }
-                } else {
-                    appState.isProVersion = true
-                    showSuccessAlert = true
+                case .userCancelled:
+                    break
+                case .pending:
+                    errorMessage = String(localized: "承認待ちです。")
+                    showErrorAlert = true
+                @unknown default:
+                    break
                 }
-            } catch {
-                errorMessage = error.localizedDescription
-                showErrorAlert = true
+            } else {
+                appState.isProVersion = true
+                showSuccessAlert = true
             }
-            isPurchasing = false
+        } catch {
+            errorMessage = error.localizedDescription
+            showErrorAlert = true
         }
     }
 
     @MainActor
-    private func restorePurchase() {
+    private func restorePurchase() async {
         isPurchasing = true
-        Task {
-            do {
-                try await AppStore.sync()
-                for await result in Transaction.currentEntitlements {
-                    if case .verified(let transaction) = result,
-                       transaction.productID == productId {
-                        appState.isProVersion = true
-                        showSuccessAlert = true
-                        isPurchasing = false
-                        return
-                    }
+        defer { isPurchasing = false }
+
+        do {
+            try await AppStore.sync()
+            for await result in Transaction.currentEntitlements {
+                if case .verified(let transaction) = result,
+                   transaction.productID == productId {
+                    appState.isProVersion = true
+                    showSuccessAlert = true
+                    return
                 }
-                appState.isProVersion = true
-                showSuccessAlert = true
-            } catch {
-                errorMessage = error.localizedDescription
-                showErrorAlert = true
             }
-            isPurchasing = false
+            appState.isProVersion = true
+            showSuccessAlert = true
+        } catch {
+            errorMessage = error.localizedDescription
+            showErrorAlert = true
         }
     }
 }

@@ -1,9 +1,12 @@
+//
 //  AnalyticsView.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
 
+/// Root analytics screen containing consumption, evaluation, and comparison tabs.
 public struct AnalyticsView: View {
     @Query private var logs: [TastingLog]
     @State private var viewModel = AnalyticsViewModel()
@@ -19,75 +22,86 @@ public struct AnalyticsView: View {
                         .frame(height: 50)
                         .background(Color(.systemBackground))
                 }
-                
-                // セグメントピッカー（3つの分析カテゴリに絞る）
-                Picker(String(localized: "分析カテゴリ"), selection: $viewModel.selectedSection) {
-                    ForEach(AnalyticsSection.allCases) { section in
-                        Text(section.displayName).tag(section)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                .padding(.vertical, 10)
-                .background(Color(.systemGroupedBackground))
 
-                // TabView
+                sectionPicker
+
                 TabView(selection: $viewModel.selectedSection) {
-                    // 1. 飲酒量・ログタブ
-                    ScrollView {
-                        let targetLogs = viewModel.filteredLogs(from: logs)
-                        contentView(targetLogs: targetLogs, for: .consumption)
-                            .padding()
+                    sectionScrollContainer {
+                        contentView(for: .consumption)
                     }
-                    .background(Color(.systemGroupedBackground))
                     .tag(AnalyticsSection.consumption)
 
-                    // 2. 評価・好みタブ
-                    ScrollView {
-                        let targetLogs = viewModel.filteredLogs(from: logs)
-                        contentView(targetLogs: targetLogs, for: .evaluation)
-                            .padding()
+                    sectionScrollContainer {
+                        contentView(for: .evaluation)
                     }
-                    .background(Color(.systemGroupedBackground))
                     .tag(AnalyticsSection.evaluation)
 
-                    // 3. ログ比較タブ
-                    ScrollView {
+                    sectionScrollContainer {
                         LogComparisonView(viewModel: viewModel, allLogs: logs)
-                            .padding()
                     }
-                    .background(Color(.systemGroupedBackground))
                     .tag(AnalyticsSection.comparison)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
             .navigationTitle(String(localized: "分析"))
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                // 全セクション共通のフィルターボタン（LogViewと統一）
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        isShowingFilterSheet = true
-                    } label: {
-                        Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                            .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
-                    }
-                    .accessibilityLabel(String(localized: "分析フィルター"))
-                }
-            }
+            .toolbar { analyticsToolbarContent }
             .sheet(isPresented: $isShowingFilterSheet) {
                 AnalyticsFilterSheet(viewModel: viewModel, allLogs: logs)
             }
         }
     }
 
+    private var sectionPicker: some View {
+        Picker(String(localized: "分析カテゴリ"), selection: $viewModel.selectedSection) {
+            ForEach(AnalyticsSection.allCases) { section in
+                Text(section.displayName).tag(section)
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding(.horizontal)
+        .padding(.vertical, 10)
+        .background(Color(.systemGroupedBackground))
+    }
+
+    @ToolbarContentBuilder
+    private var analyticsToolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                isShowingFilterSheet = true
+            } label: {
+                Image(
+                    systemName: viewModel.hasActiveFilters
+                        ? "line.3.horizontal.decrease.circle.fill"
+                        : "line.3.horizontal.decrease.circle"
+                )
+                .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
+            }
+            .accessibilityLabel(String(localized: "分析フィルター"))
+        }
+    }
+
+    private func sectionScrollContainer<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        ScrollView {
+            content()
+                .padding()
+        }
+        .background(Color(.systemGroupedBackground))
+    }
+
     @ViewBuilder
-    private func contentView(targetLogs: [TastingLog], for section: AnalyticsSection) -> some View {
+    private func contentView(for section: AnalyticsSection) -> some View {
+        let targetLogs = viewModel.filteredLogs(from: logs)
+
         if logs.isEmpty || targetLogs.isEmpty {
             ContentUnavailableView(
                 String(localized: "該当する分析データがありません"),
                 systemImage: "chart.bar.xaxis",
-                description: Text(viewModel.hasActiveFilters ? String(localized: "フィルター条件を変更してみてください。") : String(localized: "「追加」タブからお酒を記録すると、ここに分析が表示されます。"))
+                description: Text(
+                    viewModel.hasActiveFilters
+                        ? String(localized: "フィルター条件を変更してみてください。")
+                        : String(localized: "「追加」タブからお酒を記録すると、ここに分析が表示されます。")
+                )
             )
             .padding(.top, 40)
         } else {
@@ -104,15 +118,32 @@ public struct AnalyticsView: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-    
-    let sampleItem = BeverageItem(name: "バローロ DOCG", producer: "プルノット", category: .wine)
-    let sampleLog = TastingLog(rating: 4.8, aromaTags: ["チェリー", "樽香"], isCostEffective: true, isWillingToRepeat: true, item: sampleItem)
-    
-    container.mainContext.insert(sampleItem)
-    container.mainContext.insert(sampleLog)
+    AnalyticsViewPreviewHost()
+}
 
-    return AnalyticsView()
-        .modelContainer(container)
+private struct AnalyticsViewPreviewHost: View {
+    private let container: ModelContainer
+
+    init() {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let modelContainer = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
+
+        let sampleItem = BeverageItem(name: "バローロ DOCG", producer: "プルノット", category: .wine)
+        let sampleLog = TastingLog(
+            rating: 4.8,
+            aromaTags: ["チェリー", "樽香"],
+            isCostEffective: true,
+            isWillingToRepeat: true,
+            item: sampleItem
+        )
+
+        modelContainer.mainContext.insert(sampleItem)
+        modelContainer.mainContext.insert(sampleLog)
+        self.container = modelContainer
+    }
+
+    var body: some View {
+        AnalyticsView()
+            .modelContainer(container)
+    }
 }

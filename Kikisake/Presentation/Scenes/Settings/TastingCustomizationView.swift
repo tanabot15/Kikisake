@@ -1,40 +1,43 @@
+//
 //  TastingCustomizationView.swift
 //  Kikisake
+//
 
 import SwiftUI
 
-/// カスタマイズ対象の項目
 public enum CustomizationTarget: String, CaseIterable, Identifiable {
-    case color = "色"
-    case aroma = "香り"
-    case balance = "味わいバランス"
+    case color
+    case aroma
+    case balance
 
     public var id: String { rawValue }
+
+    public var displayName: String {
+        switch self {
+        case .color: return String(localized: "色")
+        case .aroma: return String(localized: "香り")
+        case .balance: return String(localized: "味わいバランス")
+        }
+    }
 }
 
+/// Customization view for user-defined tasting colors, aroma tags, and balance terms.
 public struct TastingCustomizationView: View {
     @Bindable private var manager = TastingCustomizationManager.shared
     @Environment(\.dismiss) private var dismiss
 
-    // ピッカー用 State
     @State private var selectedTarget: CustomizationTarget = .color
-
-    // 共通の酒種・ワインタイプ選択 State (デフォルト参照および追加用)
     @State private var selectedCategory: BeverageCategory = .wine
     @State private var selectedWineType: String = "赤"
 
-    // MARK: - 1. 色追加用 State
     @State private var selectedColor: Color = Color(hex: "#991A33") ?? .red
     @State private var newColorName: String = ""
 
-    // MARK: - 2. 香り追加用 State
     @State private var newAromaName: String = ""
     @State private var selectedAromaCategory: String = "果実"
 
-    // MARK: - 3. 味わいバランス追加用 State
     @State private var newBalanceName: String = ""
 
-    // MARK: - 編集用 State
     @State private var editingBalanceIndex: Int? = nil
     @State private var editingBalanceText: String = ""
     @State private var isShowingEditBalanceAlert: Bool = false
@@ -48,44 +51,16 @@ public struct TastingCustomizationView: View {
     @State private var editingColorVal: Color = .red
     @State private var isShowingEditColorSheet: Bool = false
 
+    private var categoryContextLabel: String {
+        selectedCategory == .wine
+            ? "\(selectedCategory.displayName) / \(selectedWineType)"
+            : selectedCategory.displayName
+    }
+
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                // MARK: - ターゲット選択ピッカー
-                Picker("対象の項目", selection: $selectedTarget) {
-                    ForEach(CustomizationTarget.allCases) { target in
-                        Text(target.rawValue).tag(target)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding()
-                .background(Color(.systemGroupedBackground))
-
-                // MARK: - 酒種・タイプの切り替えセレクター（色と香りの場合のみ表示）
-                if selectedTarget != .balance {
-                    VStack(spacing: 8) {
-                        Picker("酒種", selection: $selectedCategory) {
-                            ForEach(BeverageCategory.allCases, id: \.self) { cat in
-                                Text(cat.displayName).tag(cat)
-                            }
-                        }
-                        .pickerStyle(.segmented)
-
-                        if selectedCategory == .wine {
-                            Picker("ワインタイプ", selection: $selectedWineType) {
-                                Text("赤").tag("赤")
-                                Text("白").tag("白")
-                                Text("ロゼ").tag("ロゼ")
-                                Text("オレンジ").tag("オレンジ")
-                                Text("スパークリング").tag("スパークリング")
-                            }
-                            .pickerStyle(.segmented)
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom, 8)
-                    .background(Color(.systemGroupedBackground))
-                }
+                headerControls
 
                 Form {
                     switch selectedTarget {
@@ -98,20 +73,19 @@ public struct TastingCustomizationView: View {
                     }
                 }
             }
-            .navigationTitle("選択肢のカスタマイズ")
+            .navigationTitle(String(localized: "選択肢のカスタマイズ"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("完了") {
+                    Button(String(localized: "完了")) {
                         dismiss()
                     }
                     .fontWeight(.bold)
                 }
             }
-            // MARK: - 編集用アラート・シート
-            .alert("味わい表現の編集", isPresented: $isShowingEditBalanceAlert) {
-                TextField("表現名", text: $editingBalanceText)
-                Button("保存") {
+            .alert(String(localized: "味わい表現の編集"), isPresented: $isShowingEditBalanceAlert) {
+                TextField(String(localized: "表現名"), text: $editingBalanceText)
+                Button(String(localized: "保存")) {
                     if let idx = editingBalanceIndex {
                         let trimmed = editingBalanceText.trimmingCharacters(in: .whitespaces)
                         if !trimmed.isEmpty {
@@ -119,88 +93,111 @@ public struct TastingCustomizationView: View {
                         }
                     }
                 }
-                Button("キャンセル", role: .cancel) {}
+                Button(String(localized: "キャンセル"), role: .cancel) {}
             } message: {
-                Text("新しい表現名を入力してください。")
+                Text(String(localized: "新しい表現名を入力してください。"))
             }
-            .alert("香りタグの編集", isPresented: $isShowingEditAromaAlert) {
-                TextField("香りタグ名", text: $editingAromaText)
-                Button("保存") {
-                    if let item = editingAromaItem, let idx = manager.customAromas.firstIndex(where: { $0.id == item.id }) {
+            .alert(String(localized: "香りタグの編集"), isPresented: $isShowingEditAromaAlert) {
+                TextField(String(localized: "香りタグ名"), text: $editingAromaText)
+                Button(String(localized: "保存")) {
+                    if let item = editingAromaItem,
+                       let idx = manager.customAromas.firstIndex(where: { $0.id == item.id }) {
                         let trimmed = editingAromaText.trimmingCharacters(in: .whitespaces)
                         if !trimmed.isEmpty {
                             manager.customAromas[idx].name = trimmed
                         }
                     }
                 }
-                Button("キャンセル", role: .cancel) {}
+                Button(String(localized: "キャンセル"), role: .cancel) {}
             } message: {
-                Text("新しいタグ名を入力してください。")
+                Text(String(localized: "新しいタグ名を入力してください。"))
             }
             .sheet(isPresented: $isShowingEditColorSheet) {
-                if let item = editingColorItem {
-                    NavigationStack {
-                        Form {
-                            Section("色の変更") {
-                                ColorPicker("カラーを選択", selection: $editingColorVal, supportsOpacity: false)
-                                TextField("色名", text: $editingColorNameText)
+                CustomColorEditSheet(
+                    item: $editingColorItem,
+                    nameText: $editingColorNameText,
+                    colorValue: $editingColorVal,
+                    onSave: { targetItem, updatedName, updatedColor in
+                        if let idx = manager.customColors.firstIndex(where: { $0.id == targetItem.id }) {
+                            let trimmed = updatedName.trimmingCharacters(in: .whitespaces)
+                            if !trimmed.isEmpty {
+                                manager.customColors[idx].name = trimmed
+                                manager.customColors[idx].hex = updatedColor.toHex() ?? "#808080"
                             }
                         }
-                        .navigationTitle("外観カラーの編集")
-                        .navigationBarTitleDisplayMode(.inline)
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) {
-                                Button("キャンセル") {
-                                    isShowingEditColorSheet = false
-                                }
-                            }
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("保存") {
-                                    if let idx = manager.customColors.firstIndex(where: { $0.id == item.id }) {
-                                        let trimmed = editingColorNameText.trimmingCharacters(in: .whitespaces)
-                                        if !trimmed.isEmpty {
-                                            let hex = editingColorVal.toHex() ?? "#808080"
-                                            manager.customColors[idx].name = trimmed
-                                            manager.customColors[idx].hex = hex
-                                        }
-                                    }
-                                    isShowingEditColorSheet = false
-                                }
-                                .fontWeight(.bold)
-                            }
-                        }
+                        isShowingEditColorSheet = false
+                    },
+                    onCancel: {
+                        isShowingEditColorSheet = false
                     }
-                    .presentationDetents([.height(280)])
-                }
+                )
             }
         }
     }
 
-    // MARK: - 1. 外観カラーのカスタマイズビュー
+    private var headerControls: some View {
+        VStack(spacing: 0) {
+            Picker(String(localized: "対象の項目"), selection: $selectedTarget) {
+                ForEach(CustomizationTarget.allCases) { target in
+                    Text(target.displayName).tag(target)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding()
+            .background(Color(.systemGroupedBackground))
+
+            if selectedTarget != .balance {
+                VStack(spacing: 8) {
+                    Picker(String(localized: "酒種"), selection: $selectedCategory) {
+                        ForEach(BeverageCategory.allCases, id: \.self) { cat in
+                            Text(cat.displayName).tag(cat)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+
+                    if selectedCategory == .wine {
+                        Picker(String(localized: "ワインタイプ"), selection: $selectedWineType) {
+                            Text(String(localized: "赤")).tag("赤")
+                            Text(String(localized: "白")).tag("白")
+                            Text(String(localized: "ロゼ")).tag("ロゼ")
+                            Text(String(localized: "オレンジ")).tag("オレンジ")
+                            Text(String(localized: "スパークリング")).tag("スパークリング")
+                        }
+                        .pickerStyle(.segmented)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+                .background(Color(.systemGroupedBackground))
+            }
+        }
+    }
+
+    // MARK: - 1. Color Customization
+
     private var colorCustomizationSection: some View {
         Group {
-            Section("新しいカラーを追加 (\(selectedCategory.displayName)\(selectedCategory == .wine ? " / \(selectedWineType)" : ""))") {
-                ColorPicker("色を選択", selection: $selectedColor, supportsOpacity: false)
+            Section(String(format: String(localized: "新しいカラーを追加 (%@)"), categoryContextLabel)) {
+                ColorPicker(String(localized: "色を選択"), selection: $selectedColor, supportsOpacity: false)
 
                 HStack {
-                    TextField("色の名前 (例: ローズピンク)", text: $newColorName)
-                    Button("追加") {
+                    TextField(String(localized: "色の名前 (例: ローズピンク)"), text: $newColorName)
+                    Button(String(localized: "追加")) {
                         let trimmed = newColorName.trimmingCharacters(in: .whitespaces)
-                        if !trimmed.isEmpty {
-                            let hex = selectedColor.toHex() ?? "#991A33"
-                            let categoryKey = selectedCategory == .wine ? "wine-\(selectedWineType)" : selectedCategory.rawValue
-                            let newItem = CustomColorItem(name: trimmed, hex: hex, categoryRaw: categoryKey, isPro: true)
-                            manager.customColors.append(newItem)
-                            newColorName = ""
-                        }
+                        guard !trimmed.isEmpty else { return }
+                        let hex = selectedColor.toHex() ?? "#991A33"
+                        let categoryKey = selectedCategory == .wine ? "wine-\(selectedWineType)" : selectedCategory.rawValue
+                        let newItem = CustomColorItem(name: trimmed, hex: hex, categoryRaw: categoryKey, isPro: true)
+                        manager.customColors.append(newItem)
+                        newColorName = ""
                     }
                     .disabled(newColorName.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }
 
-            Section("追加済みのカスタムカラー") {
+            Section(String(localized: "追加済みのカスタムカラー")) {
                 if manager.customColors.isEmpty {
-                    Text("追加されたカスタムカラーはありません")
+                    Text(String(localized: "追加されたカスタムカラーはありません"))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 } else {
@@ -214,7 +211,7 @@ public struct TastingCustomizationView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(item.name)
                                     .font(.body)
-                                Text("対象: \(item.categoryRaw)")
+                                Text(String(format: String(localized: "対象: %@"), item.categoryRaw))
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                             }
@@ -239,7 +236,7 @@ public struct TastingCustomizationView: View {
                 }
             }
 
-            Section("表示色一覧 (\(selectedCategory.displayName)\(selectedCategory == .wine ? " / \(selectedWineType)" : ""))") {
+            Section(String(format: String(localized: "表示色一覧 (%@)"), categoryContextLabel)) {
                 let defaultColors = TastingOptions.colorOptions(for: selectedCategory, wineType: selectedWineType)
                 ForEach(defaultColors) { option in
                     HStack(spacing: 12) {
@@ -256,33 +253,37 @@ public struct TastingCustomizationView: View {
         }
     }
 
-    // MARK: - 2. 香りタグのカスタマイズビュー
+    // MARK: - 2. Aroma Customization
+
     private var aromaCustomizationSection: some View {
         Group {
-            Section("新しい香りタグを追加 (\(selectedCategory.displayName)\(selectedCategory == .wine ? " / \(selectedWineType)" : ""))") {
-                Picker("カテゴリ", selection: $selectedAromaCategory) {
-                    Text("果実").tag("果実")
-                    Text("花・植物").tag("花・植物")
-                    Text("その他").tag("その他")
+            Section(String(format: String(localized: "新しい香りタグを追加 (%@)"), categoryContextLabel)) {
+                Picker(String(localized: "カテゴリ"), selection: $selectedAromaCategory) {
+                    Text(String(localized: "果実")).tag("果実")
+                    Text(String(localized: "花・植物")).tag("花・植物")
+                    Text(String(localized: "その他")).tag("その他")
                 }
 
                 HStack {
-                    TextField("新しい香り名 (例: 白桃缶詰)", text: $newAromaName)
-                    Button("追加") {
+                    TextField(String(localized: "新しい香り名 (例: 白桃缶詰)"), text: $newAromaName)
+                    Button(String(localized: "追加")) {
                         let trimmed = newAromaName.trimmingCharacters(in: .whitespaces)
-                        if !trimmed.isEmpty {
-                            let item = CustomAromaItem(categoryTitle: selectedAromaCategory, name: trimmed, beverageCategoryRaw: selectedCategory.rawValue)
-                            manager.customAromas.append(item)
-                            newAromaName = ""
-                        }
+                        guard !trimmed.isEmpty else { return }
+                        let item = CustomAromaItem(
+                            categoryTitle: selectedAromaCategory,
+                            name: trimmed,
+                            beverageCategoryRaw: selectedCategory.rawValue
+                        )
+                        manager.customAromas.append(item)
+                        newAromaName = ""
                     }
                     .disabled(newAromaName.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }
 
-            Section("追加済みのカスタム香りタグ") {
+            Section(String(localized: "追加済みのカスタム香りタグ")) {
                 if manager.customAromas.isEmpty {
-                    Text("追加された香りタグはありません")
+                    Text(String(localized: "追加された香りタグはありません"))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 } else {
@@ -291,7 +292,7 @@ public struct TastingCustomizationView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(aroma.name)
                                     .font(.body)
-                                Text("酒種: \(aroma.beverageCategoryRaw)")
+                                Text(String(format: String(localized: "酒種: %@"), aroma.beverageCategoryRaw))
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                             }
@@ -322,7 +323,7 @@ public struct TastingCustomizationView: View {
                 }
             }
 
-            Section("香りタグ一覧 (\(selectedCategory.displayName)\(selectedCategory == .wine ? " / \(selectedWineType)" : ""))") {
+            Section(String(format: String(localized: "香りタグ一覧 (%@)"), categoryContextLabel)) {
                 let defaultCategories = TastingOptions.aromaCategories(for: selectedCategory, wineType: selectedWineType)
                 ForEach(defaultCategories) { category in
                     VStack(alignment: .leading, spacing: 6) {
@@ -348,13 +349,14 @@ public struct TastingCustomizationView: View {
         }
     }
 
-    // MARK: - 3. 味わいバランス表現のカスタマイズビュー
+    // MARK: - 3. Balance Customization
+
     private var balanceCustomizationSection: some View {
         Group {
-            Section("新しい味わい表現を追加") {
+            Section(String(localized: "新しい味わい表現を追加")) {
                 HStack {
-                    TextField("表現を入力 (例: リッチな)", text: $newBalanceName)
-                    Button("追加") {
+                    TextField(String(localized: "表現を入力 (例: リッチな)"), text: $newBalanceName)
+                    Button(String(localized: "追加")) {
                         let trimmed = newBalanceName.trimmingCharacters(in: .whitespaces)
                         if !trimmed.isEmpty && !manager.customBalances.contains(trimmed) {
                             manager.customBalances.append(trimmed)
@@ -365,9 +367,9 @@ public struct TastingCustomizationView: View {
                 }
             }
 
-            Section("追加済みのカスタム表現") {
+            Section(String(localized: "追加済みのカスタム表現")) {
                 if manager.customBalances.isEmpty {
-                    Text("追加されたカスタム表現はありません")
+                    Text(String(localized: "追加されたカスタム表現はありません"))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 } else {
@@ -393,7 +395,7 @@ public struct TastingCustomizationView: View {
                 }
             }
 
-            Section("味わい表現一覧") {
+            Section(String(localized: "味わい表現一覧")) {
                 let defaultOptions = TastingOptions.balanceOptions
                 FlowLayout(spacing: 6) {
                     ForEach(defaultOptions, id: \.self) { opt in
@@ -411,7 +413,6 @@ public struct TastingCustomizationView: View {
     }
 }
 
-// MARK: - Color to Hex 拡張ヘルパー
 private extension Color {
     func toHex() -> String? {
         guard let components = UIColor(self).cgColor.components, components.count >= 3 else { return nil }

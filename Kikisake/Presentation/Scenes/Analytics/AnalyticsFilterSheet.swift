@@ -1,10 +1,12 @@
+//
 //  AnalyticsFilterSheet.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
 
-/// 分析画面のフィルター設定シート（セクションごとに最適化）
+/// Section-aware filter configuration sheet for AnalyticsView.
 public struct AnalyticsFilterSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var viewModel: AnalyticsViewModel
@@ -36,13 +38,13 @@ public struct AnalyticsFilterSheet: View {
                 switch viewModel.selectedSection {
                 case .consumption:
                     timeFilterSection
-                    categoryFilterSection
+                    categoryFilterSection(clearAromaOnChange: false)
                     subCategorySectionIfNeeded
                     regionFilterSection
 
                 case .evaluation:
                     timeFilterSection
-                    categoryFilterSection
+                    categoryFilterSection(clearAromaOnChange: true)
                     subCategorySectionIfNeeded
                     regionFilterSection
                     evaluationCriteriaSection
@@ -52,20 +54,7 @@ public struct AnalyticsFilterSheet: View {
                     comparisonFilterSection
                 }
 
-                // 一括リセット
-                Section {
-                    Button(role: .destructive) {
-                        viewModel.resetFilters()
-                    } label: {
-                        HStack {
-                            Spacer()
-                            Text("すべてのフィルターをリセット")
-                                .fontWeight(.semibold)
-                            Spacer()
-                        }
-                    }
-                    .disabled(!viewModel.hasActiveFilters)
-                }
+                resetFilterSection
             }
             .navigationTitle(sheetTitle)
             .navigationBarTitleDisplayMode(.inline)
@@ -88,16 +77,13 @@ public struct AnalyticsFilterSheet: View {
 
     private var sheetTitle: String {
         switch viewModel.selectedSection {
-        case .consumption:
-            return String(localized: "飲酒ログフィルター")
-        case .evaluation:
-            return String(localized: "評価フィルター")
-        case .comparison:
-            return String(localized: "比較フィルター")
+        case .consumption: String(localized: "飲酒ログフィルター")
+        case .evaluation: String(localized: "評価フィルター")
+        case .comparison: String(localized: "比較フィルター")
         }
     }
 
-    // MARK: - 共通セクション
+    // MARK: - Shared Sections
 
     private var timeFilterSection: some View {
         Section("分析対象の期間") {
@@ -110,23 +96,28 @@ public struct AnalyticsFilterSheet: View {
         }
     }
 
-    private var categoryFilterSection: some View {
+    private func categoryFilterSection(clearAromaOnChange: Bool) -> some View {
         Section("酒種 (カテゴリ)") {
-            Picker("酒種を選択", selection: $viewModel.selectedCategoryFilter) {
-                Text("すべて").tag(BeverageCategory?.none)
-                ForEach(BeverageCategory.allCases, id: \.self) { category in
-                    Text(category.displayName).tag(BeverageCategory?.some(category))
+            categorySegmentedPicker
+                .onChange(of: viewModel.selectedCategoryFilter) { _, _ in
+                    viewModel.selectedSubCategoryFilter = nil
+                    if clearAromaOnChange,
+                       !viewModel.aromaTagFilter.isEmpty,
+                       !availableAromaTags.contains(viewModel.aromaTagFilter) {
+                        viewModel.aromaTagFilter = ""
+                    }
                 }
-            }
-            .pickerStyle(.segmented)
-            .onChange(of: viewModel.selectedCategoryFilter) { _, _ in
-                viewModel.selectedSubCategoryFilter = nil
-                if !viewModel.aromaTagFilter.isEmpty &&
-                    !availableAromaTags.contains(viewModel.aromaTagFilter) {
-                    viewModel.aromaTagFilter = ""
-                }
+        }
+    }
+
+    private var categorySegmentedPicker: some View {
+        Picker("酒種を選択", selection: $viewModel.selectedCategoryFilter) {
+            Text("すべて").tag(BeverageCategory?.none)
+            ForEach(BeverageCategory.allCases, id: \.self) { category in
+                Text(category.displayName).tag(BeverageCategory?.some(category))
             }
         }
+        .pickerStyle(.segmented)
     }
 
     @ViewBuilder
@@ -162,31 +153,55 @@ public struct AnalyticsFilterSheet: View {
         }
     }
 
-    // MARK: - 評価タブ専用セクション
+    private var minimumRatingSlider: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text("最低評価 (スコア)")
+                    .font(.subheadline)
+                Spacer()
+                Text(
+                    viewModel.minRatingFilter == nil
+                        ? "指定なし"
+                        : String(format: "★ %.1f 以上", viewModel.minRatingFilter!)
+                )
+                .font(.subheadline)
+                .fontWeight(.bold)
+                .foregroundStyle(Color.accentColor)
+            }
+
+            Slider(
+                value: Binding(
+                    get: { viewModel.minRatingFilter ?? 1.0 },
+                    set: { viewModel.minRatingFilter = $0 }
+                ),
+                in: 1.0...5.0,
+                step: 0.5
+            )
+            .tint(.yellow)
+        }
+    }
+
+    private var resetFilterSection: some View {
+        Section {
+            Button(role: .destructive) {
+                viewModel.resetFilters()
+            } label: {
+                HStack {
+                    Spacer()
+                    Text("すべてのフィルターをリセット")
+                        .fontWeight(.semibold)
+                    Spacer()
+                }
+            }
+            .disabled(!viewModel.hasActiveFilters)
+        }
+    }
+
+    // MARK: - Evaluation Section
 
     private var evaluationCriteriaSection: some View {
         Section("評価・アロマ条件") {
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Text("最低評価 (スコア)")
-                        .font(.subheadline)
-                    Spacer()
-                    Text(viewModel.minRatingFilter == nil ? "指定なし" : String(format: "★ %.1f 以上", viewModel.minRatingFilter!))
-                        .font(.subheadline)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.accentColor)
-                }
-
-                Slider(
-                    value: Binding(
-                        get: { viewModel.minRatingFilter ?? 1.0 },
-                        set: { viewModel.minRatingFilter = $0 }
-                    ),
-                    in: 1.0...5.0,
-                    step: 0.5
-                )
-                .tint(.yellow)
-            }
+            minimumRatingSlider
 
             Picker("香りタグ", selection: $viewModel.aromaTagFilter) {
                 Text("指定なし").tag("")
@@ -198,7 +213,7 @@ public struct AnalyticsFilterSheet: View {
         }
     }
 
-    // MARK: - 比較タブ専用セクション
+    // MARK: - Comparison Sections
 
     private var comparisonSelectionSection: some View {
         Section("比較対象ログ") {
@@ -232,70 +247,53 @@ public struct AnalyticsFilterSheet: View {
 
     private var comparisonFilterSection: some View {
         Section("比較候補の絞り込み") {
-            Picker("酒種を選択", selection: $viewModel.selectedCategoryFilter) {
-                Text("すべて").tag(BeverageCategory?.none)
-                ForEach(BeverageCategory.allCases, id: \.self) { category in
-                    Text(category.displayName).tag(BeverageCategory?.some(category))
-                }
-            }
-            .pickerStyle(.segmented)
-
+            categorySegmentedPicker
             TextField("産地 (例: ボルドー, 秋田県)", text: $viewModel.regionFilter)
-
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Text("最低評価 (スコア)")
-                        .font(.subheadline)
-                    Spacer()
-                    Text(viewModel.minRatingFilter == nil ? "指定なし" : String(format: "★ %.1f 以上", viewModel.minRatingFilter!))
-                        .font(.subheadline)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.accentColor)
-                }
-
-                Slider(
-                    value: Binding(
-                        get: { viewModel.minRatingFilter ?? 1.0 },
-                        set: { viewModel.minRatingFilter = $0 }
-                    ),
-                    in: 1.0...5.0,
-                    step: 0.5
-                )
-                .tint(.yellow)
-            }
+            minimumRatingSlider
         }
     }
 
     private func selectedLogTitle(for id: UUID?, fallback: TastingLog?) -> String {
-        let target = id.flatMap { targetID in allLogs.first(where: { $0.id == targetID }) } ?? fallback
+        let target = id.flatMap { targetID in allLogs.first { $0.id == targetID } } ?? fallback
         return target?.item?.name ?? String(localized: "未選択")
     }
 
     private func subCategorySectionTitle(for category: BeverageCategory) -> String {
         switch category {
-        case .wine: return String(localized: "ワインタイプ")
-        case .sake: return String(localized: "特定名称")
-        case .beer: return String(localized: "ビアスタイル")
+        case .wine: String(localized: "ワインタイプ")
+        case .sake: String(localized: "特定名称")
+        case .beer: String(localized: "ビアスタイル")
         }
     }
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-    let encoder = JSONEncoder()
+    AnalyticsFilterSheetPreviewHost()
+}
 
-    let wineMeta = WineSpecificMetadata(wineType: "赤", grapeVarieties: "ネッビオーロ", blendComponents: [])
-    let wineJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
-    let sampleItem = BeverageItem(name: "Barolo", producer: "Prunotto", category: .wine, specificMetadataJSON: wineJSON)
-    let sampleLog = TastingLog(rating: 4.5, item: sampleItem)
+private struct AnalyticsFilterSheetPreviewHost: View {
+    private let container: ModelContainer
+    private let logs: [TastingLog]
 
-    container.mainContext.insert(sampleItem)
-    container.mainContext.insert(sampleLog)
+    init() {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let modelContainer = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
+        let encoder = JSONEncoder()
 
-    let descriptor = FetchDescriptor<TastingLog>()
-    let logs = (try? container.mainContext.fetch(descriptor)) ?? []
+        let wineMeta = WineSpecificMetadata(wineType: "赤", grapeVarieties: "ネッビオーロ", blendComponents: [])
+        let wineJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
+        let sampleItem = BeverageItem(name: "Barolo", producer: "Prunotto", category: .wine, specificMetadataJSON: wineJSON)
+        let sampleLog = TastingLog(rating: 4.5, item: sampleItem)
 
-    return AnalyticsFilterSheet(viewModel: AnalyticsViewModel(), allLogs: logs)
-        .modelContainer(container)
+        modelContainer.mainContext.insert(sampleItem)
+        modelContainer.mainContext.insert(sampleLog)
+
+        self.container = modelContainer
+        self.logs = [sampleLog]
+    }
+
+    var body: some View {
+        AnalyticsFilterSheet(viewModel: AnalyticsViewModel(), allLogs: logs)
+            .modelContainer(container)
+    }
 }

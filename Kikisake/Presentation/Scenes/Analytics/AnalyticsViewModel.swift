@@ -6,7 +6,7 @@
 import Foundation
 import SwiftData
 
-/// 分析画面の表示セクション種類
+/// Analytics screen sections.
 public enum AnalyticsSection: String, CaseIterable, Identifiable {
     case consumption
     case evaluation
@@ -23,7 +23,7 @@ public enum AnalyticsSection: String, CaseIterable, Identifiable {
     }
 }
 
-/// 期間フィルターの種類
+/// Time range filter options.
 public enum AnalyticsTimeFilter: String, CaseIterable, Identifiable {
     case all
     case month1
@@ -32,7 +32,6 @@ public enum AnalyticsTimeFilter: String, CaseIterable, Identifiable {
 
     public var id: String { rawValue }
 
-    /// Localizable.xcstrings が自動検出し、英訳を行えるように直接文字列リテラルを指定
     public var displayName: String {
         switch self {
         case .all: String(localized: "全期間")
@@ -60,28 +59,28 @@ public enum AnalyticsTimeFilter: String, CaseIterable, Identifiable {
     }
 }
 
-/// 飲酒日ヒートマップ用データモデル
+/// Daily drinking count entry for heatmap rendering.
 public struct HeatmapDay: Identifiable {
     public var id: Date { date }
-    public var date: Date
-    public var count: Int
+    public let date: Date
+    public let count: Int
 }
 
 @Observable
 public final class AnalyticsViewModel {
     public var selectedSection: AnalyticsSection = .consumption
 
-    // --- 共通・飲酒ログ・評価向けフィルター条件 ---
+    // Shared consumption & evaluation filters
     public var selectedTimeFilter: AnalyticsTimeFilter = .all
     public var selectedCategoryFilter: BeverageCategory? = nil
     public var selectedSubCategoryFilter: String? = nil
     public var regionFilter: String = ""
 
-    // --- 評価・比較向け追加フィルター条件 ---
+    // Evaluation & comparison filters
     public var minRatingFilter: Double? = nil
     public var aromaTagFilter: String = ""
 
-    // --- 比較タブ用選択状態 ---
+    // Comparison log selection IDs
     public var comparisonLeftLogID: UUID? = nil
     public var comparisonRightLogID: UUID? = nil
 
@@ -103,7 +102,6 @@ public final class AnalyticsViewModel {
         }
     }
 
-    /// 比較候補として絞り込まれたログ一覧
     public func comparisonCandidateLogs(from logs: [TastingLog]) -> [TastingLog] {
         logs.filter { matchesCommonFilters(log: $0, includeSubCategory: false) }
     }
@@ -111,21 +109,23 @@ public final class AnalyticsViewModel {
     public var hasActiveFilters: Bool {
         switch selectedSection {
         case .consumption:
-            return selectedTimeFilter != .all ||
-                   selectedCategoryFilter != nil ||
-                   selectedSubCategoryFilter != nil ||
-                   !regionFilter.isEmpty
+            selectedTimeFilter != .all ||
+            selectedCategoryFilter != nil ||
+            selectedSubCategoryFilter != nil ||
+            !regionFilter.isEmpty
+
         case .evaluation:
-            return selectedTimeFilter != .all ||
-                   selectedCategoryFilter != nil ||
-                   selectedSubCategoryFilter != nil ||
-                   !regionFilter.isEmpty ||
-                   minRatingFilter != nil ||
-                   !aromaTagFilter.isEmpty
+            selectedTimeFilter != .all ||
+            selectedCategoryFilter != nil ||
+            selectedSubCategoryFilter != nil ||
+            !regionFilter.isEmpty ||
+            minRatingFilter != nil ||
+            !aromaTagFilter.isEmpty
+
         case .comparison:
-            return selectedCategoryFilter != nil ||
-                   !regionFilter.isEmpty ||
-                   minRatingFilter != nil
+            selectedCategoryFilter != nil ||
+            !regionFilter.isEmpty ||
+            minRatingFilter != nil
         }
     }
 
@@ -153,7 +153,9 @@ public final class AnalyticsViewModel {
             if let category = selectedCategoryFilter, log.item?.category != category {
                 return []
             }
-            return log.aromaTags.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
+            return log.aromaTags
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { !$0.isEmpty }
         }
         return Array(Set(tags)).sorted()
     }
@@ -233,11 +235,12 @@ public final class AnalyticsViewModel {
         let total = targetLogs.count
         guard total > 0 else { return (0, 0, 0, 0) }
 
-        let costEffective = targetLogs.filter(\.isCostEffective).count
-        let repeatIntent = targetLogs.filter(\.isWillingToRepeat).count
-        let agingPotential = targetLogs.filter(\.hasAgingPotential).count
-
-        return (costEffective, repeatIntent, agingPotential, total)
+        return (
+            costEffective: targetLogs.filter(\.isCostEffective).count,
+            repeatIntent: targetLogs.filter(\.isWillingToRepeat).count,
+            agingPotential: targetLogs.filter(\.hasAgingPotential).count,
+            total: total
+        )
     }
 
     public func averageRating(from targetLogs: [TastingLog]) -> Double {

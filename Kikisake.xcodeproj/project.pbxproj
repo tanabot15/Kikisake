@@ -91,6 +91,13 @@
 		D9FB6CF230B182F700D105C9 /* TimelineSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF130B182F700D105C9 /* TimelineSectionView.swift */; };
 		D9FB6CF430B1842300D105C9 /* CollectionItemDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF330B1842300D105C9 /* CollectionItemDetailSheet.swift */; };
 		D9FB6CF630B1844700D105C9 /* RankShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF530B1844700D105C9 /* RankShareSheetView.swift */; };
+		D9FB6CF830B1C8B600D105C9 /* LogSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF730B1C8B600D105C9 /* LogSelectionSheet.swift */; };
+		D9FB6CFA30B1C94B00D105C9 /* AddFlowDraftStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF930B1C94B00D105C9 /* AddFlowDraftStore.swift */; };
+		D9FB6CFC30B1CA2B00D105C9 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CFB30B1CA2B00D105C9 /* ImagePickerView.swift */; };
+		D9FB6CFE30B1CA6700D105C9 /* StoragePickerWithGridMappingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CFD30B1CA6700D105C9 /* StoragePickerWithGridMappingView.swift */; };
+		D9FB6D0030B1CC7200D105C9 /* InventoryGridResizeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CFF30B1CC7200D105C9 /* InventoryGridResizeSheet.swift */; };
+		D9FB6D0230B1CC9600D105C9 /* InventoryLocationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6D0130B1CC9600D105C9 /* InventoryLocationCardView.swift */; };
+		D9FB6D0430B1CD4000D105C9 /* TastingCustomizationEditSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6D0330B1CD4000D105C9 /* TastingCustomizationEditSheets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -180,6 +187,13 @@
 		D9FB6CF130B182F700D105C9 /* TimelineSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSectionView.swift; sourceTree = "<group>"; };
 		D9FB6CF330B1842300D105C9 /* CollectionItemDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionItemDetailSheet.swift; sourceTree = "<group>"; };
 		D9FB6CF530B1844700D105C9 /* RankShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankShareSheetView.swift; sourceTree = "<group>"; };
+		D9FB6CF730B1C8B600D105C9 /* LogSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSelectionSheet.swift; sourceTree = "<group>"; };
+		D9FB6CF930B1C94B00D105C9 /* AddFlowDraftStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFlowDraftStore.swift; sourceTree = "<group>"; };
+		D9FB6CFB30B1CA2B00D105C9 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		D9FB6CFD30B1CA6700D105C9 /* StoragePickerWithGridMappingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoragePickerWithGridMappingView.swift; sourceTree = "<group>"; };
+		D9FB6CFF30B1CC7200D105C9 /* InventoryGridResizeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryGridResizeSheet.swift; sourceTree = "<group>"; };
+		D9FB6D0130B1CC9600D105C9 /* InventoryLocationCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryLocationCardView.swift; sourceTree = "<group>"; };
+		D9FB6D0330B1CD4000D105C9 /* TastingCustomizationEditSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCustomizationEditSheets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -405,6 +419,7 @@
 				D9044249307E865300EF4807 /* SettingsViewModel.swift */,
 				D9044288308F136400EF4807 /* PaywallView.swift */,
 				D9508262309D8BB40045BF8E /* TastingCustomizationView.swift */,
+				D9FB6D0330B1CD4000D105C9 /* TastingCustomizationEditSheets.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -414,6 +429,8 @@
 			children = (
 				D9044243307E863000EF4807 /* InventoryView.swift */,
 				D9044245307E863A00EF4807 /* InventoryViewModel.swift */,
+				D9FB6D0130B1CC9600D105C9 /* InventoryLocationCardView.swift */,
+				D9FB6CFF30B1CC7200D105C9 /* InventoryGridResizeSheet.swift */,
 				D904425A308368BF00EF4807 /* AddLocationSheetView.swift */,
 				D9044278308B269300EF4807 /* InventoryFilterSheet.swift */,
 				D904427E308CF04500EF4807 /* CellarGridView.swift */,
@@ -426,6 +443,7 @@
 			children = (
 				D9044236307E85DB00EF4807 /* AddFlowView.swift */,
 				D9044238307E85E600EF4807 /* AddFlowViewModel.swift */,
+				D9FB6CF930B1C94B00D105C9 /* AddFlowDraftStore.swift */,
 				D904423A307E85ED00EF4807 /* Steps */,
 			);
 			path = Add;
@@ -440,6 +458,7 @@
 				D904427A308C9C8000EF4807 /* ConsumptionView.swift */,
 				D904427C308C9C9B00EF4807 /* EvaluationView.swift */,
 				D950826630A030760045BF8E /* LogComparisonView.swift */,
+				D9FB6CF730B1C8B600D105C9 /* LogSelectionSheet.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -470,6 +489,8 @@
 			isa = PBXGroup;
 			children = (
 				D904424D3081A41E00EF4807 /* GeneralInfoStepView.swift */,
+				D9FB6CFB30B1CA2B00D105C9 /* ImagePickerView.swift */,
+				D9FB6CFD30B1CA6700D105C9 /* StoragePickerWithGridMappingView.swift */,
 				D904424F3081A43B00EF4807 /* AppearanceStepView.swift */,
 				D90442513081A45200EF4807 /* AromaStepView.swift */,
 				D90442533081A46800EF4807 /* TasteStepView.swift */,
@@ -622,11 +643,13 @@
 				D9044231307E85B600EF4807 /* LogDetailView.swift in Sources */,
 				D9044268308721A200EF4807 /* EditLogFlowView.swift in Sources */,
 				D9044235307E85CF00EF4807 /* AnalyticsViewModel.swift in Sources */,
+				D9FB6CFC30B1CA2B00D105C9 /* ImagePickerView.swift in Sources */,
 				D95082573090D95D0045BF8E /* BackupDTOs.swift in Sources */,
 				D950825B309228190045BF8E /* BottleMattingHelper.swift in Sources */,
 				D904420B307E84C300EF4807 /* Color+Extension.swift in Sources */,
 				D904424E3081A41E00EF4807 /* GeneralInfoStepView.swift in Sources */,
 				D9044207307E84AC00EF4807 /* Date+Extension.swift in Sources */,
+				D9FB6CFE30B1CA6700D105C9 /* StoragePickerWithGridMappingView.swift in Sources */,
 				D9044281308CF53B00EF4807 /* LocationSlotSelectionSheet.swift in Sources */,
 				D9044277308B1ADF00EF4807 /* FlowLayout.swift in Sources */,
 				D904F0A930A73FCC0046D409 /* CollectionMatrixModel.swift in Sources */,
@@ -635,10 +658,13 @@
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
 				D95082593090D9720045BF8E /* BackupManager.swift in Sources */,
 				D9044271308AFA4E00EF4807 /* LogFilterSheet.swift in Sources */,
+				D9FB6CFA30B1C94B00D105C9 /* AddFlowDraftStore.swift in Sources */,
 				D9FB6CF630B1844700D105C9 /* RankShareSheetView.swift in Sources */,
+				D9FB6D0230B1CC9600D105C9 /* InventoryLocationCardView.swift in Sources */,
 				D9508261309D8B530045BF8E /* TastingCustomizationManager.swift in Sources */,
 				D904426D3088A3D000EF4807 /* AdMobBannerView.swift in Sources */,
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
+				D9FB6D0030B1CC7200D105C9 /* InventoryGridResizeSheet.swift in Sources */,
 				D904427D308C9C9B00EF4807 /* EvaluationView.swift in Sources */,
 				D904424A307E865300EF4807 /* SettingsViewModel.swift in Sources */,
 				D9FB6CEC30B1602A00D105C9 /* BackupFileDocument.swift in Sources */,
@@ -657,6 +683,7 @@
 				D9FB6CF030B1617600D105C9 /* MatrixHelper.swift in Sources */,
 				D9508263309D8BB40045BF8E /* TastingCustomizationView.swift in Sources */,
 				D90442543081A46800EF4807 /* TasteStepView.swift in Sources */,
+				D9FB6CF830B1C8B600D105C9 /* LogSelectionSheet.swift in Sources */,
 				D9044275308B18EE00EF4807 /* AnalyticsFilterSheet.swift in Sources */,
 				D9044246307E863A00EF4807 /* InventoryViewModel.swift in Sources */,
 				D9044248307E864800EF4807 /* SettingsView.swift in Sources */,
@@ -674,6 +701,7 @@
 				D904424C307F3C8D00EF4807 /* PreviewSampleLoader.swift in Sources */,
 				D9044215307E84F600EF4807 /* BeverageItem.swift in Sources */,
 				D90442563081E26F00EF4807 /* BeverageSpecificMetadata.swift in Sources */,
+				D9FB6D0430B1CD4000D105C9 /* TastingCustomizationEditSheets.swift in Sources */,
 				D904420F307E84D800EF4807 /* Logger.swift in Sources */,
 				D950826930A1E7AD0045BF8E /* RegionPresetOptions.swift in Sources */,
 				D904F0AF30A94F220046D409 /* CollectionRankModel.swift in Sources */,

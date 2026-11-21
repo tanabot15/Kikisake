@@ -1,16 +1,16 @@
+//
 //  InventoryView.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
 
-/// 表示モードの定義
-private enum CellarDisplayMode: String, CaseIterable, Identifiable {
+enum CellarDisplayMode: String, CaseIterable, Identifiable {
     case list
     case grid
     var id: String { rawValue }
 
-    /// ✨ Localizable.xcstrings が自動検出し、英訳を行えるように直接文字列リテラルを指定
     var displayName: String {
         switch self {
         case .list:
@@ -21,22 +21,21 @@ private enum CellarDisplayMode: String, CaseIterable, Identifiable {
     }
 }
 
-/// [Tab 4] ユーザーカスタム可能なアコーディオン展開式・在庫管理画面
+/// Accordion-expandable inventory management view for storage locations and bottles.
 public struct InventoryView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
     @Query(sort: \BeverageItem.createdAt, order: .reverse) private var items: [BeverageItem]
-    
+
     @State private var viewModel = InventoryViewModel()
     @State private var showAddLocationSheet: Bool = false
     @State private var isShowingFilterSheet: Bool = false
     @State private var showPaywall: Bool = false
-    
+
     @State private var expandedLocationName: String? = nil
     @State private var displayModes: [String: CellarDisplayMode] = [:]
-
     @State private var editingLocationNames: Set<String> = []
-    
+
     @State private var resizingLocation: StorageLocation? = nil
     @State private var tempRows: Int = 4
     @State private var tempColumns: Int = 6
@@ -54,33 +53,67 @@ public struct InventoryView: View {
 
     public var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 0) {
                 if !AppState.shared.isProVersion {
                     ConditionalAdMobBannerView()
                         .frame(height: 50)
                         .background(Color(.systemBackground))
                 }
-                
+
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("保管場所一覧")
+                        Text(String(localized: "保管場所一覧"))
                             .font(.title2)
                             .fontWeight(.bold)
                             .padding(.horizontal)
                             .padding(.top, 8)
-                        
+
                         let targetLocations = viewModel.filteredLocations(locations)
-                        
+
                         if locations.isEmpty || targetLocations.isEmpty {
                             ContentUnavailableView(
                                 String(localized: "該当する保管場所がありません"),
                                 systemImage: "cabinet",
-                                description: Text(viewModel.hasActiveFilters ? String(localized: "フィルター条件を変更してみてください。") : String(localized: "右上の「＋」ボタンから保管場所を追加してください。"))
+                                description: Text(
+                                    viewModel.hasActiveFilters
+                                        ? String(localized: "フィルター条件を変更してみてください。")
+                                        : String(localized: "右上の「＋」ボタンから保管場所を追加してください。")
+                                )
                             )
                             .padding(.top, 40)
                         } else {
-                            locationListContent(targetLocations: targetLocations)
-                                .padding(.horizontal)
+                            LazyVStack(spacing: 14) {
+                                ForEach(targetLocations, id: \.id) { loc in
+                                    InventoryLocationCardView(
+                                        location: loc,
+                                        items: items,
+                                        modelContext: modelContext,
+                                        viewModel: viewModel,
+                                        isExpanded: expandedLocationName == loc.name,
+                                        displayMode: displayModeBinding(for: loc),
+                                        isEditingList: editingBinding(for: loc.name),
+                                        onToggleExpand: {
+                                            withAnimation(.snappy) {
+                                                expandedLocationName = (expandedLocationName == loc.name) ? nil : loc.name
+                                            }
+                                        },
+                                        onRequestResize: { targetLoc in
+                                            tempRows = targetLoc.gridRows
+                                            tempColumns = targetLoc.gridColumns
+                                            resizingLocation = targetLoc
+                                        },
+                                        onSelectItem: { item in
+                                            selectedItemForAction = item
+                                            isShowingActionSheet = true
+                                        },
+                                        onError: { message in
+                                            errorMessage = message
+                                            showErrorAlert = true
+                                        }
+                                    )
+                                }
+                            }
+                            .padding(.horizontal)
                         }
                     }
                     .padding(.vertical)
@@ -91,21 +124,7 @@ public struct InventoryView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $isNavigatingToDetail) {
                 if let item = itemToNavigate {
-                    let latestLog = item.tastingLogs?.sorted(by: { $0.date > $1.date }).first
-                    if let log = latestLog {
-                        LogDetailView(log: log)
-                    } else {
-                        let dummyLog = TastingLog(
-                            date: item.createdAt,
-                            rating: 0.0,
-                            appearanceNotes: "",
-                            appearanceColorHex: "#802633",
-                            aromaTags: [],
-                            memo: String(localized: "基本情報のみ登録されています。"),
-                            item: item
-                        )
-                        LogDetailView(log: dummyLog)
-                    }
+                    detailDestination(for: item)
                 }
             }
             .toolbar {
@@ -142,37 +161,24 @@ public struct InventoryView: View {
                 InventoryFilterSheet(viewModel: viewModel, allItems: items)
             }
             .sheet(item: $resizingLocation) { loc in
-                NavigationStack {
-                    Form {
-                        Section(String(localized: "セラーの構造設定")) {
-                            Stepper(String(format: String(localized: "段数（行）: %d段"), tempRows), value: $tempRows, in: 1...10)
-                            Stepper(String(format: String(localized: "1段あたりの本数（列）: %d本"), tempColumns), value: $tempColumns, in: 1...12)
-                        }
-                        
-                        Section {
-                            Text("※縮小した際、新しいグリッド範囲外（はみ出し部分）に配置されていたボトルは、自動的に「棚の外（未配置）」に移動されます。")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        }
+                InventoryGridResizeSheet(
+                    location: loc,
+                    rows: $tempRows,
+                    columns: $tempColumns,
+                    onSave: { newRows, newColumns in
+                        viewModel.updateGridSize(
+                            for: loc,
+                            newRows: newRows,
+                            newColumns: newColumns,
+                            allItems: items,
+                            modelContext: modelContext
+                        )
+                        resizingLocation = nil
+                    },
+                    onCancel: {
+                        resizingLocation = nil
                     }
-                    .navigationTitle(String(format: String(localized: "%@のサイズ変更"), loc.name))
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button(String(localized: "キャンセル")) {
-                                resizingLocation = nil
-                            }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button(String(localized: "保存")) {
-                                viewModel.updateGridSize(for: loc, newRows: tempRows, newColumns: tempColumns, allItems: items, modelContext: modelContext)
-                                resizingLocation = nil
-                            }
-                            .fontWeight(.bold)
-                        }
-                    }
-                }
-                .presentationDetents([.medium])
+                )
             }
             .confirmationDialog(
                 selectedItemForAction?.name ?? String(localized: "ボトルの操作"),
@@ -181,9 +187,8 @@ public struct InventoryView: View {
             ) {
                 actionSheetButtons
             } message: {
-                Text("このボトルに対して行う操作を選択してください。")
+                Text(String(localized: "このボトルに対して行う操作を選択してください。"))
             }
-            // ✨ ダイアログが閉じられた際に selectedItemForAction をクリアしてリセット不全を防止
             .onChange(of: isShowingActionSheet) { _, isShowing in
                 if !isShowing {
                     selectedItemForAction = nil
@@ -192,7 +197,9 @@ public struct InventoryView: View {
             .confirmationDialog(String(localized: "移動先の選択"), isPresented: $isShowingMoveDialog, titleVisibility: .visible) {
                 moveDialogButtons
             } message: {
-                moveDialogMessage
+                if let item = targetItemForMove {
+                    Text(String(format: String(localized: "「%@」の移動先を選択してください。"), item.name))
+                }
             }
             .onChange(of: isShowingMoveDialog) { _, isShowing in
                 if !isShowing {
@@ -203,7 +210,7 @@ public struct InventoryView: View {
                 Button(role: .cancel) {
                     errorMessage = ""
                 } label: {
-                    Text("OK")
+                    Text(String(localized: "OK"))
                 }
             } message: {
                 Text(errorMessage)
@@ -211,231 +218,48 @@ public struct InventoryView: View {
         }
     }
 
-    // MARK: - Subviews & Builders
+    // MARK: - Bindings & Destinations
 
-    @ViewBuilder
-    private func locationListContent(targetLocations: [StorageLocation]) -> some View {
-        VStack(spacing: 14) {
-            ForEach(targetLocations, id: \.id) { loc in
-                locationCardView(for: loc)
+    private func displayModeBinding(for location: StorageLocation) -> Binding<CellarDisplayMode> {
+        Binding(
+            get: {
+                displayModes[location.name] ?? ((location.type == .cellar && location.isGridEnabled) ? .grid : .list)
+            },
+            set: { newMode in
+                displayModes[location.name] = newMode
             }
-        }
+        )
     }
 
-    @ViewBuilder
-    private func locationCardView(for loc: StorageLocation) -> some View {
-        let isExpanded = (expandedLocationName == loc.name)
-        let summaryList = viewModel.categorySummaryList(for: loc.name, in: items)
-        let displayItems = viewModel.filteredItems(items, for: loc.name)
-        
-        let currentMode: CellarDisplayMode = {
-            if let mode = displayModes[loc.name] { return mode }
-            return (loc.type == .cellar && loc.isGridEnabled) ? .grid : .list
-        }()
-
-        VStack(spacing: 0) {
-            Button {
-                withAnimation(.snappy) {
-                    if isExpanded {
-                        expandedLocationName = nil
-                    } else {
-                        expandedLocationName = loc.name
-                    }
-                }
-            } label: {
-                HStack(spacing: 16) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.accentColor.opacity(0.12))
-                            .frame(width: 50, height: 50)
-                        Image(systemName: loc.type.defaultIconName)
-                            .font(.title3)
-                            .foregroundStyle(Color.accentColor)
-                    }
-
-                    Text(loc.name)
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.primary)
-
-                    Spacer()
-                    
-                    if summaryList.isEmpty {
-                        Text("在庫なし")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    } else {
-                        VStack(alignment: .leading, spacing: 2) {
-                            ForEach(summaryList, id: \.categoryName) { summary in
-                                Text("\(summary.categoryName) \(summary.count)本")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-
-                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.tertiary)
-                        .padding(.trailing, 4)
-                }
-                .padding(16)
-                .background(Color(.secondarySystemGroupedBackground))
-                .cornerRadius(16)
-            }
-            .buttonStyle(.plain)
-
-            if isExpanded {
-                expandedContentView(loc: loc, currentMode: currentMode, displayItems: displayItems)
-            }
-        }
-        .background(Color(.secondarySystemGroupedBackground))
-        .cornerRadius(16)
-        .shadow(color: Color.black.opacity(0.04), radius: 6, x: 0, y: 3)
-    }
-
-    @ViewBuilder
-    private func expandedContentView(loc: StorageLocation, currentMode: CellarDisplayMode, displayItems: [BeverageItem]) -> some View {
-        let isLocEditing = editingLocationNames.contains(loc.name)
-
-        VStack(spacing: 12) {
-            Divider()
-                .padding(.horizontal)
-
-            HStack {
-                if loc.isGridEnabled {
-                    Picker(String(localized: "表示形式"), selection: Binding(
-                        get: { currentMode },
-                        set: { newMode in
-                            displayModes[loc.name] = newMode
-                        }
-                    )) {
-                        ForEach(CellarDisplayMode.allCases) { mode in
-                            Text(mode.displayName).tag(mode)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                }
-
-                Spacer()
-
-                if currentMode == .grid && loc.isGridEnabled {
-                    Button {
-                        tempRows = loc.gridRows
-                        tempColumns = loc.gridColumns
-                        resizingLocation = loc
-                    } label: {
-                        Image(systemName: "slider.horizontal.3")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.secondary)
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-                }
-
-                if currentMode == .list && !displayItems.isEmpty {
-                    Button {
-                        withAnimation {
-                            if isLocEditing {
-                                editingLocationNames.remove(loc.name)
-                            } else {
-                                editingLocationNames.insert(loc.name)
-                            }
-                        }
-                    } label: {
-                        Image(systemName: isLocEditing ? "checkmark.circle.fill" : "square.and.pencil")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(isLocEditing ? Color.accentColor : .secondary)
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-                }
-            }
-            .padding(.horizontal)
-            
-            if currentMode == .grid && loc.isGridEnabled {
-                CellarGridView(
-                    location: loc,
-                    items: displayItems,
-                    modelContext: modelContext,
-                    onSelectSlot: { row, col, item in
-                        if let item = item {
-                            selectedItemForAction = item
-                            isShowingActionSheet = true
-                        }
-                    },
-                    onSelectItem: { item in
-                        selectedItemForAction = item
-                        isShowingActionSheet = true
-                    },
-                    onError: { message in
-                        errorMessage = message
-                        showErrorAlert = true
-                    }
-                )
-                .padding(.horizontal, 12)
-
-            } else {
-                if displayItems.isEmpty {
-                    Text("条件に一致する在庫はありません")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .padding(.vertical, 16)
+    private func editingBinding(for locationName: String) -> Binding<Bool> {
+        Binding(
+            get: { editingLocationNames.contains(locationName) },
+            set: { isEditing in
+                if isEditing {
+                    editingLocationNames.insert(locationName)
                 } else {
-                    VStack(spacing: 8) {
-                        ForEach(Array(displayItems.enumerated()), id: \.element.id) { index, item in
-                            HStack(spacing: 8) {
-                                if isLocEditing {
-                                    Button {
-                                        viewModel.deleteItem(item, modelContext: modelContext)
-                                    } label: {
-                                        Image(systemName: "minus.circle.fill")
-                                            .font(.title2)
-                                            .foregroundStyle(.red)
-                                    }
-                                    .transition(.scale.combined(with: .opacity))
-                                    .padding(.leading, 8)
-                                }
-
-                                renderItemRow(item: item, isLocEditing: isLocEditing)
-                                
-                                if isLocEditing {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.title3)
-                                        .foregroundStyle(.secondary)
-                                        .padding(.trailing, 8)
-                                        .contentShape(Rectangle())
-                                        .draggable(item.id.uuidString)
-                                        .transition(.scale.combined(with: .opacity))
-                                }
-                            }
-                            .background(Color(.secondarySystemGroupedBackground))
-                            .dropDestination(for: String.self) { droppedItems, _ in
-                                guard let uuidString = droppedItems.first,
-                                      let uuid = UUID(uuidString: uuidString),
-                                      let sourceIndex = displayItems.firstIndex(where: { $0.id == uuid }) else {
-                                    return false
-                                }
-                                
-                                var mutableItems = displayItems
-                                let movedItem = mutableItems.remove(at: sourceIndex)
-                                mutableItems.insert(movedItem, at: index)
-                                
-                                viewModel.saveNewOrder(for: mutableItems, modelContext: modelContext)
-                                return true
-                            }
-                        }
-                    }
-                    .animation(.snappy, value: isLocEditing)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 4)
+                    editingLocationNames.remove(locationName)
                 }
             }
+        )
+    }
+
+    @ViewBuilder
+    private func detailDestination(for item: BeverageItem) -> some View {
+        if let latestLog = item.tastingLogs?.sorted(by: { $0.date > $1.date }).first {
+            LogDetailView(log: latestLog)
+        } else {
+            let fallbackLog = TastingLog(
+                date: item.createdAt,
+                rating: 0.0,
+                appearanceNotes: "",
+                appearanceColorHex: "#802633",
+                aromaTags: [],
+                memo: String(localized: "基本情報のみ登録されています。"),
+                item: item
+            )
+            LogDetailView(log: fallbackLog)
         }
-        .padding(.bottom, 12)
-        .background(Color(.secondarySystemGroupedBackground))
-        .transition(.opacity.combined(with: .move(edge: .top)))
     }
 
     @ViewBuilder
@@ -446,7 +270,7 @@ public struct InventoryView: View {
                 isNavigatingToDetail = true
             }
 
-            let hasEvaluatedLog = (item.tastingLogs?.contains(where: { $0.isEvaluated }) ?? false)
+            let hasEvaluatedLog = item.tastingLogs?.contains(where: { $0.isEvaluated }) ?? false
 
             if hasEvaluatedLog {
                 Button(String(localized: "今日飲む")) {
@@ -480,7 +304,6 @@ public struct InventoryView: View {
         }
 
         Button(String(localized: "キャンセル"), role: .cancel) {
-            // モーダル側からも明示的にクリア
             selectedItemForAction = nil
         }
     }
@@ -501,62 +324,41 @@ public struct InventoryView: View {
             targetItemForMove = nil
         }
     }
-
-    @ViewBuilder
-    private var moveDialogMessage: some View {
-        if let item = targetItemForMove {
-            Text("「\(item.name)」の移動先を選択してください。")
-        }
-    }
-
-    @ViewBuilder
-    private func renderItemRow(item: BeverageItem, isLocEditing: Bool) -> some View {
-        let averageRating: Double? = {
-            let logs = item.tastingLogs ?? []
-            guard !logs.isEmpty else { return nil }
-            let total = logs.reduce(0.0) { $0 + $1.rating }
-            return total / Double(logs.count)
-        }()
-
-        Button {
-            if !isLocEditing {
-                selectedItemForAction = item
-                isShowingActionSheet = true
-            }
-        } label: {
-            BeverageCardView(
-                name: item.name,
-                producer: item.producer,
-                category: item.category,
-                region: item.region,
-                vintage: item.vintage,
-                rating: averageRating,
-                imageData: item.imageDatas?.first,
-                isBackgroundRemoved: item.isBackgroundRemoved
-            )
-        }
-        .buttonStyle(.plain)
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: StorageLocation.self, BeverageItem.self, TastingLog.self, configurations: config)
-    
-    let mainCellar = StorageLocation(
-        name: "メインセラー",
-        type: .cellar,
-        memo: "温度14度設定",
-        isGridEnabled: true,
-        gridRows: 3,
-        gridColumns: 4
-    )
-    let fridge = StorageLocation(name: "キッチン冷蔵庫", type: .refrigerator, memo: "生酒用", isGridEnabled: false)
+    InventoryViewPreviewHost()
+}
 
-    container.mainContext.insert(mainCellar)
-    container.mainContext.insert(fridge)
+private struct InventoryViewPreviewHost: View {
+    private let container: ModelContainer
 
-    return InventoryView()
-        .modelContainer(container)
+    init() {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let modelContainer = try! ModelContainer(
+            for: StorageLocation.self,
+            BeverageItem.self,
+            TastingLog.self,
+            configurations: config
+        )
+
+        let mainCellar = StorageLocation(
+            name: "メインセラー",
+            type: .cellar,
+            memo: "温度14度設定",
+            isGridEnabled: true,
+            gridRows: 3,
+            gridColumns: 4
+        )
+        let fridge = StorageLocation(name: "キッチン冷蔵庫", type: .refrigerator, memo: "生酒用", isGridEnabled: false)
+
+        modelContainer.mainContext.insert(mainCellar)
+        modelContainer.mainContext.insert(fridge)
+        self.container = modelContainer
+    }
+
+    var body: some View {
+        InventoryView()
+            .modelContainer(container)
+    }
 }
