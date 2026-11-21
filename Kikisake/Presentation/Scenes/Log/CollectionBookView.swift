@@ -1,10 +1,12 @@
+//
 //  CollectionBookView.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
 
-// シート用のラッパー構造体（Identifiableに適合させる）
+/// Sheet payload for a tapped collection item cell.
 public struct CollectionCellSheetWrapper: Identifiable {
     public let id = UUID()
     let definition: CollectionItemDefinition
@@ -12,21 +14,17 @@ public struct CollectionCellSheetWrapper: Identifiable {
     let unlockedLogs: [TastingLog]
 }
 
+/// Collection book view displaying regional completion progress, rank badges, and unlocked items.
 public struct CollectionBookView: View {
     @Bindable private var viewModel: CollectionViewModel
     @Bindable private var appState = AppState.shared
     var allLogs: [TastingLog]
 
-    // 外部（LogView）から渡されるフィルター状態
     @Bindable var logViewModel: LogViewModel
 
-    // シート表示用のStateをひとつに統合（.sheet(item:)用）
     @State private var activeSheetWrapper: CollectionCellSheetWrapper? = nil
-    
-    // 未達成タップ時のサジェスト表示用アラート制御
     @State private var selectedHintMessage: String? = nil
     @State private var isShowingSuggestionAlert: Bool = false
-
     @State private var isShowingPaywall: Bool = false
     @State private var isShowingRankSheet: Bool = false
 
@@ -41,49 +39,32 @@ public struct CollectionBookView: View {
     }
 
     public var body: some View {
-        @Bindable var viewModel = viewModel
-        @Bindable var logViewModel = logViewModel
         let activeCategory = logViewModel.collectionCategoryFilter ?? viewModel.selectedCategory
         let isPro = appState.isProVersion
         let proExtraCount = viewModel.lockedProItemCount(for: activeCategory)
         let completionResults = filteredCompletions(for: activeCategory, isPro: isPro)
         let groupedResults = filteredGroupedCompletions(for: activeCategory, isPro: isPro)
-        
+
         let currentBadge = viewModel.currentRankBadge(for: activeCategory, logs: allLogs, isPro: isPro)
         let nextBadge = viewModel.nextRankBadge(for: activeCategory, logs: allLogs, isPro: isPro)
-        let unlockedCount = completionResults.filter { $0.isUnlocked }.count
+        let unlockedCount = completionResults.filter(\.isUnlocked).count
         let totalCount = completionResults.count
 
-        return VStack(spacing: 16) {
-            // 0. Pro版誘導バナー
+        VStack(spacing: 16) {
             if !isPro && proExtraCount > 0 {
                 proUpgradeBanner(extraCount: proExtraCount)
             }
 
-            // 1. 酒種切り替えピッカー
-            Picker(String(localized: "酒種"), selection: Binding(
-                get: { activeCategory },
-                set: { newValue in
-                    viewModel.selectedCategory = newValue
-                    if logViewModel.collectionCategoryFilter != nil {
-                        logViewModel.collectionCategoryFilter = newValue
-                    }
-                }
-            )) {
-                ForEach(BeverageCategory.allCases, id: \.self) { category in
-                    Text(category.displayName).tag(category)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding(.horizontal, 4)
+            categoryPicker(activeCategory: activeCategory)
 
-            // 2. 進捗サマリーカード
-            progressSummaryCard(completionResults: completionResults)
-            
-            // 3. 称号・ランクバッジバナー
-            rankBadgeBanner(currentBadge: currentBadge, nextBadge: nextBadge, unlockedCount: unlockedCount)
+            progressSummaryCard(unlockedCount: unlockedCount, totalCount: totalCount)
 
-            // 4. 国・都道府県別のコレクション一覧
+            rankBadgeBanner(
+                currentBadge: currentBadge,
+                nextBadge: nextBadge,
+                unlockedCount: unlockedCount
+            )
+
             if groupedResults.isEmpty {
                 ContentUnavailableView(
                     String(localized: "該当する図鑑項目がありません"),
@@ -95,7 +76,6 @@ public struct CollectionBookView: View {
                 groupedCollectionView(groupedResults: groupedResults)
             }
         }
-        // ✨ .sheet(item:) を利用することで、1回目の真っ白な表示バグを完全に防止
         .sheet(item: $activeSheetWrapper) { wrapper in
             CollectionItemDetailSheet(definition: wrapper.definition, unlockedLogs: wrapper.unlockedLogs)
         }
@@ -109,8 +89,7 @@ public struct CollectionBookView: View {
                 totalCount: totalCount
             )
         }
-        // ✨ 未達成アイテムタップ時のサジェスト用アラート
-        .alert(String(localized: "解放のヒント"), isPresented: $isShowingSuggestionAlert, presenting: selectedHintMessage) { hint in
+        .alert(String(localized: "解放のヒント"), isPresented: $isShowingSuggestionAlert, presenting: selectedHintMessage) { _ in
             Button(String(localized: "閉じる"), role: .cancel) {}
         } message: { hint in
             Text(hint)
@@ -131,28 +110,43 @@ public struct CollectionBookView: View {
         return region == selected
     }
 
-    private func filteredCompletions(
-        for category: BeverageCategory,
-        isPro: Bool
-    ) -> [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])] {
-        viewModel.checkCompletions(for: category, logs: allLogs, isPro: isPro).filter { result in
-            matchesRegionFilter(result.definition.region) && matchesElementFilter(result.definition)
+    private func filteredCompletions(for category: BeverageCategory, isPro: Bool) -> [CollectionCompletionEntry] {
+        viewModel.checkCompletions(for: category, logs: allLogs, isPro: isPro).filter { entry in
+            matchesRegionFilter(entry.definition.region) && matchesElementFilter(entry.definition)
         }
     }
 
-    private func filteredGroupedCompletions(
-        for category: BeverageCategory,
-        isPro: Bool
-    ) -> [(region: String, items: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])])] {
+    private func filteredGroupedCompletions(for category: BeverageCategory, isPro: Bool) -> [CollectionRegionGroup] {
         viewModel.groupedCompletions(for: category, logs: allLogs, isPro: isPro).compactMap { group in
             guard matchesRegionFilter(group.region) else { return nil }
             let filteredItems = group.items.filter { matchesElementFilter($0.definition) }
             guard !filteredItems.isEmpty else { return nil }
-            return (region: group.region, items: filteredItems)
+            return CollectionRegionGroup(region: group.region, items: filteredItems)
         }
     }
 
     // MARK: - Subviews
+
+    private func categoryPicker(activeCategory: BeverageCategory) -> some View {
+        Picker(
+            String(localized: "酒種"),
+            selection: Binding(
+                get: { activeCategory },
+                set: { newValue in
+                    viewModel.selectedCategory = newValue
+                    if logViewModel.collectionCategoryFilter != nil {
+                        logViewModel.collectionCategoryFilter = newValue
+                    }
+                }
+            )
+        ) {
+            ForEach(BeverageCategory.allCases, id: \.self) { category in
+                Text(category.displayName).tag(category)
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding(.horizontal, 4)
+    }
 
     private func proUpgradeBanner(extraCount: Int) -> some View {
         Button {
@@ -162,7 +156,7 @@ public struct CollectionBookView: View {
                 Image(systemName: "crown.fill")
                     .font(.title2)
                     .foregroundStyle(.orange)
-                
+
                 VStack(alignment: .leading, spacing: 2) {
                     Text(String(localized: "プロ版で図鑑を全解放"))
                         .font(.subheadline)
@@ -172,9 +166,9 @@ public struct CollectionBookView: View {
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }
-                
+
                 Spacer()
-                
+
                 Image(systemName: "chevron.right")
                     .font(.caption)
                     .fontWeight(.semibold)
@@ -188,9 +182,7 @@ public struct CollectionBookView: View {
         .buttonStyle(.plain)
     }
 
-    private func progressSummaryCard(completionResults: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])]) -> some View {
-        let unlockedCount = completionResults.filter { $0.isUnlocked }.count
-        let totalCount = completionResults.count
+    private func progressSummaryCard(unlockedCount: Int, totalCount: Int) -> some View {
         let rate = totalCount > 0 ? Double(unlockedCount) / Double(totalCount) : 0.0
 
         return VStack(spacing: 12) {
@@ -212,25 +204,16 @@ public struct CollectionBookView: View {
         .cornerRadius(16)
     }
 
-    @ViewBuilder
-    private func rankBadgeBanner(currentBadge: CollectionRankBadge?, nextBadge: CollectionRankBadge?, unlockedCount: Int) -> some View {
+    private func rankBadgeBanner(
+        currentBadge: CollectionRankBadge?,
+        nextBadge: CollectionRankBadge?,
+        unlockedCount: Int
+    ) -> some View {
         Button {
             isShowingRankSheet = true
         } label: {
             HStack(spacing: 14) {
-                ZStack {
-                    Circle()
-                        .fill(
-                            currentBadge != nil
-                            ? LinearGradient(colors: currentBadge!.tier.gradientColors, startPoint: .topLeading, endPoint: .bottomTrailing)
-                            : LinearGradient(colors: [Color(.systemGray5), Color(.systemGray4)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                        )
-                        .frame(width: 44, height: 44)
-
-                    Image(systemName: currentBadge?.tier.iconName ?? "lock.fill")
-                        .font(.headline)
-                        .foregroundStyle(currentBadge != nil ? .white : .secondary)
-                }
+                badgeCircleIcon(badge: currentBadge, size: 44, iconFont: .headline)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(currentBadge?.tier.tierName ?? String(localized: "未獲得"))
@@ -238,8 +221,8 @@ public struct CollectionBookView: View {
                         .fontWeight(.bold)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
-                        .background(currentBadge != nil ? currentBadge!.tier.accentColor.opacity(0.15) : Color(.systemGray5))
-                        .foregroundStyle(currentBadge != nil ? currentBadge!.tier.accentColor : .secondary)
+                        .background(badgeTagBackgroundColor(for: currentBadge))
+                        .foregroundStyle(badgeTagForegroundColor(for: currentBadge))
                         .clipShape(Capsule())
 
                     if let current = currentBadge {
@@ -275,14 +258,12 @@ public struct CollectionBookView: View {
         .buttonStyle(.plain)
     }
 
-    private func groupedCollectionView(
-        groupedResults: [(region: String, items: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])])]
-    ) -> some View {
+    private func groupedCollectionView(groupedResults: [CollectionRegionGroup]) -> some View {
         let columns = [GridItem(.adaptive(minimum: 105, maximum: 140), spacing: 10, alignment: .top)]
 
         return VStack(alignment: .leading, spacing: 20) {
-            ForEach(groupedResults, id: \.region) { group in
-                let unlockedInRegion = group.items.filter { $0.isUnlocked }.count
+            ForEach(groupedResults) { group in
+                let unlockedInRegion = group.items.filter(\.isUnlocked).count
                 let totalInRegion = group.items.count
 
                 VStack(alignment: .leading, spacing: 10) {
@@ -290,147 +271,126 @@ public struct CollectionBookView: View {
                         Text(group.region)
                             .font(.headline)
                             .foregroundStyle(.primary)
-                        
+
                         Spacer()
-                        
+
                         Text("\(unlockedInRegion) / \(totalInRegion)")
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundStyle(unlockedInRegion == totalInRegion && totalInRegion > 0 ? Color.accentColor : .secondary)
+                            .foregroundStyle(
+                                unlockedInRegion == totalInRegion && totalInRegion > 0
+                                    ? Color.accentColor
+                                    : .secondary
+                            )
                     }
                     .padding(.horizontal, 4)
 
                     LazyVGrid(columns: columns, spacing: 10) {
-                        ForEach(group.items, id: \.definition.id) { cell in
-                            Button {
-                                if cell.isUnlocked {
-                                    activeSheetWrapper = CollectionCellSheetWrapper(
-                                        definition: cell.definition,
-                                        isUnlocked: cell.isUnlocked,
-                                        unlockedLogs: cell.unlockedLogs
-                                    )
-                                } else {
-                                    selectedHintMessage = cell.definition.suggestionHint
-                                    isShowingSuggestionAlert = true
-                                }
-                            } label: {
-                                VStack(alignment: .leading, spacing: 6) {
-                                    HStack {
-                                        Image(systemName: cell.isUnlocked ? "checkmark.circle.fill" : "lock.circle")
-                                            .font(.system(size: 14))
-                                            .foregroundStyle(cell.isUnlocked ? Color.accentColor : Color(.systemGray3))
-                                        
-                                        Spacer()
-
-                                        if cell.unlockedLogs.count > 1 {
-                                            Text("\(cell.unlockedLogs.count)")
-                                                .font(.system(size: 10, weight: .bold))
-                                                .padding(.horizontal, 6)
-                                                .padding(.vertical, 2)
-                                                .background(Color.accentColor.opacity(0.15))
-                                                .foregroundStyle(Color.accentColor)
-                                                .cornerRadius(6)
-                                        }
-                                    }
-
-                                    Text(cell.definition.targetElement)
-                                        .font(.system(size: 12, weight: .bold))
-                                        .foregroundStyle(cell.isUnlocked ? .primary : .secondary)
-                                        .multilineTextAlignment(.leading)
-                                        .lineLimit(nil)
-                                        .fixedSize(horizontal: false, vertical: true)
-
-                                    Spacer(minLength: 0)
-                                }
-                                .padding(10)
-                                .frame(maxWidth: .infinity, minHeight: 74, alignment: .topLeading)
-                                .background(cell.isUnlocked ? Color(.secondarySystemGroupedBackground) : Color(.systemGray6).opacity(0.6))
-                                .cornerRadius(12)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(cell.isUnlocked ? Color.accentColor.opacity(0.3) : Color(.systemGray4).opacity(0.5), lineWidth: 1)
-                                )
-                            }
-                            .buttonStyle(.plain)
+                        ForEach(group.items) { cell in
+                            collectionCellButton(for: cell)
                         }
                     }
                 }
             }
         }
     }
-}
 
-// MARK: - タップ時に開く銘柄詳細シート
-private struct CollectionItemDetailSheet: View {
-    @Environment(\.dismiss) private var dismiss
-    let definition: CollectionItemDefinition
-    let unlockedLogs: [TastingLog]
+    private func collectionCellButton(for cell: CollectionCompletionEntry) -> some View {
+        Button {
+            if cell.isUnlocked {
+                activeSheetWrapper = CollectionCellSheetWrapper(
+                    definition: cell.definition,
+                    isUnlocked: cell.isUnlocked,
+                    unlockedLogs: cell.unlockedLogs
+                )
+            } else {
+                selectedHintMessage = cell.definition.suggestionHint
+                isShowingSuggestionAlert = true
+            }
+        } label: {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Image(systemName: cell.isUnlocked ? "checkmark.circle.fill" : "lock.circle")
+                        .font(.system(size: 14))
+                        .foregroundStyle(cell.isUnlocked ? Color.accentColor : Color(.systemGray3))
 
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 16) {
-                    VStack(spacing: 4) {
-                        Text(definition.targetElement)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.center)
-                        Text("\(definition.region) （\(definition.category.displayName)）")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                    .padding(.top, 8)
+                    Spacer()
 
-                    Divider()
-
-                    if unlockedLogs.isEmpty {
-                        ContentUnavailableView(
-                            String(localized: "未達成の項目です"),
-                            systemImage: "lock.slash",
-                            description: Text(String(localized: "この条件に一致するお酒を記録すると、図鑑が解放されます。"))
-                        )
-                        .padding(.top, 40)
-                    } else {
-                        VStack(spacing: 12) {
-                            ForEach(unlockedLogs, id: \.id) { log in
-                                if let item = log.item {
-                                    BeverageCardView(
-                                        name: item.name,
-                                        producer: item.producer,
-                                        category: item.category,
-                                        region: item.region,
-                                        vintage: item.vintage,
-                                        rating: log.rating,
-                                        imageData: item.imageDatas?.first,
-                                        isBackgroundRemoved: item.isBackgroundRemoved,
-                                        appearanceColorHex: log.appearanceColorHex
-                                    )
-                                }
-                            }
-                        }
+                    if cell.unlockedLogs.count > 1 {
+                        Text("\(cell.unlockedLogs.count)")
+                            .font(.system(size: 10, weight: .bold))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Color.accentColor.opacity(0.15))
+                            .foregroundStyle(Color.accentColor)
+                            .cornerRadius(6)
                     }
                 }
-                .padding()
+
+                Text(cell.definition.targetElement)
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundStyle(cell.isUnlocked ? .primary : .secondary)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Spacer(minLength: 0)
             }
-            .background(Color(.systemGroupedBackground))
-            .navigationTitle(String(localized: "図鑑アイテム詳細"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button(String(localized: "閉じる")) {
-                        dismiss()
-                    }
-                    .fontWeight(.bold)
-                }
-            }
+            .padding(10)
+            .frame(maxWidth: .infinity, minHeight: 74, alignment: .topLeading)
+            .background(cell.isUnlocked ? Color(.secondarySystemGroupedBackground) : Color(.systemGray6).opacity(0.6))
+            .cornerRadius(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(
+                        cell.isUnlocked ? Color.accentColor.opacity(0.3) : Color(.systemGray4).opacity(0.5),
+                        lineWidth: 1
+                    )
+            )
         }
+        .buttonStyle(.plain)
+    }
+
+    private func badgeCircleIcon(badge: CollectionRankBadge?, size: CGFloat, iconFont: Font) -> some View {
+        ZStack {
+            Circle()
+                .fill(badgeGradient(for: badge))
+                .frame(width: size, height: size)
+
+            Image(systemName: badge?.tier.iconName ?? "lock.fill")
+                .font(iconFont)
+                .foregroundStyle(badge != nil ? .white : .secondary)
+        }
+    }
+
+    private func badgeGradient(for badge: CollectionRankBadge?) -> LinearGradient {
+        if let badge {
+            return LinearGradient(
+                colors: badge.tier.gradientColors,
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        }
+        return LinearGradient(
+            colors: [Color(.systemGray5), Color(.systemGray4)],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    private func badgeTagBackgroundColor(for badge: CollectionRankBadge?) -> Color {
+        badge != nil ? badge!.tier.accentColor.opacity(0.15) : Color(.systemGray5)
+    }
+
+    private func badgeTagForegroundColor(for badge: CollectionRankBadge?) -> Color {
+        badge != nil ? badge!.tier.accentColor : .secondary
     }
 }
 
 #Preview("図鑑（ブロンズ達成）") {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, StorageLocation.self, configurations: config)
-    
+
     let samples: [(String, String, String)] = [
         ("Château Margaux", "フランス, ボルドー", "カベルネ・ソーヴィニヨン"),
         ("Château Cheval Blanc", "フランス, ボルドー", "メルロ"),

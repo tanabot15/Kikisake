@@ -489,6 +489,7 @@
 
     },
     "23区" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -769,6 +770,7 @@
       }
     },
     "アーモンド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -779,6 +781,7 @@
       }
     },
     "アール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -809,6 +812,7 @@
       }
     },
     "アイルランド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -819,6 +823,7 @@
       }
     },
     "アイントホーフェン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -829,6 +834,7 @@
       }
     },
     "アカシア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -839,6 +845,7 @@
       }
     },
     "アコンカグア・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -849,6 +856,7 @@
       }
     },
     "アザミ色" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -891,6 +899,7 @@
       }
     },
     "アニス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -901,6 +910,7 @@
       }
     },
     "アプリコット" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -931,6 +941,7 @@
       }
     },
     "アブルッツォ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -941,6 +952,7 @@
       }
     },
     "アムステルダム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -951,6 +963,7 @@
       }
     },
     "アメリカ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1031,6 +1044,7 @@
       }
     },
     "アルザス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1041,6 +1055,7 @@
       }
     },
     "アルゼンチン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1071,6 +1086,7 @@
       }
     },
     "アレンテージョ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1081,6 +1097,7 @@
       }
     },
     "アンバー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1091,6 +1108,7 @@
       }
     },
     "アンバー・オレンジ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1101,6 +1119,7 @@
       }
     },
     "イーデン・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1111,6 +1130,7 @@
       }
     },
     "イギリス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1121,6 +1141,7 @@
       }
     },
     "イタタ・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1131,6 +1152,7 @@
       }
     },
     "イタリア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1141,6 +1163,7 @@
       }
     },
     "イチゴ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1161,6 +1184,7 @@
       }
     },
     "イメレティ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1171,6 +1195,7 @@
       }
     },
     "イングランド (ロンドン・マンチェスター)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1231,6 +1256,7 @@
       }
     },
     "ヴァッレ・ダオスタ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1241,6 +1267,7 @@
       }
     },
     "ヴァニラ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1251,6 +1278,7 @@
       }
     },
     "ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1261,6 +1289,7 @@
       }
     },
     "ウィート（小麦色）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1271,6 +1300,7 @@
       }
     },
     "ウィーン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1301,6 +1331,7 @@
       }
     },
     "ヴィクトリア (メルボルン)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1311,6 +1342,7 @@
       }
     },
     "ヴィッラーニ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1351,6 +1383,7 @@
       }
     },
     "ヴェネト" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1361,6 +1394,7 @@
       }
     },
     "ウェリントン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1371,6 +1405,7 @@
       }
     },
     "ヴェルヴェーヌ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1401,6 +1436,7 @@
       }
     },
     "ヴォー (ラヴォー)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1411,6 +1447,7 @@
       }
     },
     "ウォーカー・ベイ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1421,6 +1458,7 @@
       }
     },
     "うすにごり（ささにごり）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1431,6 +1469,7 @@
       }
     },
     "ヴュルテンベルク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1441,6 +1480,7 @@
       }
     },
     "ウルグアイ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1451,6 +1491,7 @@
       }
     },
     "ウンブリア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1471,6 +1512,7 @@
       }
     },
     "エゲル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1481,6 +1523,7 @@
       }
     },
     "エストニア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1491,6 +1534,7 @@
       }
     },
     "エミリア・ロマーニャ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1511,6 +1555,7 @@
       }
     },
     "エルギン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1531,6 +1576,7 @@
       }
     },
     "オーカー（黄土）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1541,6 +1587,7 @@
       }
     },
     "オーストラリア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1551,6 +1598,7 @@
       }
     },
     "オーストリア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1561,6 +1609,7 @@
       }
     },
     "オールド・ゴールド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1571,6 +1620,7 @@
       }
     },
     "オールド・ルビー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1591,6 +1641,7 @@
       }
     },
     "オスロ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1601,6 +1652,7 @@
       }
     },
     "オニオン・スキン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1611,6 +1663,7 @@
       }
     },
     "オランダ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1621,6 +1674,7 @@
       }
     },
     "オレゴン (ウィラメット・ヴァレー)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1641,6 +1695,7 @@
       }
     },
     "オレンジピール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1651,6 +1706,7 @@
       }
     },
     "オンタリオ (トロント)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1661,6 +1717,7 @@
       }
     },
     "オンタリオ (ナイアガラ・ペニンシュラ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1681,6 +1738,7 @@
       }
     },
     "ガーネット" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1701,6 +1759,7 @@
       }
     },
     "カサブランカ・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1711,6 +1770,7 @@
       }
     },
     "カシス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1721,6 +1781,7 @@
       }
     },
     "カチャポアル・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1741,6 +1802,7 @@
       }
     },
     "カナダ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1751,6 +1813,7 @@
       }
     },
     "カナリー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1761,6 +1824,7 @@
       }
     },
     "カネロネス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1771,6 +1835,7 @@
       }
     },
     "カビ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1781,6 +1846,7 @@
       }
     },
     "カヘティ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1821,6 +1887,7 @@
       }
     },
     "カモミール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1841,6 +1908,7 @@
       }
     },
     "カラブリア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1851,6 +1919,7 @@
       }
     },
     "カラメル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1871,6 +1940,7 @@
       }
     },
     "カリフォルニア (サンタ・バーバラ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1881,6 +1951,7 @@
       }
     },
     "カリフォルニア (セントラル・コースト / パソ・ロブレス)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1891,6 +1962,7 @@
       }
     },
     "カリフォルニア (ソノマ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1901,6 +1973,7 @@
       }
     },
     "カリフォルニア (ナパ・ヴァレー)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1921,6 +1994,7 @@
       }
     },
     "カルトリ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1951,6 +2025,7 @@
       }
     },
     "カンパーニア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1961,6 +2036,7 @@
       }
     },
     "ギズボーン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1981,6 +2057,7 @@
       }
     },
     "キノコ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1991,6 +2068,7 @@
       }
     },
     "キャラメル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2011,6 +2089,7 @@
       }
     },
     "キャンディ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2021,6 +2100,7 @@
       }
     },
     "ギリシャ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2041,6 +2121,7 @@
       }
     },
     "キンモクセイ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2061,6 +2142,7 @@
       }
     },
     "クナワラ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2071,6 +2153,7 @@
       }
     },
     "グラウビュンデン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2101,6 +2184,7 @@
       }
     },
     "クリームチーズ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2111,6 +2195,7 @@
       }
     },
     "グリーン・イエロー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2121,6 +2206,7 @@
       }
     },
     "グリーンリーフ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2131,6 +2217,7 @@
       }
     },
     "グリエ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2141,6 +2228,7 @@
       }
     },
     "クリコ・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2151,6 +2239,7 @@
       }
     },
     "クリスタル・クリア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2181,6 +2270,7 @@
       }
     },
     "クリムゾン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2201,6 +2291,7 @@
       }
     },
     "クルミ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2211,6 +2302,7 @@
       }
     },
     "グレープフルーツ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2231,6 +2323,7 @@
       }
     },
     "クレア・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2251,6 +2344,7 @@
       }
     },
     "ケベック (モントリオール)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2271,6 +2365,7 @@
       }
     },
     "ケント" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2281,6 +2376,7 @@
       }
     },
     "コーク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2301,6 +2397,7 @@
       }
     },
     "コート・デュ・ローヌ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2311,6 +2408,7 @@
       }
     },
     "コーヒー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2321,6 +2419,7 @@
       }
     },
     "コーラル・ピンク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2331,6 +2430,7 @@
       }
     },
     "ゴールデン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2341,6 +2441,7 @@
       }
     },
     "ゴールデン・イエロー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2422,6 +2523,7 @@
       }
     },
     "コッパー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2512,6 +2614,7 @@
       }
     },
     "コペンハーゲン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2522,6 +2625,7 @@
       }
     },
     "ゴボウ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2532,6 +2636,7 @@
       }
     },
     "コリアンダー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2552,6 +2657,7 @@
       }
     },
     "コルス (コルシカ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2562,6 +2668,7 @@
       }
     },
     "コルチャグア・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2572,6 +2679,7 @@
       }
     },
     "コロラド (デンバー)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2592,6 +2700,7 @@
       }
     },
     "コンスタンシア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2612,6 +2721,7 @@
       }
     },
     "サーモン・ピンク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2622,6 +2732,7 @@
       }
     },
     "ザーレ・ウンストルート" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2632,6 +2743,7 @@
       }
     },
     "サヴォワ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2662,6 +2774,7 @@
       }
     },
     "ザクセン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2702,6 +2815,7 @@
       }
     },
     "サセックス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2742,6 +2856,7 @@
       }
     },
     "サフラン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2772,6 +2887,7 @@
       }
     },
     "サルタ (カファジャテ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2782,6 +2898,7 @@
       }
     },
     "サルデーニャ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2802,6 +2919,7 @@
       }
     },
     "サワークリーム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2812,6 +2930,7 @@
       }
     },
     "サン・アントニオ・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2822,6 +2941,7 @@
       }
     },
     "サン・フアン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2842,6 +2962,7 @@
       }
     },
     "サントリーニ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2912,6 +3033,7 @@
       }
     },
     "シダ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2922,6 +3044,7 @@
       }
     },
     "シチリア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2932,6 +3055,7 @@
       }
     },
     "シトラス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2942,6 +3066,7 @@
       }
     },
     "シナモン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2972,6 +3097,7 @@
       }
     },
     "シャンパーニュ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2982,6 +3108,7 @@
       }
     },
     "シャンパン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2992,6 +3119,7 @@
       }
     },
     "シャンパン・ゴールド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3012,6 +3140,7 @@
       }
     },
     "シュタイヤーマルク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3032,6 +3161,7 @@
       }
     },
     "ジュネーヴ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3052,6 +3182,7 @@
       }
     },
     "ジュラ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3062,6 +3193,7 @@
       }
     },
     "ジョージア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3112,6 +3244,7 @@
       }
     },
     "ジンジャーブレッド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3122,6 +3255,7 @@
       }
     },
     "スーボア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3132,6 +3266,7 @@
       }
     },
     "スイカズラ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3142,6 +3277,7 @@
       }
     },
     "スイス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3152,6 +3288,7 @@
       }
     },
     "スウェーデン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3162,6 +3299,7 @@
       }
     },
     "スカーレット" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3192,6 +3330,7 @@
       }
     },
     "スコットランド (エジンバラ・アバディーン)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3213,6 +3352,7 @@
       }
     },
     "スタヴァンゲル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3233,6 +3373,7 @@
       }
     },
     "スタウト・ブラック" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3243,6 +3384,7 @@
       }
     },
     "ステレンボッシュ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3253,6 +3395,7 @@
       }
     },
     "ストックホルム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3263,6 +3406,7 @@
       }
     },
     "ストロー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3273,6 +3417,7 @@
       }
     },
     "ストロー・イエロー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3283,6 +3428,7 @@
       }
     },
     "ストロー/麦わら色" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3293,6 +3439,7 @@
       }
     },
     "ストロベリー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3303,6 +3450,7 @@
       }
     },
     "ストロベリー・ピンク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3313,6 +3461,7 @@
       }
     },
     "ストロベリー・レッド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3333,6 +3482,7 @@
       }
     },
     "スパイス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3343,6 +3493,7 @@
       }
     },
     "スペイン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3433,6 +3584,7 @@
       }
     },
     "スミレ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3453,6 +3605,7 @@
       }
     },
     "スモーキー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3463,6 +3616,7 @@
       }
     },
     "スモーク香" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3503,6 +3657,7 @@
       }
     },
     "スワートランド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3543,6 +3698,7 @@
       }
     },
     "セトゥーバル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3583,6 +3739,7 @@
       }
     },
     "ゼラニウム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3593,6 +3750,7 @@
       }
     },
     "セルフィーユ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3603,6 +3761,7 @@
       }
     },
     "セントラル・オタゴ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3643,6 +3802,7 @@
       }
     },
     "ダーク・アンバー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3653,6 +3813,7 @@
       }
     },
     "ダーク・ガーネット" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3663,6 +3824,7 @@
       }
     },
     "ダーク・ゴールド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3673,6 +3835,7 @@
       }
     },
     "ダーク・チェスナット" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3683,6 +3846,7 @@
       }
     },
     "ダーク・チェリー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3693,6 +3857,7 @@
       }
     },
     "ダーク・ブラウン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3703,6 +3868,7 @@
       }
     },
     "ダーク・ルビー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3733,6 +3899,7 @@
       }
     },
     "タイム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3763,6 +3930,7 @@
       }
     },
     "タスマニア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3863,6 +4031,7 @@
       }
     },
     "タバコ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3873,6 +4042,7 @@
       }
     },
     "ダブリン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3893,6 +4063,7 @@
       }
     },
     "タマネギ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3903,6 +4074,7 @@
       }
     },
     "タリン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3913,6 +4085,7 @@
       }
     },
     "ダン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3923,6 +4096,7 @@
       }
     },
     "タンジェリン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3943,6 +4117,7 @@
       }
     },
     "チェコ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3953,6 +4128,7 @@
       }
     },
     "チェスナット（栗色）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3963,6 +4139,7 @@
       }
     },
     "チェリー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3973,6 +4150,7 @@
       }
     },
     "チェリー・ピンク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3983,6 +4161,7 @@
       }
     },
     "チェリー・ブロッサム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3993,6 +4172,7 @@
       }
     },
     "チェリーレッド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4013,6 +4193,7 @@
       }
     },
     "チョコレート" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4023,6 +4204,7 @@
       }
     },
     "チリ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4043,6 +4225,7 @@
       }
     },
     "つきたての餅" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4093,6 +4276,7 @@
       }
     },
     "ディープ・ゴールデン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4156,6 +4340,7 @@
       }
     },
     "ティチーノ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4196,6 +4381,7 @@
       }
     },
     "テラコッタ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4216,6 +4402,7 @@
       }
     },
     "デンマーク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4226,6 +4413,7 @@
       }
     },
     "トースト" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4236,6 +4424,7 @@
       }
     },
     "ドイツ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4256,6 +4445,7 @@
       }
     },
     "ドウロ (ポート)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4266,6 +4456,7 @@
       }
     },
     "トカイ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4276,6 +4467,7 @@
       }
     },
     "トスカーナ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4316,6 +4508,7 @@
       }
     },
     "トパーズ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4326,6 +4519,7 @@
       }
     },
     "トマト" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4346,6 +4540,7 @@
       }
     },
     "ドライハーブ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4356,6 +4551,7 @@
       }
     },
     "ドライフラワー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4366,6 +4562,7 @@
       }
     },
     "ドライフルーツ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4386,6 +4583,7 @@
       }
     },
     "トリュフ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4406,6 +4604,7 @@
       }
     },
     "ドルトムント" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4416,6 +4615,7 @@
       }
     },
     "トレンティーノ・アルト・アディジェ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4426,6 +4626,7 @@
       }
     },
     "トロ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4436,6 +4637,7 @@
       }
     },
     "トロピカルフルーツ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4446,6 +4648,7 @@
       }
     },
     "ナーエ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4466,6 +4669,7 @@
       }
     },
     "ナウサ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4476,6 +4680,7 @@
       }
     },
     "ナッツ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4486,6 +4691,7 @@
       }
     },
     "ナツメグ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4496,6 +4702,7 @@
       }
     },
     "なめし皮" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4516,6 +4723,7 @@
       }
     },
     "ニーダーエスターライヒ (ヴァッハウ / カンプタール)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4526,6 +4734,7 @@
       }
     },
     "にごり（濃い乳白色）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4536,6 +4745,7 @@
       }
     },
     "にごり（白濁・薄い）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4546,6 +4756,7 @@
       }
     },
     "ニューイングランド (バーモント・マサチューセッツ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4556,6 +4767,7 @@
       }
     },
     "ニューサウスウェールズ (シドニー)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4566,6 +4778,7 @@
       }
     },
     "ニュージーランド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4576,6 +4789,7 @@
       }
     },
     "ニューヨーク (フィンガー・レイクス)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4616,6 +4830,7 @@
       }
     },
     "ネメア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4626,6 +4841,7 @@
       }
     },
     "ネルソン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4646,6 +4862,7 @@
       }
     },
     "ノース・カンタベリー (ワイパラ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4656,6 +4873,7 @@
       }
     },
     "ノルウェー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4666,6 +4884,7 @@
       }
     },
     "ノルトライン (ケルン・デュッセルドルフ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4676,6 +4895,7 @@
       }
     },
     "バーガンディ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4696,6 +4916,7 @@
       }
     },
     "バーデン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4706,6 +4927,7 @@
       }
     },
     "バートン・オン・トレント" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4716,6 +4938,7 @@
       }
     },
     "ハーバル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4726,6 +4949,7 @@
       }
     },
     "ハーブ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4746,6 +4970,7 @@
       }
     },
     "パープル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4756,6 +4981,7 @@
       }
     },
     "パール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4766,6 +4992,7 @@
       }
     },
     "パール・ホワイト" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4786,6 +5013,7 @@
       }
     },
     "バイエルン (ミュンヘン)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4796,6 +5024,7 @@
       }
     },
     "パイナップル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4806,6 +5035,7 @@
       }
     },
     "バイラーダ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4816,6 +5046,7 @@
       }
     },
     "バジリカータ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4826,6 +5057,7 @@
       }
     },
     "バスク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4846,6 +5078,7 @@
       }
     },
     "パタゴニア (リオ・ネグロ / ネウケン)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4856,6 +5089,7 @@
       }
     },
     "ハチミツ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4876,6 +5110,7 @@
       }
     },
     "パッションフルーツ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4906,6 +5141,7 @@
       }
     },
     "バナナ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4916,6 +5152,7 @@
       }
     },
     "ハニー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4926,6 +5163,7 @@
       }
     },
     "ハニー・ゴールド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4936,6 +5174,7 @@
       }
     },
     "パヨッテンラント (ランビック)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4946,6 +5185,7 @@
       }
     },
     "バラ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4966,6 +5206,7 @@
       }
     },
     "バルセロナ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4986,6 +5227,7 @@
       }
     },
     "バロッサ・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4996,6 +5238,7 @@
       }
     },
     "パン・ド・ミ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5006,6 +5249,7 @@
       }
     },
     "ハンガリー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5016,6 +5260,7 @@
       }
     },
     "ハンター・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5026,6 +5271,7 @@
       }
     },
     "ハンプシャー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5036,6 +5282,7 @@
       }
     },
     "ピーチ・アンバー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5046,6 +5293,7 @@
       }
     },
     "ピーチ・スキン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5056,6 +5304,7 @@
       }
     },
     "ピーマン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5136,6 +5385,7 @@
       }
     },
     "ピエモンテ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5146,6 +5396,7 @@
       }
     },
     "ビエルソ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5156,6 +5407,7 @@
       }
     },
     "ビスケット" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5176,6 +5428,7 @@
       }
     },
     "ビターチョコレート" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5246,6 +5499,7 @@
       }
     },
     "ヒノキ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5276,6 +5530,7 @@
       }
     },
     "プーリア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5286,6 +5541,7 @@
       }
     },
     "ファルツ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5326,6 +5582,7 @@
       }
     },
     "フェノール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5376,6 +5633,7 @@
       }
     },
     "フミーリャ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5406,6 +5664,7 @@
       }
     },
     "ブラウン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5426,6 +5685,7 @@
       }
     },
     "プラチナ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5436,6 +5696,7 @@
       }
     },
     "プラチナ・ブロンド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5446,6 +5707,7 @@
       }
     },
     "ブラック" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5466,6 +5728,7 @@
       }
     },
     "ブラックチェリー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5476,6 +5739,7 @@
       }
     },
     "ブラックベリー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5496,6 +5760,7 @@
       }
     },
     "プラハ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5506,6 +5771,7 @@
       }
     },
     "プラム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5516,6 +5782,7 @@
       }
     },
     "フランケン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5526,6 +5793,7 @@
       }
     },
     "フランケン (バンベルク)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5536,6 +5804,7 @@
       }
     },
     "フランシュック" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5546,6 +5815,7 @@
       }
     },
     "フランス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5556,6 +5826,7 @@
       }
     },
     "フランダース" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5566,6 +5837,7 @@
       }
     },
     "フリウリ・ヴェネツィア・ジューリア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5576,6 +5848,7 @@
       }
     },
     "プリオラート" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5586,6 +5859,7 @@
       }
     },
     "ブリティッシュ・コロンビア (オカナガン・ヴァレー)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5596,6 +5870,7 @@
       }
     },
     "ブリティッシュコロンビア (バンクーバー)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5616,6 +5891,7 @@
       }
     },
     "ブリュッセル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5636,6 +5912,7 @@
       }
     },
     "ブルーベリー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5646,6 +5923,7 @@
       }
     },
     "ブルゲンラント" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5656,6 +5934,7 @@
       }
     },
     "ブルゴーニュ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5666,6 +5945,7 @@
       }
     },
     "プルゼニ (ピルゼン)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5676,6 +5956,7 @@
       }
     },
     "フレッシュアーモンド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5686,6 +5967,7 @@
       }
     },
     "フローラル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5696,6 +5978,7 @@
       }
     },
     "プロヴァンス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5716,6 +5999,7 @@
       }
     },
     "ブロンズ・ホワイト" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5736,6 +6020,7 @@
       }
     },
     "ヘーゼルナッツ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5746,6 +6031,7 @@
       }
     },
     "ペール・アンバー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5756,6 +6042,7 @@
       }
     },
     "ペール・イエロー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5766,6 +6053,7 @@
       }
     },
     "ペール・ゴールド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5776,6 +6064,7 @@
       }
     },
     "ペール・ストロー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5826,6 +6115,7 @@
       }
     },
     "ベッカー高原" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5836,6 +6126,7 @@
       }
     },
     "ヘッシシェ・ベルクシュトラーセ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5846,6 +6137,7 @@
       }
     },
     "ペトロール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5856,6 +6148,7 @@
       }
     },
     "ペネデス (カバ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5866,6 +6159,7 @@
       }
     },
     "ベルギー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5936,6 +6230,7 @@
       }
     },
     "ベルリン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5946,6 +6241,7 @@
       }
     },
     "ヘレス (シェリー)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5956,6 +6252,7 @@
       }
     },
     "ホークス・ベイ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5966,6 +6263,7 @@
       }
     },
     "ボージョレ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5996,6 +6294,7 @@
       }
     },
     "ホップ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6106,6 +6405,7 @@
       }
     },
     "ボルドー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6116,6 +6416,7 @@
       }
     },
     "ポルトガル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6126,6 +6427,7 @@
       }
     },
     "マーガレット・リヴァー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6136,6 +6438,7 @@
       }
     },
     "マーティンボロ (ワイララパ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6146,6 +6449,7 @@
       }
     },
     "マーマレード" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6156,6 +6460,7 @@
       }
     },
     "マールボロ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6176,6 +6481,7 @@
       }
     },
     "マイポ・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6186,6 +6492,7 @@
       }
     },
     "マウレ・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6196,6 +6503,7 @@
       }
     },
     "マクラーレン・ヴェール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6206,6 +6514,7 @@
       }
     },
     "マスカット" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6236,6 +6545,7 @@
       }
     },
     "マッシュルーム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6246,6 +6556,7 @@
       }
     },
     "マデイラ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6256,6 +6567,7 @@
       }
     },
     "マドラス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6306,6 +6618,7 @@
       }
     },
     "マホガニー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6316,6 +6629,7 @@
       }
     },
     "マホガニー・オレンジ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6326,6 +6640,7 @@
       }
     },
     "マホガニー古酒" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6336,6 +6651,7 @@
       }
     },
     "マルーン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6346,6 +6662,7 @@
       }
     },
     "マルケ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6366,6 +6683,7 @@
       }
     },
     "マルドナド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6396,6 +6714,7 @@
       }
     },
     "マンゴー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6406,6 +6725,7 @@
       }
     },
     "マンティニア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6416,6 +6736,7 @@
       }
     },
     "ミーニョ (ヴィーニョ・ヴェルデ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6426,6 +6747,7 @@
       }
     },
     "ミッテルライン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6436,6 +6758,7 @@
       }
     },
     "ミネラル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6466,6 +6789,7 @@
       }
     },
     "ミント" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6526,6 +6850,7 @@
       }
     },
     "メロン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6546,6 +6871,7 @@
       }
     },
     "メンドーサ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6556,6 +6882,7 @@
       }
     },
     "メントール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6566,6 +6893,7 @@
       }
     },
     "モーゼル" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6576,6 +6904,7 @@
       }
     },
     "モーニントン・ペニンシュラ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6596,6 +6925,7 @@
       }
     },
     "モラヴィア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6606,6 +6936,7 @@
       }
     },
     "モリーゼ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6616,6 +6947,7 @@
       }
     },
     "ヤラ・ヴァレー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6626,6 +6958,7 @@
       }
     },
     "ユーカリ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6636,6 +6969,7 @@
       }
     },
     "ヨーグルト" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6646,6 +6980,7 @@
       }
     },
     "ヨーテボリ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6656,6 +6991,7 @@
       }
     },
     "ヨード" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6666,6 +7002,7 @@
       }
     },
     "ヨード香" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6686,6 +7023,7 @@
       }
     },
     "ラ・マンチャ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6706,6 +7044,7 @@
       }
     },
     "ライチ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6716,6 +7055,7 @@
       }
     },
     "ライト・チェスナット" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6746,6 +7086,7 @@
       }
     },
     "ライム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6756,6 +7097,7 @@
       }
     },
     "ラインガウ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6766,6 +7108,7 @@
       }
     },
     "ラインヘッセン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6786,6 +7129,7 @@
       }
     },
     "ラズベリー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6796,6 +7140,7 @@
       }
     },
     "ラズベリー・ピンク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6806,6 +7151,7 @@
       }
     },
     "ラズベリーレッド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6816,6 +7162,7 @@
       }
     },
     "ラツィオ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6826,6 +7173,7 @@
       }
     },
     "ラベンダー・ローズ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6836,6 +7184,7 @@
       }
     },
     "ラングドック" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6846,6 +7195,7 @@
       }
     },
     "ランシオ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6876,6 +7226,7 @@
       }
     },
     "リアス・バイシャス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6886,6 +7237,7 @@
       }
     },
     "リオハ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6896,6 +7248,7 @@
       }
     },
     "リグーリア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6926,6 +7279,7 @@
       }
     },
     "リスボア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6977,6 +7331,7 @@
       }
     },
     "リベラ・デル・ドゥエロ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6987,6 +7342,7 @@
       }
     },
     "リンゴ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7007,6 +7363,7 @@
       }
     },
     "ルーション" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7017,6 +7374,7 @@
       }
     },
     "ルエダ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7027,6 +7385,7 @@
       }
     },
     "ルビー・エール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7037,6 +7396,7 @@
       }
     },
     "ルビーレッド" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7077,6 +7437,7 @@
       }
     },
     "レバノン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7087,6 +7448,7 @@
       }
     },
     "レモン・イエロー" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7097,6 +7459,7 @@
       }
     },
     "レモン・ピール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7107,6 +7470,7 @@
       }
     },
     "レンガ/ブリック" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7117,6 +7481,7 @@
       }
     },
     "ローズ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7127,6 +7492,7 @@
       }
     },
     "ロースト" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7137,6 +7503,7 @@
       }
     },
     "ロースト香" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7147,6 +7514,7 @@
       }
     },
     "ローリエ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7166,7 +7534,18 @@
         }
       }
     },
+    "ログの修正 (%lld/%lld)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "ログの修正 (%1$lld/%2$lld)"
+          }
+        }
+      }
+    },
     "ログの修正 (%lld/5)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7197,6 +7576,7 @@
       }
     },
     "ロワール" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7207,6 +7587,7 @@
       }
     },
     "ロンバルディア" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7327,6 +7708,7 @@
       }
     },
     "ワシントン (コロンビア・ヴァレー)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7337,6 +7719,7 @@
       }
     },
     "ワックス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7347,6 +7730,7 @@
       }
     },
     "ワロン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7397,6 +7781,7 @@
       }
     },
     "丁子" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7407,6 +7792,7 @@
       }
     },
     "丁字" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7417,6 +7803,7 @@
       }
     },
     "三河 (岡崎・設楽)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7427,6 +7814,7 @@
       }
     },
     "三重県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7447,6 +7835,7 @@
       }
     },
     "上新粉" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7457,6 +7846,7 @@
       }
     },
     "上総・房総" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7467,6 +7857,7 @@
       }
     },
     "上越 (上越)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7487,6 +7878,7 @@
       }
     },
     "下越 (新潟・村上)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7537,6 +7929,7 @@
       }
     },
     "中信" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7547,6 +7940,7 @@
       }
     },
     "中央 (秋田)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7557,6 +7951,7 @@
       }
     },
     "中西部 (シカゴ・ミシガン)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7567,6 +7962,7 @@
       }
     },
     "中讃・西讃 (琴平・観音寺)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7577,6 +7973,7 @@
       }
     },
     "中越 (長岡・魚沼)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7587,6 +7984,7 @@
       }
     },
     "中通り" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7597,6 +7995,7 @@
       }
     },
     "中部 (倉吉)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7607,6 +8006,7 @@
       }
     },
     "中部 (静岡・藤枝・島田)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7617,6 +8017,7 @@
       }
     },
     "丹後・丹波" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7627,6 +8028,7 @@
       }
     },
     "丹波・但馬" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7667,6 +8069,7 @@
       }
     },
     "乳製品" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7677,6 +8080,7 @@
       }
     },
     "乾いた肉" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7687,6 +8091,7 @@
       }
     },
     "乾燥イチジク" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7747,6 +8152,7 @@
       }
     },
     "京都府" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7767,6 +8173,7 @@
       }
     },
     "仙台・塩竈" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7807,6 +8214,7 @@
       }
     },
     "伊賀" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7817,6 +8225,7 @@
       }
     },
     "伏見" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7827,6 +8236,7 @@
       }
     },
     "会津" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7857,6 +8267,7 @@
       }
     },
     "佐渡" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7867,6 +8278,7 @@
       }
     },
     "佐賀県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8077,6 +8489,7 @@
       }
     },
     "備中 (倉敷・高梁)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8087,6 +8500,7 @@
       }
     },
     "備前 (赤磐・瀬戸内)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8097,6 +8511,7 @@
       }
     },
     "備後 (福山・三次)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8177,6 +8592,7 @@
       }
     },
     "兵庫県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8207,6 +8623,7 @@
       }
     },
     "最上 (新庄)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8317,6 +8734,7 @@
       }
     },
     "出雲 (出雲・松江)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8407,6 +8825,7 @@
       }
     },
     "加賀・白山" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8417,6 +8836,7 @@
       }
     },
     "動物的なニュアンス" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8427,6 +8847,7 @@
       }
     },
     "北信" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8437,6 +8858,7 @@
       }
     },
     "北勢 (四日市・鈴鹿)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8447,6 +8869,7 @@
       }
     },
     "北摂 (池田・高槻)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8457,6 +8880,7 @@
       }
     },
     "北毛 (沼田・川場)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8467,6 +8891,7 @@
       }
     },
     "北海道" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8477,6 +8902,7 @@
       }
     },
     "北総 (佐原・成田)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8507,6 +8933,7 @@
       }
     },
     "千葉県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8517,6 +8944,7 @@
       }
     },
     "南アフリカ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8527,6 +8955,7 @@
       }
     },
     "南予 (宇和島・内子)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8537,6 +8966,7 @@
       }
     },
     "南信" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8547,6 +8977,7 @@
       }
     },
     "南西地方 (シュッド・ウエスト)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8557,6 +8988,7 @@
       }
     },
     "南部 (八戸・十和田)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8637,6 +9069,7 @@
       }
     },
     "吉野川流域 (阿波・美馬)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8717,6 +9150,7 @@
       }
     },
     "呉・竹原" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8727,6 +9161,7 @@
       }
     },
     "呉東 (富山・黒部)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8737,6 +9172,7 @@
       }
     },
     "呉西 (高岡・砺波)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8821,6 +9257,7 @@
       }
     },
     "和歌山県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8872,6 +9309,7 @@
       }
     },
     "唐津・小城" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8942,6 +9380,7 @@
       }
     },
     "国中 (甲府・大月)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8952,6 +9391,7 @@
       }
     },
     "国東・宇佐" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8972,6 +9412,7 @@
       }
     },
     "土佐" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9052,6 +9493,7 @@
       }
     },
     "城島 (久留米)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9122,6 +9564,7 @@
       }
     },
     "埼玉県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9232,6 +9675,7 @@
       }
     },
     "多摩 (福生・あきる野・青梅)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9272,6 +9716,7 @@
       }
     },
     "大分県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9292,6 +9737,7 @@
       }
     },
     "大阪府" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9302,6 +9748,7 @@
       }
     },
     "奄美・薩摩" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9312,6 +9759,7 @@
       }
     },
     "奈良・天理" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9322,6 +9770,7 @@
       }
     },
     "奈良県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9332,6 +9781,7 @@
       }
     },
     "宇陀・吉野" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9352,6 +9802,7 @@
       }
     },
     "宮城県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9362,6 +9813,7 @@
       }
     },
     "宮崎県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9382,6 +9834,7 @@
       }
     },
     "富山県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9422,6 +9875,7 @@
       }
     },
     "山口県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9432,6 +9886,7 @@
       }
     },
     "山形県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9452,6 +9907,7 @@
       }
     },
     "山梨県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9502,6 +9958,7 @@
       }
     },
     "岐阜県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9512,6 +9969,7 @@
       }
     },
     "岡山県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9522,6 +9980,7 @@
       }
     },
     "岩国・周南" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9532,6 +9991,7 @@
       }
     },
     "岩手県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9542,6 +10002,7 @@
       }
     },
     "峡北 (北杜・韮崎)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9552,6 +10013,7 @@
       }
     },
     "島原・佐世保" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9562,6 +10024,7 @@
       }
     },
     "島根県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9572,6 +10035,7 @@
       }
     },
     "嶺北 (永平寺・大野)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9582,6 +10046,7 @@
       }
     },
     "嶺南 (小浜・敦賀)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9622,6 +10087,7 @@
       }
     },
     "干しプラム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9652,6 +10118,7 @@
       }
     },
     "平戸・壱岐" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9662,6 +10129,7 @@
       }
     },
     "広島県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9672,6 +10140,7 @@
       }
     },
     "庄内 (酒田・鶴岡)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9722,6 +10191,7 @@
       }
     },
     "微黄色" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9732,6 +10202,7 @@
       }
     },
     "徳島県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9752,6 +10223,7 @@
       }
     },
     "愛媛県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9772,6 +10244,7 @@
       }
     },
     "愛知県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9828,6 +10301,7 @@
       }
     },
     "播州 (西脇・加東・姫路)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9940,6 +10414,7 @@
       }
     },
     "新潟県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9950,6 +10425,7 @@
       }
     },
     "新緑" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9990,6 +10466,7 @@
       }
     },
     "日本" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10060,6 +10537,7 @@
       }
     },
     "日田・玖珠" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10120,6 +10598,7 @@
       }
     },
     "月桂樹の葉" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10130,6 +10609,7 @@
       }
     },
     "朝鮮人参" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10270,6 +10750,7 @@
       }
     },
     "本島 (うるま)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10300,6 +10781,7 @@
       }
     },
     "杉" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10310,6 +10792,7 @@
       }
     },
     "杏仁豆腐" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10320,6 +10803,7 @@
       }
     },
     "村山 (山形)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10340,6 +10824,7 @@
       }
     },
     "東予 (西条・今治)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10350,6 +10835,7 @@
       }
     },
     "東京都" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10360,6 +10846,7 @@
       }
     },
     "東信 (佐久・上田)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10370,6 +10857,7 @@
       }
     },
     "東部 (沼津・富士)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10380,6 +10868,7 @@
       }
     },
     "東部・西部 (鳥取・米子)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10390,6 +10879,7 @@
       }
     },
     "松やに" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10410,6 +10900,7 @@
       }
     },
     "柑橘類" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10420,6 +10911,7 @@
       }
     },
     "栃木県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10430,6 +10922,7 @@
       }
     },
     "栗" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10450,6 +10943,7 @@
       }
     },
     "桃" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10480,6 +10974,7 @@
       }
     },
     "椎茸" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10520,6 +11015,7 @@
       }
     },
     "樹脂" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10630,6 +11126,7 @@
       }
     },
     "水明（青みクリア）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10640,6 +11137,7 @@
       }
     },
     "沖縄県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10650,6 +11148,7 @@
       }
     },
     "河内 (交野・富田林)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10660,6 +11159,7 @@
       }
     },
     "洋ナシ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10670,6 +11170,7 @@
       }
     },
     "洋梨" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10680,6 +11181,7 @@
       }
     },
     "津軽 (弘前・黒石)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10690,6 +11192,7 @@
       }
     },
     "浜通り" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10700,6 +11203,7 @@
       }
     },
     "海の香り" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10710,6 +11214,7 @@
       }
     },
     "淡金色" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10760,6 +11265,7 @@
       }
     },
     "湖北・湖東 (長浜・彦根)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10770,6 +11276,7 @@
       }
     },
     "湖南 (甲賀・草津)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10790,6 +11297,7 @@
       }
     },
     "滋賀県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10810,6 +11318,7 @@
       }
     },
     "漆黒（オックスフォード）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10820,6 +11329,7 @@
       }
     },
     "灘五郷" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10840,6 +11350,7 @@
       }
     },
     "火打石" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10850,6 +11361,7 @@
       }
     },
     "炊いた米" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10880,6 +11392,7 @@
       }
     },
     "無色透明" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10890,6 +11403,7 @@
       }
     },
     "煙・薫製" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10900,6 +11414,7 @@
       }
     },
     "熊本・菊池" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10910,6 +11425,7 @@
       }
     },
     "熊本県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10931,6 +11447,7 @@
       }
     },
     "熟成チーズ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10941,6 +11458,7 @@
       }
     },
     "熟成ブラウン" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10971,6 +11489,7 @@
       }
     },
     "牡丹" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11052,6 +11571,7 @@
       }
     },
     "球磨" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11062,6 +11582,7 @@
       }
     },
     "琥珀色（古酒）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11092,6 +11613,7 @@
       }
     },
     "甘草" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11102,6 +11624,7 @@
       }
     },
     "生クリーム" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11162,6 +11685,7 @@
       }
     },
     "生肉" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11222,6 +11746,7 @@
       }
     },
     "発酵バター" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11262,6 +11787,7 @@
       }
     },
     "白コショウ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11272,6 +11798,7 @@
       }
     },
     "白バラ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11282,6 +11809,7 @@
       }
     },
     "白桃" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11292,6 +11820,7 @@
       }
     },
     "白玉団子" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11302,6 +11831,7 @@
       }
     },
     "白胡椒" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11322,6 +11852,7 @@
       }
     },
     "白銀（プラチナ）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11352,6 +11883,7 @@
       }
     },
     "盛岡・紫波 (南部杜氏)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11402,6 +11934,7 @@
       }
     },
     "県北 (大崎・栗原)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11412,6 +11945,7 @@
       }
     },
     "県北 (大田原・那須)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11422,6 +11956,7 @@
       }
     },
     "県北 (常陸太田・日立)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11432,6 +11967,7 @@
       }
     },
     "県北 (熊谷・行田)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11442,6 +11978,7 @@
       }
     },
     "県北 (能代)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11452,6 +11989,7 @@
       }
     },
     "県南 (小山・栃木)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11462,6 +12000,7 @@
       }
     },
     "県南 (横手・湯沢)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11472,6 +12011,7 @@
       }
     },
     "県南 (花巻・一関)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11482,6 +12022,7 @@
       }
     },
     "県央 (海老名・厚木)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11492,6 +12033,7 @@
       }
     },
     "県西 (結城・筑西)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11502,6 +12044,7 @@
       }
     },
     "県西 (足柄・小田原)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11512,6 +12055,7 @@
       }
     },
     "真鍮色（ブラス）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11522,6 +12066,7 @@
       }
     },
     "知多 (半田・常滑)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11532,6 +12077,7 @@
       }
     },
     "石川県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11562,6 +12108,7 @@
       }
     },
     "石灰" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11572,6 +12119,7 @@
       }
     },
     "石見 (大田・浜田)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11592,6 +12140,7 @@
       }
     },
     "硫黄" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11652,6 +12201,7 @@
       }
     },
     "神奈川県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11682,6 +12232,7 @@
       }
     },
     "福井県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11692,6 +12243,7 @@
       }
     },
     "福岡県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11702,6 +12254,7 @@
       }
     },
     "福島県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11712,6 +12265,7 @@
       }
     },
     "秋田県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11732,6 +12286,7 @@
       }
     },
     "秩父" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11792,6 +12347,7 @@
       }
     },
     "筑前・筑後" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11802,6 +12358,7 @@
       }
     },
     "粘土" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11838,6 +12395,7 @@
       }
     },
     "紀北 (海南・かつらぎ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11848,6 +12406,7 @@
       }
     },
     "紀南 (田辺・新宮)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11858,6 +12417,7 @@
       }
     },
     "紅茶" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11868,6 +12428,7 @@
       }
     },
     "紅茶の葉" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11998,6 +12559,7 @@
       }
     },
     "置賜 (米沢)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12008,6 +12570,7 @@
       }
     },
     "美作 (津山)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12028,6 +12591,7 @@
       }
     },
     "美濃 (大垣・多治見)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12048,6 +12612,7 @@
       }
     },
     "群馬県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12088,6 +12653,7 @@
       }
     },
     "能登" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12098,6 +12664,7 @@
       }
     },
     "腐葉土" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12168,6 +12735,7 @@
       }
     },
     "花の蜜" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12178,6 +12746,7 @@
       }
     },
     "花梨" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12198,6 +12767,7 @@
       }
     },
     "若草・微緑" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12228,6 +12798,7 @@
       }
     },
     "茨城県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12238,6 +12809,7 @@
       }
     },
     "草" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12258,6 +12830,7 @@
       }
     },
     "菩提樹" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12308,6 +12881,7 @@
       }
     },
     "萩・長門" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12328,6 +12902,7 @@
       }
     },
     "蜂蜜" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12338,6 +12913,7 @@
       }
     },
     "蜜蝋" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12474,6 +13050,7 @@
       }
     },
     "西条 (東広島)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12484,6 +13061,7 @@
       }
     },
     "西毛 (高崎・藤岡)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12494,6 +13072,7 @@
       }
     },
     "西海岸 (ポートランド・サンディエゴ)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12504,6 +13083,7 @@
       }
     },
     "西部 (浜松・掛川)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12754,6 +13334,7 @@
       }
     },
     "貝殻" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12784,6 +13365,7 @@
       }
     },
     "赤スグリ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12804,6 +13386,7 @@
       }
     },
     "赤褐色" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12814,6 +13397,7 @@
       }
     },
     "赤金色（オレンジゴールド）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12934,6 +13518,7 @@
       }
     },
     "道北 (旭川・上川)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12944,6 +13529,7 @@
       }
     },
     "道央 (札幌・小樽)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12954,6 +13540,7 @@
       }
     },
     "道東 (釧路・根室)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13090,6 +13677,7 @@
       }
     },
     "酵母" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13120,6 +13708,7 @@
       }
     },
     "醤油" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13160,6 +13749,7 @@
       }
     },
     "針葉樹" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13170,6 +13760,7 @@
       }
     },
     "鉄分" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13180,6 +13771,7 @@
       }
     },
     "鉱物" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13230,6 +13822,7 @@
       }
     },
     "長崎県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13240,6 +13833,7 @@
       }
     },
     "長野県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13300,6 +13894,7 @@
       }
     },
     "青りんご" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13310,6 +13905,7 @@
       }
     },
     "青リンゴ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13320,6 +13916,7 @@
       }
     },
     "青森県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13330,6 +13927,7 @@
       }
     },
     "青竹" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13340,6 +13938,7 @@
       }
     },
     "静岡県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13360,6 +13959,7 @@
       }
     },
     "飛騨 (高山・古川)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13517,6 +14117,7 @@
       }
     },
     "香川県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13527,6 +14128,7 @@
       }
     },
     "香木" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13537,6 +14139,7 @@
       }
     },
     "高千穂・延岡" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13547,6 +14150,7 @@
       }
     },
     "高知県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13557,6 +14161,7 @@
       }
     },
     "鳥取県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13567,6 +14172,7 @@
       }
     },
     "鹿児島県" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13577,6 +14183,7 @@
       }
     },
     "鹿島・嬉野" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13587,6 +14194,7 @@
       }
     },
     "麝香" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13597,6 +14205,7 @@
       }
     },
     "麦わら色" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13607,6 +14216,7 @@
       }
     },
     "麦わら金色" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13617,6 +14227,7 @@
       }
     },
     "麦芽" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13627,6 +14238,7 @@
       }
     },
     "黄色いリンゴ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13637,6 +14249,7 @@
       }
     },
     "黄金色" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13647,6 +14260,7 @@
       }
     },
     "黒オリーブ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13657,6 +14271,7 @@
       }
     },
     "黒胡椒" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13667,6 +14282,7 @@
       }
     },
     "黒赤色（ノワール）" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

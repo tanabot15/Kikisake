@@ -88,6 +88,9 @@
 		D9FB6CEC30B1602A00D105C9 /* BackupFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CEB30B1602A00D105C9 /* BackupFileDocument.swift */; };
 		D9FB6CEE30B1614300D105C9 /* RadarChartShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CED30B1614300D105C9 /* RadarChartShapes.swift */; };
 		D9FB6CF030B1617600D105C9 /* MatrixHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CEF30B1617600D105C9 /* MatrixHelper.swift */; };
+		D9FB6CF230B182F700D105C9 /* TimelineSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF130B182F700D105C9 /* TimelineSectionView.swift */; };
+		D9FB6CF430B1842300D105C9 /* CollectionItemDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF330B1842300D105C9 /* CollectionItemDetailSheet.swift */; };
+		D9FB6CF630B1844700D105C9 /* RankShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF530B1844700D105C9 /* RankShareSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -174,6 +177,9 @@
 		D9FB6CEB30B1602A00D105C9 /* BackupFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupFileDocument.swift; sourceTree = "<group>"; };
 		D9FB6CED30B1614300D105C9 /* RadarChartShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarChartShapes.swift; sourceTree = "<group>"; };
 		D9FB6CEF30B1617600D105C9 /* MatrixHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixHelper.swift; sourceTree = "<group>"; };
+		D9FB6CF130B182F700D105C9 /* TimelineSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSectionView.swift; sourceTree = "<group>"; };
+		D9FB6CF330B1842300D105C9 /* CollectionItemDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionItemDetailSheet.swift; sourceTree = "<group>"; };
+		D9FB6CF530B1844700D105C9 /* RankShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankShareSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -448,11 +454,14 @@
 				D9044230307E85B600EF4807 /* LogDetailView.swift */,
 				D904425C3085D32F00EF4807 /* TastingCardShareView.swift */,
 				D9044267308721A200EF4807 /* EditLogFlowView.swift */,
+				D9FB6CF130B182F700D105C9 /* TimelineSectionView.swift */,
 				D904F0B230AC7A980046D409 /* TimelineRowView.swift */,
 				D904F0AC30A7400C0046D409 /* CollectionBookView.swift */,
 				D904F0AA30A73FFA0046D409 /* CollectionViewModel.swift */,
 				D904F0AE30A94F220046D409 /* CollectionRankModel.swift */,
+				D9FB6CF330B1842300D105C9 /* CollectionItemDetailSheet.swift */,
 				D904F0B030A94F400046D409 /* RankShareCardView.swift */,
+				D9FB6CF530B1844700D105C9 /* RankShareSheetView.swift */,
 			);
 			path = Log;
 			sourceTree = "<group>";
@@ -599,6 +608,7 @@
 			files = (
 				D9044279308B269300EF4807 /* InventoryFilterSheet.swift in Sources */,
 				D90441F3307E83F600EF4807 /* AppState.swift in Sources */,
+				D9FB6CF230B182F700D105C9 /* TimelineSectionView.swift in Sources */,
 				D90442523081A45200EF4807 /* AromaStepView.swift in Sources */,
 				D9044223307E856F00EF4807 /* CustomSlider.swift in Sources */,
 				D904425B308368BF00EF4807 /* AddLocationSheetView.swift in Sources */,
@@ -625,6 +635,7 @@
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
 				D95082593090D9720045BF8E /* BackupManager.swift in Sources */,
 				D9044271308AFA4E00EF4807 /* LogFilterSheet.swift in Sources */,
+				D9FB6CF630B1844700D105C9 /* RankShareSheetView.swift in Sources */,
 				D9508261309D8B530045BF8E /* TastingCustomizationManager.swift in Sources */,
 				D904426D3088A3D000EF4807 /* AdMobBannerView.swift in Sources */,
 				D904421B307E851F00EF4807 /* TastingRepository.swift in Sources */,
@@ -649,6 +660,7 @@
 				D9044275308B18EE00EF4807 /* AnalyticsFilterSheet.swift in Sources */,
 				D9044246307E863A00EF4807 /* InventoryViewModel.swift in Sources */,
 				D9044248307E864800EF4807 /* SettingsView.swift in Sources */,
+				D9FB6CF430B1842300D105C9 /* CollectionItemDetailSheet.swift in Sources */,
 				D904421F307E853700EF4807 /* CalculateAnalyticsUseCase.swift in Sources */,
 				D90441E9307E817B00EF4807 /* KikisakeApp.swift in Sources */,
 				D904F0B130A94F400046D409 /* RankShareCardView.swift in Sources */,

@@ -1,12 +1,13 @@
+//
 //  LogView.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
 
-/// [Tab 1] 飲んだ酒のリスト、タイムライン、図鑑を統合した画面
+/// [Tab 1] Tasting log list, timeline, and collection book container view.
 public struct LogView: View {
-    @Environment(\.modelContext) private var modelContext
     @Query(sort: \TastingLog.date, order: .reverse) private var logs: [TastingLog]
     @State private var viewModel = LogViewModel()
     @State private var collectionViewModel = CollectionViewModel()
@@ -17,6 +18,8 @@ public struct LogView: View {
         viewModel.filteredLogs(logs)
     }
 
+    public init() {}
+
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -26,20 +29,9 @@ public struct LogView: View {
                         .background(Color(.systemBackground))
                 }
 
-                // セグメントピッカー（リスト / タイムライン / 図鑑）
-                Picker(String(localized: "表示モード"), selection: $viewModel.selectedSection) {
-                    ForEach(LogMainSection.allCases) { section in
-                        Text(section.displayName).tag(section)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                .padding(.vertical, 10)
-                .background(Color(.systemGroupedBackground))
+                sectionPicker
 
-                // TabViewによる切り替え
                 TabView(selection: $viewModel.selectedSection) {
-                    // 1. リストタブ
                     ListView(
                         viewModel: viewModel,
                         filteredLogs: filteredLogs,
@@ -47,11 +39,12 @@ public struct LogView: View {
                     )
                     .tag(LogMainSection.list)
 
-                    // 2. タイムラインタブ
-                    timelineViewContent()
-                        .tag(LogMainSection.timeline)
+                    TimelineSectionView(
+                        logs: filteredLogs,
+                        hasActiveFilters: viewModel.hasActiveFilters
+                    )
+                    .tag(LogMainSection.timeline)
 
-                    // 3. 図鑑タブ
                     ScrollView {
                         CollectionBookView(
                             allLogs: logs,
@@ -67,47 +60,7 @@ public struct LogView: View {
             }
             .navigationTitle(String(localized: "ログ"))
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                // リストタブ表示時のみ、左上に表示形式（カード/コンパクト）切り替えボタンを出す
-                if viewModel.selectedSection == .list {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                viewModel.toggleListDisplayStyle()
-                            }
-                        } label: {
-                            Image(systemName: viewModel.listDisplayStyleIconName)
-                        }
-                        .tint(.primary)
-                        .accessibilityLabel(String(localized: "表示形式の切り替え"))
-                    }
-                }
-
-                // 全セクション共通のフィルターボタン
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        isShowingFilterSheet = true
-                    } label: {
-                        Image(systemName: viewModel.hasActiveCurrentSectionFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                            .foregroundStyle(viewModel.hasActiveCurrentSectionFilters ? Color.accentColor : Color.primary)
-                    }
-                }
-
-                // 編集モードボタンはリストタブのみ表示
-                if viewModel.selectedSection == .list {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            withAnimation {
-                                editMode = (editMode == .active) ? .inactive : .active
-                            }
-                        } label: {
-                            Image(systemName: editMode == .active ? "checkmark.circle" : "square.and.pencil")
-                                .foregroundStyle(editMode == .active ? Color.accentColor : Color.primary)
-                        }
-                        .tint(.primary)
-                    }
-                }
-            }
+            .toolbar { logToolbarContent }
             .sheet(isPresented: $isShowingFilterSheet) {
                 LogFilterSheet(
                     viewModel: viewModel,
@@ -121,68 +74,92 @@ public struct LogView: View {
                     editMode = .inactive
                 }
             }
-            .onAppear {
-                if let pendingFilter = AppState.shared.pendingLogFilter {
-                    viewModel.resetFilters()
-                    switch pendingFilter {
-                    case .costEffective:
-                        viewModel.filterCostEffective = true
-                    case .willingToRepeat:
-                        viewModel.filterWillingToRepeat = true
-                    case .agingPotential:
-                        viewModel.filterAgingPotential = true
-                    }
-                    AppState.shared.pendingLogFilter = nil
-                }
+            .onAppear(perform: consumePendingNavigationFilters)
+        }
+    }
 
-                if let pendingAroma = AppState.shared.pendingAromaTagFilter {
-                    viewModel.resetFilters()
-                    viewModel.aromaTagFilter = pendingAroma
-                    AppState.shared.pendingAromaTagFilter = nil
+    private var sectionPicker: some View {
+        Picker(String(localized: "表示モード"), selection: $viewModel.selectedSection) {
+            ForEach(LogMainSection.allCases) { section in
+                Text(section.displayName).tag(section)
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding(.horizontal)
+        .padding(.vertical, 10)
+        .background(Color(.systemGroupedBackground))
+    }
+
+    @ToolbarContentBuilder
+    private var logToolbarContent: some ToolbarContent {
+        if viewModel.selectedSection == .list {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        viewModel.toggleListDisplayStyle()
+                    }
+                } label: {
+                    Image(systemName: viewModel.listDisplayStyleIconName)
                 }
+                .tint(.primary)
+                .accessibilityLabel(String(localized: "表示形式の切り替え"))
+            }
+        }
+
+        ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                isShowingFilterSheet = true
+            } label: {
+                Image(
+                    systemName: viewModel.hasActiveCurrentSectionFilters
+                        ? "line.3.horizontal.decrease.circle.fill"
+                        : "line.3.horizontal.decrease.circle"
+                )
+                .foregroundStyle(viewModel.hasActiveCurrentSectionFilters ? Color.accentColor : Color.primary)
+            }
+        }
+
+        if viewModel.selectedSection == .list {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    withAnimation {
+                        editMode = (editMode == .active) ? .inactive : .active
+                    }
+                } label: {
+                    Image(systemName: editMode == .active ? "checkmark.circle" : "square.and.pencil")
+                        .foregroundStyle(editMode == .active ? Color.accentColor : Color.primary)
+                }
+                .tint(.primary)
             }
         }
     }
 
-    @ViewBuilder
-    private func timelineViewContent() -> some View {
-        Group {
-            if filteredLogs.isEmpty {
-                ContentUnavailableView(
-                    String(localized: "該当するログが見つかりません"),
-                    systemImage: "wineglass",
-                    description: Text(viewModel.hasActiveFilters ? String(localized: "フィルター条件を変更してみてください。") : String(localized: "「追加」タブから新しい記録を作成しましょう。"))
-                )
-            } else {
-                ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 0) {
-                        ForEach(Array(filteredLogs.enumerated()), id: \.element.id) { index, log in
-                            if let item = log.item {
-                                NavigationLink(destination: LogDetailView(log: log)) {
-                                    TimelineRowView(
-                                        log: log,
-                                        item: item,
-                                        isFirst: index == 0,
-                                        isLast: index == filteredLogs.count - 1
-                                    )
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                }
+    private func consumePendingNavigationFilters() {
+        if let pendingFilter = AppState.shared.pendingLogFilter {
+            viewModel.resetFilters()
+            switch pendingFilter {
+            case .costEffective:
+                viewModel.filterCostEffective = true
+            case .willingToRepeat:
+                viewModel.filterWillingToRepeat = true
+            case .agingPotential:
+                viewModel.filterAgingPotential = true
             }
+            AppState.shared.pendingLogFilter = nil
         }
-        .background(Color(.systemGroupedBackground))
+
+        if let pendingAroma = AppState.shared.pendingAromaTagFilter {
+            viewModel.resetFilters()
+            viewModel.aromaTagFilter = pendingAroma
+            AppState.shared.pendingAromaTagFilter = nil
+        }
     }
 }
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-    
+
     let wineItem = BeverageItem(
         name: "Château Margaux 2015",
         producer: "Château Margaux",

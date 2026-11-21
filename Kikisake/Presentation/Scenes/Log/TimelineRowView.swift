@@ -1,9 +1,11 @@
-//  LogTimelineRowView.swift
+//
+//  TimelineRowView.swift
 //  Kikisake
+//
 
 import SwiftUI
 
-/// タイムライン表示用のカスタム行コンポーネント
+/// Timeline row component showing chronological axis and summary card.
 public struct TimelineRowView: View {
     public let log: TastingLog
     public let item: BeverageItem
@@ -19,90 +21,96 @@ public struct TimelineRowView: View {
 
     public var body: some View {
         HStack(alignment: .top, spacing: 14) {
-            // 左側：タイムライン軸（ノット ＋ 縦線）
-            VStack(spacing: 0) {
-                // 上側の縦線
-                Rectangle()
-                    .fill(isFirst ? Color.clear : Color(.systemGray4))
-                    .frame(width: 2, height: 12)
+            timelineAxis
 
-                // ドット（外観カラーを反映、未設定ならアクセントカラー）
-                Circle()
-                    .fill(Color(hex: log.appearanceColorHex) ?? Color.accentColor)
-                    .frame(width: 14, height: 14)
-                    .overlay(
-                        Circle().stroke(Color(.systemBackground), lineWidth: 2)
-                    )
-                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
-
-                // 下側の縦線
-                Rectangle()
-                    .fill(isLast ? Color.clear : Color(.systemGray4))
-                    .frame(width: 2)
-            }
-            .frame(width: 20)
-
-            // 右側：タイムラインカードコンテンツ
             VStack(alignment: .leading, spacing: 6) {
-                // 日付
                 Text(log.date.toFormattedString(format: "yyyy年M月d日"))
                     .font(.caption)
                     .fontWeight(.bold)
                     .foregroundStyle(.secondary)
 
-                // メイン情報カード
-                HStack(spacing: 10) {
-                    if let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 35, height: 35)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    } else {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color(.systemGray5))
-                            .frame(width: 35, height: 35)
-                            .overlay {
-                                Image(systemName: "wineglass")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                    }
-
-                    VStack(alignment: .leading, spacing: 3) {
-                        HStack(spacing: 6) {
-                            Text(item.category.displayName)
-                                .font(.system(size: 9, weight: .bold))
-                                .padding(.horizontal, 5)
-                                .padding(.vertical, 2)
-                                .background(Color.accentColor.opacity(0.15))
-                                .foregroundStyle(Color.accentColor)
-                                .cornerRadius(3)
-
-                            HStack(spacing: 2) {
-                                Image(systemName: "star.fill")
-                                    .font(.caption2)
-                                    .foregroundStyle(.yellow)
-                                Text(String(format: "%.1f", log.rating))
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                            }
-                        }
-
-                        Text(item.name)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                    }
-                    
-                    Spacer()
-                }
-                .padding(10)
-                .background(Color(.secondarySystemGroupedBackground))
-                .cornerRadius(12)
-                .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
+                summaryCard
             }
             .padding(.bottom, 8)
+        }
+    }
+
+    private var timelineAxis: some View {
+        VStack(spacing: 0) {
+            Rectangle()
+                .fill(isFirst ? Color.clear : Color(.systemGray4))
+                .frame(width: 2, height: 12)
+
+            Circle()
+                .fill(Color(hex: log.appearanceColorHex) ?? Color.accentColor)
+                .frame(width: 14, height: 14)
+                .overlay(
+                    Circle().stroke(Color(.systemBackground), lineWidth: 2)
+                )
+                .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
+
+            Rectangle()
+                .fill(isLast ? Color.clear : Color(.systemGray4))
+                .frame(width: 2)
+        }
+        .frame(width: 20)
+    }
+
+    private var summaryCard: some View {
+        HStack(spacing: 10) {
+            thumbnailView
+
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(spacing: 6) {
+                    Text(item.category.displayName)
+                        .font(.system(size: 9, weight: .bold))
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 2)
+                        .background(Color.accentColor.opacity(0.15))
+                        .foregroundStyle(Color.accentColor)
+                        .cornerRadius(3)
+
+                    HStack(spacing: 2) {
+                        Image(systemName: "star.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.yellow)
+                        Text(String(format: "%.1f", log.rating))
+                            .font(.caption)
+                            .fontWeight(.bold)
+                    }
+                }
+
+                Text(item.name)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .lineLimit(1)
+            }
+
+            Spacer()
+        }
+        .padding(10)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
+    }
+
+    @ViewBuilder
+    private var thumbnailView: some View {
+        if let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
+            Image(uiImage: uiImage)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 35, height: 35)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+        } else {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color(.systemGray5))
+                .frame(width: 35, height: 35)
+                .overlay {
+                    Image(systemName: "wineglass")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
         }
     }
 }
@@ -121,7 +129,7 @@ public struct TimelineRowView: View {
         appearanceColorHex: "#991A33",
         item: item
     )
-    
+
     return TimelineRowView(
         log: log,
         item: item,

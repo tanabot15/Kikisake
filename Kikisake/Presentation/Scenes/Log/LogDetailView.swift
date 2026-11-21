@@ -1,10 +1,12 @@
+//
 //  LogDetailView.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
 
-/// テイスティングログの詳細画面
+/// Detail view for an individual tasting log.
 public struct LogDetailView: View {
     let log: TastingLog
 
@@ -18,16 +20,8 @@ public struct LogDetailView: View {
         self.log = log
     }
 
-    private func colorFromHex(_ hex: String) -> Color {
-        let scanner = Scanner(string: hex.replacingOccurrences(of: "#", with: ""))
-        var rgbValue: UInt64 = 0
-        if scanner.scanHexInt64(&rgbValue) {
-            let red = Double((rgbValue & 0xFF0000) >> 16) / 255.0
-            let green = Double((rgbValue & 0x00FF00) >> 8) / 255.0
-            let blue = Double(rgbValue & 0x0000FF) / 255.0
-            return Color(red: red, green: green, blue: blue)
-        }
-        return .gray
+    private var appearanceColor: Color {
+        colorFromHex(log.appearanceColorHex)
     }
 
     public var body: some View {
@@ -38,11 +32,10 @@ public struct LogDetailView: View {
                         .frame(height: 50)
                         .background(Color(.systemBackground))
                 }
-                
+
                 heroHeaderView
                     .padding(.horizontal)
 
-                // ✨ 「もう一度飲む」クイックアクションバナー
                 reDrinkQuickActionBanner
                     .padding(.horizontal)
 
@@ -53,24 +46,7 @@ public struct LogDetailView: View {
                     }
 
                     if log.isEvaluated {
-                        ratingCard
-                        appearanceAndAromaCard
-                        
-                        TasteRadarCardView(log: log, isCompactMode: false)
-                        MatrixAnalysisCardView(log: log, isCompactMode: false)
-
-                        if log.isCostEffective || log.isWillingToRepeat || log.hasAgingPotential {
-                            flagsCard
-                        }
-
-                        // ペアリングカード（ペアリング情報が存在する場合に表示）
-                        if let pairing = log.pairing, !pairing.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                            pairingCard(pairing: pairing)
-                        }
-
-                        if !log.memo.isEmpty {
-                            memoCard
-                        }
+                        evaluatedSections
                     } else {
                         unEvaluatedPlaceholderCard
                     }
@@ -84,53 +60,19 @@ public struct LogDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $isShowingImageModal) {
             if let imageData = log.item?.imageDatas?.first, let uiImage = UIImage(data: imageData) {
-                ZStack(alignment: .topTrailing) {
-                    Color.black.ignoresSafeArea()
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                    Button {
-                        isShowingImageModal = false
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 28))
-                            .foregroundStyle(.white.opacity(0.8))
-                            .padding()
-                    }
+                fullscreenImageOverlay(image: uiImage) {
+                    isShowingImageModal = false
                 }
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    let vm = AppState.shared.addFlowViewModel
-                    vm.configureWithLog(log)
-                    isShowingEditSheet = true
-                } label: {
-                    Image(systemName: "square.and.pencil")
-                }
-            }
-
-            ToolbarItem(placement: .topBarTrailing) {
-                if log.isEvaluated {
-                    if #available(iOS 16.0, *) {
-                        let shareImage = renderShareImage()
-                        let previewTitle = String(localized: "\(log.item?.name ?? "テイスティング") の記録")
-                        ShareLink(
-                            item: shareImage,
-                            preview: SharePreview(
-                                previewTitle,
-                                image: shareImage
-                            )
-                        ) {
-                            Image(systemName: "square.and.arrow.up")
-                        }
-                    }
+        .fullScreenCover(isPresented: $isShowingBackImageModal) {
+            if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
+                fullscreenImageOverlay(image: backUiImage) {
+                    isShowingBackImageModal = false
                 }
             }
         }
+        .toolbar { detailToolbarContent }
         .sheet(isPresented: $isShowingEditSheet) {
             EditLogFlowView(log: log)
         }
@@ -139,57 +81,72 @@ public struct LogDetailView: View {
         }
     }
 
-    /// ✨ 「もう一度飲む」クイックアクションバナー
     @ViewBuilder
-    private var reDrinkQuickActionBanner: some View {
-        Button {
-            let vm = AppState.shared.addFlowViewModel
-            vm.reset()
-            if let item = log.item {
-                vm.selectedCategory = item.category
-                vm.name = item.name
-                vm.producer = item.producer
-                vm.region = item.region
-                vm.vintage = item.vintage ?? ""
-                if let abv = item.alcoholByVolume {
-                    vm.abvString = "\(abv)"
-                }
-                if let price = item.price {
-                    vm.priceString = "\(price)"
-                }
-                vm.storageLocation = item.storageLocation
-                vm.selectedGridRow = item.gridRow
-                vm.selectedGridColumn = item.gridColumn
-                
-                if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
-                    let decoder = JSONDecoder()
-                    switch item.category {
-                    case .wine:
-                        if let meta = try? decoder.decode(WineSpecificMetadata.self, from: data) {
-                            vm.wineType = meta.wineType
-                            vm.grapeVarieties = meta.grapeVarieties
-                            if !meta.blendComponents.isEmpty {
-                                vm.blendComponents = meta.blendComponents
-                            }
-                            vm.appellation = meta.appellation ?? ""
-                        }
-                    case .sake:
-                        if let meta = try? decoder.decode(SakeSpecificMetadata.self, from: data) {
-                            vm.sakeSpecificName = meta.specificName
-                            vm.riceVariety = meta.riceVariety
-                            vm.polishingRate = meta.polishingRate
-                            vm.sakeMeterValue = meta.sakeMeterValue
-                        }
-                    case .beer:
-                        if let meta = try? decoder.decode(BeerSpecificMetadata.self, from: data) {
-                            vm.beerStyle = meta.beerStyle
-                            vm.ibu = meta.ibu
-                        }
-                    }
+    private var evaluatedSections: some View {
+        ratingCard
+        appearanceAndAromaCard
+
+        TasteRadarCardView(log: log, isCompactMode: false)
+        MatrixAnalysisCardView(log: log, isCompactMode: false)
+
+        if log.isCostEffective || log.isWillingToRepeat || log.hasAgingPotential {
+            flagsCard
+        }
+
+        if let pairing = log.pairing, !pairing.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            pairingCard(pairing: pairing)
+        }
+
+        if !log.memo.isEmpty {
+            memoCard
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var detailToolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                let vm = AppState.shared.addFlowViewModel
+                vm.configureWithLog(log)
+                isShowingEditSheet = true
+            } label: {
+                Image(systemName: "square.and.pencil")
+            }
+        }
+
+        ToolbarItem(placement: .topBarTrailing) {
+            if log.isEvaluated, #available(iOS 16.0, *) {
+                let shareImage = renderShareImage()
+                let previewTitle = String(localized: "\(log.item?.name ?? "テイスティング") の記録")
+                ShareLink(
+                    item: shareImage,
+                    preview: SharePreview(previewTitle, image: shareImage)
+                ) {
+                    Image(systemName: "square.and.arrow.up")
                 }
             }
-            AppState.shared.selectedTab = 2
-        } label: {
+        }
+    }
+
+    private func fullscreenImageOverlay(image: UIImage, onClose: @escaping () -> Void) -> some View {
+        ZStack(alignment: .topTrailing) {
+            Color.black.ignoresSafeArea()
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            Button(action: onClose) {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 28))
+                    .foregroundStyle(.white.opacity(0.8))
+                    .padding()
+            }
+        }
+    }
+
+    private var reDrinkQuickActionBanner: some View {
+        Button(action: prepareReDrinkFlow) {
             HStack(spacing: 12) {
                 ZStack {
                     Circle()
@@ -226,6 +183,59 @@ public struct LogDetailView: View {
         .buttonStyle(.plain)
     }
 
+    private func prepareReDrinkFlow() {
+        let vm = AppState.shared.addFlowViewModel
+        vm.reset()
+        if let item = log.item {
+            vm.selectedCategory = item.category
+            vm.name = item.name
+            vm.producer = item.producer
+            vm.region = item.region
+            vm.vintage = item.vintage ?? ""
+            if let abv = item.alcoholByVolume {
+                vm.abvString = "\(abv)"
+            }
+            if let price = item.price {
+                vm.priceString = "\(price)"
+            }
+            vm.storageLocation = item.storageLocation
+            vm.selectedGridRow = item.gridRow
+            vm.selectedGridColumn = item.gridColumn
+
+            if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
+                applySpecificMetadataToFlow(vm: vm, category: item.category, data: data)
+            }
+        }
+        AppState.shared.selectedTab = 2
+    }
+
+    private func applySpecificMetadataToFlow(vm: AddFlowViewModel, category: BeverageCategory, data: Data) {
+        let decoder = JSONDecoder()
+        switch category {
+        case .wine:
+            if let meta = try? decoder.decode(WineSpecificMetadata.self, from: data) {
+                vm.wineType = meta.wineType
+                vm.grapeVarieties = meta.grapeVarieties
+                if !meta.blendComponents.isEmpty {
+                    vm.blendComponents = meta.blendComponents
+                }
+                vm.appellation = meta.appellation ?? ""
+            }
+        case .sake:
+            if let meta = try? decoder.decode(SakeSpecificMetadata.self, from: data) {
+                vm.sakeSpecificName = meta.specificName
+                vm.riceVariety = meta.riceVariety
+                vm.polishingRate = meta.polishingRate
+                vm.sakeMeterValue = meta.sakeMeterValue
+            }
+        case .beer:
+            if let meta = try? decoder.decode(BeerSpecificMetadata.self, from: data) {
+                vm.beerStyle = meta.beerStyle
+                vm.ibu = meta.ibu
+            }
+        }
+    }
+
     private var unEvaluatedPlaceholderCard: some View {
         VStack(spacing: 16) {
             ZStack {
@@ -259,7 +269,6 @@ public struct LogDetailView: View {
                 vm.editingLog = log
                 vm.editingItem = log.item
                 vm.currentStep = 2
-                
                 isShowingEditSheet = true
             } label: {
                 Label("テイスティングを記録する", systemImage: "square.and.pencil")
@@ -286,36 +295,13 @@ public struct LogDetailView: View {
 
             FlowLayout(spacing: 8) {
                 if log.isCostEffective {
-                    Label("コスパ高い", systemImage: "yensign.circle.fill")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(Color.green.opacity(0.12))
-                        .foregroundStyle(.green)
-                        .cornerRadius(10)
+                    flagBadge(title: "コスパ高い", systemImage: "yensign.circle.fill", tint: .green)
                 }
-
                 if log.isWillingToRepeat {
-                    Label("リピート意向", systemImage: "arrow.clockwise.circle.fill")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(Color.orange.opacity(0.12))
-                        .foregroundStyle(.orange)
-                        .cornerRadius(10)
+                    flagBadge(title: "リピート意向", systemImage: "arrow.clockwise.circle.fill", tint: .orange)
                 }
-
                 if log.hasAgingPotential {
-                    Label("熟成ポテンシャル", systemImage: "hourglass.circle.fill")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(Color.purple.opacity(0.12))
-                        .foregroundStyle(.purple)
-                        .cornerRadius(10)
+                    flagBadge(title: "熟成ポテンシャル", systemImage: "hourglass.circle.fill", tint: .purple)
                 }
             }
         }
@@ -323,6 +309,17 @@ public struct LogDetailView: View {
         .padding()
         .background(Color(.secondarySystemGroupedBackground))
         .cornerRadius(16)
+    }
+
+    private func flagBadge(title: LocalizedStringKey, systemImage: String, tint: Color) -> some View {
+        Label(title, systemImage: systemImage)
+            .font(.subheadline)
+            .fontWeight(.medium)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(tint.opacity(0.12))
+            .foregroundStyle(tint)
+            .cornerRadius(10)
     }
 
     private func pairingCard(pairing: String) -> some View {
@@ -342,158 +339,14 @@ public struct LogDetailView: View {
 
     private var heroHeaderView: some View {
         ZStack(alignment: .bottom) {
-            if let item = log.item, let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
-                Button {
-                    isShowingImageModal = true
-                } label: {
-                    GeometryReader { geometry in
-                        ZStack(alignment: .center) {
-                            // ✨【改善】ワインボトルの色が濃い場合でも境界がはっきりわかる明るめのスポットライト背景
-                            if item.isBackgroundRemoved {
-                                RadialGradient(
-                                    colors: [
-                                        colorFromHex(log.appearanceColorHex).opacity(0.3),
-                                        Color(.systemBackground).opacity(0.8),
-                                        Color(.secondarySystemBackground)
-                                    ],
-                                    center: .center,
-                                    startRadius: 20,
-                                    endRadius: 180
-                                )
-                            } else {
-                                LinearGradient(
-                                    colors: [
-                                        Color(hex: "#1A1A1E") ?? .black,
-                                        Color(hex: "#2C2C30") ?? .gray
-                                    ],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
-                            }
+            heroBackgroundAndImage
 
-                            // 非透過（そのままの写真）の場合の背景ぼかし演出
-                            if !item.isBackgroundRemoved {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: geometry.size.width, height: 260)
-                                    .blur(radius: 20)
-                                    .opacity(0.3)
-                            }
-
-                            // メイン画像表示（背景透過処理対応）
-                            if item.isBackgroundRemoved {
-                                if let processed = processedBottleImage {
-                                    Image(uiImage: processed)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(maxWidth: geometry.size.width - 32, maxHeight: 220)
-                                        .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
-                                        .padding(.vertical, 8)
-                                } else {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(maxWidth: geometry.size.width - 32, maxHeight: 220)
-                                        .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
-                                        .padding(.vertical, 8)
-                                        .task {
-                                            let backgroundRemoved = await BottleMattingHelper.removeBackground(from: uiImage)
-                                            self.processedBottleImage = backgroundRemoved
-                                        }
-                                }
-                            } else {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(maxWidth: geometry.size.width - 32, maxHeight: 220)
-                                    .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 6)
-                                    .padding(.vertical, 8)
-                            }
-                            
-                            // 下部テキスト用の読みやすさ向上グラデーション保護膜（明るい背景の場合は薄めに調整）
-                            if !item.isBackgroundRemoved {
-                                LinearGradient(
-                                    colors: [.clear, .black.opacity(0.85)],
-                                    startPoint: .center,
-                                    endPoint: .bottom
-                                )
-                            } else {
-                                LinearGradient(
-                                    colors: [.clear, Color(.systemBackground).opacity(0.9)],
-                                    startPoint: .center,
-                                    endPoint: .bottom
-                                )
-                            }
-                        }
-                    }
-                    .frame(height: 260)
-                }
-                .buttonStyle(.plain)
-            } else {
-                ZStack {
-                    LinearGradient(
-                        colors: [colorFromHex(log.appearanceColorHex).opacity(0.4), colorFromHex(log.appearanceColorHex)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-
-                    Image(systemName: "wineglass.fill")
-                        .font(.system(size: 48))
-                        .foregroundStyle(.white.opacity(0.8))
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: 200)
-            }
-
-            // 裏面ラベルサムネイル
             if let backImageData = log.item?.backImageDatas?.first, let backUiImage = UIImage(data: backImageData) {
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Button {
-                            isShowingBackImageModal = true
-                        } label: {
-                            Image(uiImage: backUiImage)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 64, height: 64)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(.white.opacity(0.8), lineWidth: 1)
-                                )
-                                .shadow(color: .black.opacity(0.4), radius: 4, x: 0, y: 2)
-                        }
-                        .buttonStyle(.plain)
-                        .padding(12)
-                    }
-                    Spacer()
-                        .frame(height: 48)
-                }
+                backLabelThumbnail(image: backUiImage)
             }
 
-            // ✨ ボトル情報テキスト（背景が明るい場合は適切な濃い色 .primary、透過なしは白文字）
             if let item = log.item {
-                let isRemoved = item.isBackgroundRemoved
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(item.name)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundStyle(isRemoved ? .primary : Color.white)
-                        .shadow(color: isRemoved ? .clear : .black.opacity(0.5), radius: 2, x: 0, y: 1)
-                        .lineLimit(2)
-
-                    if !item.producer.isEmpty {
-                        Text(item.producer)
-                            .font(.subheadline)
-                            .foregroundStyle(isRemoved ? .secondary : Color.white.opacity(0.85))
-                            .shadow(color: isRemoved ? .clear : .black.opacity(0.5), radius: 2, x: 0, y: 1)
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(16)
+                heroTitleOverlay(item: item)
             }
         }
         .frame(maxWidth: .infinity)
@@ -504,6 +357,152 @@ public struct LogDetailView: View {
                 .stroke(Color.primary.opacity(0.12), lineWidth: 1)
         )
         .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
+    }
+
+    @ViewBuilder
+    private var heroBackgroundAndImage: some View {
+        if let item = log.item, let imageData = item.imageDatas?.first, let uiImage = UIImage(data: imageData) {
+            Button {
+                isShowingImageModal = true
+            } label: {
+                GeometryReader { geometry in
+                    ZStack(alignment: .center) {
+                        heroBackdrop(isBackgroundRemoved: item.isBackgroundRemoved, uiImage: uiImage, width: geometry.size.width)
+                        heroBottleImage(item: item, uiImage: uiImage, maxWidth: geometry.size.width - 32)
+                        heroReadabilityGradient(isBackgroundRemoved: item.isBackgroundRemoved)
+                    }
+                }
+                .frame(height: 260)
+            }
+            .buttonStyle(.plain)
+        } else {
+            ZStack {
+                LinearGradient(
+                    colors: [appearanceColor.opacity(0.4), appearanceColor],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+
+                Image(systemName: "wineglass.fill")
+                    .font(.system(size: 48))
+                    .foregroundStyle(.white.opacity(0.8))
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 200)
+        }
+    }
+
+    @ViewBuilder
+    private func heroBackdrop(isBackgroundRemoved: Bool, uiImage: UIImage, width: CGFloat) -> some View {
+        if isBackgroundRemoved {
+            RadialGradient(
+                colors: [
+                    appearanceColor.opacity(0.3),
+                    Color(.systemBackground).opacity(0.8),
+                    Color(.secondarySystemBackground)
+                ],
+                center: .center,
+                startRadius: 20,
+                endRadius: 180
+            )
+        } else {
+            LinearGradient(
+                colors: [
+                    Color(hex: "#1A1A1E") ?? .black,
+                    Color(hex: "#2C2C30") ?? .gray
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+
+            Image(uiImage: uiImage)
+                .resizable()
+                .scaledToFill()
+                .frame(width: width, height: 260)
+                .blur(radius: 20)
+                .opacity(0.3)
+        }
+    }
+
+    @ViewBuilder
+    private func heroBottleImage(item: BeverageItem, uiImage: UIImage, maxWidth: CGFloat) -> some View {
+        if item.isBackgroundRemoved {
+            let displayImage = processedBottleImage ?? uiImage
+            Image(uiImage: displayImage)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: maxWidth, maxHeight: 220)
+                .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
+                .padding(.vertical, 8)
+                .task(id: item.imageDatas?.first) {
+                    if processedBottleImage == nil {
+                        processedBottleImage = await BottleMattingHelper.removeBackground(from: uiImage)
+                    }
+                }
+        } else {
+            Image(uiImage: uiImage)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: maxWidth, maxHeight: 220)
+                .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 6)
+                .padding(.vertical, 8)
+        }
+    }
+
+    private func heroReadabilityGradient(isBackgroundRemoved: Bool) -> some View {
+        LinearGradient(
+            colors: [.clear, isBackgroundRemoved ? Color(.systemBackground).opacity(0.9) : .black.opacity(0.85)],
+            startPoint: .center,
+            endPoint: .bottom
+        )
+    }
+
+    private func backLabelThumbnail(image: UIImage) -> some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                Button {
+                    isShowingBackImageModal = true
+                } label: {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 64, height: 64)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(.white.opacity(0.8), lineWidth: 1)
+                        )
+                        .shadow(color: .black.opacity(0.4), radius: 4, x: 0, y: 2)
+                }
+                .buttonStyle(.plain)
+                .padding(12)
+            }
+            Spacer()
+                .frame(height: 48)
+        }
+    }
+
+    private func heroTitleOverlay(item: BeverageItem) -> some View {
+        let isRemoved = item.isBackgroundRemoved
+        return VStack(alignment: .leading, spacing: 4) {
+            Text(item.name)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundStyle(isRemoved ? .primary : Color.white)
+                .shadow(color: isRemoved ? .clear : .black.opacity(0.5), radius: 2, x: 0, y: 1)
+                .lineLimit(2)
+
+            if !item.producer.isEmpty {
+                Text(item.producer)
+                    .font(.subheadline)
+                    .foregroundStyle(isRemoved ? .secondary : Color.white.opacity(0.85))
+                    .shadow(color: isRemoved ? .clear : .black.opacity(0.5), radius: 2, x: 0, y: 1)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
     }
 
     @MainActor
@@ -575,93 +574,102 @@ public struct LogDetailView: View {
             switch item.category {
             case .wine:
                 if let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("ワイン詳細")
-                            .font(.headline)
-
-                        VStack(spacing: 8) {
-                            rowContent(label: String(localized: "タイプ"), value: meta.wineType)
-                            if let appellation = meta.appellation, !appellation.isEmpty {
-                                rowContent(label: String(localized: "原産地呼称"), value: appellation)
-                            }
-                            if !meta.blendComponents.isEmpty {
-                                HStack {
-                                    Text("ブドウ品種")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
-                                    
-                                    Spacer()
-                                    
-                                    VStack(alignment: .leading, spacing: 6) {
-                                        ForEach(meta.blendComponents) { comp in
-                                            HStack {
-                                                Text(comp.variety)
-                                                    .font(.subheadline)
-                                                    .fontWeight(.medium)
-                                                
-                                                if let pct = comp.percentage {
-                                                    Text("(\(pct) %)")
-                                                        .font(.subheadline)
-                                                        .foregroundStyle(.primary)
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                            } else if !meta.grapeVarieties.isEmpty {
-                                rowContent(label: String(localized: "主要品種"), value: meta.grapeVarieties)
-                            }
-                        }
-                    }
-                    .padding()
-                    .background(Color(.secondarySystemGroupedBackground))
-                    .cornerRadius(16)
+                    wineMetadataCard(meta)
                 }
-
             case .sake:
                 if let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("日本酒詳細")
-                            .font(.headline)
-
-                        VStack(spacing: 8) {
-                            rowContent(label: String(localized: "特定名称"), value: meta.specificName)
-                            if !meta.riceVariety.isEmpty {
-                                rowContent(label: String(localized: "使用米"), value: meta.riceVariety)
-                            }
-                            if !meta.polishingRate.isEmpty {
-                                rowContent(label: String(localized: "精米歩合"), value: meta.polishingRate)
-                            }
-                            if !meta.sakeMeterValue.isEmpty {
-                                rowContent(label: String(localized: "日本酒度"), value: meta.sakeMeterValue)
-                            }
-                        }
-                    }
-                    .padding()
-                    .background(Color(.secondarySystemGroupedBackground))
-                    .cornerRadius(16)
+                    sakeMetadataCard(meta)
                 }
-
             case .beer:
                 if let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("ビール詳細")
-                            .font(.headline)
-
-                        VStack(spacing: 8) {
-                            rowContent(label: String(localized: "ビアスタイル"), value: meta.beerStyle)
-                            if !meta.ibu.isEmpty {
-                                rowContent(label: String(localized: "IBU (苦味単位)"), value: meta.ibu)
-                            }
-                        }
-                    }
-                    .padding()
-                    .background(Color(.secondarySystemGroupedBackground))
-                    .cornerRadius(16)
+                    beerMetadataCard(meta)
                 }
             }
         }
+    }
+
+    private func wineMetadataCard(_ meta: WineSpecificMetadata) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("ワイン詳細")
+                .font(.headline)
+
+            VStack(spacing: 8) {
+                rowContent(label: String(localized: "タイプ"), value: meta.wineType)
+                if let appellation = meta.appellation, !appellation.isEmpty {
+                    rowContent(label: String(localized: "原産地呼称"), value: appellation)
+                }
+                if !meta.blendComponents.isEmpty {
+                    HStack {
+                        Text("ブドウ品種")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+
+                        Spacer()
+
+                        VStack(alignment: .leading, spacing: 6) {
+                            ForEach(meta.blendComponents) { comp in
+                                HStack {
+                                    Text(comp.variety)
+                                        .font(.subheadline)
+                                        .fontWeight(.medium)
+
+                                    if let pct = comp.percentage {
+                                        Text("(\(pct) %)")
+                                            .font(.subheadline)
+                                            .foregroundStyle(.primary)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if !meta.grapeVarieties.isEmpty {
+                    rowContent(label: String(localized: "主要品種"), value: meta.grapeVarieties)
+                }
+            }
+        }
+        .padding()
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+    }
+
+    private func sakeMetadataCard(_ meta: SakeSpecificMetadata) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("日本酒詳細")
+                .font(.headline)
+
+            VStack(spacing: 8) {
+                rowContent(label: String(localized: "特定名称"), value: meta.specificName)
+                if !meta.riceVariety.isEmpty {
+                    rowContent(label: String(localized: "使用米"), value: meta.riceVariety)
+                }
+                if !meta.polishingRate.isEmpty {
+                    rowContent(label: String(localized: "精米歩合"), value: meta.polishingRate)
+                }
+                if !meta.sakeMeterValue.isEmpty {
+                    rowContent(label: String(localized: "日本酒度"), value: meta.sakeMeterValue)
+                }
+            }
+        }
+        .padding()
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+    }
+
+    private func beerMetadataCard(_ meta: BeerSpecificMetadata) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("ビール詳細")
+                .font(.headline)
+
+            VStack(spacing: 8) {
+                rowContent(label: String(localized: "ビアスタイル"), value: meta.beerStyle)
+                if !meta.ibu.isEmpty {
+                    rowContent(label: String(localized: "IBU (苦味単位)"), value: meta.ibu)
+                }
+            }
+        }
+        .padding()
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
     }
 
     private var ratingCard: some View {
@@ -716,7 +724,7 @@ public struct LogDetailView: View {
                     Spacer()
                     HStack(spacing: 8) {
                         Circle()
-                            .fill(colorFromHex(log.appearanceColorHex))
+                            .fill(appearanceColor)
                             .frame(width: 16, height: 16)
                             .overlay(Circle().stroke(Color.primary.opacity(0.2), lineWidth: 1))
                         Text(log.appearanceNotes)
@@ -777,11 +785,22 @@ public struct LogDetailView: View {
             Text(value)
                 .font(.subheadline)
                 .fontWeight(.medium)
-            }
+        }
+    }
+
+    private func colorFromHex(_ hex: String) -> Color {
+        let scanner = Scanner(string: hex.replacingOccurrences(of: "#", with: ""))
+        var rgbValue: UInt64 = 0
+        if scanner.scanHexInt64(&rgbValue) {
+            let red = Double((rgbValue & 0xFF0000) >> 16) / 255.0
+            let green = Double((rgbValue & 0x00FF00) >> 8) / 255.0
+            let blue = Double(rgbValue & 0x0000FF) / 255.0
+            return Color(red: red, green: green, blue: blue)
+        }
+        return .gray
     }
 }
 
-/// プレビュー用画像ヘルパー（縦長）
 private func generateVerticalSampleImage() -> Data? {
     let renderer = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 600))
     let image = renderer.image { _ in
@@ -791,7 +810,6 @@ private func generateVerticalSampleImage() -> Data? {
     return image.jpegData(compressionQuality: 0.8)
 }
 
-/// プレビュー用画像ヘルパー（横長）
 private func generateHorizontalSampleImage() -> Data? {
     let renderer = UIGraphicsImageRenderer(size: CGSize(width: 800, height: 300))
     let image = renderer.image { _ in

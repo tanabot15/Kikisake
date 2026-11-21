@@ -1,5 +1,7 @@
+//
 //  LogViewModel.swift
 //  Kikisake
+//
 
 import Foundation
 import SwiftData
@@ -13,7 +15,7 @@ public enum LogSortOrder: String, CaseIterable, Codable {
     public var displayName: String { rawValue }
 }
 
-/// LogView内のメインセクション（タブ）
+/// Main tab sections inside LogView.
 public enum LogMainSection: String, CaseIterable, Identifiable {
     case list
     case timeline
@@ -23,86 +25,70 @@ public enum LogMainSection: String, CaseIterable, Identifiable {
 
     public var displayName: String {
         switch self {
-        case .list: return String(localized: "リスト")
-        case .timeline: return String(localized: "タイムライン")
-        case .collectionBook: return String(localized: "図鑑")
+        case .list: String(localized: "リスト")
+        case .timeline: String(localized: "タイムライン")
+        case .collectionBook: String(localized: "図鑑")
         }
     }
 }
 
-/// リスト表示内のスタイル（カード / コンパクト）
+/// Display style for the log list tab.
 public enum ListDisplayStyle: CaseIterable {
-    case card       // リッチカード表示
-    case compact    // コンパクトリスト表示
+    case card
+    case compact
 }
 
-/// 飲んだ酒のリスト画面のビジネスロジック・状態管理
+/// State and filtering logic for tasting logs and collection filters.
 @Observable
 public final class LogViewModel {
-    // 基本検索 & ソート
     public var searchText: String = ""
     public var sortOrder: LogSortOrder = .dateDescending
 
-    // --- メインセクション & リストスタイル状態管理 ---
     public var selectedSection: LogMainSection = .list
     public var listDisplayStyle: ListDisplayStyle = .card
 
-    // --- 図鑑専用シンプルフィルター（category / region / targetElement） ---
+    // Collection book filters
     public var collectionCategoryFilter: BeverageCategory? = nil
     public var collectionRegionFilter: String = ""
     public var collectionTargetElementFilter: String = ""
 
-    // --- 高機能フィルタープロパティ ---
+    // Log filters
     public var selectedCategoryFilter: BeverageCategory? = nil
     public var selectedRatingFilter: Double? = nil
-
-    // 基本属性フィルター
     public var producerFilter: String = ""
     public var regionFilter: String = ""
     public var vintageFilter: String = ""
-    
-    // 数値範囲フィルター
     public var minAbv: Double? = nil
     public var maxPrice: Int? = nil
-
-    // テイスティングデータフィルター
     public var aromaTagFilter: String = ""
     public var appearanceNoteFilter: String = ""
     public var balanceTagFilter: String = ""
-
-    // フラグフィルター
     public var filterCostEffective: Bool? = nil
     public var filterWillingToRepeat: Bool? = nil
     public var filterAgingPotential: Bool? = nil
-
-    // 固有メタデータフィルター
     public var wineTypeFilter: String = "すべて"
     public var sakeSpecificNameFilter: String = "すべて"
     public var beerStyleFilter: String = ""
 
     public init() {}
 
-    /// リスト表示スタイルをカードとコンパクト間で切り替える
     public func toggleListDisplayStyle() {
         listDisplayStyle = (listDisplayStyle == .card) ? .compact : .card
     }
 
-    /// 現在のリストスタイルに応じたアイコン名を返す
     public var listDisplayStyleIconName: String {
         listDisplayStyle == .card ? "list.bullet" : "rectangle.grid.1x2"
     }
 
-    /// 現在のセクションに応じたフィルター有効状態
     public var hasActiveCurrentSectionFilters: Bool {
         switch selectedSection {
         case .list, .timeline:
-            return hasActiveFilters
+            hasActiveFilters
         case .collectionBook:
-            return hasActiveCollectionFilters
+            hasActiveCollectionFilters
         }
     }
 
-    /// 現在のセクションに応じたフィルターリセット
     public func resetCurrentSectionFilters() {
         switch selectedSection {
         case .list, .timeline:
@@ -112,124 +98,28 @@ public final class LogViewModel {
         }
     }
 
-    /// 図鑑フィルターが有効かどうか
     public var hasActiveCollectionFilters: Bool {
         collectionCategoryFilter != nil ||
         !collectionRegionFilter.isEmpty ||
         !collectionTargetElementFilter.isEmpty
     }
 
-    /// 図鑑フィルターをリセットする
     public func resetCollectionFilters() {
         collectionCategoryFilter = nil
         collectionRegionFilter = ""
         collectionTargetElementFilter = ""
     }
 
-    /// すべてのフィルター条件とソートを適用してログを絞り込む
     public func filteredLogs(_ logs: [TastingLog]) -> [TastingLog] {
         let filtered = logs.filter { log in
             guard let item = log.item else { return false }
-
-            if !searchText.isEmpty {
-                let nameMatch = item.name.localizedCaseInsensitiveContains(searchText)
-                let producerMatch = item.producer.localizedCaseInsensitiveContains(searchText)
-                let memoMatch = log.memo.localizedCaseInsensitiveContains(searchText)
-                if !nameMatch && !producerMatch && !memoMatch { return false }
-            }
-
-            if let category = selectedCategoryFilter {
-                if item.category != category { return false }
-            }
-
-            if let minRating = selectedRatingFilter {
-                if log.rating < minRating { return false }
-            }
-
-            if !producerFilter.isEmpty {
-                if !item.producer.localizedCaseInsensitiveContains(producerFilter) { return false }
-            }
-
-            if !regionFilter.isEmpty {
-                if !item.region.localizedCaseInsensitiveContains(regionFilter) { return false }
-            }
-
-            if !vintageFilter.isEmpty {
-                let vintage = item.vintage ?? ""
-                if !vintage.localizedCaseInsensitiveContains(vintageFilter) { return false }
-            }
-
-            if let minAbv = minAbv {
-                let abv = item.alcoholByVolume ?? 0.0
-                if abv < minAbv { return false }
-            }
-
-            if let maxPrice = maxPrice {
-                let price = item.price ?? 0
-                if price > maxPrice { return false }
-            }
-
-            if !aromaTagFilter.isEmpty {
-                let hasTag = log.aromaTags.contains { $0.localizedCaseInsensitiveContains(aromaTagFilter) }
-                if !hasTag { return false }
-            }
-            if !appearanceNoteFilter.isEmpty {
-                if !log.appearanceNotes.localizedCaseInsensitiveContains(appearanceNoteFilter) { return false }
-            }
-            if !balanceTagFilter.isEmpty {
-                let hasBalanceTag = log.balanceTags.contains { $0.localizedCaseInsensitiveContains(balanceTagFilter) }
-                if !hasBalanceTag { return false }
-            }
-
-            if let costEffective = filterCostEffective, costEffective, !log.isCostEffective {
-                return false
-            }
-            if let repeatFlag = filterWillingToRepeat, repeatFlag, !log.isWillingToRepeat {
-                return false
-            }
-            if let aging = filterAgingPotential, aging, !log.hasAgingPotential {
-                return false
-            }
-
-            if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
-                switch item.category {
-                case .wine:
-                    if wineTypeFilter != "すべて",
-                       let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data) {
-                        if meta.wineType != wineTypeFilter { return false }
-                    }
-                case .sake:
-                    if sakeSpecificNameFilter != "すべて",
-                       let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data) {
-                        if meta.specificName != sakeSpecificNameFilter { return false }
-                    }
-                case .beer:
-                    if !beerStyleFilter.isEmpty,
-                       let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data) {
-                        if !meta.beerStyle.localizedCaseInsensitiveContains(beerStyleFilter) { return false }
-                    }
-                }
-            } else {
-                if wineTypeFilter != "すべて" || sakeSpecificNameFilter != "すべて" || !beerStyleFilter.isEmpty {
-                    return false
-                }
-            }
-
-            return true
+            return matchesSearch(item: item, log: log) &&
+                   matchesBasicFilters(item: item, log: log) &&
+                   matchesTastingFilters(log: log) &&
+                   matchesSpecificMetadata(item: item)
         }
 
-        return filtered.sorted { log1, log2 in
-            switch sortOrder {
-            case .dateDescending:
-                return log1.date > log2.date
-            case .dateAscending:
-                return log1.date < log2.date
-            case .ratingDescending:
-                return log1.rating > log2.rating
-            case .ratingAscending:
-                return log1.rating < log2.rating
-            }
-        }
+        return filtered.sorted(by: sortComparator)
     }
 
     public var hasActiveFilters: Bool {
@@ -253,22 +143,120 @@ public final class LogViewModel {
     }
 
     public func resetFilters() {
-        self.selectedCategoryFilter = nil
-        self.selectedRatingFilter = nil
-        self.producerFilter = ""
-        self.regionFilter = ""
-        self.vintageFilter = ""
-        self.minAbv = nil
-        self.maxPrice = nil
-        self.aromaTagFilter = ""
-        self.appearanceNoteFilter = ""
-        self.balanceTagFilter = ""
-        self.filterCostEffective = nil
-        self.filterWillingToRepeat = nil
-        self.filterAgingPotential = nil
-        self.wineTypeFilter = "すべて"
-        self.sakeSpecificNameFilter = "すべて"
-        self.beerStyleFilter = ""
-        self.sortOrder = .dateDescending
+        selectedCategoryFilter = nil
+        selectedRatingFilter = nil
+        producerFilter = ""
+        regionFilter = ""
+        vintageFilter = ""
+        minAbv = nil
+        maxPrice = nil
+        aromaTagFilter = ""
+        appearanceNoteFilter = ""
+        balanceTagFilter = ""
+        filterCostEffective = nil
+        filterWillingToRepeat = nil
+        filterAgingPotential = nil
+        wineTypeFilter = "すべて"
+        sakeSpecificNameFilter = "すべて"
+        beerStyleFilter = ""
+        sortOrder = .dateDescending
+    }
+
+    // MARK: - Private Helpers
+
+    private func matchesSearch(item: BeverageItem, log: TastingLog) -> Bool {
+        guard !searchText.isEmpty else { return true }
+        return item.name.localizedCaseInsensitiveContains(searchText) ||
+               item.producer.localizedCaseInsensitiveContains(searchText) ||
+               log.memo.localizedCaseInsensitiveContains(searchText)
+    }
+
+    private func matchesBasicFilters(item: BeverageItem, log: TastingLog) -> Bool {
+        if let category = selectedCategoryFilter, item.category != category {
+            return false
+        }
+        if let minRating = selectedRatingFilter, log.rating < minRating {
+            return false
+        }
+        if !producerFilter.isEmpty, !item.producer.localizedCaseInsensitiveContains(producerFilter) {
+            return false
+        }
+        if !regionFilter.isEmpty, !item.region.localizedCaseInsensitiveContains(regionFilter) {
+            return false
+        }
+        if !vintageFilter.isEmpty {
+            let vintage = item.vintage ?? ""
+            if !vintage.localizedCaseInsensitiveContains(vintageFilter) { return false }
+        }
+        if let minAbv, (item.alcoholByVolume ?? 0.0) < minAbv {
+            return false
+        }
+        if let maxPrice, (item.price ?? 0) > maxPrice {
+            return false
+        }
+        return true
+    }
+
+    private func matchesTastingFilters(log: TastingLog) -> Bool {
+        if !aromaTagFilter.isEmpty {
+            let hasTag = log.aromaTags.contains { $0.localizedCaseInsensitiveContains(aromaTagFilter) }
+            if !hasTag { return false }
+        }
+        if !appearanceNoteFilter.isEmpty,
+           !log.appearanceNotes.localizedCaseInsensitiveContains(appearanceNoteFilter) {
+            return false
+        }
+        if !balanceTagFilter.isEmpty {
+            let hasBalanceTag = log.balanceTags.contains { $0.localizedCaseInsensitiveContains(balanceTagFilter) }
+            if !hasBalanceTag { return false }
+        }
+        if filterCostEffective == true, !log.isCostEffective {
+            return false
+        }
+        if filterWillingToRepeat == true, !log.isWillingToRepeat {
+            return false
+        }
+        if filterAgingPotential == true, !log.hasAgingPotential {
+            return false
+        }
+        return true
+    }
+
+    private func matchesSpecificMetadata(item: BeverageItem) -> Bool {
+        guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else {
+            return wineTypeFilter == "すべて" && sakeSpecificNameFilter == "すべて" && beerStyleFilter.isEmpty
+        }
+
+        switch item.category {
+        case .wine:
+            guard wineTypeFilter != "すべて",
+                  let meta = try? JSONDecoder().decode(WineSpecificMetadata.self, from: data) else {
+                return true
+            }
+            return meta.wineType == wineTypeFilter
+
+        case .sake:
+            guard sakeSpecificNameFilter != "すべて",
+                  let meta = try? JSONDecoder().decode(SakeSpecificMetadata.self, from: data) else {
+                return true
+            }
+            return meta.specificName == sakeSpecificNameFilter
+
+        case .beer:
+            guard !beerStyleFilter.isEmpty,
+                  let meta = try? JSONDecoder().decode(BeerSpecificMetadata.self, from: data) else {
+                return true
+            }
+            return meta.beerStyle.localizedCaseInsensitiveContains(beerStyleFilter)
+        }
+    }
+
+    private func sortComparator(_ lhs: TastingLog, _ rhs: TastingLog) -> Bool {
+        switch sortOrder {
+        case .dateDescending: lhs.date > rhs.date
+        case .dateAscending: lhs.date < rhs.date
+        case .ratingDescending: lhs.rating > rhs.rating
+        case .ratingAscending: lhs.rating < rhs.rating
+        }
     }
 }

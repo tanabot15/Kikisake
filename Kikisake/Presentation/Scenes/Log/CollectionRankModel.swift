@@ -1,9 +1,11 @@
+//
 //  CollectionRankModel.swift
 //  Kikisake
+//
 
 import SwiftUI
 
-/// 図鑑の達成ランク（ブロンズ / シルバー / ゴールド）
+/// Collection completion rank tiers.
 public enum CollectionRankTier: Int, CaseIterable, Identifiable, Comparable {
     case bronze = 1
     case silver = 2
@@ -17,41 +19,41 @@ public enum CollectionRankTier: Int, CaseIterable, Identifiable, Comparable {
 
     public var tierName: String {
         switch self {
-        case .bronze: return String(localized: "ブロンズ")
-        case .silver: return String(localized: "シルバー")
-        case .gold: return String(localized: "ゴールド")
+        case .bronze: String(localized: "ブロンズ")
+        case .silver: String(localized: "シルバー")
+        case .gold: String(localized: "ゴールド")
         }
     }
 
     public var iconName: String {
         switch self {
-        case .bronze: return "medal.fill"
-        case .silver: return "star.circle.fill"
-        case .gold: return "crown.fill"
+        case .bronze: "medal.fill"
+        case .silver: "star.circle.fill"
+        case .gold: "crown.fill"
         }
     }
 
     public var gradientColors: [Color] {
         switch self {
         case .bronze:
-            return [Color(red: 0.80, green: 0.50, blue: 0.20), Color(red: 0.55, green: 0.32, blue: 0.12)]
+            [Color(red: 0.80, green: 0.50, blue: 0.20), Color(red: 0.55, green: 0.32, blue: 0.12)]
         case .silver:
-            return [Color(red: 0.78, green: 0.82, blue: 0.88), Color(red: 0.48, green: 0.52, blue: 0.60)]
+            [Color(red: 0.78, green: 0.82, blue: 0.88), Color(red: 0.48, green: 0.52, blue: 0.60)]
         case .gold:
-            return [Color(red: 0.98, green: 0.78, blue: 0.18), Color(red: 0.85, green: 0.52, blue: 0.05)]
+            [Color(red: 0.98, green: 0.78, blue: 0.18), Color(red: 0.85, green: 0.52, blue: 0.05)]
         }
     }
 
     public var accentColor: Color {
         switch self {
-        case .bronze: return Color(red: 0.72, green: 0.43, blue: 0.16)
-        case .silver: return Color(red: 0.52, green: 0.57, blue: 0.65)
-        case .gold: return Color(red: 0.88, green: 0.62, blue: 0.08)
+        case .bronze: Color(red: 0.72, green: 0.43, blue: 0.16)
+        case .silver: Color(red: 0.52, green: 0.57, blue: 0.65)
+        case .gold: Color(red: 0.88, green: 0.62, blue: 0.08)
         }
     }
 }
 
-/// 酒種 × ランクごとの称号詳細定義
+/// Rank badge definition per beverage category and tier.
 public struct CollectionRankBadge: Identifiable, Hashable {
     public var id: String { "\(category.rawValue)_\(tier.rawValue)" }
     public let category: BeverageCategory
@@ -60,7 +62,6 @@ public struct CollectionRankBadge: Identifiable, Hashable {
     public let title: String
     public let subtitle: String
 
-    /// 指定酒種の全ランク定義（ブロンズ・シルバー・ゴールド）を取得
     public static func badges(for category: BeverageCategory) -> [CollectionRankBadge] {
         switch category {
         case .wine:
@@ -138,14 +139,12 @@ public struct CollectionRankBadge: Identifiable, Hashable {
         }
     }
 
-    /// 現在の達成数から、到達している最高ランクのバッジを返す（未達ならnil）
     public static func currentBadge(for category: BeverageCategory, unlockedCount: Int) -> CollectionRankBadge? {
         badges(for: category)
             .filter { unlockedCount >= $0.requiredCount }
             .max(by: { $0.tier < $1.tier })
     }
 
-    /// 次に目指すべきランクのバッジを返す（ゴールド達成済みならnil）
     public static func nextBadge(for category: BeverageCategory, unlockedCount: Int) -> CollectionRankBadge? {
         badges(for: category)
             .filter { unlockedCount < $0.requiredCount }

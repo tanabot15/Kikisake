@@ -1,9 +1,11 @@
+//
 //  LogFilterSheet.swift
 //  Kikisake
+//
 
 import SwiftUI
 
-/// テイスティングログ・図鑑の共通フィルター設定シート
+/// Filter configuration sheet shared across log list/timeline and collection book views.
 public struct LogFilterSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var viewModel: LogViewModel
@@ -23,28 +25,23 @@ public struct LogFilterSheet: View {
         self.isPro = isPro
     }
 
-    /// 現在の選択カテゴリに基づいたカラーオプション一覧
     private var availableColorOptions: [ColorOption] {
-        return TastingOptions.colorOptions(for: viewModel.selectedCategoryFilter, wineType: viewModel.wineTypeFilter)
+        TastingOptions.colorOptions(for: viewModel.selectedCategoryFilter, wineType: viewModel.wineTypeFilter)
     }
 
-    /// 現在の選択カテゴリに基づいた香りタグ一覧のフラットリスト
     private var availableAromaTags: [String] {
         let categories = TastingOptions.aromaCategories(for: viewModel.selectedCategoryFilter, wineType: viewModel.wineTypeFilter)
-        return categories.flatMap { $0.tags }.map { $0.name }
+        return categories.flatMap(\.tags).map(\.name)
     }
 
-    /// 図鑑モードで有効な酒種
     private var effectiveCollectionCategory: BeverageCategory {
         viewModel.collectionCategoryFilter ?? currentCollectionCategory
     }
 
-    /// 図鑑モードで選択可能な産地一覧
     private var availableCollectionRegions: [String] {
         collectionViewModel.availableRegions(for: effectiveCollectionCategory, isPro: isPro)
     }
 
-    /// 図鑑モードで選択可能な品種・米・スタイル一覧
     private var availableCollectionTargetElements: [String] {
         collectionViewModel.availableTargetElements(
             for: effectiveCollectionCategory,
@@ -62,7 +59,6 @@ public struct LogFilterSheet: View {
                     logFilterSections
                 }
 
-                // 一括リセット
                 Section {
                     Button(role: .destructive) {
                         viewModel.resetCurrentSectionFilters()
@@ -90,7 +86,7 @@ public struct LogFilterSheet: View {
         }
     }
 
-    // MARK: - 図鑑セクション用フィルター
+    // MARK: - Collection Book Filters
 
     @ViewBuilder
     private var collectionFilterSections: some View {
@@ -120,8 +116,8 @@ public struct LogFilterSheet: View {
                         isPro: isPro,
                         region: newRegion
                     )
-                    if !viewModel.collectionTargetElementFilter.isEmpty &&
-                        !validElements.contains(viewModel.collectionTargetElementFilter) {
+                    if !viewModel.collectionTargetElementFilter.isEmpty,
+                       !validElements.contains(viewModel.collectionTargetElementFilter) {
                         viewModel.collectionTargetElementFilter = ""
                     }
                 }
@@ -143,11 +139,10 @@ public struct LogFilterSheet: View {
         }
     }
 
-    // MARK: - リスト・タイムラインセクション用フィルター
+    // MARK: - Log Filters
 
     @ViewBuilder
     private var logFilterSections: some View {
-        // 1. 酒種 (カテゴリ) 選択
         Section("酒種 (カテゴリ)") {
             Picker("酒種を選択", selection: $viewModel.selectedCategoryFilter) {
                 Text("すべて").tag(BeverageCategory?.none)
@@ -158,14 +153,12 @@ public struct LogFilterSheet: View {
             .pickerStyle(.segmented)
         }
 
-        // 2. 基本情報 (生産者, 生産地, ヴィンテージ)
         Section("基本情報") {
             TextField("生産者 / 蔵元 / ブルワリー", text: $viewModel.producerFilter)
             TextField("生産地 (例: ボルドー, 新潟)", text: $viewModel.regionFilter)
             TextField("ヴィンテージ / 製造年月 (例: 2020)", text: $viewModel.vintageFilter)
         }
 
-        // 3. スペック (アルコール度数 & 価格)
         Section("スペック") {
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
@@ -199,7 +192,6 @@ public struct LogFilterSheet: View {
             }
         }
 
-        // 4. テイスティングデータ (評価、外観カラー、香りタグ、バランス表現)
         Section("評価・テイスティングデータ") {
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
@@ -248,44 +240,26 @@ public struct LogFilterSheet: View {
             .pickerStyle(.menu)
         }
 
-        // 5. 特徴・評価フラグフィルター
         Section("特徴・評価フラグ") {
-            Toggle("コスパが高い", isOn: Binding(
-                get: { viewModel.filterCostEffective ?? false },
-                set: { viewModel.filterCostEffective = $0 ? true : nil }
-            ))
-            Toggle("リピート意向あり", isOn: Binding(
-                get: { viewModel.filterWillingToRepeat ?? false },
-                set: { viewModel.filterWillingToRepeat = $0 ? true : nil }
-            ))
-            Toggle("熟成ポテンシャルあり", isOn: Binding(
-                get: { viewModel.filterAgingPotential ?? false },
-                set: { viewModel.filterAgingPotential = $0 ? true : nil }
-            ))
+            Toggle("コスパが高い", isOn: boolFlagBinding(\.filterCostEffective))
+            Toggle("リピート意向あり", isOn: boolFlagBinding(\.filterWillingToRepeat))
+            Toggle("熟成ポテンシャルあり", isOn: boolFlagBinding(\.filterAgingPotential))
         }
 
-        // 6. 酒種固有のメタデータ
         Section("固有詳細条件") {
             if viewModel.selectedCategoryFilter == nil || viewModel.selectedCategoryFilter == .wine {
                 Picker("ワインタイプ", selection: $viewModel.wineTypeFilter) {
-                    Text("すべて").tag("すべて")
-                    Text("赤").tag("赤")
-                    Text("白").tag("白")
-                    Text("ロゼ").tag("ロゼ")
-                    Text("オレンジ").tag("オレンジ")
-                    Text("スパークリング").tag("スパークリング")
+                    ForEach(["すべて", "赤", "白", "ロゼ", "オレンジ", "スパークリング"], id: \.self) {
+                        Text($0).tag($0)
+                    }
                 }
             }
 
             if viewModel.selectedCategoryFilter == nil || viewModel.selectedCategoryFilter == .sake {
                 Picker("日本酒 特定名称", selection: $viewModel.sakeSpecificNameFilter) {
-                    Text("すべて").tag("すべて")
-                    Text("純米大吟醸").tag("純米大吟醸")
-                    Text("純米吟醸").tag("純米吟醸")
-                    Text("大吟醸").tag("大吟醸")
-                    Text("特別純米").tag("特別純米")
-                    Text("純米酒").tag("純米")
-                    Text("本醸造").tag("本醸造")
+                    ForEach(["すべて", "純米大吟醸", "純米吟醸", "大吟醸", "特別純米", "純米", "本醸造"], id: \.self) {
+                        Text($0 == "純米" ? "純米酒" : $0).tag($0)
+                    }
                 }
             }
 
@@ -294,7 +268,6 @@ public struct LogFilterSheet: View {
             }
         }
 
-        // 7. ソート設定
         Section("並び替え (ソート)") {
             Picker("表示順序", selection: $viewModel.sortOrder) {
                 ForEach(LogSortOrder.allCases, id: \.self) { order in
@@ -303,6 +276,13 @@ public struct LogFilterSheet: View {
             }
             .pickerStyle(.menu)
         }
+    }
+
+    private func boolFlagBinding(_ keyPath: ReferenceWritableKeyPath<LogViewModel, Bool?>) -> Binding<Bool> {
+        Binding(
+            get: { viewModel[keyPath: keyPath] ?? false },
+            set: { viewModel[keyPath: keyPath] = $0 ? true : nil }
+        )
     }
 }
 

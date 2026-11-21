@@ -1,10 +1,12 @@
-//  LogListViewContent.swift
+//
+//  ListView.swift
 //  Kikisake
+//
 
 import SwiftUI
 import SwiftData
 
-/// ログ画面の「リストタブ」部分を切り出したビュー
+/// List tab content for tasting logs.
 public struct ListView: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable public var viewModel: LogViewModel
@@ -19,100 +21,96 @@ public struct ListView: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            // リストタブ専用の検索バー
-            HStack(spacing: 8) {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(.secondary)
-                
-                TextField(String(localized: "銘柄名、生産者、メモで検索"), text: $viewModel.searchText)
-                    .textFieldStyle(.plain)
-                    .autocorrectionDisabled()
-                
-                if !viewModel.searchText.isEmpty {
-                    Button {
-                        viewModel.searchText = ""
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(Color(.secondarySystemGroupedBackground))
-            .cornerRadius(10)
-            .padding(.horizontal, 16)
-            .padding(.top, 4)
-            .padding(.bottom, 8)
+            searchBar
 
-            Group {
-                if filteredLogs.isEmpty {
-                    ContentUnavailableView(
-                        String(localized: "該当するログが見つかりません"),
-                        systemImage: "wineglass",
-                        description: Text(viewModel.hasActiveFilters || !viewModel.searchText.isEmpty
+            if filteredLogs.isEmpty {
+                ContentUnavailableView(
+                    String(localized: "該当するログが見つかりません"),
+                    systemImage: "wineglass",
+                    description: Text(
+                        viewModel.hasActiveFilters || !viewModel.searchText.isEmpty
                             ? String(localized: "検索やフィルター条件を変更してみてください。")
-                            : String(localized: "「追加」タブから新しい記録を作成しましょう。"))
+                            : String(localized: "「追加」タブから新しい記録を作成しましょう。")
                     )
-                    .frame(maxHeight: .infinity)
-                } else {
-                    if viewModel.listDisplayStyle == .card {
-                        List {
-                            ForEach(filteredLogs) { log in
-                                if let item = log.item {
-                                    NavigationLink(destination: LogDetailView(log: log)) {
-                                        BeverageCardView(
-                                            name: item.name,
-                                            producer: item.producer,
-                                            category: item.category,
-                                            region: item.region,
-                                            vintage: item.vintage,
-                                            rating: log.rating,
-                                            imageData: item.imageDatas?.first,
-                                            isBackgroundRemoved: item.isBackgroundRemoved,
-                                            appearanceColorHex: log.appearanceColorHex
-                                        )
-                                    }
-                                    .buttonStyle(.plain)
-                                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                                    .listRowSeparator(.hidden)
-                                    .listRowBackground(Color.clear)
-                                }
-                            }
-                            .onDelete(perform: deleteLogs)
-                            .onMove(perform: moveLogs)
-                        }
-                        .listStyle(.plain)
-                        .scrollContentBackground(.hidden)
-                        .environment(\.editMode, $editMode)
-                    } else {
-                        List {
-                            ForEach(filteredLogs) { log in
-                                NavigationLink(destination: LogDetailView(log: log)) {
-                                    if let item = log.item {
-                                        LogCompactRowView(log: log, item: item)
-                                            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                            .listRowSeparator(.automatic)
-                                    }
-                                }
-                            }
-                            .onDelete(perform: deleteLogs)
-                            .onMove(perform: moveLogs)
-                        }
-                        .listStyle(.plain)
-                        .scrollContentBackground(.hidden)
-                        .environment(\.editMode, $editMode)
-                    }
-                }
+                )
+                .frame(maxHeight: .infinity)
+            } else {
+                logList
             }
         }
         .background(Color(.systemGroupedBackground))
     }
 
+    private var searchBar: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.secondary)
+
+            TextField(String(localized: "銘柄名、生産者、メモで検索"), text: $viewModel.searchText)
+                .textFieldStyle(.plain)
+                .autocorrectionDisabled()
+
+            if !viewModel.searchText.isEmpty {
+                Button {
+                    viewModel.searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(10)
+        .padding(.horizontal, 16)
+        .padding(.top, 4)
+        .padding(.bottom, 8)
+    }
+
+    private var logList: some View {
+        List {
+            ForEach(filteredLogs) { log in
+                if let item = log.item {
+                    NavigationLink(destination: LogDetailView(log: log)) {
+                        rowContent(for: log, item: item)
+                    }
+                    .buttonStyle(.plain)
+                    .applyRowStyle(for: viewModel.listDisplayStyle)
+                }
+            }
+            .onDelete(perform: deleteLogs)
+            .onMove(perform: moveLogs)
+        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .environment(\.editMode, $editMode)
+    }
+
+    @ViewBuilder
+    private func rowContent(for log: TastingLog, item: BeverageItem) -> some View {
+        switch viewModel.listDisplayStyle {
+        case .card:
+            BeverageCardView(
+                name: item.name,
+                producer: item.producer,
+                category: item.category,
+                region: item.region,
+                vintage: item.vintage,
+                rating: log.rating,
+                imageData: item.imageDatas?.first,
+                isBackgroundRemoved: item.isBackgroundRemoved,
+                appearanceColorHex: log.appearanceColorHex
+            )
+        case .compact:
+            LogCompactRowView(log: log, item: item)
+        }
+    }
+
     private func deleteLogs(at offsets: IndexSet) {
-        let logsToDelete = offsets.map { filteredLogs[$0] }
-        for log in logsToDelete {
+        for index in offsets {
+            let log = filteredLogs[index]
             let parentItem = log.item
             modelContext.delete(log)
 
@@ -125,14 +123,31 @@ public struct ListView: View {
         }
         try? modelContext.save()
     }
-    
+
     private func moveLogs(from source: IndexSet, to destination: Int) {
         var updatedLogs = filteredLogs
         updatedLogs.move(fromOffsets: source, toOffset: destination)
     }
 }
 
-/// シンプル・コンパクトなリスト行コンポーネント
+private extension View {
+    @ViewBuilder
+    func applyRowStyle(for style: ListDisplayStyle) -> some View {
+        switch style {
+        case .card:
+            self
+                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
+        case .compact:
+            self
+                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                .listRowSeparator(.automatic)
+        }
+    }
+}
+
+/// Compact row view for tasting logs.
 public struct LogCompactRowView: View {
     public let log: TastingLog
     public let item: BeverageItem
@@ -144,21 +159,20 @@ public struct LogCompactRowView: View {
 
     public var body: some View {
         HStack(spacing: 12) {
-            // 外観カラーのドット表現
             Circle()
                 .fill(Color(hex: log.appearanceColorHex) ?? Color.gray)
                 .frame(width: 14, height: 14)
                 .overlay(
                     Circle().stroke(Color.primary.opacity(0.2), lineWidth: 0.5)
                 )
-            
+
             Text(item.name)
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .lineLimit(1)
 
             Spacer()
-            
+
             HStack(spacing: 2) {
                 Image(systemName: "star.fill")
                     .font(.caption2)
@@ -175,7 +189,7 @@ public struct LogCompactRowView: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-    
+
     let wineItem = BeverageItem(
         name: "Château Margaux 2015",
         producer: "Château Margaux",
@@ -205,11 +219,9 @@ public struct LogCompactRowView: View {
     container.mainContext.insert(wineItem)
     container.mainContext.insert(wineLog)
 
-    let viewModel = LogViewModel()
-
     return NavigationStack {
         ListView(
-            viewModel: viewModel,
+            viewModel: LogViewModel(),
             filteredLogs: [wineLog],
             editMode: .constant(.inactive)
         )

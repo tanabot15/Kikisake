@@ -1,14 +1,30 @@
-//  CollectionAnalyticsViewModel.swift
+//
+//  CollectionViewModel.swift
 //  Kikisake
+//
 
 import Foundation
 import SwiftData
+
+/// Completion state for a single collection matrix item.
+public struct CollectionCompletionEntry: Identifiable {
+    public var id: UUID { definition.id }
+    public let definition: CollectionItemDefinition
+    public let isUnlocked: Bool
+    public let unlockedLogs: [TastingLog]
+}
+
+/// Region-grouped collection items.
+public struct CollectionRegionGroup: Identifiable {
+    public var id: String { region }
+    public let region: String
+    public let items: [CollectionCompletionEntry]
+}
 
 @Observable
 public final class CollectionViewModel {
     public var selectedCategory: BeverageCategory = .wine
 
-    // ✨ ここで国・都道府県の表示順序を自由にコントロールできます
     public var wineRegionOrder: [String] = [
         "フランス", "イタリア", "スペイン", "ポルトガル",
         "ドイツ", "オーストリア", "スイス", "ハンガリー",
@@ -39,113 +55,53 @@ public final class CollectionViewModel {
     }
 
     public func lockedProItemCount(for category: BeverageCategory) -> Int {
-        let all = CollectionMatrixDataSource.definitions(for: category)
-        return all.filter { $0.isProOnly }.count
+        CollectionMatrixDataSource.definitions(for: category).filter(\.isProOnly).count
     }
 
-    /// 指定された酒種の図鑑アイテムごとに、合致するすべてのログの配列を返す
     public func checkCompletions(
         for category: BeverageCategory,
         logs: [TastingLog],
         isPro: Bool = AppState.shared.isProVersion
-    ) -> [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])] {
+    ) -> [CollectionCompletionEntry] {
         let definitions = activeDefinitions(for: category, isPro: isPro)
-        
-        return definitions.map { def in
-            let matchedLogs = logs.filter { log in
-                guard let item = log.item, item.category == category else { return false }
-                
-                let regionMatched = item.region.contains(def.region)
-                
-                var elementMatched = false
-                if let json = item.specificMetadataJSON, let data = json.data(using: .utf8) {
-                    let decoder = JSONDecoder()
-                    switch category {
-                    case .wine:
-                        if let meta = try? decoder.decode(WineSpecificMetadata.self, from: data) {
-                            let hasVariety = meta.grapeVarieties.contains(def.targetElement) ||
-                                             meta.blendComponents.contains(where: { $0.variety.contains(def.targetElement) })
-                            elementMatched = hasVariety
-                        }
-                    case .sake:
-                        if let meta = try? decoder.decode(SakeSpecificMetadata.self, from: data) {
-                            elementMatched = meta.riceVariety.contains(def.targetElement)
-                        }
-                    case .beer:
-                        if let meta = try? decoder.decode(BeerSpecificMetadata.self, from: data) {
-                            elementMatched = meta.beerStyle.contains(def.targetElement)
-                        }
-                    }
-                }
-                
-                return regionMatched && elementMatched
+        let categoryLogs = logs.filter { $0.item?.category == category }
+
+        return definitions.map { definition in
+            let matchedLogs = categoryLogs.filter { log in
+                guard let item = log.item else { return false }
+                return item.region.contains(definition.region) &&
+                       matchesTargetElement(item: item, category: category, targetElement: definition.targetElement)
             }
-            
-            return (definition: def, isUnlocked: !matchedLogs.isEmpty, unlockedLogs: matchedLogs)
+
+            return CollectionCompletionEntry(
+                definition: definition,
+                isUnlocked: !matchedLogs.isEmpty,
+                unlockedLogs: matchedLogs
+            )
         }
     }
 
-    /// ✨ 指定された表示順序に従って、国・都道府県別にグループ化した配列を返す
     public func groupedCompletions(
         for category: BeverageCategory,
         logs: [TastingLog],
         isPro: Bool = AppState.shared.isProVersion
-    ) -> [(region: String, items: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])])] {
+    ) -> [CollectionRegionGroup] {
         let allResults = checkCompletions(for: category, logs: logs, isPro: isPro)
-        let groupedDict = Dictionary(grouping: allResults, by: { $0.definition.region })
-        
-        let orderList: [String]
-        switch category {
-        case .wine: orderList = wineRegionOrder
-        case .sake: orderList = sakeRegionOrder
-        case .beer: orderList = beerRegionOrder
+        let groupedDict = Dictionary(grouping: allResults, by: \.definition.region)
+        let orderedRegions = orderedRegionKeys(from: Array(groupedDict.keys), category: category)
+
+        return orderedRegions.compactMap { region in
+            guard let items = groupedDict[region], !items.isEmpty else { return nil }
+            return CollectionRegionGroup(region: region, items: items)
         }
-        
-        var sortedGroups: [(region: String, items: [(definition: CollectionItemDefinition, isUnlocked: Bool, unlockedLogs: [TastingLog])])] = []
-        var processedRegions = Set<String>()
-        
-        // 1. 指定された順番通りに追加
-        for region in orderList {
-            if let items = groupedDict[region], !items.isEmpty {
-                sortedGroups.append((region: region, items: items))
-                processedRegions.insert(region)
-            }
-        }
-        
-        // 2. 万が一 orderList に未記載の産地がデータ側に増えた場合は末尾に追加
-        for (region, items) in groupedDict where !processedRegions.contains(region) && !items.isEmpty {
-            sortedGroups.append((region: region, items: items))
-        }
-        
-        return sortedGroups
     }
-    
+
     public func availableRegions(for category: BeverageCategory, isPro: Bool) -> [String] {
         let definitions = activeDefinitions(for: category, isPro: isPro)
-        let groupedDict = Dictionary(grouping: definitions, by: { $0.region })
-
-        let orderList: [String]
-        switch category {
-        case .wine: orderList = wineRegionOrder
-        case .sake: orderList = sakeRegionOrder
-        case .beer: orderList = beerRegionOrder
-        }
-
-        var ordered: [String] = []
-        var seen = Set<String>()
-
-        for region in orderList where groupedDict[region] != nil {
-            ordered.append(region)
-            seen.insert(region)
-        }
-
-        for region in groupedDict.keys where !seen.contains(region) {
-            ordered.append(region)
-        }
-
-        return ordered
+        let uniqueRegions = Array(Set(definitions.map(\.region)))
+        return orderedRegionKeys(from: uniqueRegions, category: category)
     }
-    
+
     public func availableTargetElements(
         for category: BeverageCategory,
         isPro: Bool,
@@ -161,16 +117,13 @@ public final class CollectionViewModel {
         var seen = Set<String>()
         var ordered: [String] = []
 
-        for def in filtered {
-            if !seen.contains(def.targetElement) {
-                seen.insert(def.targetElement)
-                ordered.append(def.targetElement)
-            }
+        for def in filtered where seen.insert(def.targetElement).inserted {
+            ordered.append(def.targetElement)
         }
 
         return ordered
     }
-    
+
     public func completionRate(
         for category: BeverageCategory,
         logs: [TastingLog],
@@ -178,7 +131,7 @@ public final class CollectionViewModel {
     ) -> Double {
         let results = checkCompletions(for: category, logs: logs, isPro: isPro)
         guard !results.isEmpty else { return 0.0 }
-        let unlockedCount = results.filter { $0.isUnlocked }.count
+        let unlockedCount = results.filter(\.isUnlocked).count
         return Double(unlockedCount) / Double(results.count)
     }
 
@@ -187,7 +140,7 @@ public final class CollectionViewModel {
         logs: [TastingLog],
         isPro: Bool = AppState.shared.isProVersion
     ) -> CollectionRankBadge? {
-        let unlockedCount = checkCompletions(for: category, logs: logs, isPro: isPro).filter { $0.isUnlocked }.count
+        let unlockedCount = unlockedItemCount(for: category, logs: logs, isPro: isPro)
         return CollectionRankBadge.currentBadge(for: category, unlockedCount: unlockedCount)
     }
 
@@ -196,7 +149,72 @@ public final class CollectionViewModel {
         logs: [TastingLog],
         isPro: Bool = AppState.shared.isProVersion
     ) -> CollectionRankBadge? {
-        let unlockedCount = checkCompletions(for: category, logs: logs, isPro: isPro).filter { $0.isUnlocked }.count
+        let unlockedCount = unlockedItemCount(for: category, logs: logs, isPro: isPro)
         return CollectionRankBadge.nextBadge(for: category, unlockedCount: unlockedCount)
+    }
+
+    // MARK: - Private Helpers
+
+    private func unlockedItemCount(for category: BeverageCategory, logs: [TastingLog], isPro: Bool) -> Int {
+        checkCompletions(for: category, logs: logs, isPro: isPro).filter(\.isUnlocked).count
+    }
+
+    private func regionOrder(for category: BeverageCategory) -> [String] {
+        switch category {
+        case .wine: wineRegionOrder
+        case .sake: sakeRegionOrder
+        case .beer: beerRegionOrder
+        }
+    }
+
+    private func orderedRegionKeys(from regions: [String], category: BeverageCategory) -> [String] {
+        let availableSet = Set(regions)
+        let preferredOrder = regionOrder(for: category)
+
+        var ordered: [String] = []
+        var seen = Set<String>()
+
+        for region in preferredOrder where availableSet.contains(region) {
+            ordered.append(region)
+            seen.insert(region)
+        }
+
+        for region in regions where !seen.contains(region) {
+            ordered.append(region)
+        }
+
+        return ordered
+    }
+
+    private func matchesTargetElement(
+        item: BeverageItem,
+        category: BeverageCategory,
+        targetElement: String
+    ) -> Bool {
+        guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else {
+            return false
+        }
+
+        let decoder = JSONDecoder()
+        switch category {
+        case .wine:
+            guard let meta = try? decoder.decode(WineSpecificMetadata.self, from: data) else {
+                return false
+            }
+            return meta.grapeVarieties.contains(targetElement) ||
+                   meta.blendComponents.contains { $0.variety.contains(targetElement) }
+
+        case .sake:
+            guard let meta = try? decoder.decode(SakeSpecificMetadata.self, from: data) else {
+                return false
+            }
+            return meta.riceVariety.contains(targetElement)
+
+        case .beer:
+            guard let meta = try? decoder.decode(BeerSpecificMetadata.self, from: data) else {
+                return false
+            }
+            return meta.beerStyle.contains(targetElement)
+        }
     }
 }

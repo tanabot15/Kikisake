@@ -6,7 +6,7 @@
 import SwiftUI
 import SwiftData
 
-/// 既存テイスティングログの編集用モーダル画面
+/// Modal 5-step flow for editing an existing tasting log.
 public struct EditLogFlowView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -17,6 +17,8 @@ public struct EditLogFlowView: View {
     @State private var alertMessage: String = ""
 
     @FocusState private var focusedField: GeneralInfoField?
+
+    private let totalSteps = 5
 
     public init(log: TastingLog) {
         self.targetLog = log
@@ -29,95 +31,12 @@ public struct EditLogFlowView: View {
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                // 5ステップインジケータ
-                HStack(spacing: 8) {
-                    ForEach(1...5, id: \.self) { step in
-                        Circle()
-                            .fill(viewModel.currentStep >= step ? Color.accentColor : Color(.systemGray3))
-                            .frame(width: 8, height: 8)
-                    }
-                }
-                .padding(.vertical, 12)
-
-                // 各ステップビューの切替
-                Group {
-                    switch viewModel.currentStep {
-                    case 1:
-                        GeneralInfoStepView(
-                            viewModel: viewModel,
-                            focusedField: $focusedField
-                        ) { message in
-                            alertMessage = message
-                            showAlert = true
-                        }
-                    case 2:
-                        AppearanceStepView(viewModel: viewModel)
-                    case 3:
-                        AromaStepView(viewModel: viewModel)
-                    case 4:
-                        TasteStepView(viewModel: viewModel)
-                    case 5:
-                        FinalizeStepView(viewModel: viewModel)
-                    default:
-                        GeneralInfoStepView(
-                            viewModel: viewModel,
-                            focusedField: $focusedField
-                        ) { message in
-                            alertMessage = message
-                            showAlert = true
-                        }
-                    }
-                }
+                stepIndicator
+                stepContent
             }
-            .navigationTitle("ログの修正 (\(viewModel.currentStep)/5)")
+            .navigationTitle("ログの修正 (\(viewModel.currentStep)/\(totalSteps))")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    if viewModel.currentStep == 1 {
-                        Button("キャンセル") {
-                            dismiss()
-                        }
-                    }
-                }
-
-                ToolbarItem(placement: .navigationBarLeading) {
-                    if viewModel.currentStep > 1 {
-                        Button("戻る") {
-                            viewModel.currentStep -= 1
-                        }
-                    }
-                }
-
-                ToolbarItem(placement: .confirmationAction) {
-                    if viewModel.currentStep < 5 {
-                        Button("次へ") {
-                            if isNameEmpty {
-                                alertMessage = "銘柄名は必須項目です。"
-                                showAlert = true
-                                return
-                            }
-                            viewModel.currentStep += 1
-                        }
-                        .fontWeight(.semibold)
-                    } else {
-                        Button("更新") {
-                            if isNameEmpty {
-                                alertMessage = "銘柄名は必須項目です。"
-                                showAlert = true
-                                return
-                            }
-                            do {
-                                try viewModel.update(modelContext: modelContext)
-                                dismiss()
-                            } catch {
-                                alertMessage = "更新に失敗しました: \(error.localizedDescription)"
-                                showAlert = true
-                            }
-                        }
-                        .fontWeight(.bold)
-                    }
-                }
-            }
+            .toolbar { editToolbarContent }
             .alert("確認", isPresented: $showAlert) {
                 Button("OK", role: .cancel) {
                     if isNameEmpty {
@@ -132,6 +51,98 @@ public struct EditLogFlowView: View {
             }
         }
     }
+
+    private var stepIndicator: some View {
+        HStack(spacing: 8) {
+            ForEach(1...totalSteps, id: \.self) { step in
+                Circle()
+                    .fill(viewModel.currentStep >= step ? Color.accentColor : Color(.systemGray3))
+                    .frame(width: 8, height: 8)
+            }
+        }
+        .padding(.vertical, 12)
+    }
+
+    @ViewBuilder
+    private var stepContent: some View {
+        switch viewModel.currentStep {
+        case 1:
+            GeneralInfoStepView(viewModel: viewModel, focusedField: $focusedField) { message in
+                presentAlert(message)
+            }
+        case 2:
+            AppearanceStepView(viewModel: viewModel)
+        case 3:
+            AromaStepView(viewModel: viewModel)
+        case 4:
+            TasteStepView(viewModel: viewModel)
+        case 5:
+            FinalizeStepView(viewModel: viewModel)
+        default:
+            GeneralInfoStepView(viewModel: viewModel, focusedField: $focusedField) { message in
+                presentAlert(message)
+            }
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var editToolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            if viewModel.currentStep == 1 {
+                Button("キャンセル") {
+                    dismiss()
+                }
+            }
+        }
+
+        ToolbarItem(placement: .navigationBarLeading) {
+            if viewModel.currentStep > 1 {
+                Button("戻る") {
+                    viewModel.currentStep -= 1
+                }
+            }
+        }
+
+        ToolbarItem(placement: .confirmationAction) {
+            if viewModel.currentStep < totalSteps {
+                Button("次へ") {
+                    advanceStepIfValid()
+                }
+                .fontWeight(.semibold)
+            } else {
+                Button("更新") {
+                    saveChangesIfValid()
+                }
+                .fontWeight(.bold)
+            }
+        }
+    }
+
+    private func advanceStepIfValid() {
+        guard !isNameEmpty else {
+            presentAlert("銘柄名は必須項目です。")
+            return
+        }
+        viewModel.currentStep += 1
+    }
+
+    private func saveChangesIfValid() {
+        guard !isNameEmpty else {
+            presentAlert("銘柄名は必須項目です。")
+            return
+        }
+        do {
+            try viewModel.update(modelContext: modelContext)
+            dismiss()
+        } catch {
+            presentAlert("更新に失敗しました: \(error.localizedDescription)")
+        }
+    }
+
+    private func presentAlert(_ message: String) {
+        alertMessage = message
+        showAlert = true
+    }
 }
 
 #Preview {
@@ -139,11 +150,9 @@ public struct EditLogFlowView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: schema, configurations: [config])
 
-    // プレビュー用のサンプル保管場所
     let cellar = StorageLocation(name: "ワインセラー", type: .cellar)
     container.mainContext.insert(cellar)
 
-    // プレビュー用のサンプルアイテムとログ
     let sampleItem = BeverageItem(
         name: "Château Margaux 2015",
         producer: "Château Margaux",
@@ -153,7 +162,7 @@ public struct EditLogFlowView: View {
         price: 85000,
         storageLocation: "ワインセラー"
     )
-    
+
     let sampleLog = TastingLog(
         date: Date(),
         rating: 4.9,
