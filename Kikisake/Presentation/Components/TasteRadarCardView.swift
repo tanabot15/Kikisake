@@ -31,10 +31,10 @@ public struct TasteRadarCardView: View {
 
         init(isCompactMode: Bool) {
             self.levels = isCompactMode ? 3 : 4
-            self.frameHeight = isCompactMode ? 104 : 240
-            self.radiusOffset = isCompactMode ? 16 : 28
-            self.fontTitleSize = isCompactMode ? 8 : 10
-            self.fontValueSize = isCompactMode ? 8 : 9
+            self.frameHeight = isCompactMode ? 96 : 220
+            self.radiusOffset = isCompactMode ? 15 : 26
+            self.fontTitleSize = isCompactMode ? 7.5 : 10
+            self.fontValueSize = isCompactMode ? 7.5 : 9
         }
     }
 
@@ -124,6 +124,7 @@ public struct TasteRadarCardView: View {
                     metrics: metrics,
                     fillColor: Color.accentColor.opacity(0.25),
                     strokeColor: Color.accentColor,
+                    pointColor: Color.accentColor,
                     gridColor: Color(.systemGray4),
                     titleColor: .primary,
                     valueColor: .secondary,
@@ -146,6 +147,7 @@ public struct TasteRadarCardView: View {
                     metrics: metrics,
                     fillColor: Color.accentColor.opacity(0.25),
                     strokeColor: Color.accentColor,
+                    pointColor: Color.accentColor,
                     gridColor: Color(.systemGray4),
                     titleColor: .primary,
                     valueColor: .secondary,
@@ -171,17 +173,19 @@ public struct TasteRadarCardView: View {
         textColor: Color,
         mutedTextColor: Color
     ) -> some View {
-        VStack(spacing: 5) {
+        let blackInk = Color(red: 0.105, green: 0.095, blue: 0.085)
+
+        VStack(spacing: 4) {
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 VStack(alignment: .leading, spacing: 1) {
                     Text("TASTE PROFILE")
                         .font(.system(size: isCompactMode ? 6.5 : 8, weight: .black))
-                        .tracking(1.5)
-                        .foregroundStyle(accentColor)
+                        .tracking(1.4)
+                        .foregroundStyle(blackInk)
 
                     Text("味わい構造")
                         .font(.system(size: isCompactMode ? 8 : 11, weight: .bold, design: .serif))
-                        .foregroundStyle(textColor)
+                        .foregroundStyle(blackInk)
                 }
 
                 Spacer()
@@ -192,20 +196,23 @@ public struct TasteRadarCardView: View {
             }
 
             Rectangle()
-                .fill(accentColor.opacity(0.28))
+                .fill(blackInk.opacity(0.22))
                 .frame(height: 0.5)
 
             radarChart(
                 items: items,
                 metrics: metrics,
-                fillColor: accentColor.opacity(0.16),
-                strokeColor: accentColor.opacity(0.9),
-                gridColor: lineColor.opacity(0.35),
-                titleColor: textColor,
+                fillColor: blackInk.opacity(0.14),
+                strokeColor: blackInk.opacity(0.92),
+                pointColor: blackInk,
+                gridColor: blackInk.opacity(0.35),
+                titleColor: blackInk,
                 valueColor: mutedTextColor,
                 useEditorialStyle: true
             )
+            .frame(maxHeight: .infinity)
         }
+        .frame(maxHeight: .infinity, alignment: .top)
         .padding(.horizontal, isCompactMode ? 7 : 12)
         .padding(.vertical, isCompactMode ? 6 : 10)
         .background(
@@ -214,7 +221,7 @@ public struct TasteRadarCardView: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: isCompactMode ? 8 : 12, style: .continuous)
-                .stroke(accentColor.opacity(0.22), lineWidth: 0.7)
+                .stroke(lineColor.opacity(0.22), lineWidth: 0.7)
         )
     }
 
@@ -226,6 +233,7 @@ public struct TasteRadarCardView: View {
         metrics: ChartMetrics,
         fillColor: Color,
         strokeColor: Color,
+        pointColor: Color,
         gridColor: Color,
         titleColor: Color,
         valueColor: Color,
@@ -242,7 +250,7 @@ public struct TasteRadarCardView: View {
                     radiusOffset: metrics.radiusOffset
                 )
                 .stroke(
-                    useEditorialStyle ? gridColor.opacity(isOuterLevel ? 1.5 : 0.7) : gridColor,
+                    useEditorialStyle ? gridColor.opacity(isOuterLevel ? 1.0 : 0.65) : gridColor,
                     lineWidth: useEditorialStyle
                         ? (isOuterLevel ? 0.7 : 0.45)
                         : (isCompactMode ? 0.5 : (isOuterLevel ? 1 : 0.5))
@@ -254,7 +262,7 @@ public struct TasteRadarCardView: View {
                 radiusOffset: metrics.radiusOffset
             )
             .stroke(
-                useEditorialStyle ? gridColor.opacity(0.8) : gridColor,
+                useEditorialStyle ? gridColor.opacity(0.75) : gridColor,
                 lineWidth: useEditorialStyle ? 0.45 : (isCompactMode ? 0.5 : 0.8)
             )
 
@@ -271,7 +279,7 @@ public struct TasteRadarCardView: View {
             .stroke(
                 strokeColor,
                 lineWidth: useEditorialStyle
-                    ? (isCompactMode ? 1.15 : 1.5)
+                    ? (isCompactMode ? 1.2 : 1.5)
                     : (isCompactMode ? 1.5 : 2)
             )
 
@@ -282,8 +290,18 @@ public struct TasteRadarCardView: View {
 
                 ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                     let angle = (CGFloat(index) * 2.0 * .pi / CGFloat(items.count)) - (.pi / 2)
+                    let clampedVal = max(0.0, min(1.0, item.value / 5.0))
+                    let dotX = center.x + radius * CGFloat(clampedVal) * cos(angle)
+                    let dotY = center.y + radius * CGFloat(clampedVal) * sin(angle)
                     let x = center.x + (radius + labelOffset) * cos(angle)
                     let y = center.y + (radius + labelOffset) * sin(angle)
+
+                    if useEditorialStyle {
+                        Circle()
+                            .fill(pointColor)
+                            .frame(width: isCompactMode ? 3.5 : 5, height: isCompactMode ? 3.5 : 5)
+                            .position(x: dotX, y: dotY)
+                    }
 
                     axisLabelView(
                         item: item,
@@ -418,11 +436,11 @@ public struct TasteRadarCardView: View {
         log: sampleLog,
         isCompactMode: false,
         presentationStyle: .shareCard(
-            accentColor: Color(red: 0.72, green: 0.48, blue: 0.24),
-            surfaceColor: Color(red: 0.12, green: 0.09, blue: 0.08),
-            lineColor: Color(red: 0.72, green: 0.48, blue: 0.24).opacity(0.45),
-            textColor: Color(red: 0.94, green: 0.91, blue: 0.86),
-            mutedTextColor: Color(red: 0.94, green: 0.91, blue: 0.86).opacity(0.52)
+            accentColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            surfaceColor: Color(red: 0.975, green: 0.965, blue: 0.935),
+            lineColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            textColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            mutedTextColor: Color(red: 0.105, green: 0.095, blue: 0.085).opacity(0.56)
         )
     )
     .padding()
@@ -467,14 +485,14 @@ public struct TasteRadarCardView: View {
         log: sampleLog,
         isCompactMode: true,
         presentationStyle: .shareCard(
-            accentColor: Color(red: 0.72, green: 0.48, blue: 0.24),
-            surfaceColor: Color(red: 0.12, green: 0.09, blue: 0.08),
-            lineColor: Color(red: 0.72, green: 0.48, blue: 0.24).opacity(0.45),
-            textColor: Color(red: 0.94, green: 0.91, blue: 0.86),
-            mutedTextColor: Color(red: 0.94, green: 0.91, blue: 0.86).opacity(0.52)
+            accentColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            surfaceColor: Color(red: 0.975, green: 0.965, blue: 0.935),
+            lineColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            textColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            mutedTextColor: Color(red: 0.105, green: 0.095, blue: 0.085).opacity(0.56)
         )
     )
-    .frame(width: 180)
+    .frame(width: 170)
     .padding()
     .background(Color.black)
     .modelContainer(container)

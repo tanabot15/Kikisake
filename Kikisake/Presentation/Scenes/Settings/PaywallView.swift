@@ -25,7 +25,7 @@ public struct PaywallView: View {
         ("cabinet.fill", String(localized: "保管場所を無制限に"), String(localized: "複数セラー・サブ冷蔵庫など無制限に追加可能")),
         ("chart.dots.scatter", String(localized: "プロ用マトリクス分析"), String(localized: "テイスティング記録を味わいマップにプロット")),
         ("sparkles", String(localized: "プロ仕様のテイスティングタグ"), String(localized: "マニアックな色や香りの表現要素を全オープン")),
-        ("trophy.fill", String(localized: "コンプリート図鑑の全開放"), String(localized: "希少産地やマニアックな品種・酒米・スタイルを全て解放")),
+        ("trophy.fill", String(localized: "コンプリート図鑑の全開放"), String(localized: "マニアックな品種・酒米・スタイルを全て解放")),
         ("slider.horizontal.3", String(localized: "テイスティング要素のカスタム"), String(localized: "オリジナルの香り・色・味わい表現の編集する")),
         ("eye.slash.fill", String(localized: "広告の完全非表示"), String(localized: "バナー広告を排除し、洗練された記録空間を")),
         ("infinity", String(localized: "完全買い切り"), String(localized: "追加課金・サブスクリプションは一切発生なし"))

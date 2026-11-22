@@ -30,7 +30,7 @@ public struct TastingCardShareView: View {
     }
 
     private var accentGlow: Color {
-        appearanceColor.opacity(0.30)
+        appearanceColor.opacity(0.24)
     }
 
     private var paperColor: Color {
@@ -42,11 +42,11 @@ public struct TastingCardShareView: View {
     }
 
     private var mutedInkColor: Color {
-        inkColor.opacity(0.52)
+        inkColor.opacity(0.56)
     }
 
     private var chartAccentColor: Color {
-        appearanceColor.opacity(0.85)
+        inkColor
     }
 
     private var shareCardSurfaceColor: Color {
@@ -80,7 +80,7 @@ public struct TastingCardShareView: View {
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                 .stroke(inkColor.opacity(0.10), lineWidth: 0.8)
         )
-        .shadow(color: appearanceColor.opacity(0.16), radius: 18, x: 0, y: 10)
+        .shadow(color: inkColor.opacity(0.12), radius: 14, x: 0, y: 8)
     }
 
     private var paperBackground: some View {
@@ -89,12 +89,12 @@ public struct TastingCardShareView: View {
 
             RadialGradient(
                 colors: [
-                    appearanceColor.opacity(0.12),
+                    appearanceColor.opacity(0.09),
                     Color.clear
                 ],
                 center: .top,
                 startRadius: 10,
-                endRadius: 260
+                endRadius: 230
             )
 
             LinearGradient(
@@ -113,14 +113,14 @@ public struct TastingCardShareView: View {
 
     private var header: some View {
         HStack(alignment: .center) {
-            HStack(spacing: 7) {
+            HStack(spacing: 6) {
                 Rectangle()
                     .fill(inkColor)
-                    .frame(width: 16, height: 1)
+                    .frame(width: 14, height: 1)
 
                 Text("KIKISAKE")
-                    .font(.system(size: 10, weight: .bold))
-                    .tracking(2.2)
+                    .font(.system(size: 9.5, weight: .bold))
+                    .tracking(2.0)
                     .foregroundStyle(inkColor)
             }
 
@@ -128,11 +128,11 @@ public struct TastingCardShareView: View {
 
             Text(categoryLabel)
                 .font(.system(size: 8, weight: .semibold))
-                .tracking(1.8)
+                .tracking(1.6)
                 .foregroundStyle(mutedInkColor)
         }
-        .padding(.horizontal, 24)
-        .padding(.top, 20)
+        .padding(.horizontal, 22)
+        .padding(.top, 14)
     }
 
     // MARK: - Hero
@@ -142,28 +142,28 @@ public struct TastingCardShareView: View {
             RadialGradient(
                 colors: [
                     accentGlow,
-                    appearanceColor.opacity(0.08),
+                    appearanceColor.opacity(0.06),
                     Color.clear
                 ],
                 center: .center,
-                startRadius: 10,
-                endRadius: 145
+                startRadius: 8,
+                endRadius: 115
             )
-            .frame(height: 260)
+            .frame(height: 185)
 
             VStack {
                 Spacer()
                 Rectangle()
-                    .fill(inkColor.opacity(0.07))
+                    .fill(inkColor.opacity(0.08))
                     .frame(height: 0.5)
-                    .padding(.horizontal, 28)
+                    .padding(.horizontal, 24)
             }
 
             bottleView
         }
-        .frame(height: 270)
+        .frame(height: 192)
         .padding(.horizontal, 18)
-        .padding(.top, 4)
+        .padding(.top, 2)
     }
 
     @ViewBuilder
@@ -176,8 +176,8 @@ public struct TastingCardShareView: View {
                 Image(uiImage: activeBottleImage ?? uiImage)
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: 190, maxHeight: 245)
-                    .shadow(color: Color.black.opacity(0.22), radius: 12, x: 0, y: 8)
+                    .frame(maxWidth: 165, maxHeight: 176)
+                    .shadow(color: Color.black.opacity(0.20), radius: 10, x: 0, y: 6)
                     .task(id: imageData) {
                         if activeBottleImage == nil {
                             let processed = await BottleMattingHelper.removeBackground(from: uiImage)
@@ -188,18 +188,18 @@ public struct TastingCardShareView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 190, height: 245)
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .frame(width: 165, height: 176)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             }
         } else {
-            VStack(spacing: 10) {
+            VStack(spacing: 6) {
                 Image(systemName: "wineglass")
-                    .font(.system(size: 30, weight: .light))
-                    .foregroundStyle(inkColor.opacity(0.22))
+                    .font(.system(size: 24, weight: .light))
+                    .foregroundStyle(inkColor.opacity(0.25))
 
                 Text("NO IMAGE")
                     .font(.system(size: 8, weight: .medium))
-                    .tracking(1.5)
+                    .tracking(1.4)
                     .foregroundStyle(mutedInkColor)
             }
         }
@@ -208,40 +208,41 @@ public struct TastingCardShareView: View {
     // MARK: - Title
 
     private var titleSection: some View {
-        VStack(spacing: 7) {
+        VStack(spacing: 4) {
             if let producer = log.item?.producer, !producer.isEmpty {
                 Text(producer.uppercased())
                     .font(.system(size: 8, weight: .semibold))
-                    .tracking(2.0)
+                    .tracking(1.8)
                     .foregroundStyle(mutedInkColor)
             }
 
             if let name = log.item?.name {
                 Text(name)
-                    .font(.system(size: 25, weight: .regular, design: .serif))
+                    .font(.system(size: 21, weight: .regular, design: .serif))
                     .foregroundStyle(inkColor)
                     .multilineTextAlignment(.center)
-                    .lineLimit(3)
-                    .minimumScaleFactor(0.72)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.75)
             }
 
-            HStack(spacing: 10) {
+            HStack(spacing: 8) {
                 Rectangle()
                     .fill(inkColor.opacity(0.18))
-                    .frame(width: 32, height: 0.6)
+                    .frame(width: 28, height: 0.6)
 
                 Text("TASTING NOTE")
                     .font(.system(size: 7, weight: .medium))
-                    .tracking(1.7)
+                    .tracking(1.5)
                     .foregroundStyle(mutedInkColor)
 
                 Rectangle()
                     .fill(inkColor.opacity(0.18))
-                    .frame(width: 32, height: 0.6)
+                    .frame(width: 28, height: 0.6)
             }
+            .padding(.top, 2)
         }
-        .padding(.horizontal, 26)
-        .padding(.top, 6)
+        .padding(.horizontal, 22)
+        .padding(.top, 8)
     }
 
     // MARK: - Metadata
@@ -262,24 +263,24 @@ public struct TastingCardShareView: View {
                     .foregroundStyle(mutedInkColor)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
-                    .padding(.top, 8)
+                    .padding(.top, 6)
             }
         }
-        .padding(.horizontal, 24)
-        .padding(.top, 18)
+        .padding(.horizontal, 22)
+        .padding(.top, 12)
     }
 
     private var metadataDivider: some View {
         Rectangle()
-            .fill(inkColor.opacity(0.10))
-            .frame(width: 0.5, height: 25)
+            .fill(inkColor.opacity(0.12))
+            .frame(width: 0.5, height: 22)
     }
 
     private func metadataItem(title: String, value: String) -> some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 3) {
             Text(title)
-                .font(.system(size: 6.5, weight: .bold))
-                .tracking(1.0)
+                .font(.system(size: 7, weight: .bold))
+                .tracking(0.9)
                 .foregroundStyle(mutedInkColor)
 
             Text(value.isEmpty ? "—" : value)
@@ -328,35 +329,46 @@ public struct TastingCardShareView: View {
 
     // MARK: - Tasting Profile
 
-    private var tastingProfileSection: some View {
-        VStack(spacing: 12) {
-            HStack(alignment: .bottom) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("OVERALL")
-                        .font(.system(size: 7, weight: .bold))
-                        .tracking(1.5)
-                        .foregroundStyle(mutedInkColor)
+    private let labelColumnWidth: CGFloat = 78
 
-                    HStack(alignment: .firstTextBaseline, spacing: 5) {
-                        Text(String(format: "%.1f", log.rating))
-                            .font(.system(size: 36, weight: .light, design: .serif))
-                            .foregroundStyle(inkColor)
-                        Text("/ 5")
-                            .font(.system(size: 9, weight: .medium))
-                            .foregroundStyle(mutedInkColor)
-                    }
+    private var tastingProfileSection: some View {
+        VStack(spacing: 8) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                profileRowLabel("OVERALL")
+
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text(String(format: "%.1f", log.rating))
+                        .font(.system(size: 12, weight: .semibold, design: .serif))
+                        .foregroundStyle(inkColor)
+
+                    Text("/ 5")
+                        .font(.system(size: 8.5, weight: .medium))
+                        .foregroundStyle(mutedInkColor)
                 }
-                Spacer()
+
                 ratingStars
+                
+                Spacer()
             }
+
             tastingRows
         }
-        .padding(.horizontal, 24)
-        .padding(.top, 20)
+        .padding(.horizontal, 22)
+        .padding(.top, 12)
+    }
+
+    private func profileRowLabel(_ title: String) -> some View {
+        Text(title)
+            .font(.system(size: 8, weight: .bold))
+            .tracking(0.6)
+            .foregroundStyle(mutedInkColor)
+            .lineLimit(1)
+            .fixedSize(horizontal: true, vertical: false)
+            .frame(width: labelColumnWidth, alignment: .leading)
     }
 
     private var ratingStars: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: 3) {
             ForEach(0..<5, id: \.self) { index in
                 Image(systemName: starSymbol(for: index))
                     .font(.system(size: 8, weight: .medium))
@@ -373,7 +385,7 @@ public struct TastingCardShareView: View {
     }
 
     private var tastingRows: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             tastingRow(title: "APPEARANCE", content: log.appearanceNotes, leading: appearanceColor)
 
             if !log.aromaTags.isEmpty {
@@ -390,17 +402,13 @@ public struct TastingCardShareView: View {
 
     private func tastingRow(title: String, content: String, leading: Color?) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text(title)
-                .font(.system(size: 6.5, weight: .bold))
-                .tracking(1.1)
-                .foregroundStyle(mutedInkColor)
-                .frame(width: 62, alignment: .leading)
+            profileRowLabel(title)
 
             if let leading {
                 Circle()
                     .fill(leading)
-                    .frame(width: 6, height: 6)
-                    .overlay(Circle().stroke(inkColor.opacity(0.18), lineWidth: 0.5))
+                    .frame(width: 6.5, height: 6.5)
+                    .overlay(Circle().stroke(inkColor.opacity(0.25), lineWidth: 0.5))
             }
 
             Text(content.isEmpty ? "—" : content)
@@ -414,24 +422,20 @@ public struct TastingCardShareView: View {
 
     private var featureRow: some View {
         let activeTags: [String] = [
-            log.isCostEffective ? "VALUE" : nil,
-            log.isWillingToRepeat ? "REPEAT" : nil,
-            log.hasAgingPotential ? "AGE-WORTHY" : nil
+            log.isCostEffective ? String(localized: "コスパ高い") : nil,
+            log.isWillingToRepeat ? String(localized: "リピート確定") : nil,
+            log.hasAgingPotential ? String(localized: "熟成ポテンシャルあり") : nil
         ].compactMap { $0 }
 
-        return HStack(alignment: .top, spacing: 8) {
-            Text("SIGNATURE")
-                .font(.system(size: 6.5, weight: .bold))
-                .tracking(1.1)
-                .foregroundStyle(mutedInkColor)
-                .frame(width: 62, alignment: .leading)
+        return HStack(alignment: .center, spacing: 8) {
+            profileRowLabel("SIGNATURE")
 
             if activeTags.isEmpty {
                 Text("—")
-                    .font(.system(size: 8, weight: .medium))
+                    .font(.system(size: 8.5, weight: .medium))
                     .foregroundStyle(mutedInkColor)
             } else {
-                FlowLayout(spacing: 5) {
+                FlowLayout(spacing: 4) {
                     ForEach(activeTags, id: \.self) { tag in
                         editorialTag(tag)
                     }
@@ -443,12 +447,11 @@ public struct TastingCardShareView: View {
 
     private func editorialTag(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 6, weight: .bold))
-            .tracking(0.7)
+            .font(.system(size: 7.5, weight: .semibold))
             .foregroundStyle(inkColor)
-            .padding(.horizontal, 7)
-            .padding(.vertical, 4)
-            .overlay(Capsule().stroke(inkColor.opacity(0.16), lineWidth: 0.6))
+            .padding(.horizontal, 6.5)
+            .padding(.vertical, 2.5)
+            .overlay(Capsule().stroke(inkColor.opacity(0.22), lineWidth: 0.6))
     }
 
     // MARK: - Analysis
@@ -475,93 +478,85 @@ public struct TastingCardShareView: View {
                 .fill(inkColor.opacity(0.10))
                 .frame(height: 0.5)
 
-            HStack(spacing: 10) {
+            HStack(alignment: .top, spacing: 8) {
                 TasteRadarCardView(log: log, isCompactMode: true, presentationStyle: radarStyle)
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                 MatrixAnalysisCardView(log: log, isCompactMode: true, presentationStyle: matrixStyle)
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .scaleEffect(0.96)
+            .fixedSize(horizontal: false, vertical: true)
         }
-        .padding(.horizontal, 24)
-        .padding(.top, 18)
+        .padding(.horizontal, 22)
+        .padding(.top, 12)
     }
 
     // MARK: - Note
 
     private var noteSection: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 8) {
             if let pairing = log.pairing, !pairing.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Image(systemName: "fork.knife")
-                        .font(.system(size: 8, weight: .medium))
-                        .foregroundStyle(mutedInkColor)
+                    profileRowLabel("PAIRING")
 
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("PAIRING")
-                            .font(.system(size: 6.5, weight: .bold))
-                            .tracking(1.1)
-                            .foregroundStyle(mutedInkColor)
+                    Text(pairing)
+                        .font(.system(size: 8.5, weight: .medium))
+                        .foregroundStyle(inkColor)
+                        .lineLimit(2)
 
-                        Text(pairing)
-                            .font(.system(size: 8.5, weight: .medium))
-                            .foregroundStyle(inkColor)
-                    }
-
-                    Spacer()
+                    Spacer(minLength: 0)
                 }
             }
 
             if !log.memo.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                VStack(alignment: .leading, spacing: 7) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text("TASTING NOTE")
-                        .font(.system(size: 6.5, weight: .bold))
-                        .tracking(1.2)
+                        .font(.system(size: 8, weight: .bold))
+                        .tracking(0.8)
                         .foregroundStyle(mutedInkColor)
 
                     Text("“\(log.memo)”")
-                        .font(.system(size: 11, weight: .regular, design: .serif))
-                        .italic()
+                        .font(.system(size: 8.5, weight: .medium))
                         .foregroundStyle(inkColor)
-                        .lineLimit(3)
+                        .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .padding(.horizontal, 24)
-        .padding(.top, 18)
+        .padding(.horizontal, 22)
+        .padding(.top, 12)
     }
 
     // MARK: - Footer
 
     private var footer: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             Rectangle()
                 .fill(inkColor.opacity(0.12))
                 .frame(height: 0.5)
 
             HStack(alignment: .center) {
                 Text("PROFESSIONAL TASTING LOG")
-                    .font(.system(size: 6, weight: .bold))
-                    .tracking(1.1)
+                    .font(.system(size: 7, weight: .bold))
+                    .tracking(1.0)
                     .foregroundStyle(mutedInkColor)
 
                 Spacer()
 
                 Text(log.date.toFormattedString())
-                    .font(.system(size: 6.5, weight: .medium))
+                    .font(.system(size: 7.5, weight: .medium))
                     .foregroundStyle(mutedInkColor)
             }
 
             Text("KIKISAKE")
-                .font(.system(size: 6, weight: .bold))
-                .tracking(2.4)
-                .foregroundStyle(inkColor.opacity(0.28))
+                .font(.system(size: 6.5, weight: .bold))
+                .tracking(2.2)
+                .foregroundStyle(inkColor.opacity(0.32))
         }
-        .padding(.horizontal, 24)
-        .padding(.top, 18)
-        .padding(.bottom, 18)
+        .padding(.horizontal, 22)
+        .padding(.top, 12)
+        .padding(.bottom, 14)
     }
 
     // MARK: - Helpers
@@ -633,7 +628,7 @@ private func generateVerticalSampleImage() -> Data? {
         Color(red: 0.13, green: 0.12, blue: 0.11).ignoresSafeArea()
         ScrollView {
             TastingCardShareView(log: sampleLog)
-                .padding(.vertical, 30)
+                .padding(.vertical, 24)
         }
     }
     .modelContainer(container)
@@ -670,7 +665,7 @@ private func generateVerticalSampleImage() -> Data? {
         Color(red: 0.13, green: 0.12, blue: 0.11).ignoresSafeArea()
         ScrollView {
             TastingCardShareView(log: sampleLog)
-                .padding(.vertical, 30)
+                .padding(.vertical, 24)
         }
     }
     .modelContainer(container)

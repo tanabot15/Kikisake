@@ -77,7 +77,7 @@ extension CollectionMatrixDataSource {
             item("スペイン", "メンシア", category: .wine, isProOnly: true, hint: "ビエルソの赤ワイン (パラシオ・デ・フェラドス)"),
             item("スペイン", "ヴェルデホ", category: .wine, isProOnly: true, hint: "ルエダの白ワイン (マルケス・デ・リスカル)"),
             item("スペイン", "ゴデーリョ", category: .wine, isProOnly: true, hint: "バルデオーラスの高級白ワイン (ラファエル・パラシオ)"),
-            item("スペイン", "マカベо", category: .wine, isProOnly: true, hint: "カバ (スパークリングワイン) の主要ブレンド品種"),
+            item("スペイン", "マカベオ", category: .wine, isProOnly: true, hint: "カバ (スパークリングワイン) の主要ブレンド品種"),
             item("スペイン", "チャレッロ", category: .wine, isProOnly: true, hint: "レコレタのカバ、またはペネデスのスティル白ワイン"),
             item("スペイン", "パレリャーダ", category: .wine, isProOnly: true, hint: "フランソワやカバの気品あるブレンド白"),
             item("スペイン", "パロミノ", category: .wine, isProOnly: true, hint: "シェリー酒 (フィノやマンサニージャの原料)"),

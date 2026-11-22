@@ -20,10 +20,13 @@ public struct RegionHierarchy: Identifiable, Hashable {
 
 /// 共通の生産地プリセットプロバイダ
 public enum RegionPresetOptions {
-    private static func hierarchy(_ parent: String, children: [String] = []) -> RegionHierarchy {
+    private static func hierarchy(
+        _ parent: LocalizedStringResource,
+        children: [LocalizedStringResource] = []
+    ) -> RegionHierarchy {
         RegionHierarchy(
-            parent: String(localized: String.LocalizationValue(parent)),
-            children: children.map { String(localized: String.LocalizationValue($0)) }
+            parent: String(localized: parent),
+            children: children.map { String(localized: $0) }
         )
     }
 

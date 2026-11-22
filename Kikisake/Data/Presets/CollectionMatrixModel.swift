@@ -28,7 +28,11 @@ public struct CollectionItemDefinition: Identifiable, Hashable {
         self.category = category
         self.isProOnly = isProOnly
         self.suggestionHint = suggestionHint.isEmpty
-            ? "\(region)産の「\(targetElement)」系のお酒を記録してみましょう。"
+            ? String(
+                format: String(localized: "%@産の「%@」系のお酒を記録してみましょう。"),
+                region,
+                targetElement
+            )
             : suggestionHint
     }
 }
@@ -36,18 +40,18 @@ public struct CollectionItemDefinition: Identifiable, Hashable {
 /// コンプリート図鑑のマスターマッピング管理
 public enum CollectionMatrixDataSource {
     static func item(
-        _ region: String,
-        _ targetElement: String,
+        _ region: LocalizedStringResource,
+        _ targetElement: LocalizedStringResource,
         category: BeverageCategory,
         isProOnly: Bool = false,
-        hint: String
+        hint: LocalizedStringResource? = nil
     ) -> CollectionItemDefinition {
         CollectionItemDefinition(
-            region: region,
-            targetElement: targetElement,
+            region: String(localized: region),
+            targetElement: String(localized: targetElement),
             category: category,
             isProOnly: isProOnly,
-            suggestionHint: hint
+            suggestionHint: hint.map { String(localized: $0) } ?? ""
         )
     }
 
@@ -161,7 +165,7 @@ public enum CollectionMatrixDataSource {
         item("山梨県", "山田錦", category: .sake, isProOnly: true, hint: "七賢 純米大吟醸 絹の味"),
         item("山梨県", "美山錦", category: .sake, isProOnly: true, hint: "春うらら等の山梨の美山錦酒"),
         item("長野県", "美山錦", category: .sake, hint: "真澄 (宮坂醸造)、大信州 の美山錦"),
-        item("長野県", "ひとごこち", category: .sake, hint: "夜明け前 (小野酒造店)、川中島幻舞"),
+        item("長野県", "ひとごこち", category: .sake, isProOnly: true, hint: "夜明け前 (小野酒造店)、川中島幻舞"),
         item("長野県", "山恵錦", category: .sake, isProOnly: true, hint: "信州の新しいオリジナル酒米「山恵錦」"),
         item("長野県", "金紋錦", category: .sake, isProOnly: true, hint: "依田川、大信州、産土などの金紋錦仕込み"),
         item("長野県", "しらかば錦", category: .sake, isProOnly: true, hint: "長野県の稀少な酒米を用いた限定酒"),
@@ -191,7 +195,7 @@ public enum CollectionMatrixDataSource {
         item("大阪府", "雄町", category: .sake, isProOnly: true, hint: "秋鹿 雄町純米吟醸"),
         item("兵庫県", "山田錦", category: .sake, hint: "播州山田錦を使用した全国の最高峰銘柄 (獺祭、黒龍など)"),
         item("兵庫県", "愛山", category: .sake, hint: "十四代、飛露喜、花陽浴 などの超プレミアム愛山"),
-        item("兵庫県", "五百万石", category: .sake, hint: "兵庫県産五百万石を用いたすっきり辛口酒"),
+        item("兵庫県", "五百万石", category: .sake, isProOnly: true, hint: "兵庫県産五百万石を用いたすっきり辛口酒"),
         item("兵庫県", "白鶴錦", category: .sake, isProOnly: true, hint: "白鶴酒造開発の姉妹米 (高木酒造「十四代 白鶴錦」など)"),
         item("兵庫県", "兵庫北錦", category: .sake, isProOnly: true, hint: "播州一献、香住鶴 の兵庫北錦"),
         item("兵庫県", "山田穂", category: .sake, isProOnly: true, hint: "山田錦の母にあたる希少米「山田穂」の純米大吟醸"),

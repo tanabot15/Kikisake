@@ -51,7 +51,7 @@ public struct AromaCategory: Identifiable, Hashable {
 /// 共通のテイスティング選択肢プロバイダ
 public enum TastingOptions {
     private struct RGBAColorSpec {
-        let name: String
+        let name: LocalizedStringResource
         let r: Double
         let g: Double
         let b: Double
@@ -60,7 +60,7 @@ public enum TastingOptions {
 
         func toColorOption() -> ColorOption {
             ColorOption(
-                name: String(localized: String.LocalizationValue(name)),
+                name: String(localized: name),
                 color: Color(red: r, green: g, blue: b),
                 hex: hex,
                 isPro: isPro
@@ -309,11 +309,11 @@ public enum TastingOptions {
 
     // MARK: - 香りカテゴリ定義
 
-    private static func makeCategory(_ titleKey: String, _ items: [(String, Bool)]) -> AromaCategory {
+    private static func makeCategory(_ title: LocalizedStringResource, _ items: [(LocalizedStringResource, Bool)]) -> AromaCategory {
         AromaCategory(
-            title: String(localized: String.LocalizationValue(titleKey)),
+            title: String(localized: title),
             tags: items.map { name, isPro in
-                AromaTag(String(localized: String.LocalizationValue(name)), isPro: isPro)
+                AromaTag(String(localized: name), isPro: isPro)
             }
         )
     }

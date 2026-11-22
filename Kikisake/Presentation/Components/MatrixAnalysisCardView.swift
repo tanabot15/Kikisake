@@ -140,10 +140,10 @@ public struct MatrixAnalysisCardView: View {
                         )
                     )
 
-                quadrantLabelsView(axes: axes)
-                    .font(.system(size: isCompactMode ? 6.5 : 9, weight: .medium))
+                quadrantLabelsView(axes: axes, horizontalInset: isCompactMode ? 4 : 8)
+                    .font(.system(size: isCompactMode ? 6 : 8.5, weight: .medium))
                     .foregroundStyle(.secondary)
-                    .padding(isCompactMode ? 5 : 10)
+                    .padding(.vertical, isCompactMode ? 12 : 18)
 
                 Circle()
                     .fill(Color.accentColor)
@@ -156,24 +156,32 @@ public struct MatrixAnalysisCardView: View {
                     .position(x: xValue * width, y: (1.0 - yValue) * height)
             }
 
+            // 上端（Y高）：中央上部に配置して左右の角ラベルと重ならないようにする
             VStack {
-                Text(axes.yTitle)
-                    .font(.system(size: isCompactMode ? 6.5 : 9, weight: .bold))
+                Text(axes.yHigh)
+                    .font(.system(size: isCompactMode ? 5.5 : 7, weight: .medium))
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
                 Spacer()
             }
-            .padding(.top, 3)
+            .padding(.top, 2.5)
 
-            HStack {
+            // 下端（X低・X高）：中央下部に配置して左右の角ラベルと重ならないようにする
+            VStack {
                 Spacer()
-                Text(axes.xTitle)
-                    .font(.system(size: isCompactMode ? 6.5 : 9, weight: .bold))
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 4) {
+                    Text(axes.xLow)
+                        .lineLimit(1)
+                    Text("·")
+                    Text(axes.xHigh)
+                        .lineLimit(1)
+                }
+                .font(.system(size: isCompactMode ? 5.5 : 7, weight: .medium))
+                .foregroundStyle(.secondary)
             }
-            .padding(4)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+            .padding(.bottom, 2.5)
         }
-        .frame(height: isCompactMode ? 104 : 240)
+        .frame(height: isCompactMode ? 96 : 220)
     }
 
     // MARK: - Editorial Share Card
@@ -189,17 +197,19 @@ public struct MatrixAnalysisCardView: View {
         textColor: Color,
         mutedTextColor: Color
     ) -> some View {
-        VStack(spacing: 5) {
-            HStack(alignment: .firstTextBaseline) {
+        let blackInk = Color(red: 0.105, green: 0.095, blue: 0.085)
+
+        VStack(spacing: 4) {
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
                 VStack(alignment: .leading, spacing: 1) {
                     Text("POSITION")
                         .font(.system(size: isCompactMode ? 6.5 : 8, weight: .black))
-                        .tracking(1.5)
-                        .foregroundStyle(accentColor)
+                        .tracking(1.4)
+                        .foregroundStyle(blackInk)
 
                     Text("テイスト・マトリクス")
                         .font(.system(size: isCompactMode ? 8 : 11, weight: .bold, design: .serif))
-                        .foregroundStyle(textColor)
+                        .foregroundStyle(blackInk)
                 }
 
                 Spacer()
@@ -210,31 +220,20 @@ public struct MatrixAnalysisCardView: View {
             }
 
             Rectangle()
-                .fill(accentColor.opacity(0.28))
+                .fill(blackInk.opacity(0.22))
                 .frame(height: 0.5)
-
-            HStack {
-                Text(axes.xTitle)
-                    .font(.system(size: isCompactMode ? 6 : 7.5, weight: .medium))
-                    .foregroundStyle(mutedTextColor)
-
-                Spacer()
-
-                Text(axes.yTitle)
-                    .font(.system(size: isCompactMode ? 6 : 7.5, weight: .medium))
-                    .foregroundStyle(mutedTextColor)
-            }
 
             editorialMatrix(
                 axes: axes,
                 xValue: xValue,
                 yValue: yValue,
-                accentColor: accentColor,
                 surfaceColor: surfaceColor,
-                lineColor: lineColor,
+                lineColor: blackInk,
                 mutedTextColor: mutedTextColor
             )
+            .frame(maxHeight: .infinity)
         }
+        .frame(maxHeight: .infinity, alignment: .top)
         .padding(.horizontal, isCompactMode ? 7 : 12)
         .padding(.vertical, isCompactMode ? 6 : 10)
         .background(
@@ -243,7 +242,7 @@ public struct MatrixAnalysisCardView: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: isCompactMode ? 8 : 12, style: .continuous)
-                .stroke(accentColor.opacity(0.22), lineWidth: 0.7)
+                .stroke(lineColor.opacity(0.22), lineWidth: 0.7)
         )
     }
 
@@ -252,7 +251,6 @@ public struct MatrixAnalysisCardView: View {
         axes: MatrixAxesSpec,
         xValue: Double,
         yValue: Double,
-        accentColor: Color,
         surfaceColor: Color,
         lineColor: Color,
         mutedTextColor: Color
@@ -268,7 +266,7 @@ public struct MatrixAnalysisCardView: View {
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: isCompactMode ? 5 : 8, style: .continuous)
-                        .stroke(lineColor.opacity(0.38), lineWidth: 0.6)
+                        .stroke(lineColor.opacity(0.35), lineWidth: 0.6)
                 )
 
             GeometryReader { geo in
@@ -281,52 +279,54 @@ public struct MatrixAnalysisCardView: View {
                         style: StrokeStyle(lineWidth: 0.55, dash: [3, 3])
                     )
 
-                quadrantLabelsView(axes: axes)
-                    .font(.system(size: isCompactMode ? 6 : 7.5, weight: .medium, design: .serif))
-                    .foregroundStyle(mutedTextColor.opacity(0.8))
-                    .padding(isCompactMode ? 5 : 8)
+                // 四隅ラベル：上下の軸端ラベルと重ならないよう上下に余白を設ける
+                quadrantLabelsView(axes: axes, horizontalInset: isCompactMode ? 4 : 7)
+                    .font(.system(size: isCompactMode ? 5.5 : 7.5, weight: .medium, design: .serif))
+                    .foregroundStyle(lineColor.opacity(0.82))
+                    .padding(.vertical, isCompactMode ? 11 : 16)
 
+                // プロット点（黒基調）
                 Circle()
-                    .fill(accentColor.opacity(0.12))
-                    .frame(width: isCompactMode ? 22 : 34, height: isCompactMode ? 22 : 34)
+                    .fill(lineColor.opacity(0.12))
+                    .frame(width: isCompactMode ? 18 : 28, height: isCompactMode ? 18 : 28)
                     .position(x: xValue * width, y: (1.0 - yValue) * height)
 
                 Circle()
-                    .fill(accentColor)
-                    .frame(width: isCompactMode ? 7 : 10, height: isCompactMode ? 7 : 10)
+                    .fill(lineColor)
+                    .frame(width: isCompactMode ? 6.5 : 9, height: isCompactMode ? 6.5 : 9)
                     .overlay(
                         Circle()
-                            .stroke(lineColor.opacity(0.85), lineWidth: 1.2)
+                            .stroke(surfaceColor, lineWidth: 1.0)
                     )
-                    .shadow(color: accentColor.opacity(0.55), radius: 4)
                     .position(x: xValue * width, y: (1.0 - yValue) * height)
             }
 
+            // 上端：Y高ラベル（中央上）
             VStack {
-                HStack {
-                    Spacer()
-                    Text(axes.yHigh)
-                        .font(.system(size: isCompactMode ? 5.5 : 7, weight: .medium))
-                        .foregroundStyle(mutedTextColor.opacity(0.65))
-                }
-
+                Text(axes.yHigh)
+                    .font(.system(size: isCompactMode ? 5 : 6.5, weight: .semibold))
+                    .foregroundStyle(mutedTextColor)
+                    .lineLimit(1)
                 Spacer()
-
-                HStack {
-                    Text(axes.xLow)
-                        .font(.system(size: isCompactMode ? 5.5 : 7, weight: .medium))
-                        .foregroundStyle(mutedTextColor.opacity(0.65))
-
-                    Spacer()
-
-                    Text(axes.xHigh)
-                        .font(.system(size: isCompactMode ? 5.5 : 7, weight: .medium))
-                        .foregroundStyle(mutedTextColor.opacity(0.65))
-                }
             }
-            .padding(4)
+            .padding(.top, 2)
+
+            // 下端：X低・X高ラベル（中央下）
+            VStack {
+                Spacer()
+                HStack(spacing: 3) {
+                    Text(axes.xLow)
+                        .lineLimit(1)
+                    Text("·")
+                    Text(axes.xHigh)
+                        .lineLimit(1)
+                }
+                .font(.system(size: isCompactMode ? 5 : 6.5, weight: .semibold))
+                .foregroundStyle(mutedTextColor)
+            }
+            .padding(.bottom, 2)
         }
-        .frame(height: isCompactMode ? 104 : 240)
+        .frame(height: isCompactMode ? 96 : 220)
     }
 
     // MARK: - Shared Subviews
@@ -343,22 +343,31 @@ public struct MatrixAnalysisCardView: View {
         }
     }
 
-    private func quadrantLabelsView(axes: MatrixAxesSpec) -> some View {
+    private func quadrantLabelsView(axes: MatrixAxesSpec, horizontalInset: CGFloat) -> some View {
         VStack {
-            HStack {
+            HStack(spacing: 4) {
                 Text(axes.topLeft)
-                Spacer()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+                Spacer(minLength: 4)
                 Text(axes.topRight)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
             }
 
-            Spacer()
+            Spacer(minLength: 4)
 
-            HStack {
+            HStack(spacing: 4) {
                 Text(axes.bottomLeft)
-                Spacer()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+                Spacer(minLength: 4)
                 Text(axes.bottomRight)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
             }
         }
+        .padding(.horizontal, horizontalInset)
     }
 }
 
@@ -492,11 +501,11 @@ private struct MatrixProModifier: ViewModifier {
         log: sampleLog,
         isCompactMode: false,
         presentationStyle: .shareCard(
-            accentColor: Color(red: 0.72, green: 0.48, blue: 0.24),
-            surfaceColor: Color(red: 0.12, green: 0.09, blue: 0.08),
-            lineColor: Color(red: 0.72, green: 0.48, blue: 0.24).opacity(0.45),
-            textColor: Color(red: 0.94, green: 0.91, blue: 0.86),
-            mutedTextColor: Color(red: 0.94, green: 0.91, blue: 0.86).opacity(0.52)
+            accentColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            surfaceColor: Color(red: 0.975, green: 0.965, blue: 0.935),
+            lineColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            textColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            mutedTextColor: Color(red: 0.105, green: 0.095, blue: 0.085).opacity(0.56)
         )
     )
     .padding()
@@ -542,14 +551,14 @@ private struct MatrixProModifier: ViewModifier {
         log: sampleLog,
         isCompactMode: true,
         presentationStyle: .shareCard(
-            accentColor: Color(red: 0.72, green: 0.48, blue: 0.24),
-            surfaceColor: Color(red: 0.12, green: 0.09, blue: 0.08),
-            lineColor: Color(red: 0.72, green: 0.48, blue: 0.24).opacity(0.45),
-            textColor: Color(red: 0.94, green: 0.91, blue: 0.86),
-            mutedTextColor: Color(red: 0.94, green: 0.91, blue: 0.86).opacity(0.52)
+            accentColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            surfaceColor: Color(red: 0.975, green: 0.965, blue: 0.935),
+            lineColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            textColor: Color(red: 0.105, green: 0.095, blue: 0.085),
+            mutedTextColor: Color(red: 0.105, green: 0.095, blue: 0.085).opacity(0.56)
         )
     )
-    .frame(width: 180)
+    .frame(width: 170)
     .padding()
     .background(Color.black)
     .modelContainer(container)
