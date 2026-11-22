@@ -6,7 +6,7 @@
 import SwiftUI
 
 /// Step 5 view for rating, feature flags, pairing, and tasting notes.
-public struct FinalizeStepView: View {
+public struct AddStep5FinalizeView: View {
     @Bindable var viewModel: AddFlowViewModel
 
     public init(viewModel: AddFlowViewModel) {
@@ -108,6 +108,6 @@ private struct FinalizeStepViewPreviewHost: View {
     @State private var vm = AddFlowViewModel()
 
     var body: some View {
-        FinalizeStepView(viewModel: vm)
+        AddStep5FinalizeView(viewModel: vm)
     }
 }

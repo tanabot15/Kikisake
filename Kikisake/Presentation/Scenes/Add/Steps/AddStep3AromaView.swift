@@ -6,7 +6,7 @@
 import SwiftUI
 
 /// Step 3 view for selecting aroma tags grouped by category.
-public struct AromaStepView: View {
+public struct AddStep3AromaView: View {
     @Bindable var viewModel: AddFlowViewModel
     @State private var showPaywall: Bool = false
 
@@ -175,7 +175,7 @@ private struct AromaStepViewPreviewHost: View {
                     .padding(.top, 8)
                 }
 
-                AromaStepView(viewModel: vm)
+                AddStep3AromaView(viewModel: vm)
             }
             .navigationTitle("香り選択プレビュー")
             .navigationBarTitleDisplayMode(.inline)

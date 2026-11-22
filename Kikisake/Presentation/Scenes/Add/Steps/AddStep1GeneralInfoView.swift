@@ -19,7 +19,7 @@ public enum GeneralInfoField {
 }
 
 /// Step 1 view for entering beverage category, photos, and basic metadata.
-public struct GeneralInfoStepView: View {
+public struct AddStep1GeneralInfoView: View {
     @Bindable var viewModel: AddFlowViewModel
     @FocusState<GeneralInfoField?>.Binding var focusedField: GeneralInfoField?
     var showAlert: (String) -> Void
@@ -750,7 +750,7 @@ private struct GeneralInfoStepViewPreviewHost: View {
 
     var body: some View {
         NavigationStack {
-            GeneralInfoStepView(viewModel: viewModel, focusedField: $field) { _ in }
+            AddStep1GeneralInfoView(viewModel: viewModel, focusedField: $field) { _ in }
         }
         .modelContainer(container)
     }

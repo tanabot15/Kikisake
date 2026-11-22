@@ -6,7 +6,7 @@
 import SwiftUI
 
 /// Step 2 view for selecting beverage appearance color and notes.
-public struct AppearanceStepView: View {
+public struct AddStep2AppearanceView: View {
     @Bindable var viewModel: AddFlowViewModel
     @State private var showPaywall: Bool = false
 
@@ -213,7 +213,7 @@ private struct AppearanceStepViewPreviewHost: View {
                     .padding(.top, 8)
                 }
 
-                AppearanceStepView(viewModel: vm)
+                AddStep2AppearanceView(viewModel: vm)
             }
             .navigationTitle("外観選択プレビュー")
             .navigationBarTitleDisplayMode(.inline)

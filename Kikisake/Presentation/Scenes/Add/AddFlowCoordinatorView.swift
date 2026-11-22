@@ -7,7 +7,7 @@ import SwiftUI
 import SwiftData
 
 /// 5-step tasting log and inventory registration flow coordinator.
-public struct AddFlowView: View {
+public struct AddFlowCoordinatorView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
 
@@ -333,7 +333,7 @@ private struct AddFlowViewPreviewHost: View {
     }
 
     var body: some View {
-        AddFlowView()
+        AddFlowCoordinatorView()
             .modelContainer(container)
     }
 }
