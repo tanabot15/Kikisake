@@ -110,20 +110,20 @@ public struct AddFlowCoordinatorView: View {
                     .padding(.top, 4)
                     .padding(.bottom, 8)
 
-                GeneralInfoStepView(viewModel: viewModel, focusedField: $focusedField) { message in
+                AddStep1GeneralInfoView(viewModel: viewModel, focusedField: $focusedField) { message in
                     presentAlert(message)
                 }
             }
         case 2:
-            AppearanceStepView(viewModel: viewModel)
+            AddStep2AppearanceView(viewModel: viewModel)
         case 3:
-            AromaStepView(viewModel: viewModel)
+            AddStep3AromaView(viewModel: viewModel)
         case 4:
-            TasteStepView(viewModel: viewModel)
+            AddStep4TasteView(viewModel: viewModel)
         case 5:
-            FinalizeStepView(viewModel: viewModel)
+            AddStep5FinalizeView(viewModel: viewModel)
         default:
-            GeneralInfoStepView(viewModel: viewModel, focusedField: $focusedField) { message in
+            AddStep1GeneralInfoView(viewModel: viewModel, focusedField: $focusedField) { message in
                 presentAlert(message)
             }
         }

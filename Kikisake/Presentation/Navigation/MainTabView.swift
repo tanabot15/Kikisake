@@ -45,7 +45,7 @@ public struct MainTabView: View {
         TabView(selection: $appState.selectedTab) {
             tabContent(for: .log) { LogView() }
             tabContent(for: .analytics) { AnalyticsView() }
-            tabContent(for: .add) { AddFlowView() }
+            tabContent(for: .add) { AddFlowCoordinatorView() }
             tabContent(for: .inventory) { InventoryView() }
             tabContent(for: .settings) { SettingsView() }
         }
