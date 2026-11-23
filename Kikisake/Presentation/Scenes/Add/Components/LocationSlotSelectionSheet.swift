@@ -221,57 +221,15 @@ public struct LocationSlotSelectionSheet: View {
 }
 
 private struct LocationSlotSelectionSheetPreviewHost: View {
-    private let container: ModelContainer
-    private let sampleLocation: StorageLocation
+    private let sample = PreviewSampleData.makeSampleBundle()
     @State private var viewModel = AddFlowViewModel()
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(
-            for: StorageLocation.self,
-            BeverageItem.self,
-            configurations: config
-        )
-
-        let location = StorageLocation(
-            name: "自宅メインセラー",
-            type: .cellar,
-            memo: "14度設定",
-            isGridEnabled: true,
-            gridRows: 4,
-            gridColumns: 6
-        )
-        let occupiedItem1 = BeverageItem(
-            name: "Château Margaux 2015",
-            producer: "Château Margaux",
-            category: .wine,
-            storageLocation: "自宅メインセラー",
-            gridRow: 1,
-            gridColumn: 1
-        )
-        let occupiedItem2 = BeverageItem(
-            name: "Opus One 2018",
-            producer: "Opus One Winery",
-            category: .wine,
-            storageLocation: "自宅メインセラー",
-            gridRow: 1,
-            gridColumn: 2
-        )
-
-        modelContainer.mainContext.insert(location)
-        modelContainer.mainContext.insert(occupiedItem1)
-        modelContainer.mainContext.insert(occupiedItem2)
-
-        self.container = modelContainer
-        self.sampleLocation = location
-    }
 
     var body: some View {
         LocationSlotSelectionSheet(
-            location: sampleLocation,
+            location: sample.cellarLocation,
             viewModel: viewModel,
             onComplete: {}
         )
-        .modelContainer(container)
+        .modelContainer(PreviewSampleData.container)
     }
 }

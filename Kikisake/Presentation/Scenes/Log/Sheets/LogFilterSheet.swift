@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// Filter configuration sheet shared across log list/timeline and collection book views.
 public struct LogFilterSheet: View {
@@ -288,4 +289,5 @@ public struct LogFilterSheet: View {
 
 #Preview {
     LogFilterSheet(viewModel: LogViewModel())
+        .modelContainer(PreviewSampleData.container)
 }

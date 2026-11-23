@@ -88,5 +88,5 @@ public struct AddLocationSheetView: View {
 
 #Preview {
     AddLocationSheetView()
-        .modelContainer(for: [StorageLocation.self], inMemory: true)
+        .modelContainer(PreviewSampleData.container)
 }

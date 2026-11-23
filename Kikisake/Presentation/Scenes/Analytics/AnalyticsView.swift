@@ -118,32 +118,6 @@ public struct AnalyticsView: View {
 }
 
 #Preview {
-    AnalyticsViewPreviewHost()
-}
-
-private struct AnalyticsViewPreviewHost: View {
-    private let container: ModelContainer
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-
-        let sampleItem = BeverageItem(name: "バローロ DOCG", producer: "プルノット", category: .wine)
-        let sampleLog = TastingLog(
-            rating: 4.8,
-            aromaTags: ["チェリー", "樽香"],
-            isCostEffective: true,
-            isWillingToRepeat: true,
-            item: sampleItem
-        )
-
-        modelContainer.mainContext.insert(sampleItem)
-        modelContainer.mainContext.insert(sampleLog)
-        self.container = modelContainer
-    }
-
-    var body: some View {
-        AnalyticsView()
-            .modelContainer(container)
-    }
+    AnalyticsView()
+        .modelContainer(PreviewSampleData.container)
 }

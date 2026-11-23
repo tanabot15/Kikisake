@@ -327,38 +327,6 @@ public struct InventoryView: View {
 }
 
 #Preview {
-    InventoryViewPreviewHost()
-}
-
-private struct InventoryViewPreviewHost: View {
-    private let container: ModelContainer
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(
-            for: StorageLocation.self,
-            BeverageItem.self,
-            TastingLog.self,
-            configurations: config
-        )
-
-        let mainCellar = StorageLocation(
-            name: "メインセラー",
-            type: .cellar,
-            memo: "温度14度設定",
-            isGridEnabled: true,
-            gridRows: 3,
-            gridColumns: 4
-        )
-        let fridge = StorageLocation(name: "キッチン冷蔵庫", type: .refrigerator, memo: "生酒用", isGridEnabled: false)
-
-        modelContainer.mainContext.insert(mainCellar)
-        modelContainer.mainContext.insert(fridge)
-        self.container = modelContainer
-    }
-
-    var body: some View {
-        InventoryView()
-            .modelContainer(container)
-    }
+    InventoryView()
+        .modelContainer(PreviewSampleData.container)
 }

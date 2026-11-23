@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// Timeline tab section displaying tasting logs chronologically.
 public struct TimelineSectionView: View {
@@ -54,21 +55,12 @@ public struct TimelineSectionView: View {
 }
 
 #Preview {
-    let item = BeverageItem(
-        name: "Château Margaux 2015",
-        producer: "Château Margaux",
-        category: .wine,
-        region: "ボルドー, フランス",
-        vintage: "2015"
-    )
-    let log = TastingLog(
-        date: Date(),
-        rating: 4.8,
-        appearanceColorHex: "#991A33",
-        item: item
-    )
-
+    let sample = PreviewSampleData.makeSampleBundle()
     return NavigationStack {
-        TimelineSectionView(logs: [log], hasActiveFilters: false)
+        TimelineSectionView(
+            logs: [sample.wineLog, sample.sakeLog, sample.beerLog],
+            hasActiveFilters: false
+        )
     }
+    .modelContainer(PreviewSampleData.container)
 }

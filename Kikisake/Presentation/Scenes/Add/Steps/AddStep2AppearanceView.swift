@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// Step 2 view for selecting beverage appearance color and notes.
 public struct AddStep2AppearanceView: View {
@@ -218,5 +219,6 @@ private struct AppearanceStepViewPreviewHost: View {
             .navigationTitle("外観選択プレビュー")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .modelContainer(PreviewSampleData.container)
     }
 }

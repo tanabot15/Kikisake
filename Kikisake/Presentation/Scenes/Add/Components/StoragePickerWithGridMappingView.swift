@@ -117,24 +117,7 @@ public struct StoragePickerWithGridMappingView: View {
 }
 
 #Preview {
-    StoragePickerWithGridMappingViewPreviewHost()
-}
-
-private struct StoragePickerWithGridMappingViewPreviewHost: View {
-    private let container: ModelContainer
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(for: StorageLocation.self, BeverageItem.self, configurations: config)
-        modelContainer.mainContext.insert(
-            StorageLocation(name: "ワインセラー", type: .cellar, isGridEnabled: true, gridRows: 3, gridColumns: 4)
-        )
-        self.container = modelContainer
-    }
-
-    var body: some View {
-        StoragePickerWithGridMappingView(viewModel: AddFlowViewModel())
-            .padding()
-            .modelContainer(container)
-    }
+    StoragePickerWithGridMappingView(viewModel: AddFlowViewModel())
+        .padding()
+        .modelContainer(PreviewSampleData.container)
 }

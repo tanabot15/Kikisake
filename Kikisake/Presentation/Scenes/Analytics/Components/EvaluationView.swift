@@ -311,41 +311,16 @@ public struct EvaluationView: View {
 }
 
 #Preview {
-    EvaluationViewPreviewHost()
-}
-
-private struct EvaluationViewPreviewHost: View {
-    private let container: ModelContainer
-    private let logs: [TastingLog]
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-
-        let sampleItem = BeverageItem(name: "バローロ DOCG", producer: "プルノット", category: .wine)
-        let sampleLog = TastingLog(
-            rating: 4.8,
-            aromaTags: ["スミレ", "樽香", "チェリー"],
-            isCostEffective: true,
-            isWillingToRepeat: true,
-            item: sampleItem
-        )
-
-        modelContainer.mainContext.insert(sampleItem)
-        modelContainer.mainContext.insert(sampleLog)
-
-        self.container = modelContainer
-        self.logs = [sampleLog]
-    }
-
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                EvaluationView(viewModel: AnalyticsViewModel(), targetLogs: logs)
-                    .padding()
-            }
-            .background(Color(.systemGroupedBackground))
+    let sample = PreviewSampleData.makeSampleBundle()
+    return NavigationStack {
+        ScrollView {
+            EvaluationView(
+                viewModel: AnalyticsViewModel(),
+                targetLogs: [sample.wineLog, sample.sakeLog, sample.beerLog]
+            )
+            .padding()
         }
-        .modelContainer(container)
+        .background(Color(.systemGroupedBackground))
     }
+    .modelContainer(PreviewSampleData.container)
 }

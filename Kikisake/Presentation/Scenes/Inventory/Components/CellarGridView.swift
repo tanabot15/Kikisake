@@ -271,79 +271,20 @@ private func generateSampleLabelImage(color: UIColor) -> Data? {
 }
 
 private struct CellarGridViewPreviewHost: View {
-    private let container: ModelContainer
-    private let sampleLocation: StorageLocation
-    private let sampleItems: [BeverageItem]
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(
-            for: StorageLocation.self,
-            BeverageItem.self,
-            TastingLog.self,
-            configurations: config
-        )
-
-        let location = StorageLocation(
-            name: "自宅メインセラー",
-            type: .cellar,
-            memo: "温度14度設定・5段ラック",
-            isGridEnabled: true,
-            gridRows: 3,
-            gridColumns: 3
-        )
-
-        let itemWithPhoto1 = BeverageItem(
-            name: "Barolo DOCG 2018",
-            producer: "Prunotto",
-            category: .wine,
-            storageLocation: "自宅メインセラー",
-            gridRow: 1,
-            gridColumn: 1,
-            imageDatas: [generateSampleLabelImage(color: UIColor(red: 0.5, green: 0.1, blue: 0.15, alpha: 1.0)) ?? Data()]
-        )
-
-        let itemWithPhoto2 = BeverageItem(
-            name: "獺祭 純米大吟醸 磨き二割三分",
-            producer: "旭酒造",
-            category: .sake,
-            storageLocation: "自宅メインセラー",
-            gridRow: 1,
-            gridColumn: 3,
-            imageDatas: [generateSampleLabelImage(color: UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)) ?? Data()]
-        )
-
-        let itemWithoutPhoto = BeverageItem(
-            name: "Chablis 2021",
-            producer: "William Fevre",
-            category: .wine,
-            storageLocation: "自宅メインセラー",
-            gridRow: 2,
-            gridColumn: 2
-        )
-
-        modelContainer.mainContext.insert(location)
-        modelContainer.mainContext.insert(itemWithPhoto1)
-        modelContainer.mainContext.insert(itemWithPhoto2)
-        modelContainer.mainContext.insert(itemWithoutPhoto)
-
-        self.container = modelContainer
-        self.sampleLocation = location
-        self.sampleItems = [itemWithPhoto1, itemWithPhoto2, itemWithoutPhoto]
-    }
+    private let sample = PreviewSampleData.makeSampleBundle()
 
     var body: some View {
         NavigationStack {
             CellarGridView(
-                location: sampleLocation,
-                items: sampleItems,
-                modelContext: container.mainContext,
+                location: sample.cellarLocation,
+                items: [sample.wineItem, sample.sakeItem, sample.beerItem],
+                modelContext: PreviewSampleData.container.mainContext,
                 onSelectSlot: { _, _, _ in },
                 onSelectItem: { _ in }
             )
             .padding()
             .background(Color(.systemGroupedBackground))
         }
-        .modelContainer(container)
+        .modelContainer(PreviewSampleData.container)
     }
 }

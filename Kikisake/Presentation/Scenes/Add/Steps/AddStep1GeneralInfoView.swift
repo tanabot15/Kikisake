@@ -734,24 +734,13 @@ private extension UIImage {
 }
 
 private struct GeneralInfoStepViewPreviewHost: View {
-    private let container: ModelContainer
     @State private var viewModel = AddFlowViewModel()
     @FocusState private var field: GeneralInfoField?
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        self.container = try! ModelContainer(
-            for: StorageLocation.self,
-            BeverageItem.self,
-            TastingLog.self,
-            configurations: config
-        )
-    }
 
     var body: some View {
         NavigationStack {
             AddStep1GeneralInfoView(viewModel: viewModel, focusedField: $field) { _ in }
         }
-        .modelContainer(container)
+        .modelContainer(PreviewSampleData.container)
     }
 }

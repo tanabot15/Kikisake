@@ -187,44 +187,13 @@ public struct LogCompactRowView: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-
-    let wineItem = BeverageItem(
-        name: "Château Margaux 2015",
-        producer: "Château Margaux",
-        category: .wine,
-        region: "ボルドー, フランス",
-        vintage: "2015"
-    )
-    let wineLog = TastingLog(
-        date: Date(),
-        rating: 4.8,
-        appearanceNotes: "ルビーレッド",
-        appearanceColorHex: "#991A33",
-        aromaTags: ["カシス", "ヴァニラ", "杉"],
-        sweetness: 2.0,
-        saltiness: 0.0,
-        acidity: 4.0,
-        bitterness: 2.0,
-        umami: 2.5,
-        tannin: 4.5,
-        body: 4.5,
-        balanceTags: ["豊潤な"],
-        finishLength: 4.8,
-        memo: "圧倒的な気品と複雑味。",
-        item: wineItem
-    )
-
-    container.mainContext.insert(wineItem)
-    container.mainContext.insert(wineLog)
-
+    let sample = PreviewSampleData.makeSampleBundle()
     return NavigationStack {
         ListView(
             viewModel: LogViewModel(),
-            filteredLogs: [wineLog],
+            filteredLogs: [sample.wineLog, sample.sakeLog, sample.beerLog],
             editMode: .constant(.inactive)
         )
     }
-    .modelContainer(container)
+    .modelContainer(PreviewSampleData.container)
 }

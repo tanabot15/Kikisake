@@ -359,84 +359,18 @@ public struct LogComparisonView: View {
 }
 
 #Preview {
-    LogComparisonViewPreviewHost()
-}
-
-private struct LogComparisonViewPreviewHost: View {
-    private let container: ModelContainer
-    private let logs: [TastingLog]
-
-    init() {
-        let schema = Schema([BeverageItem.self, TastingLog.self])
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(for: schema, configurations: [config])
-
-        let wineItem = BeverageItem(
-            name: "Barolo DOCG 2018",
-            producer: "Prunotto",
-            category: .wine,
-            region: "ピエモンテ, イタリア",
-            vintage: "2018",
-            price: 8500
-        )
-        let wineLog = TastingLog(
-            rating: 4.8,
-            appearanceNotes: "ガーネット",
-            appearanceColorHex: "#802633",
-            aromaTags: ["チェリー", "樽香"],
-            sweetness: 2.0,
-            acidity: 4.2,
-            tannin: 4.5,
-            body: 4.5,
-            finishLength: 4.8,
-            pairing: "和牛のローストビーフ",
-            memo: "素晴らしいネッビオーロ。",
-            isEvaluated: true,
-            item: wineItem
-        )
-
-        let sakeItem = BeverageItem(
-            name: "新政 No.6",
-            producer: "新政酒造",
-            category: .sake,
-            region: "秋田県",
-            vintage: "2024",
-            price: 3200
-        )
-        let sakeLog = TastingLog(
-            rating: 4.6,
-            appearanceNotes: "クリスタル",
-            appearanceColorHex: "#E6F2FF",
-            aromaTags: ["洋梨", "メロン"],
-            sweetness: 3.2,
-            acidity: 3.8,
-            body: 3.0,
-            finishLength: 4.0,
-            pairing: "白身魚のカルパッチョ",
-            memo: "ジューシーな酸味。",
-            isEvaluated: true,
-            item: sakeItem
-        )
-
-        modelContainer.mainContext.insert(wineItem)
-        modelContainer.mainContext.insert(wineLog)
-        modelContainer.mainContext.insert(sakeItem)
-        modelContainer.mainContext.insert(sakeLog)
-
-        self.container = modelContainer
-        self.logs = [wineLog, sakeLog]
-    }
-
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                LogComparisonView(viewModel: AnalyticsViewModel(), allLogs: logs)
-                    .padding()
-            }
-            .background(Color(.systemGroupedBackground))
-            .navigationTitle("ログ比較")
-            .navigationBarTitleDisplayMode(.inline)
+    let sample = PreviewSampleData.makeSampleBundle()
+    return NavigationStack {
+        ScrollView {
+            LogComparisonView(
+                viewModel: AnalyticsViewModel(),
+                allLogs: [sample.wineLog, sample.sakeLog, sample.beerLog]
+            )
+            .padding()
         }
-        .modelContainer(container)
+        .background(Color(.systemGroupedBackground))
+        .navigationTitle("ログ比較")
+        .navigationBarTitleDisplayMode(.inline)
     }
+    .modelContainer(PreviewSampleData.container)
 }

@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// Step 4 view for entering taste profile parameters and balance tags.
 public struct AddStep4TasteView: View {
@@ -153,5 +154,6 @@ private struct TasteStepViewPreviewHost: View {
             .navigationTitle("味わい入力プレビュー")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .modelContainer(PreviewSampleData.container)
     }
 }

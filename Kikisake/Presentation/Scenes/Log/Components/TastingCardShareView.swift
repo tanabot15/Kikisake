@@ -598,75 +598,29 @@ private func generateVerticalSampleImage() -> Data? {
 }
 
 #Preview("Background Removed") {
-    let schema = Schema([BeverageItem.self, TastingLog.self])
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: schema, configurations: [config])
-
-    let sampleItem = BeverageItem(
-        name: "Barolo DOCG 2018",
-        producer: "Prunotto",
-        category: .wine,
-        region: "Piemonte, Italia",
-        vintage: "2018",
-        alcoholByVolume: 14.0,
-        imageDatas: [generateVerticalSampleImage() ?? Data()],
-        isBackgroundRemoved: true
-    )
-
-    let sampleLog = TastingLog(
-        rating: 4.8,
-        pairing: "和牛のローストビーフ",
-        memo: "深い果実味と端正なタンニン。余韻まで美しく、時間をかけて楽しみたい一本。",
-        isEvaluated: true,
-        item: sampleItem
-    )
-
-    container.mainContext.insert(sampleItem)
-    container.mainContext.insert(sampleLog)
+    let sample = PreviewSampleData.makeSampleBundle()
+    sample.wineItem.isBackgroundRemoved = true
 
     return ZStack {
         Color(red: 0.13, green: 0.12, blue: 0.11).ignoresSafeArea()
         ScrollView {
-            TastingCardShareView(log: sampleLog)
+            TastingCardShareView(log: sample.wineLog)
                 .padding(.vertical, 24)
         }
     }
-    .modelContainer(container)
+    .modelContainer(PreviewSampleData.container)
 }
 
 #Preview("Standard") {
-    let schema = Schema([BeverageItem.self, TastingLog.self])
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: schema, configurations: [config])
-
-    let sampleItem = BeverageItem(
-        name: "Barolo DOCG 2018",
-        producer: "Prunotto",
-        category: .wine,
-        region: "Piemonte, Italia",
-        vintage: "2018",
-        alcoholByVolume: 14.0,
-        imageDatas: [generateVerticalSampleImage() ?? Data()],
-        isBackgroundRemoved: false
-    )
-
-    let sampleLog = TastingLog(
-        rating: 4.8,
-        pairing: "和牛のローストビーフ",
-        memo: "深い果実味と端正なタンニン。余韻まで美しく、時間をかけて楽しみたい一本。",
-        isEvaluated: true,
-        item: sampleItem
-    )
-
-    container.mainContext.insert(sampleItem)
-    container.mainContext.insert(sampleLog)
+    let sample = PreviewSampleData.makeSampleBundle()
+    sample.wineItem.isBackgroundRemoved = false
 
     return ZStack {
         Color(red: 0.13, green: 0.12, blue: 0.11).ignoresSafeArea()
         ScrollView {
-            TastingCardShareView(log: sampleLog)
+            TastingCardShareView(log: sample.wineLog)
                 .padding(.vertical, 24)
         }
     }
-    .modelContainer(container)
+    .modelContainer(PreviewSampleData.container)
 }

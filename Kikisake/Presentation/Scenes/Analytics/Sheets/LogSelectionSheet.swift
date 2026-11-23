@@ -65,26 +65,14 @@ public struct LogSelectionSheet: View {
 }
 
 private struct LogSelectionSheetPreviewHost: View {
-    private let container: ModelContainer
-    private let logs: [TastingLog]
+    private let sample = PreviewSampleData.makeSampleBundle()
     @State private var selectedID: UUID? = nil
 
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-
-        let sampleItem = BeverageItem(name: "Barolo DOCG 2018", producer: "Prunotto", category: .wine)
-        let sampleLog = TastingLog(rating: 4.8, item: sampleItem)
-
-        modelContainer.mainContext.insert(sampleItem)
-        modelContainer.mainContext.insert(sampleLog)
-
-        self.container = modelContainer
-        self.logs = [sampleLog]
-    }
-
     var body: some View {
-        LogSelectionSheet(allLogs: logs, selectedLogID: $selectedID)
-            .modelContainer(container)
+        LogSelectionSheet(
+            allLogs: [sample.wineLog, sample.sakeLog, sample.beerLog],
+            selectedLogID: $selectedID
+        )
+        .modelContainer(PreviewSampleData.container)
     }
 }

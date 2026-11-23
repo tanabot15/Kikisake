@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// Step 5 view for rating, feature flags, pairing, and tasting notes.
 public struct AddStep5FinalizeView: View {
@@ -109,5 +110,6 @@ private struct FinalizeStepViewPreviewHost: View {
 
     var body: some View {
         AddStep5FinalizeView(viewModel: vm)
+            .modelContainer(PreviewSampleData.container)
     }
 }

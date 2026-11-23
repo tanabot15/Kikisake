@@ -116,23 +116,10 @@ public struct TimelineRowView: View {
 }
 
 #Preview("タイムライン行（中間要素）") {
-    let item = BeverageItem(
-        name: "Château Margaux 2015",
-        producer: "Château Margaux",
-        category: .wine,
-        region: "ボルドー, フランス",
-        vintage: "2015"
-    )
-    let log = TastingLog(
-        date: Date(),
-        rating: 4.8,
-        appearanceColorHex: "#991A33",
-        item: item
-    )
-
+    let sample = PreviewSampleData.makeSampleBundle()
     return TimelineRowView(
-        log: log,
-        item: item,
+        log: sample.wineLog,
+        item: sample.wineItem,
         isFirst: false,
         isLast: false
     )

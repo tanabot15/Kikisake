@@ -306,35 +306,16 @@ public struct ConsumptionView: View {
 }
 
 #Preview {
-    ConsumptionViewPreviewHost()
-}
-
-private struct ConsumptionViewPreviewHost: View {
-    private let container: ModelContainer
-    private let logs: [TastingLog]
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-
-        let sampleItem = BeverageItem(name: "新政 No.6", producer: "新政酒造", category: .sake)
-        let sampleLog = TastingLog(date: Date(), rating: 4.7, item: sampleItem)
-
-        modelContainer.mainContext.insert(sampleItem)
-        modelContainer.mainContext.insert(sampleLog)
-
-        self.container = modelContainer
-        self.logs = [sampleLog]
-    }
-
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                ConsumptionView(viewModel: AnalyticsViewModel(), targetLogs: logs)
-                    .padding()
-            }
-            .background(Color(.systemGroupedBackground))
+    let sample = PreviewSampleData.makeSampleBundle()
+    return NavigationStack {
+        ScrollView {
+            ConsumptionView(
+                viewModel: AnalyticsViewModel(),
+                targetLogs: [sample.wineLog, sample.sakeLog, sample.beerLog]
+            )
+            .padding()
         }
-        .modelContainer(container)
+        .background(Color(.systemGroupedBackground))
     }
+    .modelContainer(PreviewSampleData.container)
 }

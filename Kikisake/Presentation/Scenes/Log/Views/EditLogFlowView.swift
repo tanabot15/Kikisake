@@ -67,19 +67,19 @@ public struct EditLogFlowView: View {
     private var stepContent: some View {
         switch viewModel.currentStep {
         case 1:
-            GeneralInfoStepView(viewModel: viewModel, focusedField: $focusedField) { message in
+            AddStep1GeneralInfoView(viewModel: viewModel, focusedField: $focusedField) { message in
                 presentAlert(message)
             }
         case 2:
-            AppearanceStepView(viewModel: viewModel)
+            AddStep2AppearanceView(viewModel: viewModel)
         case 3:
-            AromaStepView(viewModel: viewModel)
+            AddStep3AromaView(viewModel: viewModel)
         case 4:
-            TasteStepView(viewModel: viewModel)
+            AddStep4TasteView(viewModel: viewModel)
         case 5:
-            FinalizeStepView(viewModel: viewModel)
+            AddStep5FinalizeView(viewModel: viewModel)
         default:
-            GeneralInfoStepView(viewModel: viewModel, focusedField: $focusedField) { message in
+            AddStep1GeneralInfoView(viewModel: viewModel, focusedField: $focusedField) { message in
                 presentAlert(message)
             }
         }
@@ -146,45 +146,7 @@ public struct EditLogFlowView: View {
 }
 
 #Preview {
-    let schema = Schema([BeverageItem.self, TastingLog.self, StorageLocation.self])
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: schema, configurations: [config])
-
-    let cellar = StorageLocation(name: "ワインセラー", type: .cellar)
-    container.mainContext.insert(cellar)
-
-    let sampleItem = BeverageItem(
-        name: "Château Margaux 2015",
-        producer: "Château Margaux",
-        category: .wine,
-        region: "ボルドー, フランス",
-        vintage: "2015",
-        price: 85000,
-        storageLocation: "ワインセラー"
-    )
-
-    let sampleLog = TastingLog(
-        date: Date(),
-        rating: 4.9,
-        appearanceNotes: "深みのあるルビーレッド",
-        appearanceColorHex: "#991A33",
-        aromaTags: ["カシス", "ヴァニラ", "杉"],
-        sweetness: 2.0,
-        saltiness: 0.0,
-        acidity: 4.2,
-        bitterness: 2.0,
-        umami: 2.5,
-        tannin: 4.5,
-        body: 4.8,
-        balanceTags: ["豊潤な"],
-        finishLength: 5.0,
-        memo: "圧倒的な気品と複雑味。",
-        item: sampleItem
-    )
-
-    container.mainContext.insert(sampleItem)
-    container.mainContext.insert(sampleLog)
-
-    return EditLogFlowView(log: sampleLog)
-        .modelContainer(container)
+    let sample = PreviewSampleData.makeSampleBundle()
+    return EditLogFlowView(log: sample.wineLog)
+        .modelContainer(PreviewSampleData.container)
 }

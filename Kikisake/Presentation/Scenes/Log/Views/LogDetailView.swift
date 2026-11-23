@@ -819,60 +819,18 @@ private func generateHorizontalSampleImage() -> Data? {
     return image.jpegData(compressionQuality: 0.8)
 }
 
-#Preview("縦長") {
-    let schema = Schema([BeverageItem.self, TastingLog.self])
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: schema, configurations: [config])
-
-    let sampleItem = BeverageItem(
-        name: "Barolo DOCG 2018 (縦長画像)",
-        producer: "Prunotto",
-        category: .wine,
-        imageDatas: [generateVerticalSampleImage() ?? Data()]
-    )
-
-    let sampleLog = TastingLog(
-        rating: 4.8,
-        pairing: "和牛のローストビーフ、パルミジャーノ・レッジャーノ",
-        memo: "縦長画像のレイアウト確認用サンプルです。",
-        isEvaluated: true,
-        item: sampleItem
-    )
-
-    container.mainContext.insert(sampleItem)
-    container.mainContext.insert(sampleLog)
-
+#Preview("ワイン（評価済み）") {
+    let sample = PreviewSampleData.makeSampleBundle()
     return NavigationStack {
-        LogDetailView(log: sampleLog)
+        LogDetailView(log: sample.wineLog)
     }
-    .modelContainer(container)
+    .modelContainer(PreviewSampleData.container)
 }
 
-#Preview("横長") {
-    let schema = Schema([BeverageItem.self, TastingLog.self])
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: schema, configurations: [config])
-
-    let sampleItem = BeverageItem(
-        name: "Wide Panorama Wine 2020 (横長画像)",
-        producer: "Château Test",
-        category: .wine,
-        imageDatas: [generateHorizontalSampleImage() ?? Data()]
-    )
-
-    let sampleLog = TastingLog(
-        rating: 4.5,
-        pairing: "白身魚のグリル ハーブバターソース",
-        memo: "横長画像が画面からはみ出さないか確認するためのサンプルです。",
-        isEvaluated: true,
-        item: sampleItem
-    )
-
-    container.mainContext.insert(sampleItem)
-    container.mainContext.insert(sampleLog)
-
+#Preview("日本酒（評価済み）") {
+    let sample = PreviewSampleData.makeSampleBundle()
     return NavigationStack {
-        LogDetailView(log: sampleLog)
+        LogDetailView(log: sample.sakeLog)
     }
-    .modelContainer(container)
+    .modelContainer(PreviewSampleData.container)
 }

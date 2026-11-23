@@ -268,32 +268,10 @@ public struct AnalyticsFilterSheet: View {
 }
 
 #Preview {
-    AnalyticsFilterSheetPreviewHost()
-}
-
-private struct AnalyticsFilterSheetPreviewHost: View {
-    private let container: ModelContainer
-    private let logs: [TastingLog]
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-        let encoder = JSONEncoder()
-
-        let wineMeta = WineSpecificMetadata(wineType: "赤", grapeVarieties: "ネッビオーロ", blendComponents: [])
-        let wineJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
-        let sampleItem = BeverageItem(name: "Barolo", producer: "Prunotto", category: .wine, specificMetadataJSON: wineJSON)
-        let sampleLog = TastingLog(rating: 4.5, item: sampleItem)
-
-        modelContainer.mainContext.insert(sampleItem)
-        modelContainer.mainContext.insert(sampleLog)
-
-        self.container = modelContainer
-        self.logs = [sampleLog]
-    }
-
-    var body: some View {
-        AnalyticsFilterSheet(viewModel: AnalyticsViewModel(), allLogs: logs)
-            .modelContainer(container)
-    }
+    let sample = PreviewSampleData.makeSampleBundle()
+    return AnalyticsFilterSheet(
+        viewModel: AnalyticsViewModel(),
+        allLogs: [sample.wineLog, sample.sakeLog, sample.beerLog]
+    )
+    .modelContainer(PreviewSampleData.container)
 }

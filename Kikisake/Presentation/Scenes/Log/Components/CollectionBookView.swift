@@ -387,37 +387,9 @@ public struct CollectionBookView: View {
     }
 }
 
-#Preview("図鑑（ブロンズ達成）") {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: BeverageItem.self, TastingLog.self, StorageLocation.self, configurations: config)
-
-    let samples: [(String, String, String)] = [
-        ("Château Margaux", "フランス, ボルドー", "カベルネ・ソーヴィニヨン"),
-        ("Château Cheval Blanc", "フランス, ボルドー", "メルロ"),
-        ("Romanée-Conti", "フランス, ブルゴーニュ", "ピノ・ノワール"),
-        ("Montrachet", "フランス, ブルゴーニュ", "シャルドネ"),
-        ("Sancerre", "フランス, ロワール", "ソーヴィニヨン・ブラン"),
-        ("Côte-Rôtie", "フランス, ローヌ", "シラー / シラーズ"),
-        ("Beaujolais Nouveau", "フランス", "ガメイ"),
-        ("Tignanello", "イタリア, トスカーナ", "サンジョヴェーゼ"),
-        ("Barolo", "イタリア, ピエモンテ", "ネッビオーロ"),
-        ("Barbera d'Alba", "イタリア, ピエモンテ", "バルベラ")
-    ]
-
-    var logs: [TastingLog] = []
-    for (name, region, variety) in samples {
-        let item = BeverageItem(
-            name: name,
-            producer: "Sample Producer",
-            category: .wine,
-            region: region,
-            specificMetadataJSON: "{\"wineType\":\"赤\",\"grapeVarieties\":\"\(variety)\",\"blendComponents\":[]}"
-        )
-        let log = TastingLog(rating: 4.5, isEvaluated: true, item: item)
-        container.mainContext.insert(item)
-        container.mainContext.insert(log)
-        logs.append(log)
-    }
+#Preview("図鑑") {
+    let sample = PreviewSampleData.makeSampleBundle()
+    let logs = [sample.wineLog, sample.sakeLog, sample.beerLog]
 
     return NavigationStack {
         ScrollView {
@@ -427,5 +399,5 @@ public struct CollectionBookView: View {
         .navigationTitle(String(localized: "図鑑"))
         .navigationBarTitleDisplayMode(.inline)
     }
-    .modelContainer(container)
+    .modelContainer(PreviewSampleData.container)
 }

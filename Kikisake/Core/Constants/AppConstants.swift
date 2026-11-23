@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// アプリ全体で共有される定数定義
 public enum AppConstants {
     public static let appName = "Kikisake"
 

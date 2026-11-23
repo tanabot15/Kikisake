@@ -97,52 +97,13 @@ public struct InventoryFilterSheet: View {
 }
 
 private struct InventoryFilterSheetPreviewHost: View {
-    private let container: ModelContainer
-    private let items: [BeverageItem]
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(for: BeverageItem.self, TastingLog.self, configurations: config)
-        let encoder = JSONEncoder()
-
-        let wineMeta = WineSpecificMetadata(
-            wineType: "赤",
-            grapeVarieties: "カベルネ・ソーヴィニヨン",
-            blendComponents: [],
-            appellation: "Bordeaux"
-        )
-        let wineJSON = String(data: try! encoder.encode(wineMeta), encoding: .utf8)
-        let sampleWine = BeverageItem(
-            name: "Chateau Margaux",
-            producer: "Margaux",
-            category: .wine,
-            specificMetadataJSON: wineJSON
-        )
-
-        let sakeMeta = SakeSpecificMetadata(
-            specificName: "純米大吟醸",
-            riceVariety: "山田錦",
-            polishingRate: "40%",
-            sakeMeterValue: "+4.0"
-        )
-        let sakeJSON = String(data: try! encoder.encode(sakeMeta), encoding: .utf8)
-        let sampleSake = BeverageItem(
-            name: "獺祭 磨き二割三分",
-            producer: "旭酒造",
-            category: .sake,
-            specificMetadataJSON: sakeJSON
-        )
-
-        modelContainer.mainContext.insert(sampleWine)
-        modelContainer.mainContext.insert(sampleSake)
-
-        let descriptor = FetchDescriptor<BeverageItem>()
-        self.items = (try? modelContainer.mainContext.fetch(descriptor)) ?? []
-        self.container = modelContainer
-    }
+    private let sample = PreviewSampleData.makeSampleBundle()
 
     var body: some View {
-        InventoryFilterSheet(viewModel: InventoryViewModel(), allItems: items)
-            .modelContainer(container)
+        InventoryFilterSheet(
+            viewModel: InventoryViewModel(),
+            allItems: [sample.wineItem, sample.sakeItem, sample.beerItem]
+        )
+        .modelContainer(PreviewSampleData.container)
     }
 }

@@ -74,62 +74,20 @@ struct CollectionItemDetailSheet: View {
 }
 
 #Preview("達成済みログあり") {
-    CollectionItemDetailSheetPreviewHost(hasUnlockedLog: true)
+    let sample = PreviewSampleData.makeSampleBundle()
+    let definition = CollectionMatrixDataSource.definitions(for: .wine).first!
+    return CollectionItemDetailSheet(
+        definition: definition,
+        unlockedLogs: [sample.wineLog]
+    )
+    .modelContainer(PreviewSampleData.container)
 }
 
 #Preview("未達成（ログなし）") {
-    CollectionItemDetailSheetPreviewHost(hasUnlockedLog: false)
-}
-
-private struct CollectionItemDetailSheetPreviewHost: View {
-    let hasUnlockedLog: Bool
-    private let container: ModelContainer
-    private let definition: CollectionItemDefinition
-    private let unlockedLogs: [TastingLog]
-
-    init(hasUnlockedLog: Bool) {
-        self.hasUnlockedLog = hasUnlockedLog
-
-        let schema = Schema([
-            BeverageItem.self,
-            TastingLog.self,
-            StorageLocation.self
-        ])
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(for: schema, configurations: [config])
-        self.container = modelContainer
-
-        self.definition = CollectionMatrixDataSource.definitions(for: .wine).first!
-
-        if hasUnlockedLog {
-            let item = BeverageItem(
-                name: "Gevrey-Chambertin 2019",
-                producer: "Domaine Sample",
-                category: .wine,
-                region: "フランス, ブルゴーニュ",
-                vintage: "2019"
-            )
-            let log = TastingLog(
-                date: Date(),
-                rating: 4.6,
-                appearanceNotes: "ルビー",
-                appearanceColorHex: "#8B1E3F",
-                isEvaluated: true,
-                item: item
-            )
-            modelContainer.mainContext.insert(item)
-            modelContainer.mainContext.insert(log)
-            self.unlockedLogs = [log]
-        } else {
-            self.unlockedLogs = []
-        }
-    }
-
-    var body: some View {
-        CollectionItemDetailSheet(
-            definition: definition,
-            unlockedLogs: unlockedLogs
-        )
-        .modelContainer(container)
-    }
+    let definition = CollectionMatrixDataSource.definitions(for: .wine).first!
+    return CollectionItemDetailSheet(
+        definition: definition,
+        unlockedLogs: []
+    )
+    .modelContainer(PreviewSampleData.container)
 }

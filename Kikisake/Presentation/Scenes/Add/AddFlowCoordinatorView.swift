@@ -313,27 +313,6 @@ public struct AddFlowCoordinatorView: View {
 }
 
 #Preview {
-    AddFlowViewPreviewHost()
-}
-
-private struct AddFlowViewPreviewHost: View {
-    private let container: ModelContainer
-
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let modelContainer = try! ModelContainer(
-            for: StorageLocation.self,
-            BeverageItem.self,
-            TastingLog.self,
-            configurations: config
-        )
-        modelContainer.mainContext.insert(StorageLocation(name: "ワインセラー", type: .cellar))
-        modelContainer.mainContext.insert(StorageLocation(name: "冷蔵庫", type: .refrigerator))
-        self.container = modelContainer
-    }
-
-    var body: some View {
-        AddFlowCoordinatorView()
-            .modelContainer(container)
-    }
+    AddFlowCoordinatorView()
+        .modelContainer(PreviewSampleData.container)
 }

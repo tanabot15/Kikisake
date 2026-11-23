@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// Step 3 view for selecting aroma tags grouped by category.
 public struct AddStep3AromaView: View {
@@ -180,5 +181,6 @@ private struct AromaStepViewPreviewHost: View {
             .navigationTitle("香り選択プレビュー")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .modelContainer(PreviewSampleData.container)
     }
 }
