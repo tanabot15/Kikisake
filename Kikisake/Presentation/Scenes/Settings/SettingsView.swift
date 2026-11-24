@@ -18,6 +18,7 @@ public struct SettingsView: View {
     @State private var showCustomizationSheet: Bool = false
     @State private var showDeleteConfirmation: Bool = false
     @State private var isImporting: Bool = false
+    @State private var showShareCardThemeSheet: Bool = false
 
     private let privacyPolicyURL = URL(
         string: "https://sites.google.com/view/kikisake/%E3%83%97%E3%83%A9%E3%82%A4%E3%83%90%E3%82%B7%E3%83%BC-%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC"
@@ -113,6 +114,9 @@ public struct SettingsView: View {
             .sheet(isPresented: $showCustomizationSheet) {
                 TastingCustomizationView()
             }
+            .sheet(isPresented: $showShareCardThemeSheet) {
+                ShareCardThemePickerSheet()
+            }
             .alert(String(localized: "サンプルデータの読み込み"), isPresented: $showLoadedAlert) {
                 Button(String(localized: "OK"), role: .cancel) {}
             } message: {
@@ -196,6 +200,29 @@ public struct SettingsView: View {
                     Image(systemName: "chevron.right")
                         .font(.caption)
                         .foregroundStyle(.tertiary)
+                }
+            }
+            .foregroundStyle(.primary)
+            
+            Button {
+                if appState.isProVersion {
+                    showShareCardThemeSheet = true
+                } else {
+                    showPaywall = true
+                }
+            } label: {
+                HStack {
+                    Text(String(localized: "シェアカードテーマ"))
+                    Spacer()
+                    if appState.isProVersion {
+                        Text(appState.effectiveShareCardTheme.displayName)
+                            .foregroundStyle(.secondary)
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                    } else {
+                        proBadge
+                    }
                 }
             }
             .foregroundStyle(.primary)
@@ -301,6 +328,55 @@ public struct SettingsView: View {
                     )
                 )
         )
+    }
+}
+
+// Pro版向けシェアカードテーマ選択シート
+private struct ShareCardThemePickerSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @Bindable private var appState = AppState.shared
+
+    var body: some View {
+        NavigationStack {
+            List {
+                ForEach(ShareCardTheme.allCases) { theme in
+                    Button {
+                        appState.shareCardTheme = theme
+                        dismiss()
+                    } label: {
+                        HStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(theme.displayName)
+                                    .font(.body)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.primary)
+                                Text(theme.subtitle)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+
+                            Spacer()
+
+                            if appState.shareCardTheme == theme {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundStyle(Color.accentColor)
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .navigationTitle(String(localized: "シェアカードテーマ"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(String(localized: "完了")) {
+                        dismiss()
+                    }
+                }
+            }
+        }
     }
 }
 

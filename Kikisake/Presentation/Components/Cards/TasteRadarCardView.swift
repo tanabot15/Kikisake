@@ -173,19 +173,17 @@ public struct TasteRadarCardView: View {
         textColor: Color,
         mutedTextColor: Color
     ) -> some View {
-        let blackInk = Color(red: 0.105, green: 0.095, blue: 0.085)
-
         VStack(spacing: 4) {
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 VStack(alignment: .leading, spacing: 1) {
                     Text("TASTE PROFILE")
                         .font(.system(size: isCompactMode ? 6.5 : 8, weight: .black))
                         .tracking(1.4)
-                        .foregroundStyle(blackInk)
+                        .foregroundStyle(textColor)
 
                     Text("味わい構造")
                         .font(.system(size: isCompactMode ? 8 : 11, weight: .bold, design: .serif))
-                        .foregroundStyle(blackInk)
+                        .foregroundStyle(textColor)
                 }
 
                 Spacer()
@@ -196,17 +194,17 @@ public struct TasteRadarCardView: View {
             }
 
             Rectangle()
-                .fill(blackInk.opacity(0.22))
+                .fill(lineColor.opacity(0.22))
                 .frame(height: 0.5)
 
             radarChart(
                 items: items,
                 metrics: metrics,
-                fillColor: blackInk.opacity(0.14),
-                strokeColor: blackInk.opacity(0.92),
-                pointColor: blackInk,
-                gridColor: blackInk.opacity(0.35),
-                titleColor: blackInk,
+                fillColor: accentColor.opacity(0.18),
+                strokeColor: accentColor,
+                pointColor: accentColor,
+                gridColor: lineColor.opacity(0.32),
+                titleColor: textColor,
                 valueColor: mutedTextColor,
                 useEditorialStyle: true
             )

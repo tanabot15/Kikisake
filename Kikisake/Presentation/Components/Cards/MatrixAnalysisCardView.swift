@@ -197,19 +197,17 @@ public struct MatrixAnalysisCardView: View {
         textColor: Color,
         mutedTextColor: Color
     ) -> some View {
-        let blackInk = Color(red: 0.105, green: 0.095, blue: 0.085)
-
         VStack(spacing: 4) {
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 VStack(alignment: .leading, spacing: 1) {
                     Text("POSITION")
                         .font(.system(size: isCompactMode ? 6.5 : 8, weight: .black))
                         .tracking(1.4)
-                        .foregroundStyle(blackInk)
+                        .foregroundStyle(textColor)
 
                     Text("テイスト・マトリクス")
                         .font(.system(size: isCompactMode ? 8 : 11, weight: .bold, design: .serif))
-                        .foregroundStyle(blackInk)
+                        .foregroundStyle(textColor)
                 }
 
                 Spacer()
@@ -220,15 +218,17 @@ public struct MatrixAnalysisCardView: View {
             }
 
             Rectangle()
-                .fill(blackInk.opacity(0.22))
+                .fill(lineColor.opacity(0.22))
                 .frame(height: 0.5)
 
             editorialMatrix(
                 axes: axes,
                 xValue: xValue,
                 yValue: yValue,
+                accentColor: accentColor,
                 surfaceColor: surfaceColor,
-                lineColor: blackInk,
+                lineColor: lineColor,
+                textColor: textColor,
                 mutedTextColor: mutedTextColor
             )
             .frame(maxHeight: .infinity)
@@ -251,22 +251,24 @@ public struct MatrixAnalysisCardView: View {
         axes: MatrixAxesSpec,
         xValue: Double,
         yValue: Double,
+        accentColor: Color,
         surfaceColor: Color,
         lineColor: Color,
+        textColor: Color,
         mutedTextColor: Color
     ) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: isCompactMode ? 5 : 8, style: .continuous)
                 .fill(
                     LinearGradient(
-                        colors: [surfaceColor.opacity(0.8), surfaceColor.opacity(0.35)],
+                        colors: [surfaceColor.opacity(0.9), surfaceColor.opacity(0.45)],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: isCompactMode ? 5 : 8, style: .continuous)
-                        .stroke(lineColor.opacity(0.35), lineWidth: 0.6)
+                        .stroke(lineColor.opacity(0.32), lineWidth: 0.6)
                 )
 
             GeometryReader { geo in
@@ -275,24 +277,24 @@ public struct MatrixAnalysisCardView: View {
 
                 crossLinesPath(width: width, height: height)
                     .stroke(
-                        lineColor.opacity(0.35),
+                        lineColor.opacity(0.32),
                         style: StrokeStyle(lineWidth: 0.55, dash: [3, 3])
                     )
 
                 // 四隅ラベル：上下の軸端ラベルと重ならないよう上下に余白を設ける
                 quadrantLabelsView(axes: axes, horizontalInset: isCompactMode ? 4 : 7)
                     .font(.system(size: isCompactMode ? 5.5 : 7.5, weight: .medium, design: .serif))
-                    .foregroundStyle(lineColor.opacity(0.82))
+                    .foregroundStyle(textColor.opacity(0.82))
                     .padding(.vertical, isCompactMode ? 11 : 16)
 
-                // プロット点（黒基調）
+                // プロット点
                 Circle()
-                    .fill(lineColor.opacity(0.12))
+                    .fill(accentColor.opacity(0.18))
                     .frame(width: isCompactMode ? 18 : 28, height: isCompactMode ? 18 : 28)
                     .position(x: xValue * width, y: (1.0 - yValue) * height)
 
                 Circle()
-                    .fill(lineColor)
+                    .fill(accentColor)
                     .frame(width: isCompactMode ? 6.5 : 9, height: isCompactMode ? 6.5 : 9)
                     .overlay(
                         Circle()
