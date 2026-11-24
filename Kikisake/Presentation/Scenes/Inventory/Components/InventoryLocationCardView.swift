@@ -1,8 +1,3 @@
-//
-//  InventoryLocationCardView.swift
-//  Kikisake
-//
-
 import SwiftUI
 import SwiftData
 
@@ -14,10 +9,18 @@ struct InventoryLocationCardView: View {
     @Bindable var viewModel: InventoryViewModel
 
     let isExpanded: Bool
+    let isEditingLocations: Bool
+    let canMoveUp: Bool
+    let canMoveDown: Bool
+
     @Binding var displayMode: CellarDisplayMode
     @Binding var isEditingList: Bool
 
     let onToggleExpand: () -> Void
+    let onRequestRename: (StorageLocation) -> Void
+    let onRequestDelete: (StorageLocation) -> Void
+    let onMoveLocation: (StorageLocation, InventoryViewModel.MoveDirection) -> Void
+    let onDropLocation: (UUID, UUID) -> Void
     let onRequestResize: (StorageLocation) -> Void
     let onSelectItem: (BeverageItem) -> Void
     let onError: (String) -> Void
@@ -31,64 +34,132 @@ struct InventoryLocationCardView: View {
 
     var body: some View {
         let summaryList = viewModel.categorySummaryList(for: location.name, in: items)
-        let displayItems = viewModel.filteredItems(items, for: location.name)
-
+        let displayItems = viewModel.itemsForLocation(for: location.name, in: items)
+        
         VStack(spacing: 0) {
-            headerButton(summaryList: summaryList)
+            headerRow(summaryList: summaryList)
 
-            if isExpanded {
+            if isExpanded && !isEditingLocations {
                 expandedBody(displayItems: displayItems)
             }
         }
         .background(Color(.secondarySystemGroupedBackground))
         .cornerRadius(16)
         .shadow(color: Color.black.opacity(0.04), radius: 6, x: 0, y: 3)
+        .dropDestination(for: String.self) { droppedStrings, _ in
+            guard isEditingLocations,
+                  let first = droppedStrings.first,
+                  let sourceID = UUID(uuidString: first) else {
+                return false
+            }
+            onDropLocation(sourceID, location.id)
+            return true
+        }
     }
 
-    private func headerButton(summaryList: [(categoryName: String, count: Int)]) -> some View {
-        Button(action: onToggleExpand) {
-            HStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .fill(Color.accentColor.opacity(0.12))
-                        .frame(width: 50, height: 50)
-                    Image(systemName: location.type.defaultIconName)
-                        .font(.title3)
-                        .foregroundStyle(Color.accentColor)
+    private func headerRow(summaryList: [(categoryName: String, count: Int)]) -> some View {
+        HStack(spacing: 12) {
+            if isEditingLocations {
+                Button {
+                    onRequestDelete(location)
+                } label: {
+                    Image(systemName: "minus.circle.fill")
+                        .font(.title2)
+                        .foregroundStyle(.red)
                 }
+                .buttonStyle(.plain)
+                .transition(.scale.combined(with: .opacity))
+            }
 
-                Text(location.name)
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.primary)
-
-                Spacer()
-
-                if summaryList.isEmpty {
-                    Text(String(localized: "在庫なし"))
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+            Button {
+                if isEditingLocations {
+                    onRequestRename(location)
                 } else {
+                    onToggleExpand()
+                }
+            } label: {
+                HStack(spacing: 14) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.accentColor.opacity(0.12))
+                            .frame(width: 48, height: 48)
+                        Image(systemName: location.type.defaultIconName)
+                            .font(.title3)
+                            .foregroundStyle(Color.accentColor)
+                    }
+
                     VStack(alignment: .leading, spacing: 2) {
-                        ForEach(summaryList, id: \.categoryName) { summary in
-                            Text(String(format: String(localized: "%@ %d本"), summary.categoryName, summary.count))
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
+                        Text(location.name)
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.primary)
+
+                        if isEditingLocations {
+                            Text(String(localized: "タップして名称を変更"))
+                                .font(.caption2)
+                                .foregroundStyle(Color.accentColor)
                         }
                     }
-                }
 
-                Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.tertiary)
-                    .padding(.trailing, 4)
+                    Spacer()
+
+                    if isEditingLocations {
+                        Image(systemName: "pencil")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        if summaryList.isEmpty {
+                            Text(String(localized: "在庫なし"))
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        } else {
+                            VStack(alignment: .trailing, spacing: 2) {
+                                ForEach(summaryList, id: \.categoryName) { summary in
+                                    Text(String(format: String(localized: "%@ %d本"), summary.categoryName, summary.count))
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                        }
+
+                        Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+                .contentShape(Rectangle())
             }
-            .padding(16)
-            .background(Color(.secondarySystemGroupedBackground))
-            .cornerRadius(16)
+            .buttonStyle(.plain)
+
+            if isEditingLocations {
+                VStack(spacing: 4) {
+                    Button {
+                        onMoveLocation(location, .up)
+                    } label: {
+                        Image(systemName: "chevron.up")
+                            .font(.caption.weight(.bold))
+                            .frame(width: 28, height: 22)
+                    }
+                    .disabled(!canMoveUp)
+
+                    Button {
+                        onMoveLocation(location, .down)
+                    } label: {
+                        Image(systemName: "chevron.down")
+                            .font(.caption.weight(.bold))
+                            .frame(width: 28, height: 22)
+                    }
+                    .disabled(!canMoveDown)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.mini)
+                .draggable(location.id.uuidString)
+            }
         }
-        .buttonStyle(.plain)
+        .padding(16)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
     }
 
     @ViewBuilder

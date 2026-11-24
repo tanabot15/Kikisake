@@ -1,8 +1,3 @@
-//
-//  InventoryView.swift
-//  Kikisake
-//
-
 import SwiftUI
 import SwiftData
 
@@ -29,8 +24,13 @@ public struct InventoryView: View {
 
     @State private var viewModel = InventoryViewModel()
     @State private var showAddLocationSheet: Bool = false
-    @State private var isShowingFilterSheet: Bool = false
     @State private var showPaywall: Bool = false
+
+    @State private var isEditingLocations: Bool = false
+    @State private var renamingLocation: StorageLocation? = nil
+    @State private var draftLocationName: String = ""
+    @State private var deletingLocation: StorageLocation? = nil
+    @State private var isShowingDeleteLocationAlert: Bool = false
 
     @State private var expandedLocationName: String? = nil
     @State private var displayModes: [String: CellarDisplayMode] = [:]
@@ -68,33 +68,58 @@ public struct InventoryView: View {
                             .padding(.horizontal)
                             .padding(.top, 8)
 
-                        let targetLocations = viewModel.filteredLocations(locations)
-
-                        if locations.isEmpty || targetLocations.isEmpty {
+                        if locations.isEmpty {
                             ContentUnavailableView(
-                                String(localized: "該当する保管場所がありません"),
+                                String(localized: "保管場所がありません"),
                                 systemImage: "cabinet",
-                                description: Text(
-                                    viewModel.hasActiveFilters
-                                        ? String(localized: "フィルター条件を変更してみてください。")
-                                        : String(localized: "右上の「＋」ボタンから保管場所を追加してください。")
-                                )
+                                description: Text(String(localized: "右上の「＋」ボタンから保管場所を追加してください。"))
                             )
                             .padding(.top, 40)
                         } else {
                             LazyVStack(spacing: 14) {
-                                ForEach(targetLocations, id: \.id) { loc in
+                                ForEach(Array(locations.enumerated()), id: \.element.id) { index, loc in
                                     InventoryLocationCardView(
                                         location: loc,
                                         items: items,
                                         modelContext: modelContext,
                                         viewModel: viewModel,
                                         isExpanded: expandedLocationName == loc.name,
+                                        isEditingLocations: isEditingLocations,
+                                        canMoveUp: index > 0,
+                                        canMoveDown: index < locations.count - 1,
                                         displayMode: displayModeBinding(for: loc),
                                         isEditingList: editingBinding(for: loc.name),
                                         onToggleExpand: {
                                             withAnimation(.snappy) {
                                                 expandedLocationName = (expandedLocationName == loc.name) ? nil : loc.name
+                                            }
+                                        },
+                                        onRequestRename: { targetLoc in
+                                            draftLocationName = targetLoc.name
+                                            renamingLocation = targetLoc
+                                        },
+                                        onRequestDelete: { targetLoc in
+                                            deletingLocation = targetLoc
+                                            isShowingDeleteLocationAlert = true
+                                        },
+                                        onMoveLocation: { targetLoc, direction in
+                                            withAnimation(.snappy) {
+                                                viewModel.moveLocation(
+                                                    targetLoc,
+                                                    direction: direction,
+                                                    in: locations,
+                                                    modelContext: modelContext
+                                                )
+                                            }
+                                        },
+                                        onDropLocation: { sourceID, destinationID in
+                                            withAnimation(.snappy) {
+                                                viewModel.moveLocation(
+                                                    from: sourceID,
+                                                    to: destinationID,
+                                                    in: locations,
+                                                    modelContext: modelContext
+                                                )
                                             }
                                         },
                                         onRequestResize: { targetLoc in
@@ -128,27 +153,86 @@ public struct InventoryView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        isShowingFilterSheet = true
-                    } label: {
-                        Image(systemName: viewModel.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                            .foregroundStyle(viewModel.hasActiveFilters ? Color.accentColor : Color.primary)
+                if !locations.isEmpty {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            withAnimation(.snappy) {
+                                isEditingLocations.toggle()
+                                if isEditingLocations {
+                                    expandedLocationName = nil
+                                }
+                            }
+                        } label: {
+                            Text(isEditingLocations ? Image(systemName: "checkmark.circle") : Image(systemName: "square.and.pencil"))
+                                .fontWeight(isEditingLocations ? .bold : .regular)
+                        }
+                        .tint(isEditingLocations ? Color.accentColor : .primary)
                     }
-                    .accessibilityLabel(String(localized: "在庫フィルター"))
                 }
 
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        if !AppState.shared.isProVersion && locations.count >= 3 {
-                            showPaywall = true
-                        } else {
-                            showAddLocationSheet = true
+                if !isEditingLocations {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            if !AppState.shared.isProVersion && locations.count >= 3 {
+                                showPaywall = true
+                            } else {
+                                showAddLocationSheet = true
+                            }
+                        } label: {
+                            Image(systemName: "plus")
                         }
-                    } label: {
-                        Image(systemName: "plus")
+                        .tint(.primary)
                     }
-                    .tint(.primary)
+                }
+            }
+            .alert(
+                String(localized: "保管場所の名称変更"),
+                isPresented: Binding(
+                    get: { renamingLocation != nil },
+                    set: { if !$0 { renamingLocation = nil } }
+                )
+            ) {
+                TextField(String(localized: "新しい保管場所名"), text: $draftLocationName)
+                Button(String(localized: "キャンセル"), role: .cancel) {
+                    renamingLocation = nil
+                }
+                Button(String(localized: "保存")) {
+                    if let target = renamingLocation {
+                        let oldName = target.name
+                        viewModel.renameLocation(
+                            target,
+                            newName: draftLocationName,
+                            allItems: items,
+                            modelContext: modelContext
+                        )
+                        if expandedLocationName == oldName {
+                            expandedLocationName = target.name
+                        }
+                    }
+                    renamingLocation = nil
+                }
+            } message: {
+                Text(String(localized: "保管場所の名称を入力してください。"))
+            }
+            .alert(
+                String(localized: "保管場所を削除しますか？"),
+                isPresented: $isShowingDeleteLocationAlert
+            ) {
+                Button(String(localized: "キャンセル"), role: .cancel) {
+                    deletingLocation = nil
+                }
+                Button(String(localized: "削除"), role: .destructive) {
+                    if let target = deletingLocation {
+                        if expandedLocationName == target.name {
+                            expandedLocationName = nil
+                        }
+                        viewModel.deleteLocation(target, allItems: items, modelContext: modelContext)
+                    }
+                    deletingLocation = nil
+                }
+            } message: {
+                if let target = deletingLocation {
+                    Text(String(format: String(localized: "「%@」を削除します。登録されているボトルの保管場所は未設定になります。"), target.name))
                 }
             }
             .sheet(isPresented: $showAddLocationSheet) {
@@ -156,9 +240,6 @@ public struct InventoryView: View {
             }
             .sheet(isPresented: $showPaywall) {
                 PaywallView()
-            }
-            .sheet(isPresented: $isShowingFilterSheet) {
-                InventoryFilterSheet(viewModel: viewModel, allItems: items)
             }
             .sheet(item: $resizingLocation) { loc in
                 InventoryGridResizeSheet(

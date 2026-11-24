@@ -60,7 +60,6 @@
 		D9044273308AFE0100EF4807 /* TastingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044272308AFE0100EF4807 /* TastingOptions.swift */; };
 		D9044275308B18EE00EF4807 /* AnalyticsFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044274308B18EE00EF4807 /* AnalyticsFilterSheet.swift */; };
 		D9044277308B1ADF00EF4807 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044276308B1ADF00EF4807 /* FlowLayout.swift */; };
-		D9044279308B269300EF4807 /* InventoryFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9044278308B269300EF4807 /* InventoryFilterSheet.swift */; };
 		D904427B308C9C8000EF4807 /* ConsumptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427A308C9C8000EF4807 /* ConsumptionView.swift */; };
 		D904427D308C9C9B00EF4807 /* EvaluationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427C308C9C9B00EF4807 /* EvaluationView.swift */; };
 		D904427F308CF04500EF4807 /* CellarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D904427E308CF04500EF4807 /* CellarGridView.swift */; };
@@ -156,7 +155,6 @@
 		D9044272308AFE0100EF4807 /* TastingOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingOptions.swift; sourceTree = "<group>"; };
 		D9044274308B18EE00EF4807 /* AnalyticsFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsFilterSheet.swift; sourceTree = "<group>"; };
 		D9044276308B1ADF00EF4807 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
-		D9044278308B269300EF4807 /* InventoryFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryFilterSheet.swift; sourceTree = "<group>"; };
 		D904427A308C9C8000EF4807 /* ConsumptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumptionView.swift; sourceTree = "<group>"; };
 		D904427C308C9C9B00EF4807 /* EvaluationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationView.swift; sourceTree = "<group>"; };
 		D904427E308CF04500EF4807 /* CellarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellarGridView.swift; sourceTree = "<group>"; };
@@ -696,7 +694,6 @@
 			isa = PBXGroup;
 			children = (
 				D904425A308368BF00EF4807 /* AddLocationSheetView.swift */,
-				D9044278308B269300EF4807 /* InventoryFilterSheet.swift */,
 				D9FB6CFF30B1CC7200D105C9 /* InventoryGridResizeSheet.swift */,
 			);
 			path = Sheets;
@@ -814,7 +811,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9044279308B269300EF4807 /* InventoryFilterSheet.swift in Sources */,
 				D90441F3307E83F600EF4807 /* AppState.swift in Sources */,
 				D9FB6CF230B182F700D105C9 /* TimelineSectionView.swift in Sources */,
 				D90442523081A45200EF4807 /* AddStep3AromaView.swift in Sources */,
@@ -1040,7 +1036,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1061,7 +1057,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.34;
+				MARKETING_VERSION = 1.35;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1084,7 +1080,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1105,7 +1101,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.34;
+				MARKETING_VERSION = 1.35;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

@@ -1,47 +1,12 @@
-//
-//  InventoryViewModel.swift
-//  Kikisake
-//
-
 import Foundation
 import SwiftData
 import SwiftUI
 
 @Observable
 public final class InventoryViewModel {
-    public var selectedLocationFilter: String? = nil
-    public var searchText: String = ""
-
-    public var selectedStorageCategoryType: StorageCategoryType? = nil
-    public var selectedCategory: BeverageCategory? = nil
-    public var selectedSubCategory: String? = nil
-
     private let consumeUseCase = ConsumeBeverageUseCase()
 
     public init() {}
-
-    public var hasActiveFilters: Bool {
-        selectedStorageCategoryType != nil ||
-        selectedCategory != nil ||
-        selectedSubCategory != nil ||
-        !searchText.isEmpty
-    }
-
-    public func resetFilters() {
-        selectedStorageCategoryType = nil
-        selectedCategory = nil
-        selectedSubCategory = nil
-        searchText = ""
-    }
-
-    public func filteredLocations(_ locations: [StorageLocation]) -> [StorageLocation] {
-        locations.filter { loc in
-            if let type = selectedStorageCategoryType {
-                return loc.type == type
-            }
-            return true
-        }
-    }
 
     public func totalCount(for locationName: String, in items: [BeverageItem]) -> Int {
         items.filter { $0.storageLocation == locationName }.count
@@ -57,7 +22,7 @@ public final class InventoryViewModel {
     }
 
     public func categorySummaryList(for locationName: String, in items: [BeverageItem]) -> [(categoryName: String, count: Int)] {
-        let locationItems = filteredItems(items, for: locationName)
+        let locationItems = itemsForLocation(for: locationName, in: items)
         guard !locationItems.isEmpty else { return [] }
 
         var counts: [BeverageCategory: Int] = [:]
@@ -71,29 +36,8 @@ public final class InventoryViewModel {
         }
     }
 
-    public func filteredItems(_ items: [BeverageItem], for locationName: String) -> [BeverageItem] {
-        items.filter { item in
-            let matchesLocation = item.storageLocation == locationName
-            let matchesCategory = selectedCategory == nil || item.category == selectedCategory
-            let matchesSubCategory = matchesSubCategoryFilter(for: item)
-            let matchesSearch = searchText.isEmpty ||
-                item.name.localizedCaseInsensitiveContains(searchText) ||
-                item.producer.localizedCaseInsensitiveContains(searchText)
-
-            return matchesLocation && matchesCategory && matchesSubCategory && matchesSearch
-        }
-    }
-
-    public func availableSubCategories(from items: [BeverageItem]) -> [String] {
-        guard let category = selectedCategory else { return [] }
-        var subTypes = Set<String>()
-
-        for item in items where item.category == category {
-            if let subType = extractedSubCategory(from: item, category: category), !subType.isEmpty {
-                subTypes.insert(subType)
-            }
-        }
-        return Array(subTypes).sorted()
+    public func itemsForLocation(for locationName: String, in items: [BeverageItem]) -> [BeverageItem] {
+        items.filter { $0.storageLocation == locationName }
     }
 
     public func consumeBottle(item: BeverageItem) throws {
@@ -196,28 +140,96 @@ public final class InventoryViewModel {
         repository.deleteItem(item)
     }
 
-    // MARK: - Private Helpers
+    // MARK: - StorageLocation Management
 
-    private func matchesSubCategoryFilter(for item: BeverageItem) -> Bool {
-        guard let subCategory = selectedSubCategory, let category = selectedCategory else {
-            return true
+    public func renameLocation(
+        _ location: StorageLocation,
+        newName: String,
+        allItems: [BeverageItem],
+        modelContext: ModelContext
+    ) {
+        let trimmed = newName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+
+        let oldName = location.name
+        guard oldName != trimmed else { return }
+
+        location.name = trimmed
+
+        for item in allItems where item.storageLocation == oldName {
+            item.storageLocation = trimmed
         }
-        return extractedSubCategory(from: item, category: category) == subCategory
+
+        try? modelContext.save()
     }
 
-    private func extractedSubCategory(from item: BeverageItem, category: BeverageCategory) -> String? {
-        guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else {
-            return nil
-        }
-        let decoder = JSONDecoder()
+    public func moveLocation(
+        _ location: StorageLocation,
+        direction: MoveDirection,
+        in orderedLocations: [StorageLocation],
+        modelContext: ModelContext
+    ) {
+        guard let currentIndex = orderedLocations.firstIndex(where: { $0.id == location.id }) else { return }
 
-        switch category {
-        case .wine:
-            return try? decoder.decode(WineSpecificMetadata.self, from: data).wineType
-        case .sake:
-            return try? decoder.decode(SakeSpecificMetadata.self, from: data).specificName
-        case .beer:
-            return try? decoder.decode(BeerSpecificMetadata.self, from: data).beerStyle
+        let targetIndex: Int
+        switch direction {
+        case .up:
+            guard currentIndex > 0 else { return }
+            targetIndex = currentIndex - 1
+        case .down:
+            guard currentIndex < orderedLocations.count - 1 else { return }
+            targetIndex = currentIndex + 1
         }
+
+        var mutable = orderedLocations
+        let moving = mutable.remove(at: currentIndex)
+        mutable.insert(moving, at: targetIndex)
+
+        saveLocationOrder(mutable, modelContext: modelContext)
+    }
+
+    public func moveLocation(
+        from sourceID: UUID,
+        to destinationID: UUID,
+        in orderedLocations: [StorageLocation],
+        modelContext: ModelContext
+    ) {
+        guard sourceID != destinationID,
+              let fromIndex = orderedLocations.firstIndex(where: { $0.id == sourceID }),
+              let toIndex = orderedLocations.firstIndex(where: { $0.id == destinationID }) else { return }
+
+        var mutable = orderedLocations
+        let moving = mutable.remove(at: fromIndex)
+        mutable.insert(moving, at: toIndex)
+
+        saveLocationOrder(mutable, modelContext: modelContext)
+    }
+
+    public func deleteLocation(
+        _ location: StorageLocation,
+        allItems: [BeverageItem],
+        modelContext: ModelContext
+    ) {
+        for item in allItems where item.storageLocation == location.name {
+            item.storageLocation = ""
+            item.gridRow = nil
+            item.gridColumn = nil
+        }
+
+        modelContext.delete(location)
+        try? modelContext.save()
+    }
+
+    private func saveLocationOrder(_ orderedLocations: [StorageLocation], modelContext: ModelContext) {
+        let baseDate = Date()
+        for (offset, loc) in orderedLocations.enumerated() {
+            loc.createdAt = baseDate.addingTimeInterval(TimeInterval(offset))
+        }
+        try? modelContext.save()
+    }
+
+    public enum MoveDirection {
+        case up
+        case down
     }
 }
