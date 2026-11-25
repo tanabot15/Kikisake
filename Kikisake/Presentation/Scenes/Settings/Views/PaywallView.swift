@@ -29,8 +29,7 @@ public struct PaywallView: View {
         ("trophy.fill", String(localized: "コンプリート図鑑の全開放"), String(localized: "マニアックな品種・酒米・スタイルを全て解放")),
         ("slider.horizontal.3", String(localized: "テイスティング要素のカスタム"), String(localized: "オリジナルの香り・色・味わい表現の編集する")),
         ("square.on.square.dashed", String(localized: "シェアカードテーマの変更"), String(localized: "SNS投稿用カードのテーマ（Noir・Vivid等）を変更可能")),
-        ("eye.slash.fill", String(localized: "広告の完全非表示"), String(localized: "バナー広告を排除し、洗練された記録空間を")),
-        ("infinity", String(localized: "完全買い切り"), String(localized: "追加課金・サブスクリプションは一切発生なし"))
+        ("eye.slash.fill", String(localized: "広告の完全非表示"), String(localized: "バナー広告を排除し、洗練された記録空間を"))
     ]
 
     public init() {}
@@ -261,12 +260,12 @@ private struct FeatureRow: View {
         HStack(alignment: .top, spacing: 16) {
             ZStack {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(Color.accentColor.opacity(0.12))
+                    .fill(Color.orange.opacity(0.12))
                     .frame(width: 40, height: 40)
 
                 Image(systemName: icon)
                     .font(.headline)
-                    .foregroundStyle(Color.accentColor)
+                    .foregroundStyle(Color.orange)
             }
 
             VStack(alignment: .leading, spacing: 2) {

@@ -309,7 +309,7 @@ public struct TastingCardShareView: View {
         .padding(.top, 14)
     }
 
-    // MARK: - Hero（全テーマ共通のシンプルな構成に統一）
+    // MARK: - Hero
 
     private var heroSection: some View {
         ZStack {
@@ -392,6 +392,8 @@ public struct TastingCardShareView: View {
                             ? vividPurpleColor
                             : (theme == .noir ? highlightAccentColor.opacity(0.9) : mutedInkColor)
                     )
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             if let name = log.item?.name {
@@ -399,8 +401,7 @@ public struct TastingCardShareView: View {
                     .font(.system(size: 21, weight: theme == .vivid ? .semibold : .regular, design: .serif))
                     .foregroundStyle(inkColor)
                     .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.75)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             HStack(spacing: 8) {
@@ -440,7 +441,7 @@ public struct TastingCardShareView: View {
                     .font(.system(size: 7.5, weight: .medium))
                     .foregroundStyle(mutedInkColor)
                     .multilineTextAlignment(.center)
-                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.top, 6)
             }
         }
@@ -464,8 +465,8 @@ public struct TastingCardShareView: View {
             Text(value.isEmpty ? "—" : value)
                 .font(.system(size: 8.5, weight: .medium))
                 .foregroundStyle(inkColor)
-                .lineLimit(2)
                 .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity)
     }
@@ -580,11 +581,11 @@ public struct TastingCardShareView: View {
             tastingRow(title: "APPEARANCE", content: log.appearanceNotes, leading: appearanceColor)
 
             if !log.aromaTags.isEmpty {
-                tastingRow(title: "AROMA", content: log.aromaTags.prefix(4).joined(separator: " · "), leading: nil)
+                tastingTagsRow(title: "AROMA", tags: log.aromaTags)
             }
 
             if !log.balanceTags.isEmpty {
-                tastingRow(title: "BALANCE", content: log.balanceTags.prefix(3).joined(separator: " · "), leading: nil)
+                tastingTagsRow(title: "BALANCE", tags: log.balanceTags)
             }
 
             featureRow
@@ -605,9 +606,23 @@ public struct TastingCardShareView: View {
             Text(content.isEmpty ? "—" : content)
                 .font(.system(size: 8.5, weight: .medium))
                 .foregroundStyle(inkColor)
-                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
 
             Spacer(minLength: 0)
+        }
+    }
+
+    private func tastingTagsRow(title: String, tags: [String]) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            profileRowLabel(title)
+                .padding(.top, 2)
+
+            FlowLayout(spacing: 4) {
+                ForEach(Array(tags.enumerated()), id: \.offset) { idx, tag in
+                    editorialTag(tag, index: idx)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -618,8 +633,9 @@ public struct TastingCardShareView: View {
             log.hasAgingPotential ? String(localized: "熟成ポテンシャルあり") : nil
         ].compactMap { $0 }
 
-        return HStack(alignment: .center, spacing: 8) {
+        return HStack(alignment: .top, spacing: 8) {
             profileRowLabel("SIGNATURE")
+                .padding(.top, 2)
 
             if activeTags.isEmpty {
                 Text("—")
@@ -631,8 +647,8 @@ public struct TastingCardShareView: View {
                         editorialTag(tag, index: idx)
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            Spacer(minLength: 0)
         }
     }
 
@@ -651,6 +667,7 @@ public struct TastingCardShareView: View {
                     ? Color.white
                     : (theme == .standard ? inkColor : highlightAccentColor)
             )
+            .fixedSize(horizontal: true, vertical: true)
             .padding(.horizontal, 6.5)
             .padding(.vertical, 2.5)
             .background(
@@ -722,7 +739,7 @@ public struct TastingCardShareView: View {
                     Text(pairing)
                         .font(.system(size: 8.5, weight: .medium))
                         .foregroundStyle(inkColor)
-                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
 
                     Spacer(minLength: 0)
                 }
@@ -738,7 +755,6 @@ public struct TastingCardShareView: View {
                     Text("“\(log.memo)”")
                         .font(.system(size: 8.5, weight: .medium))
                         .foregroundStyle(inkColor)
-                        .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
