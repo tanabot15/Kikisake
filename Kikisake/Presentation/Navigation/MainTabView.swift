@@ -38,11 +38,29 @@ public struct MainTabView: View {
     }
 
     @Bindable private var appState = AppState.shared
+    @State private var isShowingAddModeDialog: Bool = false
 
     public init() {}
 
+    /// タブの選択をインターセプトし、「追加」タップ時にモード選択ポップアップを表示する
+    private var tabSelectionBinding: Binding<Int> {
+        Binding(
+            get: { appState.selectedTab },
+            set: { newValue in
+                let vm = appState.addFlowViewModel
+                let isDirectEntry = vm.isOpeningExistingItem || vm.editingLog != nil
+
+                if newValue == TabItem.add.rawValue && appState.selectedTab != TabItem.add.rawValue && !isDirectEntry {
+                    isShowingAddModeDialog = true
+                } else {
+                    appState.selectedTab = newValue
+                }
+            }
+        )
+    }
+
     public var body: some View {
-        TabView(selection: $appState.selectedTab) {
+        TabView(selection: tabSelectionBinding) {
             tabContent(for: .log) { LogView() }
             tabContent(for: .analytics) { AnalyticsView() }
             tabContent(for: .add) { AddFlowCoordinatorView() }
@@ -50,6 +68,31 @@ public struct MainTabView: View {
             tabContent(for: .settings) { SettingsView() }
         }
         .tint(.accentColor)
+        .confirmationDialog(
+            String(localized: "記録方法を選択"),
+            isPresented: $isShowingAddModeDialog,
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "通常記録（銘柄を入力して記録）")) {
+                startAddFlow(mode: .normal)
+            }
+
+            Button(String(localized: "ブラインド記録（Kikisakeモード）")) {
+                startAddFlow(mode: .blind)
+            }
+
+            Button(String(localized: "キャンセル"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "銘柄を見ながら記録するか、銘柄を伏せてブラインドテイスティングに挑戦するか選択してください。"))
+        }
+    }
+
+    private func startAddFlow(mode: TastingEntryMode) {
+        let vm = appState.addFlowViewModel
+        vm.reset()
+        vm.entryMode = mode
+        vm.currentStep = 1
+        appState.selectedTab = TabItem.add.rawValue
     }
 
     @ViewBuilder

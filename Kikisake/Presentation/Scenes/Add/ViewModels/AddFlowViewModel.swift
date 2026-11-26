@@ -9,7 +9,7 @@ import SwiftUI
 
 @Observable
 public final class AddFlowViewModel {
-    public var currentStep: Int = 1 { didSet { saveDraft() } }
+    public var currentStep: Int = 1
 
     public var showAlreadyFilledAlert: Bool = false
     public var pendingOpeningItem: BeverageItem? = nil
@@ -18,82 +18,110 @@ public final class AddFlowViewModel {
     private var isResetting: Bool = false
     private var isSaving: Bool = false
 
-    // Step 1: General info
-    public var selectedCategory: BeverageCategory = .wine { didSet { saveDraft() } }
-    public var sourceItem: BeverageItem? = nil
-    public var name: String = "" { didSet { saveDraft() } }
-    public var producer: String = "" { didSet { saveDraft() } }
-    public var region: String = "" { didSet { saveDraft() } }
-    public var vintage: String = "" { didSet { saveDraft() } }
-    public var abvString: String = "" { didSet { saveDraft() } }
-    public var priceString: String = "" { didSet { saveDraft() } }
-    public var storageLocation: String = "" { didSet { saveDraft() } }
+    // MARK: - Blind Tasting Mode State
+    public var entryMode: TastingEntryMode = .normal {
+        didSet {
+            if entryMode != oldValue && !isResetting {
+                currentStep = 1
+            }
+        }
+    }
 
-    public var selectedImageData: Data? = nil { didSet { saveDraft() } }
-    public var originalImageData: Data? = nil { didSet { saveDraft() } }
-    public var selectedBackImageData: Data? = nil { didSet { saveDraft() } }
-    public var isBackgroundRemoved: Bool = true { didSet { saveDraft() } }
+    public var isBlindMode: Bool {
+        entryMode == .blind
+    }
+
+    public var totalSteps: Int {
+        isBlindMode ? 7 : 5
+    }
+
+    // ブラインド予想（ワイン）
+    public var guessedWineBlend: [BlendComponent] = [BlendComponent(variety: "", percentage: 100)]
+    public var guessedWineRegion: String = ""
+
+    // ブラインド予想（日本酒）
+    public var guessedSakeSpecificName: String = "純米大吟醸"
+    public var guessedSakeRiceVariety: String = ""
+    public var guessedSakeRegion: String = ""
+
+    // ブラインド予想（ビール）
+    public var guessedBeerStyle: String = ""
+    public var guessedBeerRegion: String = ""
+
+    // ブラインド振り返り
+    public var blindReflectionMemo: String = ""
+
+    // Step 1: General info
+    public var selectedCategory: BeverageCategory = .wine
+    public var sourceItem: BeverageItem? = nil
+    public var name: String = ""
+    public var producer: String = ""
+    public var region: String = ""
+    public var vintage: String = ""
+    public var abvString: String = ""
+    public var priceString: String = ""
+    public var storageLocation: String = ""
+
+    public var selectedImageData: Data? = nil
+    public var originalImageData: Data? = nil
+    public var selectedBackImageData: Data? = nil
+    public var isBackgroundRemoved: Bool = true
 
     public var selectedGridRow: Int? = nil
     public var selectedGridColumn: Int? = nil
 
-    public var wineType: String = "赤" { didSet { saveDraft() } }
+    public var wineType: String = "赤"
     public var grapeVarieties: String = ""
-    public var blendComponents: [BlendComponent] = [BlendComponent(variety: "", percentage: nil)] { didSet { saveDraft() } }
-    public var appellation: String = "" { didSet { saveDraft() } }
+    public var blendComponents: [BlendComponent] = [BlendComponent(variety: "", percentage: nil)]
+    public var appellation: String = ""
 
-    public var sakeSpecificName: String = "純米大吟醸" { didSet { saveDraft() } }
-    public var riceVariety: String = "" { didSet { saveDraft() } }
-    public var polishingRate: String = "" { didSet { saveDraft() } }
-    public var sakeMeterValue: String = "" { didSet { saveDraft() } }
+    public var sakeSpecificName: String = "純米大吟醸"
+    public var riceVariety: String = ""
+    public var polishingRate: String = ""
+    public var sakeMeterValue: String = ""
 
-    public var beerStyle: String = "" { didSet { saveDraft() } }
-    public var ibu: String = "" { didSet { saveDraft() } }
+    public var beerStyle: String = ""
+    public var ibu: String = ""
 
     // Step 2: Appearance
-    public var appearanceNotes: String = "ルビーレッド" { didSet { saveDraft() } }
-    public var appearanceColorHex: String = "#991A33" { didSet { saveDraft() } }
+    public var appearanceNotes: String = "ルビーレッド"
+    public var appearanceColorHex: String = "#991A33"
 
     // Step 3: Aroma
-    public var selectedAromaTags: [String] = [] { didSet { saveDraft() } }
+    public var selectedAromaTags: [String] = []
 
     // Step 4: Taste
-    public var sweetness: Double = 2.5 { didSet { saveDraft() } }
-    public var saltiness: Double = 2.5 { didSet { saveDraft() } }
-    public var acidity: Double = 2.5 { didSet { saveDraft() } }
-    public var bitterness: Double = 2.5 { didSet { saveDraft() } }
-    public var umami: Double = 2.5 { didSet { saveDraft() } }
+    public var sweetness: Double = 2.5
+    public var saltiness: Double = 2.5
+    public var acidity: Double = 2.5
+    public var bitterness: Double = 2.5
+    public var umami: Double = 2.5
 
-    public var tannin: Double = 2.5 { didSet { saveDraft() } }
-    public var body: Double = 2.5 { didSet { saveDraft() } }
-    public var selectedBalanceTags: [String] = [] { didSet { saveDraft() } }
-    public var finishLength: Double = 2.5 { didSet { saveDraft() } }
+    public var tannin: Double = 2.5
+    public var body: Double = 2.5
+    public var selectedBalanceTags: [String] = []
+    public var finishLength: Double = 2.5
 
     // Step 5: Finalize
-    public var rating: Double = 4.0 { didSet { saveDraft() } }
-    public var isCostEffective: Bool = false { didSet { saveDraft() } }
-    public var isWillingToRepeat: Bool = false { didSet { saveDraft() } }
-    public var hasAgingPotential: Bool = false { didSet { saveDraft() } }
-    public var pairing: String = "" { didSet { saveDraft() } }
-    public var memo: String = "" { didSet { saveDraft() } }
-    public var tastingDate: Date = Date() { didSet { saveDraft() } }
+    public var rating: Double = 4.0
+    public var isCostEffective: Bool = false
+    public var isWillingToRepeat: Bool = false
+    public var hasAgingPotential: Bool = false
+    public var pairing: String = ""
+    public var memo: String = ""
+    public var tastingDate: Date = Date()
 
     public var editingLog: TastingLog? = nil
     public var editingItem: BeverageItem? = nil
-
-    private let draftStore = AddFlowDraftStore()
 
     public init() {}
 
     // MARK: - Image & Blend Actions
 
     public func clearFrontImage() {
-        isResetting = true
         self.selectedImageData = nil
         self.originalImageData = nil
         self.isBackgroundRemoved = true
-        isResetting = false
-        saveDraft()
     }
 
     public func clearBackImage() {
@@ -108,126 +136,41 @@ public final class AddFlowViewModel {
         blendComponents.remove(atOffsets: offsets)
     }
 
-    // MARK: - Draft Persistence
-
-    public var hasDraft: Bool {
-        draftStore.hasDraft
+    public func addGuessedBlendComponent() {
+        guessedWineBlend.append(BlendComponent(variety: "", percentage: nil))
     }
 
-    public func saveDraft() {
-        guard !isResetting, !isSaving else { return }
-        if editingLog != nil || isOpeningExistingItem { return }
-        guard !name.isEmpty || !producer.isEmpty || !memo.isEmpty || selectedImageData != nil else { return }
+    public func removeGuessedBlendComponent(at offsets: IndexSet) {
+        guessedWineBlend.remove(atOffsets: offsets)
+    }
 
-        let draft = AddFlowDraftData(
-            currentStep: currentStep,
-            selectedCategoryRaw: selectedCategory.rawValue,
-            name: name,
-            producer: producer,
-            region: region,
-            vintage: vintage,
-            abvString: abvString,
-            priceString: priceString,
-            storageLocation: storageLocation,
-            isBackgroundRemoved: isBackgroundRemoved,
-            wineType: wineType,
-            blendComponents: blendComponents,
-            appellation: appellation,
-            sakeSpecificName: sakeSpecificName,
-            riceVariety: riceVariety,
-            polishingRate: polishingRate,
-            sakeMeterValue: sakeMeterValue,
-            beerStyle: beerStyle,
-            ibu: ibu,
-            appearanceNotes: appearanceNotes,
-            appearanceColorHex: appearanceColorHex,
-            selectedAromaTags: selectedAromaTags,
-            sweetness: sweetness,
-            saltiness: saltiness,
-            acidity: acidity,
-            bitterness: bitterness,
-            umami: umami,
-            tannin: tannin,
-            body: body,
-            selectedBalanceTags: selectedBalanceTags,
-            finishLength: finishLength,
-            rating: rating,
-            isCostEffective: isCostEffective,
-            isWillingToRepeat: isWillingToRepeat,
-            hasAgingPotential: hasAgingPotential,
-            pairing: pairing,
-            memo: memo,
-            tastingDate: tastingDate
+    // MARK: - Blind Tasting Evaluation
+
+    public func evaluateBlindResult() -> (score: Int, items: [BlindComparisonItem]) {
+        let payload = currentBlindPayload()
+        return BlindTastingEvaluator.evaluate(
+            category: selectedCategory,
+            payload: payload,
+            actualRegion: region,
+            actualWineBlend: blendComponents,
+            actualSakeSpecificName: sakeSpecificName,
+            actualSakeRiceVariety: riceVariety,
+            actualBeerStyle: beerStyle
         )
+    }
 
-        let images = AddFlowDraftImages(
-            frontImageData: selectedImageData,
-            originalImageData: originalImageData,
-            backImageData: selectedBackImageData
+    public func currentBlindPayload(score: Int? = nil) -> BlindTastingPayload {
+        BlindTastingPayload(
+            guessedWineBlend: guessedWineBlend.filter { !$0.variety.isEmpty },
+            guessedWineRegion: guessedWineRegion,
+            guessedSakeSpecificName: guessedSakeSpecificName,
+            guessedSakeRiceVariety: guessedSakeRiceVariety,
+            guessedSakeRegion: guessedSakeRegion,
+            guessedBeerStyle: guessedBeerStyle,
+            guessedBeerRegion: guessedBeerRegion,
+            accuracyScore: score ?? 0,
+            reflectionMemo: blindReflectionMemo
         )
-
-        draftStore.save(draft: draft, images: images)
-    }
-
-    public func restoreDraft() {
-        guard let loaded = draftStore.load() else { return }
-        let draft = loaded.draft
-
-        isResetting = true
-        defer { isResetting = false }
-
-        self.currentStep = draft.currentStep
-        self.selectedCategory = BeverageCategory(rawValue: draft.selectedCategoryRaw) ?? .wine
-        self.name = draft.name
-        self.producer = draft.producer
-        self.region = draft.region
-        self.vintage = draft.vintage
-        self.abvString = draft.abvString
-        self.priceString = draft.priceString
-        self.storageLocation = draft.storageLocation
-        self.isBackgroundRemoved = draft.isBackgroundRemoved
-
-        self.wineType = draft.wineType
-        self.blendComponents = draft.blendComponents
-        self.appellation = draft.appellation
-
-        self.sakeSpecificName = draft.sakeSpecificName
-        self.riceVariety = draft.riceVariety
-        self.polishingRate = draft.polishingRate
-        self.sakeMeterValue = draft.sakeMeterValue
-
-        self.beerStyle = draft.beerStyle
-        self.ibu = draft.ibu
-
-        self.appearanceNotes = draft.appearanceNotes
-        self.appearanceColorHex = draft.appearanceColorHex
-        self.selectedAromaTags = draft.selectedAromaTags
-
-        self.sweetness = draft.sweetness
-        self.saltiness = draft.saltiness
-        self.acidity = draft.acidity
-        self.bitterness = draft.bitterness
-        self.umami = draft.umami
-        self.tannin = draft.tannin
-        self.body = draft.body
-        self.selectedBalanceTags = draft.selectedBalanceTags
-        self.finishLength = draft.finishLength
-
-        self.rating = draft.rating
-        self.isCostEffective = draft.isCostEffective
-        self.isWillingToRepeat = draft.isWillingToRepeat
-        self.hasAgingPotential = draft.hasAgingPotential
-        self.pairing = draft.pairing
-        self.memo = draft.memo
-        self.tastingDate = draft.tastingDate
-
-        self.selectedImageData = loaded.images.frontImageData
-        self.originalImageData = loaded.images.originalImageData
-        self.selectedBackImageData = loaded.images.backImageData
-    }
-
-    public func clearDraft() {
-        draftStore.clear()
     }
 
     // MARK: - State Configuration & Reset
@@ -248,7 +191,7 @@ public final class AddFlowViewModel {
         isResetting = true
         defer { isResetting = false }
 
-        clearDraft()
+        self.entryMode = .normal
         self.currentStep = 1
         self.isOpeningExistingItem = false
         self.selectedCategory = .wine
@@ -266,6 +209,15 @@ public final class AddFlowViewModel {
         self.originalImageData = nil
         self.selectedBackImageData = nil
         self.isBackgroundRemoved = true
+
+        self.guessedWineBlend = [BlendComponent(variety: "", percentage: 100)]
+        self.guessedWineRegion = ""
+        self.guessedSakeSpecificName = "純米大吟醸"
+        self.guessedSakeRiceVariety = ""
+        self.guessedSakeRegion = ""
+        self.guessedBeerStyle = ""
+        self.guessedBeerRegion = ""
+        self.blindReflectionMemo = ""
 
         self.wineType = "赤"
         self.grapeVarieties = ""
@@ -302,9 +254,6 @@ public final class AddFlowViewModel {
     }
 
     public func configureWithItem(_ item: BeverageItem) {
-        isResetting = true
-        defer { isResetting = false }
-
         self.sourceItem = item
         self.editingItem = item
         self.selectedCategory = item.category
@@ -341,6 +290,7 @@ public final class AddFlowViewModel {
         isResetting = true
         defer { isResetting = false }
 
+        self.entryMode = log.isBlind ? .blind : .normal
         self.tastingDate = log.date
         self.rating = log.rating
         self.appearanceNotes = log.appearanceNotes
@@ -360,6 +310,21 @@ public final class AddFlowViewModel {
         self.hasAgingPotential = log.hasAgingPotential
         self.pairing = log.pairing ?? ""
         self.memo = log.memo
+
+        if let json = log.blindDataJSON,
+           let data = json.data(using: .utf8),
+           let payload = try? JSONDecoder().decode(BlindTastingPayload.self, from: data) {
+            self.guessedWineBlend = payload.guessedWineBlend.isEmpty
+                ? [BlendComponent(variety: "", percentage: 100)]
+                : payload.guessedWineBlend
+            self.guessedWineRegion = payload.guessedWineRegion
+            self.guessedSakeSpecificName = payload.guessedSakeSpecificName.isEmpty ? "純米大吟醸" : payload.guessedSakeSpecificName
+            self.guessedSakeRiceVariety = payload.guessedSakeRiceVariety
+            self.guessedSakeRegion = payload.guessedSakeRegion
+            self.guessedBeerStyle = payload.guessedBeerStyle
+            self.guessedBeerRegion = payload.guessedBeerRegion
+            self.blindReflectionMemo = payload.reflectionMemo
+        }
     }
 
     // MARK: - Persistence Actions
@@ -456,9 +421,6 @@ public final class AddFlowViewModel {
         guard let item = log.item else { return }
 
         configureWithItem(item)
-
-        isResetting = true
-        defer { isResetting = false }
 
         guard let json = item.specificMetadataJSON, let data = json.data(using: .utf8) else { return }
         let decoder = JSONDecoder()
@@ -643,5 +605,31 @@ public final class AddFlowViewModel {
         log.pairing = pairing.isEmpty ? nil : pairing
         log.memo = memo
         log.isEvaluated = true
+
+        log.isBlind = isBlindMode
+        if isBlindMode {
+            let evaluation = evaluateBlindResult()
+            log.blindAccuracyScore = evaluation.score
+            switch selectedCategory {
+            case .wine:
+                log.guessedVariety = guessedWineBlend.filter { !$0.variety.isEmpty }.map(\.variety).joined(separator: " / ")
+                log.guessedRegion = guessedWineRegion
+            case .sake:
+                log.guessedVariety = [guessedSakeSpecificName, guessedSakeRiceVariety].filter { !$0.isEmpty }.joined(separator: " · ")
+                log.guessedRegion = guessedSakeRegion
+            case .beer:
+                log.guessedVariety = guessedBeerStyle
+                log.guessedRegion = guessedBeerRegion
+            }
+            let payload = currentBlindPayload(score: evaluation.score)
+            if let data = try? JSONEncoder().encode(payload) {
+                log.blindDataJSON = String(data: data, encoding: .utf8)
+            }
+        } else {
+            log.guessedVariety = nil
+            log.guessedRegion = nil
+            log.blindAccuracyScore = nil
+            log.blindDataJSON = nil
+        }
     }
 }

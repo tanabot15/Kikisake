@@ -47,6 +47,13 @@ public final class TastingLog {
     // 評価がユーザーによって入力されたかどうか
     public var isEvaluated: Bool
 
+    // --- ブラインドテイスティング用フィールド ---
+    public var isBlind: Bool = false              // ブラインド記録かどうか
+    public var guessedVariety: String? = nil      // 予想した品種 / 特定名称 / ビアスタイル（検索・一覧表示用サマリー）
+    public var guessedRegion: String? = nil       // 予想した生産地
+    public var blindAccuracyScore: Int? = nil     // 正解率 (0〜100%)
+    public var blindDataJSON: String? = nil       // 予想詳細・割合・振り返りメモ（BlindTastingPayloadのJSON）
+
     // リレーション
     public var item: BeverageItem?
 
@@ -74,6 +81,11 @@ public final class TastingLog {
         pairing: String? = nil,
         memo: String = "",
         isEvaluated: Bool = false,
+        isBlind: Bool = false,
+        guessedVariety: String? = nil,
+        guessedRegion: String? = nil,
+        blindAccuracyScore: Int? = nil,
+        blindDataJSON: String? = nil,
         item: BeverageItem? = nil
     ) {
         self.id = id
@@ -99,6 +111,11 @@ public final class TastingLog {
         self.pairing = pairing
         self.memo = memo
         self.isEvaluated = isEvaluated
+        self.isBlind = isBlind
+        self.guessedVariety = guessedVariety
+        self.guessedRegion = guessedRegion
+        self.blindAccuracyScore = blindAccuracyScore
+        self.blindDataJSON = blindDataJSON
         self.item = item
     }
 }

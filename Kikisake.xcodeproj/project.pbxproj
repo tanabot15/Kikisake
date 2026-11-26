@@ -91,13 +91,15 @@
 		D9FB6CF430B1842300D105C9 /* CollectionItemDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF330B1842300D105C9 /* CollectionItemDetailSheet.swift */; };
 		D9FB6CF630B1844700D105C9 /* RankShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF530B1844700D105C9 /* RankShareSheetView.swift */; };
 		D9FB6CF830B1C8B600D105C9 /* LogSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF730B1C8B600D105C9 /* LogSelectionSheet.swift */; };
-		D9FB6CFA30B1C94B00D105C9 /* AddFlowDraftStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CF930B1C94B00D105C9 /* AddFlowDraftStore.swift */; };
 		D9FB6CFC30B1CA2B00D105C9 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CFB30B1CA2B00D105C9 /* ImagePickerView.swift */; };
 		D9FB6CFE30B1CA6700D105C9 /* StoragePickerWithGridMappingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CFD30B1CA6700D105C9 /* StoragePickerWithGridMappingView.swift */; };
 		D9FB6D0030B1CC7200D105C9 /* InventoryGridResizeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6CFF30B1CC7200D105C9 /* InventoryGridResizeSheet.swift */; };
 		D9FB6D0230B1CC9600D105C9 /* InventoryLocationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6D0130B1CC9600D105C9 /* InventoryLocationCardView.swift */; };
 		D9FB6D0430B1CD4000D105C9 /* TastingCustomizationEditSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6D0330B1CD4000D105C9 /* TastingCustomizationEditSheets.swift */; };
 		D9FB6D0730B325C200D105C9 /* PreviewSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6D0630B325C200D105C9 /* PreviewSampleData.swift */; };
+		D9FB6D1F30B7E3E300D105C9 /* BlindTastingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6D1E30B7E3E300D105C9 /* BlindTastingData.swift */; };
+		D9FB6D2130B7E46300D105C9 /* AddBlindGuessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6D2030B7E46300D105C9 /* AddBlindGuessView.swift */; };
+		D9FB6D2330B7E48400D105C9 /* AddBlindResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FB6D2230B7E48400D105C9 /* AddBlindResultView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -187,13 +189,15 @@
 		D9FB6CF330B1842300D105C9 /* CollectionItemDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionItemDetailSheet.swift; sourceTree = "<group>"; };
 		D9FB6CF530B1844700D105C9 /* RankShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankShareSheetView.swift; sourceTree = "<group>"; };
 		D9FB6CF730B1C8B600D105C9 /* LogSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSelectionSheet.swift; sourceTree = "<group>"; };
-		D9FB6CF930B1C94B00D105C9 /* AddFlowDraftStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFlowDraftStore.swift; sourceTree = "<group>"; };
 		D9FB6CFB30B1CA2B00D105C9 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		D9FB6CFD30B1CA6700D105C9 /* StoragePickerWithGridMappingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoragePickerWithGridMappingView.swift; sourceTree = "<group>"; };
 		D9FB6CFF30B1CC7200D105C9 /* InventoryGridResizeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryGridResizeSheet.swift; sourceTree = "<group>"; };
 		D9FB6D0130B1CC9600D105C9 /* InventoryLocationCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryLocationCardView.swift; sourceTree = "<group>"; };
 		D9FB6D0330B1CD4000D105C9 /* TastingCustomizationEditSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastingCustomizationEditSheets.swift; sourceTree = "<group>"; };
 		D9FB6D0630B325C200D105C9 /* PreviewSampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSampleData.swift; sourceTree = "<group>"; };
+		D9FB6D1E30B7E3E300D105C9 /* BlindTastingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlindTastingData.swift; sourceTree = "<group>"; };
+		D9FB6D2030B7E46300D105C9 /* AddBlindGuessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBlindGuessView.swift; sourceTree = "<group>"; };
+		D9FB6D2230B7E48400D105C9 /* AddBlindResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBlindResultView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -347,6 +351,7 @@
 				D9044216307E850500EF4807 /* TastingLog.swift */,
 				D9044258308366C300EF4807 /* StorageLocation.swift */,
 				D90442553081E26F00EF4807 /* BeverageSpecificMetadata.swift */,
+				D9FB6D1E30B7E3E300D105C9 /* BlindTastingData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -436,7 +441,6 @@
 			children = (
 				D9044236307E85DB00EF4807 /* AddFlowCoordinatorView.swift */,
 				D9FB6D1730B3274700D105C9 /* ViewModels */,
-				D9FB6D1630B3272B00D105C9 /* Stores */,
 				D904423A307E85ED00EF4807 /* Steps */,
 				D9FB6D1530B3272300D105C9 /* Components */,
 			);
@@ -474,6 +478,8 @@
 				D90442513081A45200EF4807 /* AddStep3AromaView.swift */,
 				D90442533081A46800EF4807 /* AddStep4TasteView.swift */,
 				D9044241307E862600EF4807 /* AddStep5FinalizeView.swift */,
+				D9FB6D2030B7E46300D105C9 /* AddBlindGuessView.swift */,
+				D9FB6D2230B7E48400D105C9 /* AddBlindResultView.swift */,
 			);
 			path = Steps;
 			sourceTree = "<group>";
@@ -665,14 +671,6 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		D9FB6D1630B3272B00D105C9 /* Stores */ = {
-			isa = PBXGroup;
-			children = (
-				D9FB6CF930B1C94B00D105C9 /* AddFlowDraftStore.swift */,
-			);
-			path = Stores;
-			sourceTree = "<group>";
-		};
 		D9FB6D1730B3274700D105C9 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -830,8 +828,10 @@
 				D95082573090D95D0045BF8E /* BackupDTOs.swift in Sources */,
 				D950825B309228190045BF8E /* BottleMattingHelper.swift in Sources */,
 				D904420B307E84C300EF4807 /* Color+Extension.swift in Sources */,
+				D9FB6D1F30B7E3E300D105C9 /* BlindTastingData.swift in Sources */,
 				D904424E3081A41E00EF4807 /* AddStep1GeneralInfoView.swift in Sources */,
 				D9044207307E84AC00EF4807 /* Date+Extension.swift in Sources */,
+				D9FB6D2130B7E46300D105C9 /* AddBlindGuessView.swift in Sources */,
 				D9FB6CFE30B1CA6700D105C9 /* StoragePickerWithGridMappingView.swift in Sources */,
 				D9044281308CF53B00EF4807 /* LocationSlotSelectionSheet.swift in Sources */,
 				D9044277308B1ADF00EF4807 /* FlowLayout.swift in Sources */,
@@ -842,7 +842,6 @@
 				D904421D307E852C00EF4807 /* BeverageCategory.swift in Sources */,
 				D95082593090D9720045BF8E /* BackupManager.swift in Sources */,
 				D9044271308AFA4E00EF4807 /* LogFilterSheet.swift in Sources */,
-				D9FB6CFA30B1C94B00D105C9 /* AddFlowDraftStore.swift in Sources */,
 				D9FB6CF630B1844700D105C9 /* RankShareSheetView.swift in Sources */,
 				D9FB6D0230B1CC9600D105C9 /* InventoryLocationCardView.swift in Sources */,
 				D9508261309D8B530045BF8E /* TastingCustomizationManager.swift in Sources */,
@@ -873,6 +872,7 @@
 				D9044248307E864800EF4807 /* SettingsView.swift in Sources */,
 				D9FB6CF430B1842300D105C9 /* CollectionItemDetailSheet.swift in Sources */,
 				D904421F307E853700EF4807 /* CalculateAnalyticsUseCase.swift in Sources */,
+				D9FB6D2330B7E48400D105C9 /* AddBlindResultView.swift in Sources */,
 				D90441E9307E817B00EF4807 /* KikisakeApp.swift in Sources */,
 				D904F0B130A94F400046D409 /* RankShareCardView.swift in Sources */,
 				D904422D307E85A000EF4807 /* LogView.swift in Sources */,
@@ -1036,7 +1036,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1057,7 +1057,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.36;
+				MARKETING_VERSION = 1.38;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1080,7 +1080,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = D86GFNUD35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1101,7 +1101,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.36;
+				MARKETING_VERSION = 1.38;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suzuki.kenichiro.Kikisake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

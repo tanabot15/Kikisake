@@ -6,7 +6,7 @@
 import SwiftUI
 import SwiftData
 
-/// 5-step tasting log and inventory registration flow coordinator.
+/// Tasting log and inventory registration flow coordinator (supports Normal & Blind modes).
 public struct AddFlowCoordinatorView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \StorageLocation.createdAt, order: .forward) private var locations: [StorageLocation]
@@ -17,15 +17,18 @@ public struct AddFlowCoordinatorView: View {
     @State private var alertMessage: String = ""
     @State private var isShowingSaveOptions: Bool = false
     @State private var isShowingInventoryMenu: Bool = false
-    @State private var isShowingDraftRestoreAlert: Bool = false
 
     @State private var pendingTargetLocation: StorageLocation? = nil
     @State private var isInventoryOnlyFlow: Bool = false
 
     @FocusState private var focusedField: GeneralInfoField?
 
-    private var isNameEmpty: Bool {
-        viewModel.currentStep == 1 && viewModel.name.trimmingCharacters(in: .whitespaces).isEmpty
+    private var isNameRequiredAtCurrentStep: Bool {
+        if viewModel.isBlindMode {
+            return viewModel.currentStep == 5 && viewModel.name.trimmingCharacters(in: .whitespaces).isEmpty
+        } else {
+            return viewModel.currentStep == 1 && viewModel.name.trimmingCharacters(in: .whitespaces).isEmpty
+        }
     }
 
     public var body: some View {
@@ -34,7 +37,11 @@ public struct AddFlowCoordinatorView: View {
                 stepIndicatorView
                 stepContentView
             }
-            .navigationTitle(String(format: String(localized: "追加 (%d/5)"), viewModel.currentStep))
+            .navigationTitle(
+                viewModel.isBlindMode
+                    ? String(format: String(localized: "ブラインド (%d/%d)"), viewModel.currentStep, viewModel.totalSteps)
+                    : String(format: String(localized: "追加 (%d/%d)"), viewModel.currentStep, viewModel.totalSteps)
+            )
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 leadingToolbarItem
@@ -61,28 +68,12 @@ public struct AddFlowCoordinatorView: View {
             }
             .alert(String(localized: "確認"), isPresented: $showAlert) {
                 Button(String(localized: "OK"), role: .cancel) {
-                    if isNameEmpty {
+                    if isNameRequiredAtCurrentStep {
                         focusedField = .name
                     }
                 }
             } message: {
                 Text(alertMessage)
-            }
-            .alert(String(localized: "前回の続きから入力しますか？"), isPresented: $isShowingDraftRestoreAlert) {
-                Button(String(localized: "続きから復元する")) {
-                    viewModel.restoreDraft()
-                }
-                Button(String(localized: "破棄して新しく始める"), role: .destructive) {
-                    viewModel.clearDraft()
-                    viewModel.reset()
-                }
-            } message: {
-                Text(String(localized: "入力途中の下書きデータが保存されています。"))
-            }
-            .onAppear {
-                if !viewModel.isOpeningExistingItem && viewModel.editingLog == nil && viewModel.hasDraft {
-                    isShowingDraftRestoreAlert = true
-                }
             }
         }
     }
@@ -91,42 +82,130 @@ public struct AddFlowCoordinatorView: View {
 
     private var stepIndicatorView: some View {
         HStack(spacing: 8) {
-            ForEach(1...5, id: \.self) { step in
+            ForEach(1...viewModel.totalSteps, id: \.self) { step in
                 Circle()
-                    .fill(viewModel.currentStep >= step ? Color.accentColor : Color(.systemGray3))
+                    .fill(
+                        viewModel.currentStep >= step
+                            ? (viewModel.isBlindMode ? Color.indigo : Color.accentColor)
+                            : Color(.systemGray3)
+                    )
                     .frame(width: 8, height: 8)
             }
         }
         .padding(.vertical, 12)
     }
 
+    /// ブラインドモード開始時（Step 1）の酒種・ワインタイプ選択ヘッダー
+    @ViewBuilder
+    private var blindCategorySelectorHeader: some View {
+        if viewModel.isBlindMode && viewModel.currentStep == 1 {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 6) {
+                    Image(systemName: "eye.slash.fill")
+                        .font(.caption)
+                        .foregroundStyle(.indigo)
+                    Text(String(localized: "ブラインド対象カテゴリー"))
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
+
+                HStack(spacing: 8) {
+                    Picker(String(localized: "酒種"), selection: $viewModel.selectedCategory) {
+                        ForEach(BeverageCategory.allCases, id: \.self) { category in
+                            Text(category.displayName).tag(category)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+
+                    if viewModel.selectedCategory == .wine {
+                        Picker(String(localized: "タイプ"), selection: $viewModel.wineType) {
+                            Text("赤").tag("赤")
+                            Text("白").tag("白")
+                            Text("ロゼ").tag("ロゼ")
+                            Text("オレンジ").tag("オレンジ")
+                            Text("泡").tag("スパークリング")
+                        }
+                        .pickerStyle(.menu)
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 8)
+        }
+    }
+
     @ViewBuilder
     private var stepContentView: some View {
-        switch viewModel.currentStep {
-        case 1:
-            VStack(spacing: 0) {
-                inventoryQuickActionBanner
-                    .padding(.horizontal)
-                    .padding(.top, 4)
-                    .padding(.bottom, 8)
+        if viewModel.isBlindMode {
+            switch viewModel.currentStep {
+            case 1:
+                VStack(spacing: 0) {
+                    blindCategorySelectorHeader
+                    AddStep2AppearanceView(viewModel: viewModel)
+                }
+            case 2:
+                AddStep3AromaView(viewModel: viewModel)
+            case 3:
+                AddStep4TasteView(viewModel: viewModel)
+            case 4:
+                AddBlindGuessView(viewModel: viewModel)
+            case 5:
+                VStack(spacing: 0) {
+                    blindRevealBanner
+                    AddStep1GeneralInfoView(viewModel: viewModel, focusedField: $focusedField) { message in
+                        presentAlert(message)
+                    }
+                }
+            case 6:
+                AddBlindResultView(viewModel: viewModel)
+            case 7:
+                AddStep5FinalizeView(viewModel: viewModel)
+            default:
+                EmptyView()
+            }
+        } else {
+            switch viewModel.currentStep {
+            case 1:
+                VStack(spacing: 0) {
+                    inventoryQuickActionBanner
+                        .padding(.horizontal)
+                        .padding(.top, 4)
+                        .padding(.bottom, 8)
 
+                    AddStep1GeneralInfoView(viewModel: viewModel, focusedField: $focusedField) { message in
+                        presentAlert(message)
+                    }
+                }
+            case 2:
+                AddStep2AppearanceView(viewModel: viewModel)
+            case 3:
+                AddStep3AromaView(viewModel: viewModel)
+            case 4:
+                AddStep4TasteView(viewModel: viewModel)
+            case 5:
+                AddStep5FinalizeView(viewModel: viewModel)
+            default:
                 AddStep1GeneralInfoView(viewModel: viewModel, focusedField: $focusedField) { message in
                     presentAlert(message)
                 }
             }
-        case 2:
-            AddStep2AppearanceView(viewModel: viewModel)
-        case 3:
-            AddStep3AromaView(viewModel: viewModel)
-        case 4:
-            AddStep4TasteView(viewModel: viewModel)
-        case 5:
-            AddStep5FinalizeView(viewModel: viewModel)
-        default:
-            AddStep1GeneralInfoView(viewModel: viewModel, focusedField: $focusedField) { message in
-                presentAlert(message)
-            }
         }
+    }
+
+    private var blindRevealBanner: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "sparkles")
+                .foregroundStyle(.indigo)
+            Text(String(localized: "答え合わせ：ボトルの銘柄と実際のスペックを入力してください"))
+                .font(.caption)
+                .fontWeight(.semibold)
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(Color.indigo.opacity(0.1))
     }
 
     private var inventoryQuickActionBanner: some View {
@@ -168,7 +247,7 @@ public struct AddFlowCoordinatorView: View {
             .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
         }
         .buttonStyle(.plain)
-        .opacity(isNameEmpty ? 0.6 : 1.0)
+        .opacity(isNameRequiredAtCurrentStep ? 0.6 : 1.0)
     }
 
     // MARK: - Toolbar & Dialog Actions
@@ -203,13 +282,13 @@ public struct AddFlowCoordinatorView: View {
     @ToolbarContentBuilder
     private var trailingToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            if viewModel.currentStep < 5 {
+            if viewModel.currentStep < viewModel.totalSteps {
                 Button(String(localized: "次へ")) {
                     guard validateNameNotEmpty() else { return }
                     viewModel.currentStep += 1
                 }
                 .fontWeight(.semibold)
-                .foregroundStyle(isNameEmpty ? .gray : Color.accentColor)
+                .foregroundStyle(isNameRequiredAtCurrentStep ? .gray : Color.accentColor)
             } else {
                 Button(String(localized: "保存")) {
                     guard validateNameNotEmpty() else { return }
@@ -259,7 +338,7 @@ public struct AddFlowCoordinatorView: View {
 
     @discardableResult
     private func validateNameNotEmpty() -> Bool {
-        if isNameEmpty {
+        if isNameRequiredAtCurrentStep {
             presentAlert(String(localized: "銘柄名は必須項目です。"))
             return false
         }
