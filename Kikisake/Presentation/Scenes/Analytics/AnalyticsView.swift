@@ -6,7 +6,7 @@
 import SwiftUI
 import SwiftData
 
-/// Root analytics screen containing consumption, evaluation, and comparison tabs.
+/// Root analytics screen containing consumption, evaluation, blind, and comparison tabs.
 public struct AnalyticsView: View {
     @Query private var logs: [TastingLog]
     @State private var viewModel = AnalyticsViewModel()
@@ -35,6 +35,11 @@ public struct AnalyticsView: View {
                         contentView(for: .evaluation)
                     }
                     .tag(AnalyticsSection.evaluation)
+
+                    sectionScrollContainer {
+                        BlindAnalyticsView(viewModel: viewModel, targetLogs: viewModel.filteredLogs(from: logs))
+                    }
+                    .tag(AnalyticsSection.blind)
 
                     sectionScrollContainer {
                         LogComparisonView(viewModel: viewModel, allLogs: logs)
@@ -110,7 +115,7 @@ public struct AnalyticsView: View {
                 ConsumptionView(viewModel: viewModel, targetLogs: targetLogs)
             case .evaluation:
                 EvaluationView(viewModel: viewModel, targetLogs: targetLogs)
-            case .comparison:
+            case .blind, .comparison:
                 EmptyView()
             }
         }
@@ -118,6 +123,21 @@ public struct AnalyticsView: View {
 }
 
 #Preview {
-    AnalyticsView()
-        .modelContainer(PreviewSampleData.container)
+    AnalyticsViewPreviewHost(initialSection: .consumption)
+}
+
+private struct AnalyticsViewPreviewHost: View {
+    @State private var isReady = false
+    let initialSection: AnalyticsSection
+
+    var body: some View {
+        AnalyticsView()
+            .modelContainer(PreviewSampleData.container)
+            .onAppear {
+                if !isReady {
+                    AppState.shared.selectedTab = 1
+                    isReady = true
+                }
+            }
+    }
 }

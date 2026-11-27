@@ -38,6 +38,9 @@ public enum PreviewSampleData {
         public let sakeLog: TastingLog
         public let beerItem: BeverageItem
         public let beerLog: TastingLog
+        public let blindWineLog: TastingLog
+        public let blindSakeLog: TastingLog
+        public let blindBeerLog: TastingLog
         public let cellarLocation: StorageLocation
         public let fridgeLocation: StorageLocation
     }
@@ -215,6 +218,113 @@ public enum PreviewSampleData {
             item: beerItem
         )
 
+        // 5. ブラインド分析プレビュー用ログ
+        let blindWinePayloadJSON = encodeJSON(
+            BlindTastingPayload(
+                guessedWineBlend: [
+                    BlendComponent(variety: "カベルネ・ソーヴィニヨン", percentage: 80),
+                    BlendComponent(variety: "メルロー", percentage: 20)
+                ],
+                guessedWineRegion: "フランス, ボルドー",
+                accuracyScore: 85,
+                reflectionMemo: "カシスとスミレ、しっかりしたタンニンからボルドーと推理。"
+            )
+        )
+
+        let blindWineLog = TastingLog(
+            date: calendar.date(byAdding: .day, value: -20, to: now) ?? now,
+            rating: 4.6,
+            appearanceNotes: "ガーネット",
+            appearanceColorHex: "#7A1C2E",
+            aromaTags: ["カシス", "スミレ"],
+            sweetness: 2.0,
+            saltiness: 0.5,
+            acidity: 3.8,
+            bitterness: 2.2,
+            umami: 2.5,
+            tannin: 4.2,
+            body: 4.3,
+            balanceTags: ["エレガント"],
+            finishLength: 4.2,
+            memo: "ブラインド検証ログ",
+            isEvaluated: true,
+            isBlind: true,
+            guessedVariety: "カベルネ・ソーヴィニヨン / メルロー",
+            guessedRegion: "フランス, ボルドー",
+            blindAccuracyScore: 85,
+            blindDataJSON: blindWinePayloadJSON,
+            item: wineItem
+        )
+
+        let blindSakePayloadJSON = encodeJSON(
+            BlindTastingPayload(
+                guessedSakeSpecificName: "純米大吟醸",
+                guessedSakeRiceVariety: "山田錦",
+                guessedSakeRegion: "日本, 山形県",
+                accuracyScore: 100,
+                reflectionMemo: "華やかな果実香と上品な甘みから純米大吟醸・山田錦と的中。"
+            )
+        )
+
+        let blindSakeLog = TastingLog(
+            date: calendar.date(byAdding: .day, value: -10, to: now) ?? now,
+            rating: 4.8,
+            appearanceNotes: "透明",
+            appearanceColorHex: "#F5F3E7",
+            aromaTags: ["白桃", "メロン"],
+            sweetness: 3.5,
+            saltiness: 0.5,
+            acidity: 3.0,
+            bitterness: 1.5,
+            umami: 4.0,
+            tannin: nil,
+            body: 3.5,
+            balanceTags: ["芳醇"],
+            finishLength: 4.4,
+            memo: "ブラインド検証ログ",
+            isEvaluated: true,
+            isBlind: true,
+            guessedVariety: "純米大吟醸 · 山田錦",
+            guessedRegion: "日本, 山形県",
+            blindAccuracyScore: 100,
+            blindDataJSON: blindSakePayloadJSON,
+            item: sakeItem
+        )
+
+        let blindBeerPayloadJSON = encodeJSON(
+            BlindTastingPayload(
+                guessedBeerStyle: "IPA",
+                guessedBeerRegion: "アメリカ",
+                accuracyScore: 60,
+                reflectionMemo: "柑橘と苦味が強くIPA系と予想。"
+            )
+        )
+
+        let blindBeerLog = TastingLog(
+            date: calendar.date(byAdding: .day, value: -5, to: now) ?? now,
+            rating: 4.4,
+            appearanceNotes: "ゴールデン",
+            appearanceColorHex: "#D98A2B",
+            aromaTags: ["グレープフルーツ", "松脂"],
+            sweetness: 2.0,
+            saltiness: 0.5,
+            acidity: 3.0,
+            bitterness: 4.5,
+            umami: 2.0,
+            tannin: nil,
+            body: 3.4,
+            balanceTags: ["爽快"],
+            finishLength: 3.8,
+            memo: "ブラインド検証ログ",
+            isEvaluated: true,
+            isBlind: true,
+            guessedVariety: "IPA",
+            guessedRegion: "アメリカ",
+            blindAccuracyScore: 60,
+            blindDataJSON: blindBeerPayloadJSON,
+            item: beerItem
+        )
+
         return SampleBundle(
             wineItem: wineItem,
             wineLog: wineLog,
@@ -222,6 +332,9 @@ public enum PreviewSampleData {
             sakeLog: sakeLog,
             beerItem: beerItem,
             beerLog: beerLog,
+            blindWineLog: blindWineLog,
+            blindSakeLog: blindSakeLog,
+            blindBeerLog: blindBeerLog,
             cellarLocation: cellar,
             fridgeLocation: fridge
         )
@@ -237,12 +350,15 @@ public enum PreviewSampleData {
 
         context.insert(bundle.wineItem)
         context.insert(bundle.wineLog)
+        context.insert(bundle.blindWineLog)
 
         context.insert(bundle.sakeItem)
         context.insert(bundle.sakeLog)
+        context.insert(bundle.blindSakeLog)
 
         context.insert(bundle.beerItem)
         context.insert(bundle.beerLog)
+        context.insert(bundle.blindBeerLog)
     }
 
     private static func encodeJSON<T: Encodable>(_ value: T) -> String? {

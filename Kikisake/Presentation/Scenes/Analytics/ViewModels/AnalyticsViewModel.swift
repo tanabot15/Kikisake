@@ -10,6 +10,7 @@ import SwiftData
 public enum AnalyticsSection: String, CaseIterable, Identifiable {
     case consumption
     case evaluation
+    case blind
     case comparison
 
     public var id: String { rawValue }
@@ -18,6 +19,7 @@ public enum AnalyticsSection: String, CaseIterable, Identifiable {
         switch self {
         case .consumption: String(localized: "飲酒ログ")
         case .evaluation: String(localized: "評価")
+        case .blind: String(localized: "ブラインド")
         case .comparison: String(localized: "比較")
         }
     }
@@ -121,6 +123,12 @@ public final class AnalyticsViewModel {
             !regionFilter.isEmpty ||
             minRatingFilter != nil ||
             !aromaTagFilter.isEmpty
+
+        case .blind:
+            selectedTimeFilter != .all ||
+            selectedCategoryFilter != nil ||
+            selectedSubCategoryFilter != nil ||
+            !regionFilter.isEmpty
 
         case .comparison:
             selectedCategoryFilter != nil ||

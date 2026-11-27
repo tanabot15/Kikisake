@@ -174,7 +174,14 @@
       }
     },
     "% MATCH" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "% MATCH"
+          }
+        }
+      }
     },
     "%@ （%@）" : {
       "localizations" : {
@@ -287,7 +294,14 @@
       }
     },
     "%@%%" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@%"
+          }
+        }
+      }
     },
     "%@にストック" : {
       "localizations" : {
@@ -428,7 +442,20 @@
       }
     },
     "%lld%%" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld％"
+          }
+        }
+      }
     },
     "%lld段" : {
       "localizations" : {
@@ -517,13 +544,34 @@
       }
     },
     "BLIND TASTING RESULT" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BLIND TASTING RESULT"
+          }
+        }
+      }
     },
     "EXPERT / 鋭い分析力！" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EXPERT / Sharp Analysis!"
+          }
+        }
+      }
     },
     "GOOD SENSE / 惜しいニアミス！" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GOOD SENSE / So Close!"
+          }
+        }
+      }
     },
     "Hyogo Sake85" : {
       "localizations" : {
@@ -656,10 +704,24 @@
       }
     },
     "MASTER SOMMELIER / 完璧な利き酒！" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MASTER SOMMELIER / Spot-On Tasting!"
+          }
+        }
+      }
     },
     "NICE TRY / 新たな発見！" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NICE TRY / New Discovery!"
+          }
+        }
+      }
     },
     "NO IMAGE" : {
       "localizations" : {
@@ -994,7 +1056,14 @@
       }
     },
     "あなたの予想" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Guess"
+          }
+        }
+      }
     },
     "アニス" : {
       "localizations" : {
@@ -1617,7 +1686,14 @@
       }
     },
     "ヴィンテージ / 製造年月" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vintage / Production Date"
+          }
+        }
+      }
     },
     "ヴィンテージ / 製造年月 (例: 2020)" : {
       "localizations" : {
@@ -6840,7 +6916,14 @@
       }
     },
     "ビアスタイルの予想" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beer Style Guess"
+          }
+        }
+      }
     },
     "ビアスタイルを自由入力 (例: IPA)" : {
       "localizations" : {
@@ -7213,7 +7296,14 @@
       }
     },
     "ブドウ品種と割合の予想" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grape Varieties & Blend Guess"
+          }
+        }
+      }
     },
     "ブブレスやテージョのミネラル豊かな白ワイン" : {
       "localizations" : {
@@ -7267,6 +7357,12 @@
     },
     "ブラインド (%d/%d)" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blind (%1$d/%2$d)"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -7276,16 +7372,44 @@
       }
     },
     "ブラインド予想（アンサー入力）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blind Guess (Answer Input)"
+          }
+        }
+      }
     },
     "ブラインド対象カテゴリー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blind Target Category"
+          }
+        }
+      }
     },
     "ブラインド記録" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blind Log"
+          }
+        }
+      }
     },
     "ブラインド記録（Kikisakeモード）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blind Log (Kikisake Mode)"
+          }
+        }
+      }
     },
     "ブラウフランキッシュ" : {
       "localizations" : {
@@ -7698,13 +7822,34 @@
       }
     },
     "ブレンド割合" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blend Ratio"
+          }
+        }
+      }
     },
     "ブレンド割合合計" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Blend Ratio"
+          }
+        }
+      }
     },
     "ブレンド品種を追加" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Blend Variety"
+          }
+        }
+      }
     },
     "フローラル" : {
       "localizations" : {
@@ -10063,7 +10208,14 @@
       }
     },
     "不一致 0pt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Match 0pt"
+          }
+        }
+      }
     },
     "不明な銘柄" : {
       "localizations" : {
@@ -10306,13 +10458,34 @@
       }
     },
     "予想 vs 実際のスペック" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guess vs. Actual Specs"
+          }
+        }
+      }
     },
     "予想ブドウ品種" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guessed Grape Variety"
+          }
+        }
+      }
     },
     "予想ブドウ品種 %d" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guessed Grape Variety %d"
+          }
+        }
+      }
     },
     "五つ星ソムリエ" : {
       "localizations" : {
@@ -10834,17 +11007,6 @@
         }
       }
     },
-    "入力途中の下書きデータが保存されています。" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You have an unsaved draft from your previous session."
-          }
-        }
-      }
-    },
     "全国の酒処と多様な酒米の個性を網羅" : {
       "localizations" : {
         "en" : {
@@ -11225,17 +11387,6 @@
         }
       }
     },
-    "前回の続きから入力しますか？" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Would you like to resume where you left off?"
-          }
-        }
-      }
-    },
     "割合" : {
       "localizations" : {
         "en" : {
@@ -11577,7 +11728,14 @@
       }
     },
     "参考スペック（実際の数値）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reference Specs (Actual)"
+          }
+        }
+      }
     },
     "取引の検証に失敗しました。" : {
       "localizations" : {
@@ -11910,7 +12068,14 @@
       }
     },
     "品種を選択..." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select variety..."
+          }
+        }
+      }
     },
     "唐津・小城" : {
       "localizations" : {
@@ -12253,7 +12418,14 @@
       }
     },
     "外観・香り・味わいの印象から正体を推理して選択してください。次の画面で答え合わせを行います。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deduce and select the identity from appearance, aroma, and palate impressions. You'll check your answers on the next screen."
+          }
+        }
+      }
     },
     "外観カラーの編集" : {
       "localizations" : {
@@ -12516,7 +12688,14 @@
       }
     },
     "実際のデータ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actual Data"
+          }
+        }
+      }
     },
     "宮城県" : {
       "localizations" : {
@@ -13345,7 +13524,14 @@
       }
     },
     "振り返りメモ（気づき・学び）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reflection Notes (Takeaways & Learnings)"
+          }
+        }
+      }
     },
     "播州 (西脇・加東・姫路)" : {
       "localizations" : {
@@ -14428,7 +14614,14 @@
       }
     },
     "泡" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effervescence"
+          }
+        }
+      }
     },
     "泡盛の技術を応用した沖縄のレアな日本酒や米発酵酒" : {
       "localizations" : {
@@ -14781,379 +14974,1253 @@
       }
     },
     "熊本・菊池" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kumamoto & Kikuchi"
+          }
+        }
+      }
     },
     "熊本県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kumamoto"
+          }
+        }
+      }
     },
     "熟成チーズ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aged Cheese"
+          }
+        }
+      }
     },
     "熟成ブラウン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aged Brown"
+          }
+        }
+      }
     },
     "熟成ポテンシャル" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aging Potential"
+          }
+        }
+      }
     },
     "熟成ポテンシャルあり" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good Aging Potential"
+          }
+        }
+      }
     },
     "燦爛、東力士 の五百万石" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sanran & Azumarikishi Gohyakumangoku"
+          }
+        }
+      }
     },
     "牡丹" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peony"
+          }
+        }
+      }
     },
     "特別純米" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tokubetsu Junmai"
+          }
+        }
+      }
     },
     "特定名称" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sake Specification"
+          }
+        }
+      }
     },
     "特定名称の予想" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sake Grade Guess"
+          }
+        }
+      }
     },
     "特定名称別 飲酒比率" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drink Ratio by Sake Grade"
+          }
+        }
+      }
     },
     "特徴・評価フラグ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Characteristics & Flags"
+          }
+        }
+      }
     },
     "獺祭 (旭酒造：磨き二割三分など) の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dassai (Asahi Shuzo: Migaki 23%, etc.) Yamadanishiki"
+          }
+        }
+      }
     },
     "獺祭 白鶴錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dassai Shiratsurunishiki"
+          }
+        }
+      }
     },
     "玉栄" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamasakae"
+          }
+        }
+      }
     },
     "王祿、隠岐誉 の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oroku & Okihomare Yamadanishiki"
+          }
+        }
+      }
     },
     "現在のタブ (%@)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current Tab (%@)"
+          }
+        }
+      }
     },
     "球磨" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuma"
+          }
+        }
+      }
     },
     "琥珀色（古酒）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amber (Aged)"
+          }
+        }
+      }
     },
     "瑞鷹、通潤 の吟のさと" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zuiyo & Tsujun Gin-no-sato"
+          }
+        }
+      }
     },
     "甘く芳醇な香りの日本固有(アメリカ系)白ワイン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sweet, aromatic native Japanese (Vitis labrusca) white wine"
+          }
+        }
+      }
     },
     "甘味" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sweetness"
+          }
+        }
+      }
     },
     "甘味 (Sweetness)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sweetness"
+          }
+        }
+      }
     },
     "甘草" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Licorice"
+          }
+        }
+      }
     },
     "生クリーム" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fresh Cream"
+          }
+        }
+      }
     },
     "生産地" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Origin"
+          }
+        }
+      }
     },
     "生産地 (例: ボルドー, 新潟)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Origin (e.g., Bordeaux, Niigata)"
+          }
+        }
+      }
     },
     "生産地（都道府県）の予想" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefecture Guess"
+          }
+        }
+      }
     },
     "生産地の予想" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Region Guess"
+          }
+        }
+      }
     },
     "生産地を自由入力 (例: スペイン, リオハ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter origin freely (e.g., Spain, Rioja)"
+          }
+        }
+      }
     },
     "生産者" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Producer"
+          }
+        }
+      }
     },
     "生産者 / 蔵元 / ブルワリー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Producer / Brewery"
+          }
+        }
+      }
     },
     "生肉" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw Meat"
+          }
+        }
+      }
     },
     "産土 (山田錦：花の香酒造)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubusuna (Yamadanishiki: Hananohana Shuzo)"
+          }
+        }
+      }
     },
     "産土 神力 (古代米の復活銘柄)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubusuna Shinriki (Revived Heirloom Rice)"
+          }
+        }
+      }
     },
     "産地" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Region"
+          }
+        }
+      }
     },
     "産地 (例: ボルドー, 秋田県)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Region (e.g., Bordeaux, Akita)"
+          }
+        }
+      }
     },
     "産地で絞り込み (例: ボルドー, 新潟)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter by region (e.g., Bordeaux, Niigata)"
+          }
+        }
+      }
     },
     "産地や品種・米・スタイルの絞り込み条件を変更してみてください。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try adjusting your filters for region, varietal, rice, or style."
+          }
+        }
+      }
     },
     "田中六五 などの福岡産雄町酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fukuoka Omachi sake such as Tanaka Rokugo"
+          }
+        }
+      }
     },
     "田酒 純米大吟醸 華想い" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denshu Junmai Daiginjo Hana-omoi"
+          }
+        }
+      }
     },
     "甲子 (飯沼本家)、鳴海 の総の舞" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kinoshita (Iinuma Honke) & Narumi Fusanomai"
+          }
+        }
+      }
     },
     "甲州" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koshu"
+          }
+        }
+      }
     },
     "発酵バター" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cultured Butter"
+          }
+        }
+      }
     },
     "登録したすべての銘柄、テイスティング記録、保管場所が完全に削除されます。この操作は取り消せません。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All registered bottles, tasting logs, and storage locations will be permanently deleted. This action cannot be undone."
+          }
+        }
+      }
     },
     "登録日" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date Added"
+          }
+        }
+      }
     },
     "白" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White"
+          }
+        }
+      }
     },
     "白コショウ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White Pepper"
+          }
+        }
+      }
     },
     "白バラ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White Rose"
+          }
+        }
+      }
     },
     "白桃" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White Peach"
+          }
+        }
+      }
     },
     "白玉団子" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shiratama Dumpling"
+          }
+        }
+      }
     },
     "白胡椒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White Pepper"
+          }
+        }
+      }
     },
     "白菊" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White Chrysanthemum"
+          }
+        }
+      }
     },
     "白銀（プラチナ）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Platinum Silver"
+          }
+        }
+      }
     },
     "白隠正宗、初亀 の誉富士" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hakuinmasamune & Hatsukame Homarefuji"
+          }
+        }
+      }
     },
     "白鶴酒造開発の姉妹米 (高木酒造「十四代 白鶴錦」など)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sister rice developed by Hakutsuru (e.g., Juyondai Shiratsurunishiki by Takagi Shuzo)"
+          }
+        }
+      }
     },
     "白鶴錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shiratsurunishiki"
+          }
+        }
+      }
     },
     "百万石乃白、車多酒造 (天狗舞)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyakumangoku-no-shiro, Shata Shuzo (Tengumai)"
+          }
+        }
+      }
     },
     "百田" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyakuden"
+          }
+        }
+      }
     },
     "的中 +%lldpt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exact Match +%lldpt"
+          }
+        }
+      }
     },
     "盛岡・紫波 (南部杜氏)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Morioka & Shiwa (Nambu Toji)"
+          }
+        }
+      }
     },
     "直接入力（その他）に切り替え" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch to Manual Input (Other)"
+          }
+        }
+      }
     },
     "直近1ヶ月" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Month"
+          }
+        }
+      }
     },
     "直近1年" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Year"
+          }
+        }
+      }
     },
     "直近3ヶ月" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last 3 Months"
+          }
+        }
+      }
     },
     "県北 (大崎・栗原)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Northern Miyagi (Osaki, Kurihara)"
+          }
+        }
+      }
     },
     "県北 (大田原・那須)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Northern Tochigi (Otawara, Nasu)"
+          }
+        }
+      }
     },
     "県北 (常陸太田・日立)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Northern Ibaraki (Hitachiota, Hitachi)"
+          }
+        }
+      }
     },
     "県北 (熊谷・行田)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Northern Saitama (Kumagaya, Gyoda)"
+          }
+        }
+      }
     },
     "県北 (能代)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Northern Akita (Noshiro)"
+          }
+        }
+      }
     },
     "県南 (小山・栃木)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Southern Tochigi (Oyama, Tochigi)"
+          }
+        }
+      }
     },
     "県南 (横手・湯沢)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Southern Akita (Yokote, Yuzawa)"
+          }
+        }
+      }
     },
     "県南 (花巻・一関)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Southern Iwate (Hanamaki, Ichinoseki)"
+          }
+        }
+      }
     },
     "県央 (海老名・厚木)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Central Kanagawa (Ebina, Atsugi)"
+          }
+        }
+      }
     },
     "県西 (結城・筑西)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Western Ibaraki (Yuki, Chikusei)"
+          }
+        }
+      }
     },
     "県西 (足柄・小田原)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Western Kanagawa (Ashigara, Odawara)"
+          }
+        }
+      }
     },
     "真澄 (宮坂醸造)、大信州 の美山錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masumi (Miyasaka Brewing) & Daishinchu Miyamanishiki"
+          }
+        }
+      }
     },
     "真鍮色（ブラス）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brass"
+          }
+        }
+      }
     },
     "知多 (半田・常滑)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chita (Handa, Tokoname)"
+          }
+        }
+      }
     },
     "石川県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ishikawa"
+          }
+        }
+      }
     },
     "石川県の希少な新酒米を使った地酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local sake brewed with rare new Ishikawa rice varieties"
+          }
+        }
+      }
     },
     "石川酒68号" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ishikawa Sake 68"
+          }
+        }
+      }
     },
     "石川門" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ishikawamon"
+          }
+        }
+      }
     },
     "石灰" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limestone"
+          }
+        }
+      }
     },
     "石見 (大田・浜田)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iwami (Oda, Hamada)"
+          }
+        }
+      }
     },
     "石鎚、京ひな のしずく媛" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ishizuchi & Kyohina Shizukuhime"
+          }
+        }
+      }
     },
     "硫黄" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sulfur"
+          }
+        }
+      }
     },
     "確認" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm"
+          }
+        }
+      }
     },
     "磯自慢 (磯自慢酒造) の山田錦特等米" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isojiman (Isojiman Shuzo) Top-Grade Yamadanishiki"
+          }
+        }
+      }
     },
     "祝" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iwai"
+          }
+        }
+      }
     },
     "神の穂" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaminoho"
+          }
+        }
+      }
     },
     "神の舞" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaminomai"
+          }
+        }
+      }
     },
     "神亀、秩父錦、晴雲 のさけ武蔵" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shinkame, Chichibunishiki & Seiun Sake-Musashi"
+          }
+        }
+      }
     },
     "神力" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shinriki"
+          }
+        }
+      }
     },
     "神奈川の隠れた名酒の若水仕込み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hidden Kanagawa gems brewed with Wakamizu rice"
+          }
+        }
+      }
     },
     "神奈川県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kanagawa"
+          }
+        }
+      }
     },
     "神話の国・島根のオリジナル酒米" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original sake rice from Shimane, land of myth"
+          }
+        }
+      }
     },
     "神龍錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shinryunishiki"
+          }
+        }
+      }
     },
     "福乃香" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fukunoka"
+          }
+        }
+      }
     },
     "福井県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fukui"
+          }
+        }
+      }
     },
     "福岡県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fukuoka"
+          }
+        }
+      }
     },
     "福島県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fukushima"
+          }
+        }
+      }
     },
     "福島県の新しいエース酒米「福乃香」" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fukunoka, Fukushima's rising star sake rice"
+          }
+        }
+      }
     },
     "秋田県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akita"
+          }
+        }
+      }
     },
     "秋田県の可憐な酒米「星あかり」のお酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sake brewed with Hoshi-akari, Akita's delicate rice"
+          }
+        }
+      }
     },
     "秋田県の次世代酒米「一穂積」を使った純米酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Junmai sake brewed with Hitohozumi, Akita's next-gen rice"
+          }
+        }
+      }
     },
     "秋田酒こまち" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AkitaSakeKomachi"
+          }
+        }
+      }
     },
     "秋鹿 (秋鹿酒造：能勢の自社田山田錦)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akishika (Akishika Shuzo: Nose estate-grown Yamadanishiki)"
+          }
+        }
+      }
     },
     "秋鹿 雄町純米吟醸" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akishika Omachi Junmai Ginjo"
+          }
+        }
+      }
     },
     "秩父" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chichibu"
+          }
+        }
+      }
     },
     "秩父源流水、鏡山 の五百万石" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chichibu Genryusui & Kagamiyama Gohyakumangoku"
+          }
+        }
+      }
     },
     "称号・バッジ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titles & Badges"
+          }
+        }
+      }
     },
     "移動先の選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Destination"
+          }
+        }
+      }
     },
     "種類" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
     },
     "稲田姫、弁慶の泣き所 等の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inadahime, Benkei-no-Nakidokoro & other Yamadanishiki sakes"
+          }
+        }
+      }
     },
     "立山、幼竹 の雄山錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tateyama & Yotake Oyamanishiki"
+          }
+        }
+      }
     },
     "端末の設定に合わせる" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Match Device Settings"
+          }
+        }
+      }
     },
     "第 %d 段" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Row %d"
+          }
+        }
+      }
     },
     "筑前・筑後" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chikuzen & Chikugo"
+          }
+        }
+      }
     },
     "答え合わせ：ボトルの銘柄と実際のスペックを入力してください" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Answer Check: Enter the bottle name and actual specs"
+          }
+        }
+      }
     },
     "箕面ビール「おさるのIPA / 桃のヴァイツェン」" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minoh Beer 'Osaru IPA / Peach Weizen"
+          }
+        }
+      }
     },
     "粘土" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clay"
+          }
+        }
+      }
     },
     "精米歩合" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rice Polishing Ratio"
+          }
+        }
+      }
     },
     "精米歩合 (例: 50%)" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rice Polishing Ratio (e.g., 50%)"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15163,388 +16230,1283 @@
       }
     },
     "紀北 (海南・かつらぎ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kihoku (Kainan, Katsuragi)"
+          }
+        }
+      }
     },
     "紀南 (田辺・新宮)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kinan (Tanabe, Shingu)"
+          }
+        }
+      }
     },
     "紀土 (平和酒造)、南方 の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiddo (Heiwa Shuzo) & Minakata Yamadanishiki"
+          }
+        }
+      }
     },
     "紀土 五百万石純米吟醸" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiddo Gohyakumangoku Junmai Ginjo"
+          }
+        }
+      }
     },
     "紅茶" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Black Tea"
+          }
+        }
+      }
     },
     "紅茶の葉" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Black Tea Leaves"
+          }
+        }
+      }
     },
     "純米吟醸" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Junmai Ginjo"
+          }
+        }
+      }
     },
     "純米大吟醸" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Junmai Daiginjo"
+          }
+        }
+      }
     },
     "純米酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Junmai"
+          }
+        }
+      }
     },
     "結の香" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yuinoka"
+          }
+        }
+      }
     },
     "総の舞" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fusanomai"
+          }
+        }
+      }
     },
     "総合コメント" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overall Notes"
+          }
+        }
+      }
     },
     "総合スコア" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overall Score"
+          }
+        }
+      }
     },
     "総合スコア: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overall Score: %@"
+          }
+        }
+      }
     },
     "総合評価・日付" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating & Date"
+          }
+        }
+      }
     },
     "編集・削除" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit or Delete"
+          }
+        }
+      }
     },
     "縁の舞" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enishinomai"
+          }
+        }
+      }
     },
     "置賜 (米沢)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okitama (Yonezawa)"
+          }
+        }
+      }
     },
     "美作 (津山)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mimasaka (Tsuyama)"
+          }
+        }
+      }
     },
     "美山錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Miyamanishiki"
+          }
+        }
+      }
     },
     "美濃 (大垣・多治見)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mino (Ogaki, Tajimi)"
+          }
+        }
+      }
     },
     "美郷錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Misatonishiki"
+          }
+        }
+      }
     },
     "群馬県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gunma"
+          }
+        }
+      }
     },
     "群馬県オリジナル酒米「舞風」の純米吟醸" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Junmai Ginjo brewed with Maikaze, Gunma's original sake rice"
+          }
+        }
+      }
     },
     "義侠、想天坊 の夢吟香" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gikyo & Sotenbo Yumeginka"
+          }
+        }
+      }
     },
     "羽州誉" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ushuhomare"
+          }
+        }
+      }
     },
     "羽根屋 (富美菊酒造) の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haneya (Fumigiku Shuzo) Yamadanishiki"
+          }
+        }
+      }
     },
     "而今 五百万石無濾過生" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jikon Gohyakumangoku Muroka Nama"
+          }
+        }
+      }
     },
     "聖 (土田酒造)、流輝 の五百万石" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hijiri (Tsuchida Shuzo) & Ryuki Gohyakumangoku"
+          }
+        }
+      }
     },
     "聖、貴娘 の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hijiri & Takimusume Yamadanishiki"
+          }
+        }
+      }
     },
     "背景ありの写真に戻す" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Original Photo"
+          }
+        }
+      }
     },
     "背景を自動で透過にする" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto-Remove Background"
+          }
+        }
+      }
     },
     "能登" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noto"
+          }
+        }
+      }
     },
     "腐葉土" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leaf Mold"
+          }
+        }
+      }
     },
     "舞風" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maikaze"
+          }
+        }
+      }
     },
     "色" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color"
+          }
+        }
+      }
     },
     "色の名前 (例: ローズピンク)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color name (e.g., Rose Pink)"
+          }
+        }
+      }
     },
     "色の変更" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Color"
+          }
+        }
+      }
     },
     "色を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Color"
+          }
+        }
+      }
     },
     "色名" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color Name"
+          }
+        }
+      }
     },
     "花・植物" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flowers & Botanicals"
+          }
+        }
+      }
     },
     "花の蜜" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flower Nectar"
+          }
+        }
+      }
     },
     "花梨" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quince"
+          }
+        }
+      }
     },
     "花陽浴 (南陽醸造)、彩來 の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanayobi (Nanyo Jozo) & Sarai Yamadanishiki"
+          }
+        }
+      }
     },
     "芳水、阿波の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hosui & Awa Yamadanishiki"
+          }
+        }
+      }
     },
     "芳醇でキレのある山形のプレミアム酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rich yet crisp premium sake from Yamagata"
+          }
+        }
+      }
     },
     "若水" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wakamizu"
+          }
+        }
+      }
     },
     "若草・微緑" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Young Grass & Slight Green"
+          }
+        }
+      }
     },
     "苦味" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitterness"
+          }
+        }
+      }
     },
     "苦味 (Bitterness)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitterness"
+          }
+        }
+      }
     },
     "英勲、玉川、澤屋まつもと の京都産酒米「祝」" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eikun, Tamagawa & Sawaya Matsumoto brewed with Kyoto's Iwai rice"
+          }
+        }
+      }
     },
     "茨城県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ibaraki"
+          }
+        }
+      }
     },
     "草" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grass"
+          }
+        }
+      }
     },
     "荷札酒 (加茂錦) 等のたかね錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nifudazake (Kamonishiki) & other Takanenishiki sakes"
+          }
+        }
+      }
     },
     "菊水" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kikusui"
+          }
+        }
+      }
     },
     "菊水酒造の代表的辛口酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kikusui Shuzo's signature dry sake"
+          }
+        }
+      }
     },
     "菩提樹" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linden Blossom"
+          }
+        }
+      }
     },
     "華吹雪" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanafubuki"
+          }
+        }
+      }
     },
     "華想い" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanaomoi"
+          }
+        }
+      }
     },
     "華錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hananishiki"
+          }
+        }
+      }
     },
     "萌えいぶき" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moeibuki"
+          }
+        }
+      }
     },
     "萩・長門" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hagi & Nagato"
+          }
+        }
+      }
     },
     "蒼空、月桂冠 の五百万石仕込み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sokū & Gekkeikan Gohyakumangoku"
+          }
+        }
+      }
     },
     "蓬莱泉 (関谷醸造「空」)、九重美碧" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Horaizumi (Sekiya Jozo 'Kū') & Kokonoe Biheki"
+          }
+        }
+      }
     },
     "蔵の華" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuranohana"
+          }
+        }
+      }
     },
     "蜂蜜" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Honey"
+          }
+        }
+      }
     },
     "蜜蝋" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beeswax"
+          }
+        }
+      }
     },
     "表現を入力 (例: リッチな)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a descriptor (e.g., Rich)"
+          }
+        }
+      }
     },
     "表現名" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descriptor"
+          }
+        }
+      }
     },
     "表示モード" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display Mode"
+          }
+        }
+      }
     },
     "表示形式" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View Style"
+          }
+        }
+      }
     },
     "表示形式の切り替え" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch View Style"
+          }
+        }
+      }
     },
     "表示色一覧 (%@)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color List (%@)"
+          }
+        }
+      }
     },
     "表示順序" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort Order"
+          }
+        }
+      }
     },
     "表面" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Front"
+          }
+        }
+      }
     },
     "表面の写真を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Front Photo"
+          }
+        }
+      }
     },
     "裏面" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
     },
     "裏面の写真を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Back Photo"
+          }
+        }
+      }
     },
     "補足メモ (任意)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Additional Notes (Optional)"
+          }
+        }
+      }
     },
     "複数セラー・サブ冷蔵庫など無制限に追加可能" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add unlimited cellars, secondary fridges, and more"
+          }
+        }
+      }
     },
     "西の関 (萱島酒造) の五百万石" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nishinoseki (Kayashima Shuzo) Gohyakumangoku"
+          }
+        }
+      }
     },
     "西条 (東広島)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saijo (Higashihiroshima)"
+          }
+        }
+      }
     },
     "西毛 (高崎・藤岡)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seimo (Takasaki, Fujioka)"
+          }
+        }
+      }
     },
     "西海岸 (ポートランド・サンディエゴ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "West Coast (Portland, San Diego)"
+          }
+        }
+      }
     },
     "西部 (浜松・掛川)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Western Shizuoka (Hamamatsu, Kakegawa)"
+          }
+        }
+      }
     },
     "西都の雫" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saito-no-shizuku"
+          }
+        }
+      }
     },
     "見習いソムリエ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apprentice Sommelier"
+          }
+        }
+      }
     },
     "見習い利き酒師" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apprentice Kikisake-shi"
+          }
+        }
+      }
     },
     "解放のヒント" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Hint"
+          }
+        }
+      }
     },
     "言語 / Language" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語 / Language"
+          }
+        }
+      }
     },
     "記録方法を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Logging Method"
+          }
+        }
+      }
     },
     "記録済みの産地から選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose from Logged Origins"
+          }
+        }
+      }
     },
     "設定" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
     },
     "評価" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating"
+          }
+        }
+      }
     },
     "評価・アロマ条件" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating & Aroma Criteria"
+          }
+        }
+      }
     },
     "評価・スコア" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating & Score"
+          }
+        }
+      }
     },
     "評価・テイスティングデータ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating & Tasting Data"
+          }
+        }
+      }
     },
     "評価フィルター" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating Filter"
+          }
+        }
+      }
     },
     "評価フラグの傾向" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flag Trends"
+          }
+        }
+      }
     },
     "該当するログが見つかりません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Matching Logs"
+          }
+        }
+      }
     },
     "該当する分析データがありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Analytics Data"
+          }
+        }
+      }
     },
     "該当する図鑑項目がありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Matching Collection Items"
+          }
+        }
+      }
     },
     "該当する比較ログがありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Logs Available to Compare"
+          }
+        }
+      }
     },
     "該当条件の記録がありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Records Match Criteria"
+          }
+        }
+      }
     },
     "詳細・スペック" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details & Specs"
+          }
+        }
+      }
     },
     "詳細を確認する" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View Details"
+          }
+        }
+      }
     },
     "誉富士" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Homare-fuji"
+          }
+        }
+      }
     },
     "讃岐の金陵 雄町純米" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sanuki no Kinryo Omachi Junmai"
+          }
+        }
+      }
     },
     "豊国" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toyokuni"
+          }
+        }
+      }
     },
     "豊潤な" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rich"
+          }
+        }
+      }
     },
     "豊盃" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hohai"
+          }
+        }
+      }
     },
     "豊盃 (三浦酒造の看板銘柄)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hohai (Miura Shuzo's signature label)"
+          }
+        }
+      }
     },
     "豊香、スキー正宗 のたかね錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toyoka & Sukimasamune Takanenishiki"
+          }
+        }
+      }
     },
     "貝殻" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seashell"
+          }
+        }
+      }
     },
     "購入を復元する（Restore）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Purchases"
+          }
+        }
+      }
     },
     "赤" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Red"
+          }
+        }
+      }
     },
     "赤スグリ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redcurrant"
+          }
+        }
+      }
     },
     "赤武 (AKABU)、南部美人 の吟ぎんが" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akabu & Nanbu Bijin Gingin-ga"
+          }
+        }
+      }
     },
     "赤磐雄町" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akaiwa Omachi"
+          }
+        }
+      }
     },
     "赤磐雄町、御前酒、竹林、十八盛 などの雄町仕込み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omachi sakes such as Akaiwa Omachi, Gozenshu, Chikurin & Juhachizakari"
+          }
+        }
+      }
     },
     "赤褐色" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reddish Brown"
+          }
+        }
+      }
     },
     "赤金色（オレンジゴールド）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orange Gold"
+          }
+        }
+      }
     },
     "越の雫" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koshinoshizuku"
+          }
+        }
+      }
     },
     "越乃寒梅、久保田 (千寿・百寿)、八海山" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koshino Kanbai, Kubota (Senju, Hyakuju) & Hakkaisan"
+          }
+        }
+      }
     },
     "越淡麗" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koshitanrei"
+          }
+        }
+      }
     },
     "越神楽" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koshikagura"
+          }
+        }
+      }
     },
     "追加" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
     },
     "追加 (%d/%d)" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add (%d/5)"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -15554,49 +17516,153 @@
       }
     },
     "追加されたカスタムカラーはありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Custom Colors Added"
+          }
+        }
+      }
     },
     "追加されたカスタム表現はありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Custom Descriptors Added"
+          }
+        }
+      }
     },
     "追加された香りタグはありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Custom Aroma Tags Added"
+          }
+        }
+      }
     },
     "追加済みのカスタムカラー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom Colors"
+          }
+        }
+      }
     },
     "追加済みのカスタム表現" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom Descriptors"
+          }
+        }
+      }
     },
     "追加済みのカスタム香りタグ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom Aroma Tags"
+          }
+        }
+      }
     },
     "通常記録" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard Log"
+          }
+        }
+      }
     },
     "通常記録（銘柄を入力して記録）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard Log (Enter Bottle Name)"
+          }
+        }
+      }
     },
     "道北 (旭川・上川)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Northern Hokkaido (Asahikawa, Kamikawa)"
+          }
+        }
+      }
     },
     "道央 (札幌・小樽)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Central Hokkaido (Sapporo, Otaru)"
+          }
+        }
+      }
     },
     "道東 (釧路・根室)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eastern Hokkaido (Kushiro, Nemuro)"
+          }
+        }
+      }
     },
     "達成日" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlocked Date"
+          }
+        }
+      }
     },
     "達磨正宗、房島屋 の五百万石" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daruma Masamune & Boshuya Gohyakumangoku"
+          }
+        }
+      }
     },
     "選択された外観・詳細メモ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected Appearance & Notes"
+          }
+        }
+      }
     },
     "選択中: 第 %lld 段 - %lld 列目" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected: Row %1$lld, Col %2$lld"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -15606,346 +17672,1144 @@
       }
     },
     "選択中の色名:" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected Color:"
+          }
+        }
+      }
     },
     "選択肢から選択する" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose from Options"
+          }
+        }
+      }
     },
     "選択肢のカスタマイズ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customize Options"
+          }
+        }
+      }
     },
     "部分一致 +%lldpt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partial Match +%lldpt"
+          }
+        }
+      }
     },
     "郷乃誉 (花薫光) の美山錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satono Homare (Kakunko) Miyamanishiki"
+          }
+        }
+      }
     },
     "酒未来" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SakeMirai"
+          }
+        }
+      }
     },
     "酒種" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
     },
     "酒種 (カテゴリ)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
     },
     "酒種: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category: %@"
+          }
+        }
+      }
     },
     "酒種を選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Category"
+          }
+        }
+      }
     },
     "酒種別 飲酒比率" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drink Ratio by Category"
+          }
+        }
+      }
     },
     "酒米（使用米）の予想" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sake Rice Guess"
+          }
+        }
+      }
     },
     "酔心、富久長 の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suishin & Fukucho Yamadanishiki"
+          }
+        }
+      }
     },
     "酔鯨、美丈夫 の高知産酒米「吟の夢」" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suigei & Bijofu brewed with Kochi's Gin-no-yume rice"
+          }
+        }
+      }
     },
     "酵母" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeast"
+          }
+        }
+      }
     },
     "酸味" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acidity"
+          }
+        }
+      }
     },
     "酸味 (Acidity)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acidity"
+          }
+        }
+      }
     },
     "醤油" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soy Sauce"
+          }
+        }
+      }
     },
     "醸し人九平次 (萬乗醸造) の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamoshibito Kuheiji (Banjo Jozo) Yamadanishiki"
+          }
+        }
+      }
     },
     "重み・骨格" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Body & Structure"
+          }
+        }
+      }
     },
     "野条穂" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yajoho"
+          }
+        }
+      }
     },
     "金" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gold"
+          }
+        }
+      }
     },
     "金紋錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kimonnishiki"
+          }
+        }
+      }
     },
     "針葉樹" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conifer"
+          }
+        }
+      }
     },
     "鈴鹿川、るみ子の酒の幻の伊勢錦仕込み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suzukagawa & Rumiko no Sake brewed with rare Isenishiki"
+          }
+        }
+      }
     },
     "鉄分" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iron"
+          }
+        }
+      }
     },
     "鉱物" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mineral"
+          }
+        }
+      }
     },
     "銀河高原ビール、箕面ビール ヴァイツェン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ginga Kogen Beer & Minoh Beer Weizen"
+          }
+        }
+      }
     },
     "銘柄を伏せて感覚だけで予想し、あとから答え合わせ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guess blindly by sensory impressions first, then check answers later"
+          }
+        }
+      }
     },
     "銘柄を見ながら外観・香り・味わいを記録" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Record appearance, aroma, and palate while viewing the label"
+          }
+        }
+      }
     },
     "銘柄を見ながら記録するか、銘柄を伏せてブラインドテイスティングに挑戦するか選択してください。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose whether to log while viewing the label or try blind tasting with the label hidden"
+          }
+        }
+      }
     },
     "銘柄名 (必須)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name (Required)"
+          }
+        }
+      }
     },
     "銘柄名、生産者、メモで検索" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search by name, producer, or notes"
+          }
+        }
+      }
     },
     "銘柄名は必須項目です。" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name is required."
+          }
+        }
+      }
     },
     "銘酒 鷲の尾、南部美人 の最高峰純米大吟醸" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flagship Junmai Daiginjo from Washinoo & Nanbu Bijin"
+          }
+        }
+      }
     },
     "銘酒の巡礼者" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pilgrim of Fine Sake"
+          }
+        }
+      }
     },
     "鍋島 (富久千代酒造)、東一 のさがの華" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nabeshima (Fukuchiyo Shuzo) & Azumaichi Saga-no-hana"
+          }
+        }
+      }
     },
     "鍋島 特別純米 (山田錦)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nabeshima Tokubetsu Junmai (Yamadanishiki)"
+          }
+        }
+      }
     },
     "長崎県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nagasaki"
+          }
+        }
+      }
     },
     "長珍、醸し人九平次 (一部スペック) の若水" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ChoChin & Kamoshibito Kuheiji (select cuvées) Wakamizu"
+          }
+        }
+      }
     },
     "長野や山梨の本格的ボルドー系赤ワイン" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serious Bordeaux-style reds from Nagano and Yamanashi"
+          }
+        }
+      }
     },
     "長野県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nagano"
+          }
+        }
+      }
     },
     "長野県の稀少な酒米を用いた限定酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limited sake made with rare Nagano rice varieties"
+          }
+        }
+      }
     },
     "閉じる" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
     },
     "阿櫻、ゆきの美人 の改良信交" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Azakura & Yukino Bijin Kairyo Shinko"
+          }
+        }
+      }
     },
     "阿芳水の吟のさと仕込み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Awasui Gin-no-sato"
+          }
+        }
+      }
     },
     "陸奥八仙、田酒 の華吹雪仕込み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mutsu Hassen & Denshu Hana-fubuki"
+          }
+        }
+      }
     },
     "雄山錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oyamanishiki"
+          }
+        }
+      }
     },
     "雄町" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omachi"
+          }
+        }
+      }
     },
     "雄町の最高峰産地「赤磐」の特撰銘柄" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select sakes from Akaiwa, the pinnacle of Omachi cultivation"
+          }
+        }
+      }
     },
     "雨後の月、富久長 の千本錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ugo no Tsuki & Fukucho Sennonnishiki"
+          }
+        }
+      }
     },
     "雪女神" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yukimegami"
+          }
+        }
+      }
     },
     "露葉風" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tsuyuhakaze"
+          }
+        }
+      }
     },
     "青りんご" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green Apple"
+          }
+        }
+      }
     },
     "青リンゴ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green Apple"
+          }
+        }
+      }
     },
     "青森県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aomori"
+          }
+        }
+      }
     },
     "青森県の新しい酒米を用いた地酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local sake brewed with newer Aomori sake rice varieties"
+          }
+        }
+      }
     },
     "青竹" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fresh Bamboo"
+          }
+        }
+      }
     },
     "静岡県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shizuoka"
+          }
+        }
+      }
     },
     "風の森 (油長酒造)、みむろ杉 (今西酒造)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaze no Mori (Yucho Shuzo) & Mimurosugi (Imanishi Shuzo)"
+          }
+        }
+      }
     },
     "風鳴子" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kazanaruko"
+          }
+        }
+      }
     },
     "飛良泉、春霞 の美山錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiraizumi & Harukasumi Miyamanishiki"
+          }
+        }
+      }
     },
     "飛露喜、写楽 の夢の香仕込み" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiroki & Sharaku Yumenoka"
+          }
+        }
+      }
     },
     "飛露喜、自然郷 の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiroki & Shizengo Yamadanishiki"
+          }
+        }
+      }
     },
     "飛騨 (高山・古川)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hida (Takayama, Furukawa)"
+          }
+        }
+      }
     },
     "飲みきった（ログのみ記録・在庫なし）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finished (Log Only / Out of Stock)"
+          }
+        }
+      }
     },
     "飲み切った" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finished"
+          }
+        }
+      }
     },
     "飲んだ日" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date Drunk"
+          }
+        }
+      }
     },
     "飲んだ種類" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categories Drunk"
+          }
+        }
+      }
     },
     "飲酒ログ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tasting Logs"
+          }
+        }
+      }
     },
     "飲酒ログフィルター" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tasting Log Filter"
+          }
+        }
+      }
     },
     "飲酒記録" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tasting Log"
+          }
+        }
+      }
     },
     "香り" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma"
+          }
+        }
+      }
     },
     "香りタグ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma Tags"
+          }
+        }
+      }
     },
     "香りタグの編集" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Aroma Tags"
+          }
+        }
+      }
     },
     "香りタグ一覧 (%@)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma Tags (%@)"
+          }
+        }
+      }
     },
     "香りタグ名" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma Tag Name"
+          }
+        }
+      }
     },
     "香りの記録データがありません" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Aroma Data"
+          }
+        }
+      }
     },
     "香りを選択" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Aroma"
+          }
+        }
+      }
     },
     "香り選択プレビュー" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroma Selection Preview"
+          }
+        }
+      }
     },
     "香住鶴などの但馬地方の力強い酒米" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bold sake rice from Tajima such as Kasumitsuru"
+          }
+        }
+      }
     },
     "香川県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kagawa"
+          }
+        }
+      }
     },
     "香木" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incense Wood"
+          }
+        }
+      }
     },
     "香露、美少年 の華錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koro & Bishonen Hananishiki"
+          }
+        }
+      }
     },
     "高千穂・延岡" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takachiho & Nobeoka"
+          }
+        }
+      }
     },
     "高千穂の豊かな水と米で造る純米酒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Junmai sake brewed with Takachiho's rich water and rice"
+          }
+        }
+      }
     },
     "高知の爽やかな風土を映す風鳴子" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kazanaruko reflecting Kochi's refreshing climate"
+          }
+        }
+      }
     },
     "高知県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kochi"
+          }
+        }
+      }
     },
     "鳥取県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tottori"
+          }
+        }
+      }
     },
     "鳳凰美田 (小林酒造)、仙禽 の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ho-oh Biden (Kobayashi Shuzo) & Senkin Yamadanishiki"
+          }
+        }
+      }
     },
     "鳳凰美田、若駒 の夢ささら" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ho-oh Biden & Wakakoma Yume-sasara"
+          }
+        }
+      }
     },
     "鷹勇 (大谷酒造)、日おろし、諏訪泉 の強力" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takaisami (Otani Shuzo), Hioroshi & Suwaizumi Goriki"
+          }
+        }
+      }
     },
     "鷹来屋、ちえびじん の山田錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takakiya & Chiebijin Yamadanishiki"
+          }
+        }
+      }
     },
     "鹿児島県" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kagoshima"
+          }
+        }
+      }
     },
     "鹿島・嬉野" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kashima & Ureshino"
+          }
+        }
+      }
     },
     "麒麟山、朝日山 の山田錦大吟醸" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kirinzan & Asahiyama Yamadanishiki Daiginjo"
+          }
+        }
+      }
     },
     "麝香" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Musk"
+          }
+        }
+      }
     },
     "麦わら色" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Straw"
+          }
+        }
+      }
     },
     "麦わら金色" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Straw Gold"
+          }
+        }
+      }
     },
     "麦芽" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Malt"
+          }
+        }
+      }
     },
     "黄色いリンゴ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yellow Apple"
+          }
+        }
+      }
     },
     "黄金澤 山廃純米 (食用米ササニシキ使用)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koganazawa Yamahai Junmai (brewed with Sasanishiki table rice)"
+          }
+        }
+      }
     },
     "黄金色" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Golden"
+          }
+        }
+      }
     },
     "黒い見た目と強烈なホップ香を併せ持つ変種IPA" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variant IPA combining a dark look with intense hop aroma"
+          }
+        }
+      }
     },
     "黒オリーブ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Black Olive"
+          }
+        }
+      }
     },
     "黒基調×ゴールドのシックな夜スタイル" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chic evening style in black and gold"
+          }
+        }
+      }
     },
     "黒胡椒" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Black Pepper"
+          }
+        }
+      }
     },
     "黒赤色（ノワール）" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Red (Noir)"
+          }
+        }
+      }
     },
     "黒龍 (黒龍酒造)、白龍 の五百万石" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokuryu (Kokuryu Shuzo) & Hakuryu Gohyakumangoku"
+          }
+        }
+      }
     },
     "黒龍 大吟醸 龍 (山田錦)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokuryu Daiginjo Ryu (Yamadanishiki)"
+          }
+        }
+      }
     },
     "黒龍酒造と福井県が開発した最高峰酒米「さかほまれ」" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sakahomare, flagship sake rice co-developed by Kokuryu Shuzo and Fukui"
+          }
+        }
+      }
     },
     "黒龍酒造の「九頭竜」シリーズ" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokuryu Shuzo's 'Kuzuryu' series"
+          }
+        }
+      }
     },
     "墨廼江、黄金澤 の美山錦" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suminoue & Koganazawa Miyamanishiki"
+          }
+        }
+      }
     },
     "龍の落とし子" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tatsu-no-otoshigo"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

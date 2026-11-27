@@ -49,6 +49,12 @@ public struct AnalyticsFilterSheet: View {
                     regionFilterSection
                     evaluationCriteriaSection
 
+                case .blind:
+                    timeFilterSection
+                    categoryFilterSection(clearAromaOnChange: false)
+                    subCategorySectionIfNeeded
+                    regionFilterSection
+
                 case .comparison:
                     comparisonSelectionSection
                     comparisonFilterSection
@@ -79,6 +85,7 @@ public struct AnalyticsFilterSheet: View {
         switch viewModel.selectedSection {
         case .consumption: String(localized: "飲酒ログフィルター")
         case .evaluation: String(localized: "評価フィルター")
+        case .blind: String(localized: "ブラインドフィルター")
         case .comparison: String(localized: "比較フィルター")
         }
     }
