@@ -7,6 +7,8 @@ import SwiftUI
 
 /// 飲んだ酒のリストや在庫一覧で使用する共通カードビュー（和風名刺デザイン・サイドパネル拡張）
 public struct BeverageCardView: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     private static let cardCornerRadius: CGFloat = 12
     private static let cardHeight: CGFloat = 110
     private static let panelWidth: CGFloat = 80
@@ -54,6 +56,37 @@ public struct BeverageCardView: View {
             return Color(red: red, green: green, blue: blue)
         }
         return Color.accentColor
+    }
+
+    /// ライトモードで薄い色（高輝度・低明度）が指定された場合でもコントラストを確保する文字色
+    private var badgeForegroundColor: Color {
+        guard colorScheme == .light else {
+            return appearanceColor
+        }
+
+        let uiColor = UIColor(appearanceColor)
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        guard uiColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else {
+            return .primary
+        }
+
+        // 輝度が高い（薄い・明るい）色ほど暗くし、視認性を確保
+        if brightness > 0.65 {
+            let darkenedBrightness = max(0.32, brightness * 0.45)
+            let boostedSaturation = min(1.0, max(saturation, 0.35))
+            return Color(
+                hue: hue,
+                saturation: boostedSaturation,
+                brightness: darkenedBrightness,
+                opacity: alpha
+            )
+        }
+
+        return appearanceColor
     }
 
     public var body: some View {
@@ -163,8 +196,12 @@ public struct BeverageCardView: View {
                 .font(.system(size: 10, weight: .bold))
                 .padding(.horizontal, 6)
                 .padding(.vertical, 2.5)
-                .background(appearanceColor.opacity(0.15))
-                .foregroundStyle(appearanceColor)
+                .background(appearanceColor.opacity(0.16))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(appearanceColor.opacity(0.28), lineWidth: 0.6)
+                )
+                .foregroundStyle(badgeForegroundColor)
                 .cornerRadius(4)
 
             if let vintage, !vintage.isEmpty {
@@ -264,7 +301,7 @@ fileprivate extension UIImage {
                 rating: 4.5,
                 imageData: dummySakeData,
                 isBackgroundRemoved: true,
-                appearanceColorHex: "#D4AF37"
+                appearanceColorHex: "#F5F3E7"
             )
         }
         .padding()

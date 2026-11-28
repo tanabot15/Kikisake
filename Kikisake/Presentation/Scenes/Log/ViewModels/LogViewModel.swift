@@ -20,6 +20,7 @@ public enum LogMainSection: String, CaseIterable, Identifiable {
     case list
     case timeline
     case collectionBook
+    case badges
 
     public var id: String { rawValue }
 
@@ -28,6 +29,7 @@ public enum LogMainSection: String, CaseIterable, Identifiable {
         case .list: String(localized: "リスト")
         case .timeline: String(localized: "タイムライン")
         case .collectionBook: String(localized: "図鑑")
+        case .badges: String(localized: "バッジ")
         }
     }
 }
@@ -86,6 +88,8 @@ public final class LogViewModel {
             hasActiveFilters
         case .collectionBook:
             hasActiveCollectionFilters
+        case .badges:
+            false
         }
     }
 
@@ -95,6 +99,8 @@ public final class LogViewModel {
             resetFilters()
         case .collectionBook:
             resetCollectionFilters()
+        case .badges:
+            break
         }
     }
 

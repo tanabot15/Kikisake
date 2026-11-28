@@ -5,65 +5,80 @@
 
 import SwiftUI
 
-/// Sheet presenting rank progress, share card preview, and social sharing actions.
+/// Sheet presenting rank or region badge progress, share card preview, and social sharing actions.
 public struct RankShareSheetView: View {
     @Environment(\.dismiss) private var dismiss
+
     public let category: BeverageCategory
     public let unlockedCount: Int
     public let totalCount: Int
+    public let preferredRankBadge: CollectionRankBadge?
+    public let regionBadge: RegionAchievementBadge?
 
     @State private var renderedImage: UIImage? = nil
 
-    public init(category: BeverageCategory, unlockedCount: Int, totalCount: Int) {
+    public init(
+        category: BeverageCategory,
+        unlockedCount: Int,
+        totalCount: Int,
+        preferredRankBadge: CollectionRankBadge? = nil,
+        regionBadge: RegionAchievementBadge? = nil
+    ) {
         self.category = category
         self.unlockedCount = unlockedCount
         self.totalCount = totalCount
+        self.preferredRankBadge = preferredRankBadge
+        self.regionBadge = regionBadge
     }
 
     private var allBadges: [CollectionRankBadge] {
         CollectionRankBadge.badges(for: category)
     }
 
-    private var currentBadge: CollectionRankBadge? {
-        CollectionRankBadge.currentBadge(for: category, unlockedCount: unlockedCount)
+    private var activeRankBadge: CollectionRankBadge? {
+        if let preferredRankBadge,
+           preferredRankBadge.category == category,
+           unlockedCount >= preferredRankBadge.requiredCount {
+            return preferredRankBadge
+        }
+        return CollectionRankBadge.currentBadge(for: category, unlockedCount: unlockedCount)
+    }
+
+    private var activeShareContent: ShareAchievementContent? {
+        if let regionBadge, regionBadge.isUnlocked {
+            return .region(badge: regionBadge)
+        }
+        if let activeRankBadge {
+            return .rank(badge: activeRankBadge, unlockedCount: unlockedCount, totalCount: totalCount)
+        }
+        return nil
     }
 
     public var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    if let activeBadge = currentBadge {
-                        RankShareCardView(
-                            badge: activeBadge,
-                            unlockedCount: unlockedCount,
-                            totalCount: totalCount
-                        )
-                        .padding(.top, 8)
+                    if let content = activeShareContent {
+                        RankShareCardView(content: content)
+                            .padding(.top, 8)
 
-                        shareActionSection(badge: activeBadge)
+                        shareActionSection(content: content)
+                    } else if let lockedRegion = regionBadge {
+                        lockedRegionPreviewSection(badge: lockedRegion)
                     } else if let firstBadge = allBadges.first {
-                        lockedPreviewSection(targetBadge: firstBadge)
+                        lockedRankPreviewSection(targetBadge: firstBadge)
                     }
 
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text(String(localized: "\(category.displayName)の称号ランク一覧"))
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .padding(.horizontal, 4)
-
-                        ForEach(allBadges) { badge in
-                            rankMilestoneRow(
-                                badge: badge,
-                                isAchieved: unlockedCount >= badge.requiredCount
-                            )
-                        }
+                    if let regionBadge {
+                        regionMilestonesSection(badge: regionBadge)
+                    } else {
+                        rankMilestonesSection
                     }
-                    .padding(.horizontal)
                 }
                 .padding(.bottom, 24)
             }
             .background(Color(.systemGroupedBackground))
-            .navigationTitle(String(localized: "称号・バッジ"))
+            .navigationTitle(regionBadge != nil ? String(localized: "産地バッジシェア") : String(localized: "称号・バッジ"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -77,26 +92,19 @@ public struct RankShareSheetView: View {
     }
 
     @ViewBuilder
-    private func shareActionSection(badge: CollectionRankBadge) -> some View {
-        let shareText = String(
-            format: String(localized: "【Kikisake 図鑑アワード】%@の%@ランク称号「%@」を獲得しました！（達成数: %d/%d） #Kikisake"),
-            badge.category.displayName,
-            badge.tier.tierName,
-            badge.title,
-            unlockedCount,
-            totalCount
-        )
+    private func shareActionSection(content: ShareAchievementContent) -> some View {
+        let shareText = content.shareMessage
 
         Group {
             if let uiImage = renderedImage {
                 let image = Image(uiImage: uiImage)
                 ShareLink(
                     item: image,
-                    subject: Text("Kikisake 称号獲得"),
+                    subject: Text("Kikisake バッジ獲得"),
                     message: Text(shareText),
-                    preview: SharePreview(badge.title, image: image)
+                    preview: SharePreview(content.titleText, image: image)
                 ) {
-                    shareButtonLabel(title: String(localized: "SNSで称号カードをシェア"))
+                    shareButtonLabel(title: String(localized: "SNSでバッジカードをシェア"))
                 }
             } else {
                 ShareLink(item: shareText) {
@@ -118,7 +126,36 @@ public struct RankShareSheetView: View {
             .cornerRadius(14)
     }
 
-    private func lockedPreviewSection(targetBadge: CollectionRankBadge) -> some View {
+    private func lockedRegionPreviewSection(badge: RegionAchievementBadge) -> some View {
+        VStack(spacing: 12) {
+            Image(systemName: "lock.shield.fill")
+                .font(.system(size: 48))
+                .foregroundStyle(.secondary)
+
+            Text(String(localized: "まだ産地バッジを解除していません"))
+                .font(.headline)
+                .fontWeight(.bold)
+
+            Text(
+                String(
+                    format: String(localized: "%@の図鑑項目を1種以上記録すると、最初のブロンズバッジが解除され、SNSでシェアできるようになります！"),
+                    badge.region
+                )
+            )
+            .font(.subheadline)
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+            .padding(.horizontal, 24)
+        }
+        .padding(.vertical, 28)
+        .frame(maxWidth: .infinity)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+        .padding(.horizontal)
+        .padding(.top, 8)
+    }
+
+    private func lockedRankPreviewSection(targetBadge: CollectionRankBadge) -> some View {
         let remaining = max(0, targetBadge.requiredCount - unlockedCount)
         return VStack(spacing: 12) {
             Image(systemName: "lock.shield.fill")
@@ -147,6 +184,79 @@ public struct RankShareSheetView: View {
         .cornerRadius(16)
         .padding(.horizontal)
         .padding(.top, 8)
+    }
+
+    private var rankMilestonesSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(String(localized: "\(category.displayName)の称号ランク一覧"))
+                .font(.headline)
+                .fontWeight(.bold)
+                .padding(.horizontal, 4)
+
+            ForEach(allBadges) { badge in
+                rankMilestoneRow(
+                    badge: badge,
+                    isAchieved: unlockedCount >= badge.requiredCount
+                )
+            }
+        }
+        .padding(.horizontal)
+    }
+
+    private func regionMilestonesSection(badge: RegionAchievementBadge) -> some View {
+        let milestones: [(tier: CollectionRankTier, label: String, achieved: Bool)] = [
+            (.bronze, String(localized: "1種以上達成"), badge.unlockedCount >= 1),
+            (.silver, String(localized: "達成率 50% 以上"), badge.completionRate >= 0.5),
+            (.gold, String(localized: "達成率 80% 以上"), badge.completionRate >= 0.8),
+            (.platinum, String(localized: "100% 完全制覇"), badge.totalCount > 0 && badge.unlockedCount >= badge.totalCount)
+        ]
+
+        return VStack(alignment: .leading, spacing: 12) {
+            Text(String(localized: "\(badge.region)の達成ステージ"))
+                .font(.headline)
+                .fontWeight(.bold)
+                .padding(.horizontal, 4)
+
+            ForEach(milestones, id: \.tier) { item in
+                HStack(spacing: 14) {
+                    ZStack {
+                        Circle()
+                            .fill(
+                                item.achieved
+                                    ? LinearGradient(colors: item.tier.gradientColors, startPoint: .topLeading, endPoint: .bottomTrailing)
+                                    : LinearGradient(colors: [Color(.systemGray5), Color(.systemGray4)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
+                            .frame(width: 44, height: 44)
+
+                        Image(systemName: item.achieved ? item.tier.iconName : "lock.fill")
+                            .font(.headline)
+                            .foregroundStyle(item.achieved ? .white : .secondary)
+                    }
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(item.tier.tierName)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(item.achieved ? .primary : .secondary)
+                        Text(item.label)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Spacer()
+
+                    if item.achieved {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(.green)
+                            .font(.title3)
+                    }
+                }
+                .padding(12)
+                .background(Color(.secondarySystemGroupedBackground))
+                .cornerRadius(14)
+            }
+        }
+        .padding(.horizontal)
     }
 
     private func rankMilestoneRow(badge: CollectionRankBadge, isAchieved: Bool) -> some View {
@@ -210,12 +320,8 @@ public struct RankShareSheetView: View {
 
     @MainActor
     private func renderShareImage() {
-        guard let activeBadge = currentBadge else { return }
-        let card = RankShareCardView(
-            badge: activeBadge,
-            unlockedCount: unlockedCount,
-            totalCount: totalCount
-        )
+        guard let content = activeShareContent else { return }
+        let card = RankShareCardView(content: content)
         let renderer = ImageRenderer(content: card)
         renderer.scale = UIScreen.main.scale
         renderedImage = renderer.uiImage

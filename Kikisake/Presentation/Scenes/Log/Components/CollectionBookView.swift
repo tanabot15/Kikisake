@@ -42,13 +42,13 @@ public struct CollectionBookView: View {
         let activeCategory = logViewModel.collectionCategoryFilter ?? viewModel.selectedCategory
         let isPro = appState.isProVersion
         let proExtraCount = viewModel.lockedProItemCount(for: activeCategory)
-        let completionResults = filteredCompletions(for: activeCategory, isPro: isPro)
+        let allCategoryCompletions = viewModel.checkCompletions(for: activeCategory, logs: allLogs, isPro: isPro)
         let groupedResults = filteredGroupedCompletions(for: activeCategory, isPro: isPro)
 
         let currentBadge = viewModel.currentRankBadge(for: activeCategory, logs: allLogs, isPro: isPro)
         let nextBadge = viewModel.nextRankBadge(for: activeCategory, logs: allLogs, isPro: isPro)
-        let unlockedCount = completionResults.filter(\.isUnlocked).count
-        let totalCount = completionResults.count
+        let unlockedCount = allCategoryCompletions.filter(\.isUnlocked).count
+        let totalCount = allCategoryCompletions.count
 
         VStack(spacing: 16) {
             if !isPro && proExtraCount > 0 {
@@ -108,12 +108,6 @@ public struct CollectionBookView: View {
         let selected = logViewModel.collectionRegionFilter.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !selected.isEmpty else { return true }
         return region == selected
-    }
-
-    private func filteredCompletions(for category: BeverageCategory, isPro: Bool) -> [CollectionCompletionEntry] {
-        viewModel.checkCompletions(for: category, logs: allLogs, isPro: isPro).filter { entry in
-            matchesRegionFilter(entry.definition.region) && matchesElementFilter(entry.definition)
-        }
     }
 
     private func filteredGroupedCompletions(for category: BeverageCategory, isPro: Bool) -> [CollectionRegionGroup] {

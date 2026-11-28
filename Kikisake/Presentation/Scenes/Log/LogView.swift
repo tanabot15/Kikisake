@@ -6,7 +6,7 @@
 import SwiftUI
 import SwiftData
 
-/// [Tab 1] Tasting log list, timeline, and collection book container view.
+/// [Tab 1] Tasting log list, timeline, collection book, and badges container view.
 public struct LogView: View {
     @Query(sort: \TastingLog.date, order: .reverse) private var logs: [TastingLog]
     @State private var viewModel = LogViewModel()
@@ -55,6 +55,13 @@ public struct LogView: View {
                     }
                     .background(Color(.systemGroupedBackground))
                     .tag(LogMainSection.collectionBook)
+
+                    AchievementBadgesView(
+                        allLogs: logs,
+                        logViewModel: viewModel,
+                        viewModel: collectionViewModel
+                    )
+                    .tag(LogMainSection.badges)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
@@ -106,16 +113,18 @@ public struct LogView: View {
             }
         }
 
-        ToolbarItem(placement: .topBarTrailing) {
-            Button {
-                isShowingFilterSheet = true
-            } label: {
-                Image(
-                    systemName: viewModel.hasActiveCurrentSectionFilters
-                        ? "line.3.horizontal.decrease.circle.fill"
-                        : "line.3.horizontal.decrease.circle"
-                )
-                .foregroundStyle(viewModel.hasActiveCurrentSectionFilters ? Color.accentColor : Color.primary)
+        if viewModel.selectedSection != .badges {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isShowingFilterSheet = true
+                } label: {
+                    Image(
+                        systemName: viewModel.hasActiveCurrentSectionFilters
+                            ? "line.3.horizontal.decrease.circle.fill"
+                            : "line.3.horizontal.decrease.circle"
+                    )
+                    .foregroundStyle(viewModel.hasActiveCurrentSectionFilters ? Color.accentColor : Color.primary)
+                }
             }
         }
 
