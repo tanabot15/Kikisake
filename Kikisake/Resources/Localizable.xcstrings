@@ -61,12 +61,32 @@
         }
       }
     },
+    "· 予想: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "· Guess: %@"
+          }
+        }
+      }
+    },
     "“%@”" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "“%@”"
+          }
+        }
+      }
+    },
+    "(%d回)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%d times)"
           }
         }
       }
@@ -123,6 +143,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Log your drinks from the 'Add' tab to see analytics here."
+          }
+        }
+      }
+    },
+    "「追加」タブからブラインド記録に挑戦すると、ここに分析が表示されます。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try a blind tasting log from the 'Add' tab to see analytics here."
           }
         }
       }
@@ -401,6 +431,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d items"
+          }
+        }
+      }
+    },
+    "%d回" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d times"
           }
         }
       }
@@ -7225,6 +7265,16 @@
         }
       }
     },
+    "フィルター条件を変更するか、ブラインド記録を追加してみてください。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try adjusting your filters or adding a blind tasting log."
+          }
+        }
+      }
+    },
     "フェト・ダ・グラサなどの華やかな白ワイン" : {
       "localizations" : {
         "en" : {
@@ -7355,6 +7405,16 @@
         }
       }
     },
+    "ブラインド" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blind"
+          }
+        }
+      }
+    },
     "ブラインド (%d/%d)" : {
       "localizations" : {
         "en" : {
@@ -7367,6 +7427,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "ブラインド (%1$d/%2$d)"
+          }
+        }
+      }
+    },
+    "ブラインドフィルター" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blind Filter"
           }
         }
       }
@@ -7407,6 +7477,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Blind Log (Kikisake Mode)"
+          }
+        }
+      }
+    },
+    "ブラインド記録がありません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Blind Logs"
           }
         }
       }
@@ -9151,6 +9231,26 @@
         }
       }
     },
+    "よく予想する品種・スタイル・特定名称" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Most Guessed Varieties, Styles & Grades"
+          }
+        }
+      }
+    },
+    "よく予想する生産地" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Most Guessed Regions"
+          }
+        }
+      }
+    },
     "よく感じる香り・アロマの好み" : {
       "localizations" : {
         "en" : {
@@ -10467,6 +10567,26 @@
         }
       }
     },
+    "予想データがありません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Guess Data"
+          }
+        }
+      }
+    },
+    "予想の傾向" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guessing Trends"
+          }
+        }
+      }
+    },
     "予想ブドウ品種" : {
       "localizations" : {
         "en" : {
@@ -11173,6 +11293,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Min Rating"
+          }
+        }
+      }
+    },
+    "最近のブラインド記録" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent Blind Logs"
+          }
+        }
+      }
+    },
+    "最高正解率" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best Accuracy"
           }
         }
       }
@@ -13197,6 +13337,16 @@
         }
       }
     },
+    "平均正解率" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Average Accuracy"
+          }
+        }
+      }
+    },
     "平戸・壱岐" : {
       "localizations" : {
         "en" : {
@@ -13523,12 +13673,32 @@
         }
       }
     },
+    "挑戦回数" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attempts"
+          }
+        }
+      }
+    },
     "振り返りメモ（気づき・学び）" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reflection Notes (Takeaways & Learnings)"
+          }
+        }
+      }
+    },
+    "採点済みのスコアデータがありません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Scored Data"
           }
         }
       }
@@ -13749,6 +13919,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sun"
+          }
+        }
+      }
+    },
+    "日付" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
           }
         }
       }
@@ -14503,6 +14683,26 @@
         }
       }
     },
+    "正解率" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accuracy"
+          }
+        }
+      }
+    },
+    "正解率の推移" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accuracy Trend"
+          }
+        }
+      }
+    },
     "段 (Row)" : {
       "localizations" : {
         "en" : {
@@ -14953,6 +15153,16 @@
         }
       }
     },
+    "無題の記録" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untitled Log"
+          }
+        }
+      }
+    },
     "焼酎蔵が本気で造る鹿児島の日本酒 (山元酒造など)" : {
       "localizations" : {
         "en" : {
@@ -15269,6 +15479,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Region Guess"
+          }
+        }
+      }
+    },
+    "生産地の予想データがありません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Region Guess Data"
           }
         }
       }
@@ -15599,6 +15819,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Switch to Manual Input (Other)"
+          }
+        }
+      }
+    },
+    "直近: %d%%" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest: %d%"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "直近: %d％"
           }
         }
       }
@@ -17777,6 +18013,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Drink Ratio by Category"
+          }
+        }
+      }
+    },
+    "酒種別のデータがありません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Category Data"
+          }
+        }
+      }
+    },
+    "酒種別の成績" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Performance by Category"
           }
         }
       }
